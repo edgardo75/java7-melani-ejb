@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -93,7 +94,7 @@ public class TarjetasCreditoDebito implements Serializable {
      */
     @XmlTransient
     public List<Notadepedido> getNotadepedidoList() {
-        return notadepedidoList;
+        return Collections.unmodifiableList(notadepedidoList);
     }
 
     /**
@@ -110,7 +111,7 @@ public class TarjetasCreditoDebito implements Serializable {
      */
     @XmlTransient
     public List<EntradasySalidasCaja> getEntradasysalidascajaList() {
-        return entradasysalidascajaList;
+        return Collections.unmodifiableList(entradasysalidascajaList);
     }
 
     /**

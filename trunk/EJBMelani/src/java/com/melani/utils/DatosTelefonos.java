@@ -72,9 +72,6 @@ public class DatosTelefonos {
         return idcliente;
     }
 
-    /**
-     *
-     */
     public class EmpresaTelefonia{
         private short idempresatelefonia;
 
@@ -87,9 +84,6 @@ public class DatosTelefonos {
         }
     }
 
-    /**
-     *
-     */
     public class TiposTelefonos{
         private short idtipotel;
 

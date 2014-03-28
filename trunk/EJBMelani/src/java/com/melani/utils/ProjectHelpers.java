@@ -30,9 +30,6 @@ public class ProjectHelpers {
     private ProjectHelpers() {
     }
 
-    /**
-     *
-     */
     public static class ClaveSeguridad{
 
         /**
@@ -81,9 +78,6 @@ public class ProjectHelpers {
         }
             }
 
-    /**
-     *
-     */
     public static class NombreUsuarioValidator{
 
                         private static final String NAMEUSER_PATTERN="(?=^.{1,20}$)^([\\w\\.^\\-.][\\s]?)([\\w\\-\\s]*)([\\w]+$?)+$";
@@ -104,9 +98,6 @@ public class ProjectHelpers {
 
             }
 
-    /**
-     *
-     */
     public static class PasswordValidator{
                     private static final  String PASSWORD_PATTERN="((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,20})";
 
@@ -127,9 +118,6 @@ public class ProjectHelpers {
             
             }
 
-    /**
-     *
-     */
     public static class NumeroDocumentoValidator{
                 private static final  String NUMBER_PATTERN="(?=^.{1,10}$)\\d+$";
 
@@ -149,9 +137,6 @@ public class ProjectHelpers {
             
             }
 
-    /**
-     *
-     */
     public static class NombreyApellidoValidator {
                     private static final String NOMBREYAPELLIDO_PATTERN="(?=^.{1,30}$)[[A-Z][a-z]\\p{IsLatin}]* ?[[a-zA-Z]\\p{IsLatin}]* ?[[a-zA-Z]\\p{IsLatin}]+$";
 
@@ -170,9 +155,6 @@ public class ProjectHelpers {
         }
             }
 
-    /**
-     *
-     */
     public static class EmailValidator {
                private static final  String EMAIL_PATTERN="^[\\w\\-\\+\\*]+[\\w\\S]@(\\w+\\.)+[\\w]{2,4}$";
 
@@ -191,9 +173,6 @@ public class ProjectHelpers {
         }
            }
 
-    /**
-     *
-     */
     public static class DescripcionValidator {
                 private static final  String DESCRIPCION_PATTERN = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$";
    

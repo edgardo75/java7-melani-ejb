@@ -5,6 +5,7 @@
 package com.melani.utils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import java.util.Collections;
 import java.util.List;
 /**
  *
@@ -21,6 +22,6 @@ public class DetallesPresupuesto {
      * @return
      */
     public List<ItemDetallesPresupuesto> getLista() {
-        return lista;
+        return Collections.unmodifiableList(lista);
     }
 }

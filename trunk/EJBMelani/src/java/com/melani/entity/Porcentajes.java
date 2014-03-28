@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -116,7 +117,7 @@ public class Porcentajes implements Serializable {
      */
     @XmlTransient
     public List<Notadepedido> getNotadepedidoList() {
-        return notadepedidoList;
+        return Collections.unmodifiableList(notadepedidoList);
     }
 
     /**

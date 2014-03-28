@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -159,7 +159,7 @@ public class Productos implements Serializable {
      * @return
      */
     public List<ExistenciasProductos> getExistenciasProductoss() {
-        return existenciasProductoss;
+        return Collections.unmodifiableList(existenciasProductoss);
     }
 
     /**
@@ -239,7 +239,7 @@ public class Productos implements Serializable {
      * @return
      */
     public List<Detallespresupuesto> getDetallepresupuestosList() {
-        return detallepresupuestosList;
+        return Collections.unmodifiableList(detallepresupuestosList);
     }
 
     /**
@@ -255,7 +255,7 @@ public class Productos implements Serializable {
      * @return
      */
     public List<Detallesnotadepedido> getDetallesnotadepedidoList() {
-        return detallesnotadepedidoList;
+        return Collections.unmodifiableList(detallesnotadepedidoList);
     }
 
     /**
@@ -271,7 +271,7 @@ public class Productos implements Serializable {
      * @return
      */
     public List<ImagenesProductos> getImagenesProductosList() {
-        return imagenesProductosList;
+        return Collections.unmodifiableList(imagenesProductosList);
     }
 
     /**
@@ -324,10 +324,9 @@ public class Productos implements Serializable {
                         item+="</existencias>\n";
         } else{
                         List<ExistenciasProductos>lista = this.getExistenciasProductoss();
-                        for (Iterator<ExistenciasProductos> it = lista.iterator(); it.hasNext();) {
-                            ExistenciasProductos existenciasProductos = it.next();
-                            item+=existenciasProductos.toXML();
-                        }
+            for (ExistenciasProductos existenciasProductos : lista) {
+                item+=existenciasProductos.toXML();
+            }
                         item+="</existencias>\n";
                     }
                     item+="<listImages>\n";

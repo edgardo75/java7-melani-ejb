@@ -18,7 +18,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.validation.constraints.Pattern;
 import org.apache.log4j.Logger;
 /**
  *
