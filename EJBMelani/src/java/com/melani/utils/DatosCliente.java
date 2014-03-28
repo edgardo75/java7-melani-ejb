@@ -159,9 +159,6 @@ public class DatosCliente {
     }
 //Clase anónima Generos
 
-    /**
-     *
-     */
     public class Generos{
     private short idgenero;
 

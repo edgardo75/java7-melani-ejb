@@ -6,6 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -211,7 +212,7 @@ public class Presupuestos implements Serializable {
      * @return
      */
     public List<Detallespresupuesto> getDetallepresupuestosList() {
-        return detallepresupuestosList;
+        return Collections.unmodifiableList(detallepresupuestosList);
     }
 
     /**

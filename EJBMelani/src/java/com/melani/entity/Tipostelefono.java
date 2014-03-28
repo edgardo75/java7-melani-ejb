@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -89,7 +90,7 @@ public class Tipostelefono implements Serializable {
      */
     @XmlTransient
     public List<Telefonos> getTelefonosList() {
-        return telefonosList;
+        return Collections.unmodifiableList(telefonosList);
     }
 
     /**

@@ -377,9 +377,6 @@ public class DatosNotaPedido {
     //-----------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------
 
-    /**
-     *
-     */
        public class Personas{
        private long id;
        private int numerodocu;
@@ -416,11 +413,7 @@ public class DatosNotaPedido {
             this.numerodocu = numerodocu;
         }
    }
-   //------------------------------------------------------------------------------------------
 
-    /**
-     *
-     */
         public class TarjetaCredito{
         private int id_tarjeta;
 
@@ -432,11 +425,7 @@ public class DatosNotaPedido {
             return id_tarjeta;
         }
     }
-    //----------------------------------------------------------------------------------------
 
-    /**
-     *
-     */
         public class Porcentajes{
         private short id_porcentaje;
 

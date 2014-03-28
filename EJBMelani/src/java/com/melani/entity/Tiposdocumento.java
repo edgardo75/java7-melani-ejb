@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -81,7 +82,7 @@ public class Tiposdocumento implements Serializable {
      * @return
      */
     public List<Personas> getPersonasList() {
-        return personasList;
+        return Collections.unmodifiableList(personasList);
     }
 
     /**

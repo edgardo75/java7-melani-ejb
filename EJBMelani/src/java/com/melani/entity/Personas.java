@@ -4,7 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -201,7 +201,7 @@ public abstract class Personas implements Serializable {
      * @return
      */
     public List<PersonasDomicilios> getPersonasDomicilioss() {
-        return personasDomicilioss;
+        return Collections.unmodifiableList(personasDomicilioss);
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class Personas implements Serializable {
      * @return
      */
     public List<Personastelefonos> getPersonastelefonoss() {
-        return personastelefonoss;
+        return Collections.unmodifiableList(personastelefonoss);
     }
 
     /**
@@ -307,10 +307,9 @@ public abstract class Personas implements Serializable {
                         item+="</personadomicilio>\n";
         } else{
                         List<PersonasDomicilios>lista = this.getPersonasDomicilioss();
-                        for (Iterator<PersonasDomicilios> it = lista.iterator(); it.hasNext();) {
-                            PersonasDomicilios personasDomicilios = it.next();
-                            item+=personasDomicilios.toXML();
-                        }
+            for (PersonasDomicilios personasDomicilios : lista) {
+                item+=personasDomicilios.toXML();
+            }
                         item+="</personadomicilio>\n";
                     }
                 item+="<personatelefono>\n";
@@ -318,10 +317,9 @@ public abstract class Personas implements Serializable {
                         item+="</personatelefono>\n";
         } else{
                         List<Personastelefonos>lista=this.getPersonastelefonoss();
-                        for (Iterator<Personastelefonos> it = lista.iterator(); it.hasNext();) {
-                            Personastelefonos personastelefonos = it.next();
-                            item+=personastelefonos.toXML();                            
-                        }
+            for (Personastelefonos personastelefonos : lista) {
+                item+=personastelefonos.toXML();
+            }
                         item+="</personatelefono>\n";
                     }
                

@@ -195,10 +195,9 @@ public class EJBClientes implements EJBClientesRemote {
                 consulta.setParameter("nrodocu", nrodocu);
                         List<Personas>lista = consulta.getResultList();
                         if(lista.size()==1)      {
-                            for (Iterator<Personas> it = lista.iterator(); it.hasNext();) {
-                                Personas personas = it.next();
-                                retorno=personas.getIdPersona();
-                            }
+                for (Personas personas : lista) {
+                    retorno=personas.getIdPersona();
+                }
                         }
         } catch (Exception e) {
             retorno = -1;

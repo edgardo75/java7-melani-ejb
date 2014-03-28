@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -277,7 +278,7 @@ public class Domicilios implements Serializable {
      * @return
      */
     public List<PersonasDomicilios> getPersonasDomicilioss() {
-        return personasDomicilioss;
+        return Collections.unmodifiableList(personasDomicilioss);
     }
 
     /**

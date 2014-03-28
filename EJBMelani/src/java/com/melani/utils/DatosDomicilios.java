@@ -213,9 +213,6 @@ public class DatosDomicilios {
    }
     /////////////////////--------------------------------------------------
 
-    /**
-     *
-     */
         public class Barrioss{
         private int barrioId;
 
@@ -233,10 +230,8 @@ public class DatosDomicilios {
         }
     }
 
-    /**
-     *
-     */
     public class Calless{
+        private int calleId;
 
         /**
          *
@@ -247,10 +242,9 @@ public class DatosDomicilios {
          *
          * @param calleId
          */
-        public Calless(int calleId) {
+        public Calless(int calleId){
             this.calleId = calleId;
         }
-        private int calleId;
 
         /**
          *
@@ -269,9 +263,6 @@ public class DatosDomicilios {
         }
     }
 
-    /**
-     *
-     */
     public class Orientacions{
         private long idOrientacion;
 
@@ -304,11 +295,7 @@ public class DatosDomicilios {
             this.idOrientacion = idOrientacion;
         }
     }
-//----- --  --  --  -   --- -   --      -
 
-    /**
-     *
-     */
         public class Localidadess{
         private long idlocalidad;
         private short idProvincia;

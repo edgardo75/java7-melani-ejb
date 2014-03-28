@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -92,7 +92,7 @@ public class Clientes extends Personas implements Serializable {
      * @return
      */
     public List<Notadepedido> getNotadepedidoList() {
-        return notadepedidoList;
+        return Collections.unmodifiableList(notadepedidoList);
     }
 
     /**
@@ -118,10 +118,9 @@ public class Clientes extends Personas implements Serializable {
                     xml+="</notapedidolist>\n";
         } else{
                     List<Notadepedido>lista = this.getNotadepedidoList();
-                    for (Iterator<Notadepedido> it = lista.iterator(); it.hasNext();) {
-                        Notadepedido notadepedido = it.next();
-                        xml+=notadepedido.toXML();
-                    }
+            for (Notadepedido notadepedido : lista) {
+                xml+=notadepedido.toXML();
+            }
                     xml+="</notapedidolist>\n";
                 }
         return xml;

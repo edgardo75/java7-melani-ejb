@@ -6,6 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -483,7 +484,7 @@ public class Notadepedido implements Serializable {
      */
     @XmlTransient
     public List<Detallesnotadepedido> getDetallesnotadepedidoList() {
-        return detallesnotadepedidoList;
+        return Collections.unmodifiableList(detallesnotadepedidoList);
     }
 
     /**
@@ -532,7 +533,7 @@ public class Notadepedido implements Serializable {
      */
     @XmlTransient
     public List<Historiconotapedido> getHistoriconotapedidoList() {
-        return historiconotapedidoList;
+        return Collections.unmodifiableList(historiconotapedidoList);
     }
 
     /**

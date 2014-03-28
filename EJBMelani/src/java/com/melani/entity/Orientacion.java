@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,7 +71,7 @@ public class Orientacion implements Serializable {
      * @return
      */
     public List<Domicilios> getDomicilioss() {
-        return domicilioss;
+        return Collections.unmodifiableList(domicilioss);
     }
 
     /**

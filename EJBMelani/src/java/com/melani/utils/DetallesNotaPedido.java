@@ -5,6 +5,7 @@
 package com.melani.utils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import java.util.Collections;
 import java.util.List;
 /**
  *
@@ -22,7 +23,7 @@ import java.util.List;
      * @return
      */
     public List<Itemdetallesnota> getDetallesnota() {
-        return list;
+        return Collections.unmodifiableList(list);
     }
 
     /**

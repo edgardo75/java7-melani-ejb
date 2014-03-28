@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -108,7 +109,7 @@ public class Provincias implements Serializable {
      * @return
      */
     public List<Localidades> getLocalidadesList() {
-        return localidadesList;
+        return Collections.unmodifiableList(localidadesList);
     }
 
     /**

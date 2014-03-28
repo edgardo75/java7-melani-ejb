@@ -9,19 +9,16 @@ package com.melani.test;
 import com.melani.utils.ProjectHelpers;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author win7
  */
 public class TelefonoJUnitTest {
-    
-    public TelefonoJUnitTest() {
-    }
     
     @BeforeClass
     public static void setUpClass() {
@@ -30,6 +27,9 @@ public class TelefonoJUnitTest {
     @AfterClass
     public static void tearDownClass() {
     }
+    
+        public TelefonoJUnitTest() {
+        }
     
     @Before
     public void setUp() {

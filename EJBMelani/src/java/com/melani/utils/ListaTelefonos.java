@@ -4,6 +4,7 @@
  */
 package com.melani.utils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.Collections;
 import java.util.List;
 /**
  *
@@ -24,6 +25,6 @@ public class ListaTelefonos {
      * @return
      */
     public List<DatosTelefonos> getList() {
-        return list;
+        return Collections.unmodifiableList(list);
     }
 }

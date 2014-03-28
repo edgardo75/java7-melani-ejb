@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
@@ -119,7 +120,7 @@ import javax.persistence.Table;
      * @return
      */
     public List<Personastelefonos> getPersonastelefonosCollection() {
-        return personastelefonosCollection;
+        return Collections.unmodifiableList(personastelefonosCollection);
     }
 
     /**

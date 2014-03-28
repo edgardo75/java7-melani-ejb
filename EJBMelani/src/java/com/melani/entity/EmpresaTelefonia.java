@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -88,7 +89,7 @@ public class EmpresaTelefonia implements Serializable {
      * @return
      */
     public List<Telefonos> getTelefonosList() {
-        return telefonosList;
+        return Collections.unmodifiableList(telefonosList);
     }
 
     /**
