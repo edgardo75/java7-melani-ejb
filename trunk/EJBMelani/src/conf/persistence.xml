@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="EJBMelaniPU2" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/_melani</jta-data-source>
+    <class>com.melani.entity.Barrios</class>
+    <class>com.melani.entity.Calles</class>
+    <class>com.melani.entity.Clientes</class>
+    <class>com.melani.entity.Detallesnotadepedido</class>
+    <class>com.melani.entity.Detallespresupuesto</class>
+    <class>com.melani.entity.Domicilios</class>
+    <class>com.melani.entity.EmpleadoParttime</class>
+    <class>com.melani.entity.Empleados</class>
+    <class>com.melani.entity.EmpresaTelefonia</class>
+    <class>com.melani.entity.EntradasySalidasCaja</class>
+    <class>com.melani.entity.ExistenciasProductos</class>
+    <class>com.melani.entity.FullTimeEmpleado</class>
+    <class>com.melani.entity.Generos</class>
+    <class>com.melani.entity.HistPersonasDomicilios</class>
+    <class>com.melani.entity.HistPersonasTelefonos</class>
+    <class>com.melani.entity.HistoricoDatosClientes</class>
+    <class>com.melani.entity.Historiconotapedido</class>
+    <class>com.melani.entity.ImagenesProductos</class>
+    <class>com.melani.entity.Localidades</class>
+    <class>com.melani.entity.Notadepedido</class>
+    <class>com.melani.entity.Orientacion</class>
+    <class>com.melani.entity.Personas</class>
+    <class>com.melani.entity.PersonasDomicilios</class>
+    <class>com.melani.entity.Personastelefonos</class>
+    <class>com.melani.entity.Porcentajes</class>
+    <class>com.melani.entity.Presupuestos</class>
+    <class>com.melani.entity.Productos</class>
+    <class>com.melani.entity.Provincias</class>
+    <class>com.melani.entity.TarjetasCreditoDebito</class>
+    <class>com.melani.entity.Telefonos</class>
+    <class>com.melani.entity.Tiposdocumento</class>
+    <class>com.melani.entity.Tipostelefono</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.FirebirdPlatform"/>
+      <!-- <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>-->
+    </properties>
+  </persistence-unit>
+</persistence>

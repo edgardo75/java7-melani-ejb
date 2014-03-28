@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ <definitions 
+ xmlns="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ServicesCalles" targetNamespace="http://ejb.melani.com/" xmlns:tns="http://ejb.melani.com/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp1="http://www.w3.org/ns/ws-policy" xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service" xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service" xmlns:wsaw="http://www.w3.org/2005/08/addressing" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy"
+ >
+    <message name="addCalles"/>
+    <message name="addCallesResponse"/>
+    <message name="searchAllCalles"/>
+    <message name="searchAllCallesResponse"/>
+    <message name="recorCountCalles"/>
+    <message name="recorCountCallesResponse"/>
+    <message name="calles_paging"/>
+    <message name="calles_pagingResponse"/>
+    <message name="persist"/>
+    <message name="persistResponse"/>
+    <message name="paginadocalles"/>
+    <message name="paginadocallesResponse"/>
+    <message name="paginadoFirebird"/>
+    <message name="paginadoFirebirdResponse"/>
+    <portType name="CallesWs">
+        <operation name="addCalles">
+            <input message="tns:addCalles"/>
+            <output message="tns:addCallesResponse"/>
+        </operation>
+        <operation name="searchAllCalles">
+            <input message="tns:searchAllCalles"/>
+            <output message="tns:searchAllCallesResponse"/>
+        </operation>
+        <operation name="recorCountCalles">
+            <input message="tns:recorCountCalles"/>
+            <output message="tns:recorCountCallesResponse"/>
+        </operation>
+        <operation name="calles_paging">
+            <input message="tns:calles_paging"/>
+            <output message="tns:calles_pagingResponse"/>
+        </operation>
+        <operation name="persist">
+            <input message="tns:persist"/>
+            <output message="tns:persistResponse"/>
+        </operation>
+        <operation name="paginadocalles">
+            <input message="tns:paginadocalles"/>
+            <output message="tns:paginadocallesResponse"/>
+        </operation>
+        <operation name="paginadoFirebird">
+            <input message="tns:paginadoFirebird"/>
+            <output message="tns:paginadoFirebirdResponse"/>
+        </operation>
+    </portType>
+    <binding name="CallesWsPortBinding" type="tns:CallesWs">
+        <operation name="addCalles">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="searchAllCalles">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="recorCountCalles">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="calles_paging">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="persist">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="paginadocalles">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="paginadoFirebird">
+            <input></input>
+            <output></output>
+        </operation>
+    </binding>
+    <service name="ServicesCalles">
+        <port name="CallesWsPort" binding="tns:CallesWsPortBinding"/>
+    </service>
+</definitions>
+
+
+
