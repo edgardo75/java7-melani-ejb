@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ <definitions 
+ xmlns="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ServiceBarrios" targetNamespace="http://ejb.melani.com/" xmlns:tns="http://ejb.melani.com/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp1="http://www.w3.org/ns/ws-policy" xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service" xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service" xmlns:wsaw="http://www.w3.org/2005/08/addressing" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:sp1="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+ >
+    <message name="addBarrio"/>
+    <message name="addBarrioResponse"/>
+    <message name="searchallbarrios"/>
+    <message name="searchallbarriosResponse"/>
+    <message name="recordCountBarrios"/>
+    <message name="recordCountBarriosResponse"/>
+    <message name="obtenrItemsPaginados"/>
+    <message name="obtenrItemsPaginadosResponse"/>
+    <message name="barrios_paging"/>
+    <message name="barrios_pagingResponse"/>
+    <message name="searchAllBarrios"/>
+    <message name="searchAllBarriosResponse"/>
+    <message name="barrios_Paging"/>
+    <message name="barrios_PagingResponse"/>
+    <message name="selectAllBarrios"/>
+    <message name="selectAllBarriosResponse"/>
+    <portType name="BarriosWs">
+        <operation name="addBarrio">
+            <input message="tns:addBarrio"/>
+            <output message="tns:addBarrioResponse"/>
+        </operation>
+        <operation name="searchallbarrios">
+            <input message="tns:searchallbarrios"/>
+            <output message="tns:searchallbarriosResponse"/>
+        </operation>
+        <operation name="recordCountBarrios">
+            <input message="tns:recordCountBarrios"/>
+            <output message="tns:recordCountBarriosResponse"/>
+        </operation>
+        <operation name="obtenrItemsPaginados">
+            <input message="tns:obtenrItemsPaginados"/>
+            <output message="tns:obtenrItemsPaginadosResponse"/>
+        </operation>
+        <operation name="barrios_paging">
+            <input message="tns:barrios_paging"/>
+            <output message="tns:barrios_pagingResponse"/>
+        </operation>
+        <operation name="searchAllBarrios">
+            <input message="tns:searchAllBarrios"/>
+            <output message="tns:searchAllBarriosResponse"/>
+        </operation>
+        <operation name="barrios_Paging">
+            <input message="tns:barrios_Paging"/>
+            <output message="tns:barrios_PagingResponse"/>
+        </operation>
+        <operation name="selectAllBarrios">
+            <input message="tns:selectAllBarrios"/>
+            <output message="tns:selectAllBarriosResponse"/>
+        </operation>
+    </portType>
+    <binding name="BarriosWsPortBinding" type="tns:BarriosWs">
+        <operation name="addBarrio">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="searchallbarrios">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="recordCountBarrios">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="obtenrItemsPaginados">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="barrios_paging">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="searchAllBarrios">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="barrios_Paging">
+            <input></input>
+            <output></output>
+        </operation>
+        <operation name="selectAllBarrios">
+            <input></input>
+            <output></output>
+        </operation>
+    </binding>
+    <service name="ServiceBarrios">
+        <port name="BarriosWsPort" binding="tns:BarriosWsPortBinding"/>
+    </service>
+</definitions>
+
+
+

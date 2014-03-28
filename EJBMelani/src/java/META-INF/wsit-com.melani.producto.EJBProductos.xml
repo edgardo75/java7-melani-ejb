@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ <definitions 
+ xmlns="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ServiceProductos" targetNamespace="http://ejb.melani.com/" xmlns:tns="http://ejb.melani.com/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" 
+ >
+    <message name="addExistenciasProducto"/>
+    <message name="addExistenciasProductoResponse"/>
+    <message name="leerImagenBaseDatos"/>
+    <message name="leerImagenBaseDatosResponse"/>
+    <message name="addProducto"/>
+    <message name="addProductoResponse"/>
+    <message name="selectoneproducto"/>
+    <message name="selectoneproductoResponse"/>
+    <message name="agregarProductos"/>
+    <message name="agregarProductosResponse"/>
+    <message name="searchAllProductos"/>
+    <message name="searchAllProductosResponse"/>
+    <message name="controlStockProducto"/>
+    <message name="controlStockProductoResponse"/>
+    <message name="actualizarProducto"/>
+    <message name="actualizarProductoResponse"/>
+    <message name="grabarImagen"/>
+    <message name="grabarImagenResponse"/>
+    <message name="obtenerImagenProducto"/>
+    <message name="obtenerImagenProductoResponse"/>
+    <portType name="ProductosWs">
+        <operation name="addExistenciasProducto">
+            <input message="tns:addExistenciasProducto"/>
+            <output message="tns:addExistenciasProductoResponse"/>
+        </operation>
+        <operation name="leerImagenBaseDatos">
+            <input message="tns:leerImagenBaseDatos"/>
+            <output message="tns:leerImagenBaseDatosResponse"/>
+        </operation>
+        <operation name="addProducto">
+            <input message="tns:addProducto"/>
+            <output message="tns:addProductoResponse"/>
+        </operation>
+        <operation name="selectoneproducto">
+            <input message="tns:selectoneproducto"/>
+            <output message="tns:selectoneproductoResponse"/>
+        </operation>
+        <operation name="agregarProductos">
+            <input message="tns:agregarProductos"/>
+            <output message="tns:agregarProductosResponse"/>
+        </operation>
+        <operation name="searchAllProductos">
+            <input message="tns:searchAllProductos"/>
+            <output message="tns:searchAllProductosResponse"/>
+        </operation>
+        <operation name="controlStockProducto">
+            <input message="tns:controlStockProducto"/>
+            <output message="tns:controlStockProductoResponse"/>
+        </operation>
+        <operation name="actualizarProducto">
+            <input message="tns:actualizarProducto"/>
+            <output message="tns:actualizarProductoResponse"/>
+        </operation>
+        <operation name="grabarImagen">
+            <input message="tns:grabarImagen"/>
+            <output message="tns:grabarImagenResponse"/>
+        </operation>
+        <operation name="obtenerImagenProducto">
+            <input message="tns:obtenerImagenProducto"/>
+            <output message="tns:obtenerImagenProductoResponse"/>
+        </operation>
+    </portType>
+    <binding name="ProductosWsPortBinding" type="tns:ProductosWs">
+        <wsp:PolicyReference URI="#ProductosWsPortBindingPolicy"/>
+        <operation name="addExistenciasProducto">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="leerImagenBaseDatos">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="addProducto">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="selectoneproducto">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="agregarProductos">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="searchAllProductos">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="controlStockProducto">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="actualizarProducto">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="grabarImagen">
+            <input/>
+            <output/>
+        </operation>
+        <operation name="obtenerImagenProducto">
+            <input/>
+            <output/>
+        </operation>
+    </binding>
+    <service name="ServiceProductos">
+        <port name="ProductosWsPort" binding="tns:ProductosWsPortBinding"/>
+    </service>
+    <wsp:Policy wsu:Id="ProductosWsPortBindingPolicy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <wsoma:OptimizedMimeSerialization/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="ProductosWsPortBinding_addProductoConImage_Input_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:EncryptedParts>
+                    <sp:Body/>
+                </sp:EncryptedParts>
+                <sp:SignedParts>
+                    <sp:Body/>
+                </sp:SignedParts>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="ProductosWsPortBinding_addProductoConImage_Output_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:EncryptedParts>
+                    <sp:Body/>
+                </sp:EncryptedParts>
+                <sp:SignedParts>
+                    <sp:Body/>
+                </sp:SignedParts>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+</definitions>

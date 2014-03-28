@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
+  <services>
+    <service name="EmpleadosWs">
+      <implementation-class>com.melani.ejb.EJBEmpleados</implementation-class>
+    </service>
+    <service name="TartjetasWs">
+      <implementation-class>com.melani.ejb.EJBTarjetasBean</implementation-class>
+    </service>
+    <service name="ProvinciasWs">
+      <implementation-class>com.melani.ejb.EJBProvinciasBean</implementation-class>
+    </service>
+    <service name="HistPersoDominWs">
+      <implementation-class>com.melani.ejb.EJBHistoricoPersonaDomicilioBean</implementation-class>
+    </service>
+    <service name="LocalidadesWs">
+      <implementation-class>com.melani.ejb.EJBLocalidades</implementation-class>
+    </service>
+    <service name="ProductosWs">
+      <implementation-class>com.melani.ejb.EJBProductos</implementation-class>
+    </service>
+    <service name="BarriosWs">
+      <implementation-class>com.melani.ejb.EJBBarrios</implementation-class>
+    </service>
+    <service name="CallesWs">
+      <implementation-class>com.melani.ejb.EJBCalles</implementation-class>
+    </service>
+    <service name="DomiciliosWs">
+      <implementation-class>com.melani.ejb.EJBDomicilios</implementation-class>
+    </service>
+    <service name="NotaPedidoWs">
+      <implementation-class>com.melani.ejb.EJBNotaPedido</implementation-class>
+    </service>
+    <service name="ClientesWs">
+      <implementation-class>com.melani.ejb.EJBClientes</implementation-class>
+    </service>
+    <service name="PresupuestoWs">
+      <implementation-class>com.melani.ejb.EJBPresupuestosBean</implementation-class>
+    </service>
+    <service name="PorcentajesWs">
+      <implementation-class>com.melani.ejb.EJBPorcentajesBean</implementation-class>
+    </service>
+    <service name="EJBTimmer">
+      <implementation-class>com.melani.ejb.EJBTimmer</implementation-class>
+    </service>
+  </services>
+  <clients/>
+</jax-ws>
