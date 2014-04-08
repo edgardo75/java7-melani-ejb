@@ -42,10 +42,10 @@ public class EJBBarrios implements EJBBarriosRemote {
             if(!descripcion.isEmpty()&&ProjectHelpers.DescripcionValidator.validate(descripcion)){
             //------------------------------------------------------------------------------------------------
                     descripcion = descripcion.toLowerCase();//paso a minuscula la descripcion ingresada
-                    Query consulta =  em.createNamedQuery("Barrios.findByDescripcionByLike");
+                    Query consulta =  em.createNamedQuery("Barrios.findByDescripcionByLike",Barrios.class);
                     consulta.setParameter("1",descripcion.concat("%"));
                     List<Barrios> lista = consulta.getResultList();
-                    System.out.println(lista.size());
+                    
                     //------------------------------------------------------------------------------------------------
                     //inserto en la base de datos el nombre de barrio
                           if (lista.isEmpty()) {
@@ -87,7 +87,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             Query consulta = em.createNamedQuery("Barrios.findAll");
             List<Barrios>lista = consulta.getResultList();
                 if(lista.isEmpty()) {
-                    xml="LA CONSULTA NO ARROJÓ RESULTADOS";
+                    xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
             } else{
                     for (Barrios barrios : lista) {
                         xml+=barrios.toXML();

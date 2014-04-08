@@ -33,7 +33,7 @@ private EntityManager em;
             Query consulta = em.createNamedQuery("Provincias.findAll");
             List<Provincias> lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xml="NO HAY PROVINCIAS CARGADAS";
+                xml+="NO HAY PROVINCIAS CARGADAS";
             } else{
                 for (Provincias provincias : lista) {
                     xml+=provincias.toXML();

@@ -149,7 +149,7 @@ public class Provincias implements Serializable {
     public String toXML(){
     String xml = "<provincia>\n" +
             "<id>"+this.getIdProvincia()+"</id>\n" +
-            "<descripcion>"+StringEscapeUtils.escapeXml(this.getProvincia())+"</descripcion>\n" +
+            "<descripcion>"+StringEscapeUtils.escapeXml10(this.getProvincia())+"</descripcion>\n" +
             "<codigo>"+this.getCodigo()+"</codigo>\n" +
             "</provincia>\n";
     return xml;

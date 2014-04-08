@@ -21,11 +21,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "IMAGENESPRODUCTOS")
 public class ImagenesProductos implements Serializable{
+    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @GeneratedValue(generator="ImagenProductoIdGen",strategy=GenerationType.IDENTITY)
-    @Column(name = "ID_IMAGE")   
-    private Long id_image;
+    @Column(name = "ID")
+    @GeneratedValue(generator="ImagenProductoIdGen",strategy=GenerationType.IDENTITY)          
+    private Long id;
     @ManyToOne(optional = false)
     private Productos productos;
     @Column(name = "PATHIMAGEN")
@@ -45,14 +46,14 @@ public class ImagenesProductos implements Serializable{
 
     /**
      *
-     * @param id_image
+     * @param id
      * @param productos
      * @param pathImagenEnDisco
      * @param extension
      * @param magnitud
      */
-    public ImagenesProductos(Long id_image, Productos productos, String pathImagenEnDisco, String extension, String magnitud) {
-        this.id_image = id_image;
+    public ImagenesProductos(Long id, Productos productos, String pathImagenEnDisco, String extension, String magnitud) {
+        this.id = id;
         this.productos = productos;
         this.pathImagenEnDisco = pathImagenEnDisco;
         this.extension = extension;
@@ -64,15 +65,15 @@ public class ImagenesProductos implements Serializable{
      * @return
      */
     public Long getId_image() {
-        return id_image;
+        return id;
     }
 
     /**
      *
-     * @param id_image
+     * @param id
      */
-    public void setId_image(Long id_image) {
-        this.id_image = id_image;
+    public void setId_image(Long id) {
+        this.id = id;
     }
 
     /**
@@ -158,7 +159,7 @@ public class ImagenesProductos implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 71 * hash + (this.id_image != null ? this.id_image.hashCode() : 0);
+        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
         hash = 71 * hash + (this.productos != null ? this.productos.hashCode() : 0);
         hash = 71 * hash + (this.pathImagenEnDisco != null ? this.pathImagenEnDisco.hashCode() : 0);
         hash = 71 * hash + (this.nombreImagen != null ? this.nombreImagen.hashCode() : 0);
@@ -176,7 +177,7 @@ public class ImagenesProductos implements Serializable{
             return false;
         }
         final ImagenesProductos other = (ImagenesProductos) obj;
-        if (this.id_image != other.id_image && (this.id_image == null || !this.id_image.equals(other.id_image))) {
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         if (this.productos != other.productos && (this.productos == null || !this.productos.equals(other.productos))) {
@@ -191,16 +192,13 @@ public class ImagenesProductos implements Serializable{
         if ((this.extension == null) ? (other.extension != null) : !this.extension.equals(other.extension)) {
             return false;
         }
-        if ((this.magnitud == null) ? (other.magnitud != null) : !this.magnitud.equals(other.magnitud)) {
-            return false;
-        }
-        return true;
+        return !((this.magnitud == null) ? (other.magnitud != null) : !this.magnitud.equals(other.magnitud));
     }
 
     
     @Override
     public String toString() {
-        return "ImagenesProductos{" + "id_image=" + id_image + ", productos=" + productos + ", pathImagenEnDisco=" + pathImagenEnDisco + ", nombreImagen=" + nombreImagen + ", extension=" + extension + ", magnitud=" + magnitud + '}';
+        return "ImagenesProductos{" + "id=" + id + ", productos=" + productos + ", pathImagenEnDisco=" + pathImagenEnDisco + ", nombreImagen=" + nombreImagen + ", extension=" + extension + ", magnitud=" + magnitud + '}';
     }
     
     

@@ -135,7 +135,8 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
         long retorno =0;  
         String entrecalle="";
         String manzana,piso="";
-        int numeroDomicilio,numdepto,barrioN,calleN = 0;
+        int numeroDomicilio,numdepto =0;
+        long barrioN,calleN = 0;
         String area,torre,sector,monoblock="";
         long orientacion,localidadN=0L;
         try {
@@ -153,9 +154,26 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             orientacion=domiciXML.getOrientacion().getOrientacion();
             localidadN=domiciXML.getLocalidad().getIdLocalidad();
             
-            String sql = "SELECT d.ID_DOMICILIO FROM DOMICILIOS d WHERE d.entrecalleycalle like '"+entrecalle+"' and d.manzana like '"+manzana+"' and d.numero = "+numeroDomicilio+" and d.area like '"+area+"' and d.torre like '"+torre+"' and d.piso like '"+piso+"' and d.sector like '"+sector+"' and d.monoblock like '"+monoblock+"' and d.numdepto = "+numdepto+" and d.ID_BARRIO = "+barrioN+" and d.ID_CALLE = "+calleN+" and d.ID_ORIENTACION = "+orientacion+" and d.ID_LOCALIDAD = "+localidadN;
-            Query consulta = em.createNativeQuery(sql, Domicilios.class);
+//            String sql = "SELECT d.ID_DOMICILIO FROM DOMICILIOS d WHERE d.entrecalleycalle like '"+entrecalle+"' and d.manzana like '"
+//                    + ""+manzana+"' and d.numero = "+numeroDomicilio+" and d.area like '"+area+"' and d.torre like '"+torre+"' and d.piso like '"+piso+"' and d.sector like '"
+//                    +sector+"' and d.monoblock like '"+monoblock+"' and d.numdepto = "+numdepto+" and d.ID_BARRIO = "+barrioN+" and d.ID_CALLE = "
+//                    +calleN+" and d.ID_ORIENTACION = "+orientacion+" and d.ID_LOCALIDAD = "+localidadN;
             
+            
+            Query consulta = em.createQuery("SELECT d FROM Domicilios d WHERE d.entrecalleycalle like ?1 and d.manzana like ?2 and d.numero = ?3 and d.area like ?4 and d.torre like ?5 and d.piso like ?6 and d.sector like ?7 and d.monoblock like ?8 and d.numdepto = ?9 and d.idbarrio.id = ?10 and d.idcalle.id = ?11 and d.idorientacion.id = ?12 and d.localidades.idLocalidad = ?13",Domicilios.class);
+                    consulta.setParameter("1", entrecalle);
+                    consulta.setParameter("2", manzana);
+                    consulta.setParameter("3", numeroDomicilio);
+                    consulta.setParameter("4", area);
+                    consulta.setParameter("5", torre);
+                    consulta.setParameter("6", piso);
+                    consulta.setParameter("7", sector);
+                    consulta.setParameter("8", monoblock);
+                    consulta.setParameter("9", numdepto);
+                    consulta.setParameter("10", barrioN);
+                    consulta.setParameter("11", calleN);
+                    consulta.setParameter("12", orientacion);
+                    consulta.setParameter("13", localidadN);            
             if(consulta.getResultList().isEmpty()) {
                 retorno =0;
             } else{

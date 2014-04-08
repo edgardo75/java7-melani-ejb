@@ -31,6 +31,7 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 /**
@@ -86,6 +87,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             //---------------------------------------------------------------------------------
             GregorianCalendar gc = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
             //---------------------------------------------------------------------------------
                             Clientes cliente = em.find(Clientes.class, notadepedido.getPersonas().getId());
                             Notadepedido notape = new Notadepedido();
@@ -95,8 +97,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             notape.setPendiente(Character.valueOf(notadepedido.getPendiente()));
                                             notape.setEntregado(Character.valueOf(notadepedido.getEntregado()));
                                             notape.setFkIdcliente(em.find(Personas.class, notadepedido.getPersonas().getId()));
-                                            notape.setFkidporcentajenotaId(em.find(Porcentajes.class, notadepedido.getPorcentajes().getId_porcentaje()));
-                                            notape.setHoracompra(gc.getTime());
+                                            notape.setFkidporcentajenotaId(em.find(Porcentajes.class, notadepedido.getPorcentajes().getId_porcentaje()));                
                                             notape.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, notadepedido.getTarjetacredito().getId_tarjeta()));
                                             notape.setIdUsuarioExpidioNota(notadepedido.getUsuario_expidio_nota());
                                             notape.setIdusuarioAnulado(notadepedido.getId_usuario_anulado());
@@ -108,8 +109,9 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             notape.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
                                             notape.setStockfuturo(notadepedido.getStockfuturo());
                                             notape.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));
-                                            notape.setFechadecompra(gc.getTime());
-                                            notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));
+                                            notape.setHoracompra(gc.getTime());
+                                            notape.setFechadecompra(gc.getTime());                                            
+                                            notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));                                 
                                             notape.setCancelado(Character.valueOf(notadepedido.getCancelado()));
                                             notape.setDescuentonota(BigDecimal.valueOf(notadepedido.getDescuentonota()));
                                             notape.setDescuentoPesos(BigDecimal.valueOf(notadepedido.getDescuentopesos()));
@@ -123,10 +125,10 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             notape.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));
                                             if(notadepedido.getCancelado()=='1') {
                                                 notape.setFecancelado(gc.getTime());
-            }
+                                            }
                                             if(notadepedido.getAnulado()=='1') {
                                                 notape.setFechaAnulado(gc.getTime());
-            }
+                                            }
                                             em.persist(notape);
                             /*
                              * trato la lista de productos de la nota de pedido, a continuaciÃ³n*/
@@ -153,15 +155,15 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                          int totalPuntos = cliente.getTotalEnPuntos().intValue()+totalCompras.intValue();
                                            cliente.setTotalCompras(BigDecimal.valueOf(totalCompras));
                                            cliente.setTotalEnPuntos(BigInteger.valueOf(totalPuntos));
-                                           cliente.setFechaCarga(sdf.parse(gc.getTime().toString()));
+                                           cliente.setFechaCarga(gc.getTime());                                           
                                          em.persist(cliente);
                                          em.flush();
                                  if(historico<0) {
                                      retorno = historico;
-            } else{
-                                             retorno = notape.getId();
+                                 } else{
+                                      retorno = notape.getId();
                                              
-                                 }
+            }
         } catch (ParseException e) {
             logger.error("Error en metodo almacenarNotaPedido, EJBNotaPedido "+e.getLocalizedMessage());
             retorno =-2;
@@ -265,56 +267,43 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     }
     private long almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape) {
         long resultado =0L;
-        //----------------------------------------------------------------------------------------
-        try{
-            //------------------------------------------------------------------------
-            GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-            //------------------------------------------------------------------------
+                    GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
                     Historiconotapedido historico = new Historiconotapedido();
-                        historico.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
-                        historico.setEntregado(Character.valueOf(notadepedido.getEntregado()));
-                        historico.setFecharegistro(gc.getTime());
-                        historico.setFkidnotapedido(em.find(Notadepedido.class, notape.getId()));
-                        historico.setObservaciones(notadepedido.getObservaciones());
-                        historico.setPendiente(Character.valueOf(notadepedido.getPendiente()));
-                        historico.setPorcentajeaplicado(notadepedido.getPorcentajes().getId_porcentaje());
-                        historico.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
-                        historico.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));
-                        historico.setIdusuarioanulo(notadepedido.getId_usuario_anulado());
-                        historico.setIdusuariocancelo(notadepedido.getUsuario_cancelo_nota());
-                        historico.setIdusuarioentrega(notadepedido.getUsuario_entregado());
-                        historico.setPorcentajedesc(BigDecimal.valueOf(notadepedido.getPorc_descuento_total()));
-                        historico.setIdusuarioexpidio(notadepedido.getUsuario_expidio_nota());
-                        historico.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));
-                        historico.setTotalapagar(BigDecimal.valueOf(notadepedido.getMontototalapagar()));
-                        historico.setDescuento(BigDecimal.valueOf(notadepedido.getDescuentonota()));
-                        historico.setRecargo(BigDecimal.valueOf(notadepedido.getRecargo()));
-                        historico.setHoraregistro(sdf.parse(sdf.format(gc.getTime())));
-                        historico.setCancelado(notadepedido.getCancelado());
-                        historico.setAnulado(notadepedido.getAnulado());
-                        historico.setAccion("Historico Almacenado con exito nota de pedido N "+notape.getId());
-                        em.persist(historico);
-             //-----------------------------------------------------------------------
-                      try {
-                            Query consulta = em.createQuery("SELECT h FROM Historiconotapedido h WHERE h.fkidnotapedido.id = :idnota");
-                              consulta.setParameter("idnota", notape.getId());
-                           notape.setHistoriconotapedidoList(consulta.getResultList());
-                      } catch (Exception e) {
-                          logger.error("Error en la consulta historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
-                          resultado = -2;
-                      }
-                        em.persist(notape);
-                        em.flush();
-               resultado = historico.getIdhistorico();
-        }catch(ParseException e){
-            logger.error("Error en metodo almacenarHistorico "+ e.getLocalizedMessage());
-            resultado =-4;
-        }finally{
-            
-            return resultado;
-        }
-        //----------------------------------------------------------------------------------------
+                    historico.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
+                    historico.setEntregado(Character.valueOf(notadepedido.getEntregado()));
+                    historico.setFecharegistro(gc.getTime());
+                    historico.setFkidnotapedido(em.find(Notadepedido.class, notape.getId()));
+                    historico.setObservaciones(notadepedido.getObservaciones());
+                    historico.setPendiente(Character.valueOf(notadepedido.getPendiente()));
+                    historico.setPorcentajeaplicado(notadepedido.getPorcentajes().getId_porcentaje());
+                    historico.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
+                    historico.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));
+                    historico.setIdusuarioanulo(notadepedido.getId_usuario_anulado());
+                    historico.setIdusuariocancelo(notadepedido.getUsuario_cancelo_nota());
+                    historico.setIdusuarioentrega(notadepedido.getUsuario_entregado());
+                    historico.setPorcentajedesc(BigDecimal.valueOf(notadepedido.getPorc_descuento_total()));
+                    historico.setIdusuarioexpidio(notadepedido.getUsuario_expidio_nota());
+                    historico.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));
+                    historico.setTotalapagar(BigDecimal.valueOf(notadepedido.getMontototalapagar()));
+                    historico.setDescuento(BigDecimal.valueOf(notadepedido.getDescuentonota()));
+                    historico.setRecargo(BigDecimal.valueOf(notadepedido.getRecargo()));
+                    historico.setHoraregistro(gc.getTime());
+                    historico.setCancelado(notadepedido.getCancelado());
+                    historico.setAnulado(notadepedido.getAnulado());
+                    historico.setAccion("Historico Almacenado con exito nota de pedido N "+notape.getId());
+                    em.persist(historico);
+                    try {
+                        Query consulta = em.createQuery("SELECT h FROM Historiconotapedido h WHERE h.fkidnotapedido.id = :idnota");
+                        consulta.setParameter("idnota", notape.getId());
+                        notape.setHistoriconotapedidoList(consulta.getResultList());
+                    } catch (Exception e) {
+                        logger.error("Error en la consulta historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
+                        resultado = -2;
+                    }
+                    em.persist(notape);
+                    em.flush();
+                    resultado = historico.getIdhistorico();
+        return resultado;
     }
 
     /**
@@ -330,10 +319,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             //Si encuentro la nota de pedido devuelve el resultado si no mensaje de nota no encontrada
             Notadepedido nota = em.find(Notadepedido.class, idnta);
             if(nota != null) {               
-                xml+=devolverNotaProcesadaSB(nota).toString();
+                xml+=devolverNotaProcesadaSB(nota);
             } else {
                 xml+="<nota>nota no encontrada</nota>";
             }
+            //xml+=nota.toXML();
         } catch (Exception e) {
             logger.error("Error en metodo selectUnaNota "+e.getLocalizedMessage());
             xml += "Error no paso nada";
@@ -578,7 +568,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     StringBuilder sb=null;
     try {
         sb=new StringBuilder(xmlNota);
-            xml=StringEscapeUtils.escapeXml(xmlNota.substring(xmlNota.indexOf("es>")+3,xmlNota.indexOf("</ob")));
+            xml=StringEscapeUtils.escapeXml10(xmlNota.substring(xmlNota.indexOf("es>")+3,xmlNota.indexOf("</ob")));
             sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
     } catch (Exception e) {
         xml = "Error";
@@ -603,20 +593,21 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             
             String resultProcFechas=chequeoFechas(fecha1,fecha2);
-            if(resultProcFechas.equals("TODO OK")){
-                    Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n where CAST(n.FECHADECOMPRA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.id desc", Notadepedido.class);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            if(resultProcFechas.equals("TODO OK")){    
+                Query jpasql=em.createQuery("SELECT n FROM Notadepedido n WHERE  n.fechadecompra BETWEEN ?1 and ?2 AND n.entregado = ?3 AND n.pendiente = ?4 ORDER BY n.id desc",Notadepedido.class);                
+                jpasql.setParameter("1", sdf.parse(fecha1),TemporalType.TIMESTAMP);
+                jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
+                jpasql.setParameter("3", '0');
+                jpasql.setParameter("4", '1');
+                   // Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n where CAST(n.FECHADECOMPRA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.id desc", Notadepedido.class);
                                                     lista= jpasql.getResultList();
                                                     if(lista.size()>0){
-                                                    for (Notadepedido notadepedido1 : lista) {
-                                                        xml+=notadepedido1.toXML();
-                                                    }
-                                                                fecha1=fecha1.substring(3, 5)+"/"+fecha1.substring(0, 2)+"/"+fecha1.substring(6, 10);
-                                                                fecha2=fecha2.substring(3, 5)+"/"+fecha2.substring(0, 2)+"/"+fecha2.substring(6, 10);
-                                                                StringBuilder sb =new StringBuilder(xml);
-                                                                String periodoconsultado = "<fechainicio>"+fecha1+"</fechainicio>\n" +
-                                                                        "<fechafinal>"+fecha2+"</fechafinal>\n";
-                                                                 sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoconsultado);
-                                                                 xml=sb.toString();
+                                                            for (Notadepedido notadepedido1 : lista) {
+                                                                xml+=notadepedido1.toXML();
+                                                            }
+                                                               
+                                                          xml=agregarDatosAlxml(xml,fecha1,fecha2);
                                                     }else {
                                                         xml+="<result>lista vacia</result>\n";
                     }
@@ -626,7 +617,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             
             
             
-        } catch(Exception e){
+        } catch(ParseException e){
             xml+="<error>Error</error>\n";
             logger.error("Error en metodo selectnotaEntreFechas",e.fillInStackTrace());
         }finally{
@@ -643,7 +634,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     public int getRecorCountNotas() {
         int retorno =0;
         try {
-            Query notas = em.createNativeQuery("SELECT n.id FROM Notadepedido n");
+            Query notas = em.createNamedQuery("Notadepedido.findAll");
             retorno =notas.getResultList().size();
         } catch (Exception e) {
             retorno =-1;
@@ -673,15 +664,14 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 lista="LA CONSULTA NO ARROJÓ RESULTADOS";
             } else{
                 for (Notadepedido notape : result) {
-                    lista+=devolverNotaProcesadaSB(notape).toString();
+                    lista+=devolverNotaProcesadaSB(notape);
                 }
             }
            
         } catch (Exception e) {
             lista +="ERROR EN METODO selectAllNotas";
-            logger.error("Error en metodo selecAllNotas");
-        }finally{
-                                
+            logger.error("Error en metodo selecAllNotas "+e.getMessage());
+        }finally{                                
                 return lista+="</Lista>";
         }
     }
@@ -697,11 +687,16 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 StringBuilder sb=null;
         try {
                 
-                sb=new StringBuilder(nota.toXML());
+                try {
+                    sb=new StringBuilder(nota.toXML());
+                } catch (Exception e) {
+                    logger.error("error al convertir stringbuilder "+e.getLocalizedMessage());
+                }
+                
                
             if(nota.getIdUsuarioExpidioNota()>0){
-               
-                 idusuarioexpidio = nota.getIdUsuarioExpidioNota();
+                
+                 idusuarioexpidio = (long) nota.getIdUsuarioExpidioNota();
                 
                 Empleados persona = em.find(Empleados.class, idusuarioexpidio);
                 
@@ -927,6 +922,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             try {
                                                 nota.setMontototalapagar(BigDecimal.valueOf(datosnotapedido.getMontototalapagar()));
                                             } catch (Exception ex) {
+                                                logger.error("Error al seteal el montotoal a pagar "+ex.getLocalizedMessage());
                                             }
                                             nota.setPorcdesctotal(BigDecimal.valueOf(datosnotapedido.getPorc_descuento_total()));
                                             nota.setPorcrecargo(BigDecimal.valueOf(datosnotapedido.getPorcentajerecargo()));
@@ -940,8 +936,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                   //-------------------DETALLE---------------------------------------------------
                                                 List<Itemdetallesnota>lista = datosnotapedido.getDetallesnotapedido().getDetallesnota();
                                                 //----------------------------------------------------------------------------------
-                                                Query deletesql = em.createNativeQuery("DELETE FROM DETALLESNOTADEPEDIDO d WHERE d.FK_IDNOTA = "+nota.getId());
-                                                int retorno = deletesql.executeUpdate();
+                                                //Query deletesql = em.createNativeQuery("DELETE FROM DETALLESNOTADEPEDIDO d WHERE d.FK_IDNOTA = "+nota.getId());
+                                                Query deletsql = em.createNamedQuery("Detallesnotadepedido.deleteById");
+                                                deletsql.setParameter("idNota", nota.getId());
+                                                int retorno = deletsql.executeUpdate();
+                                                
                                                 Query consulta11 = em.createQuery("SELECT d FROM Detallesnotadepedido d WHERE  d.detallesnotadepedidoPK.fkIdnota = :fkIdnota");
                                                 consulta11.setParameter("fkIdnota", nota.getId());
                                                 em.flush();
@@ -1010,33 +1009,38 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             
             String resultChequeoFechas=chequeoFechas(fecha1, fecha2);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             if(resultChequeoFechas.equals("TODO OK")){
-                        Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n WHERE CAST(n.FECHAENTREGA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.fechaentrega,n.horacompra,n.id desc", Notadepedido.class);
+                Query jpasql = em.createQuery("SELECT n FROM Notadepedido n WHERE n.fechaentrega BETWEEN ?1 AND ?2 AND n.entregado = ?3 and n.pendiente = ?4 ORDER BY n.horacompra,n.id desc",Notadepedido.class);
+                jpasql.setParameter("1", sdf.parse(fecha1),TemporalType.TIMESTAMP);
+                jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
+                jpasql.setParameter("3", '0');
+                jpasql.setParameter("4", '1');
+                        //Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n WHERE CAST(n.FECHAENTREGA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.fechaentrega,n.horacompra,n.id desc", Notadepedido.class);
                             lista= jpasql.getResultList();
                             if(lista.size()>0){
-                            for (Notadepedido notadepedido1 : lista) {
-                                xml+=notadepedido1.toXML();
-                            }
-                                fecha1=fecha1.substring(3, 5)+"/"+fecha1.substring(0, 2)+"/"+fecha1.substring(6, 10);
-                                fecha2=fecha2.substring(3, 5)+"/"+fecha2.substring(0, 2)+"/"+fecha2.substring(6, 10);
-                                StringBuilder sb =new StringBuilder(xml);
-                                String periodoconsultado = "<fechainicio>"+fecha1+"</fechainicio>\n" +
-                                        "<fechafinal>"+fecha2+"</fechafinal>\n";
-                                 sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoconsultado);
-                                 xml=sb.toString();
+                                
+                                try {
+                                    for (Notadepedido notadepedido1 : lista) {
+                                        xml+=notadepedido1.toXML();
+                                   }
+                                } catch (Exception e) {
+                                }
+                                    
+                               
+                                 xml=agregarDatosAlxml(xml, fecha1, fecha2);
                             }else {
                                 xml+="<result>lista vacia</result>\n";
                         }
             }else {
                 xml+=resultChequeoFechas;
             }
-                            
-        } catch (Exception e) {
+                         
+        } catch (ParseException e) {
             xml+="<error>Error</error>\n";
             logger.error("Error en metodo selectnotaEntreFechasEntrega "+e.getLocalizedMessage());
-        }finally{
-                
-                return xml+="</Lista>\n";
+        }finally{                
+                return  xml+="</Lista>\n";  
         }
     }
     private void backupLogListDetalleNotaAntesdeBorrar(Notadepedido nota) {
@@ -1119,60 +1123,64 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             
             
             
-           int mes=0;
+           int month=0;
            
             for (int i = 0; i < Integer.valueOf(sdf.format(gc.getTime())); i++) {
-                            mes++;
+                            month++;
                             String ventaMensual="0";
-                            Query consulta = em.createNativeQuery("SELECT SUM(n.MONTOTOTALAPAGAR) FROM NOTADEPEDIDO n WHERE EXTRACT(MONTH FROM n.FECHADECOMPRA)="+mes+" AND EXTRACT(YEAR FROM n.FECHADECOMPRA)="+year+"");
+                            Query consulta = em.createQuery("SELECT SUM(n.montototalapagar) FROM Notadepedido n WHERE SQL('EXTRACT(MONTH FROM ?)',n.fechadecompra) = ?1 AND SQL('EXTRACT(YEAR FROM ?)',n.fechadecompra) = ?2");
+                            consulta.setParameter("1", month);
+                            consulta.setParameter("2", year);
+                            //Query consulta = em.createNativeQuery("SELECT SUM(n.MONTOTOTALAPAGAR) FROM NOTADEPEDIDO n WHERE EXTRACT(MONTH FROM n.FECHADECOMPRA)="+month+" AND EXTRACT(YEAR FROM n.FECHADECOMPRA)="+year+"");
                             
 
-                                ventaMensual=consulta.getResultList().toString();
-                                ventaMensual=ventaMensual.substring(ventaMensual.indexOf("[")+1, ventaMensual.length()-1).toLowerCase();
+                                ventaMensual=consulta.getResultList().toString().replace("[", "").replace("]", "");
+                                //ventaMensual=ventaMensual.substring(ventaMensual.indexOf("[")+1, ventaMensual.length()-1).toLowerCase();
                                 
 
                             xml+="<Item>\n";
                             switch(i){
-                                case 0:xml+="<mes>ENE</mes>\n";
+                                case 0:xml+="<month>ENE</month>\n";
                                     break;
-                                case 1:xml+="<mes>FEB</mes>\n";    
+                                case 1:xml+="<month>FEB</month>\n";    
                                     break;
-                                case 2:xml+="<mes>MAR</mes>\n";       
+                                case 2:xml+="<month>MAR</month>\n";       
                                     break;
-                                case 3:xml+="<mes>ABR</mes>\n";       
+                                case 3:xml+="<month>ABR</month>\n";       
                                     break;
-                                case 4:xml+="<mes>MAY</mes>\n";       
+                                case 4:xml+="<month>MAY</month>\n";       
                                     break;
-                                case 5:xml+="<mes>JUN</mes>\n";       
+                                case 5:xml+="<month>JUN</month>\n";       
                                     break;
-                                case 6:xml+="<mes>JUL</mes>\n";       
+                                case 6:xml+="<month>JUL</month>\n";       
                                     break;
-                                case 7:xml+="<mes>AGO</mes>\n";       
+                                case 7:xml+="<month>AGO</month>\n";       
                                     break;
-                                case 8:xml+="<mes>SEP</mes>\n";       
+                                case 8:xml+="<month>SEP</month>\n";       
                                     break;
-                                case 9:xml+="<mes>OCT</mes>\n";       
+                                case 9:xml+="<month>OCT</month>\n";       
                                     break;    
-                                case 10:xml+="<mes>NOV</mes>\n";       
+                                case 10:xml+="<month>NOV</month>\n";       
                                     break;        
-                                case 11:xml+="<mes>DIC</mes>\n";       
+                                case 11:xml+="<month>DIC</month>\n";       
                                             
                             }
                                     
                                   if(!"null".equals(ventaMensual)) {
-                                      xml+= "<venta>"+ventaMensual+"</venta>\n";
+                                      xml+= "<totalMonthlySales>"+ventaMensual+"</totalMonthlySales>\n";
                             } else {
-                                      xml+= "<venta>0</venta>\n";
+                                      xml+= "<totalMonthlySales>0</totalMonthlySales>\n";
                             }
                                     xml+= "</Item>\n";
                 
             }
+            xml+="</Lista>";
             
         } catch (NumberFormatException e) {
             logger.error("Error en metodo calcularVentasMensualesHastaFechaYAnoActual"+e.getLocalizedMessage());
         }finally{
             
-            return xml+="</Lista>";
+            return xml;
         }
     }
 
@@ -1222,6 +1230,23 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         }finally{
             return xml;
         }
+    }
+
+    private String agregarDatosAlxml(String xml,String fecha1,String fecha2) {
+        
+         fecha1=fecha1.substring(3, 5)+"/"+fecha1.substring(0, 2)+"/"+fecha1.substring(6, 10);
+         
+                                                                fecha2=fecha2.substring(3, 5)+"/"+fecha2.substring(0, 2)+"/"+fecha2.substring(6, 10);
+                                                                
+                                                                StringBuilder sb =new StringBuilder(xml);
+                                                                
+                                                                String periodoconsultado = "<fechainicio>"+fecha1+"</fechainicio>\n" +
+                                                                        
+                                                                        "<fechafinal>"+fecha2+"</fechafinal>\n";
+                                                                
+                                                                 sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoconsultado);
+                                                                 
+                              return sb.toString();
     }
     
 }

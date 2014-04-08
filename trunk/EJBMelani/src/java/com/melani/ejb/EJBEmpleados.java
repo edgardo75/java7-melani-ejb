@@ -125,12 +125,12 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                 for (Empleados empleados : lista) {                    
                     xml+="<item>\n";
                     xml+="<id>" +empleados.getIdPersona()+"</id>\n"+
-                            "<nombre>"+StringEscapeUtils.escapeXml(empleados.getNombre())+"</nombre>\n" +
-                            "<apellido>"+StringEscapeUtils.escapeXml(empleados.getApellido())+"</apellido>\n" +
+                            "<nombre>"+StringEscapeUtils.escapeXml10(empleados.getNombre())+"</nombre>\n" +
+                            "<apellido>"+StringEscapeUtils.escapeXml10(empleados.getApellido())+"</apellido>\n" +
                             "<genero>"+empleados.getGeneros().getIdGenero()+"</genero>\n" +
                             "<tipodocu>"+empleados.getTipodocumento().getId()+"</tipodocu>\n" +
                             "<documento>"+empleados.getNrodocumento()+"</documento>\n" +
-                            "<observaciones>"+StringEscapeUtils.escapeXml(empleados.getObservaciones())+"</observaciones>\n"+
+                            "<observaciones>"+StringEscapeUtils.escapeXml10(empleados.getObservaciones())+"</observaciones>\n"+
                             "<email>"+empleados.getEmail()+"</email>\n" ;
                     xml+= obtenerEmpleado(empleados);
                     xml+=empleados.toXMLEmpleado();
@@ -282,175 +282,182 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         int retEmpleadoEmptype = 0;
         int retEmployee = 0;
         try {           
-            DatosEmpleado empleado = datosEmpleadosObject(xmlEmpleado);
+            DatosEmpleado empleado = datosEmpleadosObject(xmlEmpleado);//convierto a objeto
             
-           retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
-        retorno = valorRetornadoAlBuscarEmailyNombreUsuario(retorno, empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());
-        
-                
+           retorno=validateData(empleado);//retorno el resultado de validar datos
+           if(retorno==0){
+                        
+                        retorno = valorRetornadoAlBuscarEmailyNombreUsuario(retorno, empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());
+                        
+                             
 
-                 if(retorno>0){               
+                              if(retorno>0){               
+             
+                                           //selecciono la persona con el tipo de empleado a buscar
+                                               Query sqlEmpleadoEmptype =em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona and e.emptype like :emptype");
+                                                   sqlEmpleadoEmptype.setParameter("idpersona",(long) empleado.getId());
+                                                   sqlEmpleadoEmptype.setParameter("emptype", empleado.getTipoEmpleado());
 
-                              //selecciono la persona con el tipo de empleado a buscar
-                                  Query sqlEmpleadoEmptype =em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona and e.emptype like :emptype");
-                                      sqlEmpleadoEmptype.setParameter("idpersona", empleado.getId());
-                                      sqlEmpleadoEmptype.setParameter("emptype", empleado.getTipoEmpleado());
-
-                                      //el resultado de la consulta de empleado
-                                      retEmpleadoEmptype=sqlEmpleadoEmptype.getResultList().size();
-
-
-                                          Query slqEmployee=em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona");
-                                              slqEmployee.setParameter("idpersona", empleado.getId());
-                                      retEmployee=slqEmployee.getResultList().size();
+                                                   //el resultado de la consulta de empleado
+                                                   retEmpleadoEmptype=sqlEmpleadoEmptype.getResultList().size();
 
 
-                                          Query sqlParttimeEmployee=em.createQuery("Select e From EmpleadoParttime e Where e.idPersona = :idpersona");
-                                                          sqlParttimeEmployee.setParameter("idpersona", empleado.getId());
-
-                                          Query sqlFullTimeEmployee=em.createQuery("Select f From FullTimeEmpleado f Where f.idPersona = :idpersona");
-                                                          sqlFullTimeEmployee.setParameter("idpersona", empleado.getId());
+                                                       Query slqEmployee=em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona");
+                                                           slqEmployee.setParameter("idpersona",(long) empleado.getId());
+                                                   retEmployee=slqEmployee.getResultList().size();
 
 
-                                  if(retEmployee==1){
+                                                       Query sqlParttimeEmployee=em.createQuery("Select e From EmpleadoParttime e Where e.idPersona = :idpersona");
+                                                                       sqlParttimeEmployee.setParameter("idpersona",(long) empleado.getId());
+
+                                                       Query sqlFullTimeEmployee=em.createQuery("Select f From FullTimeEmpleado f Where f.idPersona = :idpersona");
+                                                                       sqlFullTimeEmployee.setParameter("idpersona", (long)empleado.getId());
 
 
+                                               if(retEmployee==1){
 
-                                          Query sqlemail = em.createQuery("SELECT p FROM Personas p WHERE p.email = :email");
-                                              sqlemail.setParameter("email", empleado.getEmail().toLowerCase());
-                                          Query sqlusername=em.createQuery("SELECT e FROM Empleados e WHERE e.nameuser = :nameuser");
-                                          sqlusername.setParameter("nameuser", empleado.getNombreUsuario());
+             
 
-
-
-                                                  if(empleado.getTipoEmpleado().equals("FULLTIME")&&retEmpleadoEmptype==0){
-
-                                                          Query deletePartTimeEmployee=em.createNativeQuery("DELETE FROM EMPLEADOPARTTIME e WHERE e.ID_PERSONA = idEmpleado");
-                                                          deletePartTimeEmployee.setParameter("idEmpleado", empleado.getId());
-                                                              deletePartTimeEmployee.executeUpdate();
-
-                                                          Query deleteEntityEmployee=em.createNativeQuery("DELETE FROM EMPLEADOS e WHERE e.ID_PERSONA = idEmpleado");
-                                                          deleteEntityEmployee.setParameter("idEmpleado", empleado.getId());
-                                                              deleteEntityEmployee.executeUpdate();
-
-                                                          Query deleteEntityPersona=em.createNativeQuery("DELETE FROM PERSONAS p WHERE p.ID_PERSONA = idEmpleado");
-                                                          deleteEntityPersona.setParameter("idEmpleado", empleado.getId());
-                                                              deleteEntityPersona.executeUpdate();
-
-                                                          em.flush();
-
-//                         
-                                                          long nuevoEmployee = addEmpleadoFullTime(xmlEmpleado);
-                                                          actualizarReferenciasConNotasdePedido(nuevoEmployee,empleado.getId());
-                                                          retorno=nuevoEmployee;
-
-                                                  }else{
-                                                      if(empleado.getTipoEmpleado().equals("PARTTIME")&&retEmpleadoEmptype==0){
-
-                                                                  Query deletePartTimeEmployee=em.createNativeQuery("DELETE FROM FULLTIMEEMPLEADO e WHERE e.ID_PERSONA = idEmpleado");
-                                                                  deletePartTimeEmployee.setParameter("idEmpleado", empleado.getId());
-                                                                  deletePartTimeEmployee.executeUpdate();
-                                                                  Query deleteEntityEmployee=em.createNativeQuery("DELETE FROM EMPLEADOS e WHERE e.ID_PERSONA = idEmpleado");
-                                                                  deleteEntityEmployee.setParameter("idEmpleado", empleado.getId());
-                                                                  deleteEntityEmployee.executeUpdate();
-                                                                  Query deleteEntityPersona=em.createNativeQuery("DELETE FROM PERSONAS p WHERE p.ID_PERSONA = idEmpleado");
-                                                                  deleteEntityPersona.setParameter("idEmpleado", empleado.getId());
-                                                                  deleteEntityPersona.executeUpdate();
-                                                                  em.flush();
-                                                          long nuevoEmployee = addEmpleadoParttime(xmlEmpleado);
-        
-                                                          actualizarReferenciasConNotasdePedido(nuevoEmployee, empleado.getId());
-                                                          retorno = nuevoEmployee;
-
-                                                      }else{
-
-                                                              if(empleado.getTipoEmpleado().equals("FULLTIME")){
-                                                                      FullTimeEmpleado fulltimeEmploy=em.find(FullTimeEmpleado.class, empleado.getId());
-
-                                                                                          fulltimeEmploy.setApellido(empleado.getApellido());
-
-                                                                                          if(sqlemail.getResultList().isEmpty()&&empleado.getEmail().contains("@")) {
-                                                                                              fulltimeEmploy.setEmail(empleado.getEmail());
-                                                                      } else {
-                                                                                              fulltimeEmploy.setEmail("");
-                                                                      }
-
-                                                                                          fulltimeEmploy.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
-
-                                                                                          if(sqlusername.getResultList().isEmpty()) {
-                                                                                              fulltimeEmploy.setNameuser(empleado.getNombreUsuario());
-                                                                      }
-
-                                                                                          fulltimeEmploy.setNombre(empleado.getNombre());
-
-                                                                                          fulltimeEmploy.setSalario(BigDecimal.valueOf(Long.valueOf(empleado.getSalario())));
-
-                                                                                          fulltimeEmploy.setObservaciones(empleado.getObservaciones());
-                                                                                          
-                                                                                        logger.info("pass a encriptar"+empleado.getPassword());
-
-                                                                                          fulltimeEmploy.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml(empleado.getPassword())));                                                               
-
-                                                                                          fulltimeEmploy.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
-                                                                                          
-                                                                                          em.persist(fulltimeEmploy);
-                                                                                           logger.info("passs  encriptado "+fulltimeEmploy.getPassword());
-                                                                                          retorno = fulltimeEmploy.getIdPersona();
-
-
-                                                              }else{
-
-                                                                          EmpleadoParttime empleadoPartime=em.find(EmpleadoParttime.class, empleado.getId());
-
-                                                                                          empleadoPartime.setApellido(empleado.getApellido());
-
-                                                                                          if(sqlemail.getResultList().isEmpty()&&empleado.getEmail().contains("@")) {
-                                                                                              empleadoPartime.setEmail(empleado.getEmail());
-                                                                          } else {
-                                                                                              empleadoPartime.setEmail("");
-                                                                          }
-
-
-                                                                                          empleadoPartime.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
-
-
-                                                                                          if(sqlusername.getResultList().isEmpty()) {
-                                                                                              empleadoPartime.setNameuser(empleado.getNombreUsuario());
-                                                                          }
-
-
-                                                                                          empleadoPartime.setNombre(empleado.getNombre());
-
-                                                                                          empleadoPartime.setSalarioporhora(BigDecimal.valueOf(Long.valueOf(empleado.getSalarioxhora())));
-
-                                                                                          empleadoPartime.setObservaciones(empleado.getObservaciones());
-
-                                                                                          logger.info("passs a encriptar "+empleado.getPassword());
-                                                                                          empleadoPartime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml(empleado.getPassword())));                                                           
-                                                                                          
-
-                                                                                          empleadoPartime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
-
-                                                                                          em.persist(empleadoPartime);
-                                                                                          logger.info("passs  encriptado "+empleadoPartime.getPassword());
-                                                                                      retorno = empleadoPartime.getIdPersona();
-                                                              }
-                                                      }
-                                                  }
-
-                                              em.flush();
-
-                                  
+                                                       Query sqlemail = em.createQuery("SELECT p FROM Personas p WHERE p.email = :email");
+                                                           sqlemail.setParameter("email", empleado.getEmail());
+                                                       Query sqlusername=em.createQuery("SELECT e FROM Empleados e WHERE e.nameuser = :nameuser");
+                                                       sqlusername.setParameter("nameuser", empleado.getNombreUsuario());
 
 
 
+                                                               if(empleado.getTipoEmpleado().equals("FULLTIME")&&retEmpleadoEmptype==0){
+                                                                    
+                                                                       Query deletePartTimeEmployee=em.createNamedQuery("EmpleadoParttime.deleteById");
+                                                                           deletePartTimeEmployee.setParameter("idPersona", (long)empleado.getId());
+                                                                           deletePartTimeEmployee.executeUpdate();
 
-            
-            
- 
-            
-                                        }  //end if
-                 }
+                                                                       Query deleteEntityEmployee=em.createNamedQuery("Empleados.deleteById");
+                                                                       deleteEntityEmployee.setParameter("idPersona",(long) empleado.getId());
+                                                                           deleteEntityEmployee.executeUpdate();
+
+                                                                       Query deleteEntityPersona=em.createNamedQuery("Personas.deleteById");
+                                                                       deleteEntityPersona.setParameter("idPersona", (long)empleado.getId());
+                                                                           deleteEntityPersona.executeUpdate();
+
+                                                                       em.flush();
+
+             //                         
+                                                                       long nuevoEmployee = addEmpleadoFullTime(xmlEmpleado);
+                                                                       actualizarReferenciasConNotasdePedido(nuevoEmployee,empleado.getId());
+                                                                       retorno=nuevoEmployee;
+
+                                                               }else{
+                                                                   if(empleado.getTipoEmpleado().equals("PARTTIME")&&retEmpleadoEmptype==0){
+             
+                                                                               Query deletePartTimeEmployee=em.createNamedQuery("EmpleadoParttime.deleteById");
+                                                                               deletePartTimeEmployee.setParameter("idPersona", (long)empleado.getId());
+                                                                               deletePartTimeEmployee.executeUpdate();
+                                                                               Query deleteEntityEmployee=em.createNamedQuery("Empleados.deleteById");
+                                                                               deleteEntityEmployee.setParameter("idPersona",(long) empleado.getId());
+                                                                               deleteEntityEmployee.executeUpdate();
+                                                                               Query deleteEntityPersona=em.createNamedQuery("Personas.deleteById");
+                                                                               deleteEntityPersona.setParameter("idPersona",(long) empleado.getId());
+                                                                               deleteEntityPersona.executeUpdate();
+                                                                               em.flush();
+                                                                       long nuevoEmployee = addEmpleadoParttime(xmlEmpleado);
+
+                                                                       actualizarReferenciasConNotasdePedido(nuevoEmployee, empleado.getId());
+                                                                       retorno = nuevoEmployee;
+
+                                                                   }else{
+  
+                                                                           if(empleado.getTipoEmpleado().equals("FULLTIME")){
+                                                                                   FullTimeEmpleado fulltimeEmploy=em.find(FullTimeEmpleado.class,(long) empleado.getId());
+
+                                                                                                       fulltimeEmploy.setApellido(empleado.getApellido());
+
+                                                                                                       if(sqlemail.getResultList().isEmpty()&&empleado.getEmail().contains("@")) {
+                                                                                                           fulltimeEmploy.setEmail(empleado.getEmail());
+                                                                                                       }
+
+                                                                                                       fulltimeEmploy.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
+
+                                                                                                       if(sqlusername.getResultList().isEmpty()) {
+                                                                                                           fulltimeEmploy.setNameuser(empleado.getNombreUsuario());
+                                                                                                       }
+
+                                                                                                       fulltimeEmploy.setNombre(empleado.getNombre());
+
+                                                                                                       fulltimeEmploy.setSalario(BigDecimal.valueOf(Long.valueOf(empleado.getSalario())));
+
+                                                                                                       fulltimeEmploy.setObservaciones(empleado.getObservaciones());
+
+                                                                                                     logger.info("pass a encriptar"+empleado.getPassword());
+
+                                                                                                       fulltimeEmploy.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                               
+
+                                                                                                       fulltimeEmploy.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
+
+                                                                                                       em.persist(fulltimeEmploy);
+                                                                                                        logger.info("passs  encriptado "+fulltimeEmploy.getPassword());
+                                                                                                       retorno = fulltimeEmploy.getIdPersona();
+
+
+                                                                           }else{
+                                                                                 
+                                                                                 EmpleadoParttime empleadoPartime = null;
+                                                                                 try {
+                                                                                        empleadoPartime=em.find(EmpleadoParttime.class,(long) empleado.getId());
+                                                                               } catch (Exception e) {
+                                                                                       logger.error("Error al buscar empleado partime "+e.getLocalizedMessage());
+                                                                               }
+                                                                                   
+                                                                                       
+                                                                                                       empleadoPartime.setApellido(empleado.getApellido());
+                                                                                       
+                                                                                                       if(sqlemail.getResultList().isEmpty()&&empleado.getEmail().contains("@")) {
+                                                                                                           empleadoPartime.setEmail(empleado.getEmail());
+                                                                                                       }
+                                                                                                       
+
+                                                                                                       empleadoPartime.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
+                                                                                                       
+
+                                                                                                       if(sqlusername.getResultList().isEmpty()) {
+                                                                                                           empleadoPartime.setNameuser(empleado.getNombreUsuario());
+                                                                                                       }
+
+                                                                                                       
+                                                                                                       empleadoPartime.setNombre(empleado.getNombre());
+                                                                                                       
+                                                                                                       empleadoPartime.setSalarioporhora(BigDecimal.valueOf(Long.valueOf(empleado.getSalarioxhora())));
+                                                                                                       
+                                                                                                       empleadoPartime.setObservaciones(empleado.getObservaciones());
+                                                                                                       
+                                                                                                       logger.info("passs a encriptar "+empleado.getPassword());
+                                                                                                       
+                                                                                                       empleadoPartime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                           
+
+                                                                                                       
+                                                                                                       empleadoPartime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
+
+                                                                                                       em.persist(empleadoPartime);
+                                                                                                       logger.info("passs  encriptado "+empleadoPartime.getPassword());
+                                                                                                       
+                                                                                                   retorno = empleadoPartime.getIdPersona();
+                                                                           }
+                                                                   }
+                                                               }
+
+                                                      em.flush();
+
+
+
+
+
+
+
+
+
+
+                                                }  //end if
+                         }
+           }
                                   
         } catch (NumberFormatException e) {
             retorno = -1;
@@ -464,7 +471,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
     private void actualizarReferenciasConNotasdePedido(long nuevoEmployee, int idEmpleado) {
         try {
-            Query sql = em.createNativeQuery("SELECT * FROM NOTADEPEDIDO", Notadepedido.class);
+            Query sql = em.createNamedQuery("Notadepedido.findAll", Notadepedido.class);
             List<Notadepedido>lista = sql.getResultList();
             for(Notadepedido n:lista){
                 if(n.getIdUsuarioExpidioNota()==idEmpleado) {
@@ -510,42 +517,46 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         
               
                 retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
-                retorno =valorRetornadoAlBuscarEmailyNombreUsuario(retorno,empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());  
-                    GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
-                                   if(retorno==0){
-                                       if(empleado.getTipoEmpleado().equals("FULLTIME")) {
-                                           retorno=addFullTimeEmpleado(empleado,gc);
-                                       } else {
-                                           retorno=addPartTimeEmpleado(empleado,gc);
-                                       }
-                                    
-                                   }else {
-                                       retorno=numeroaRetornar(retorno);//retorno de buscarPersonaEmailNameUSer
+                if(retorno==0){
+                        retorno =valorRetornadoAlBuscarEmailyNombreUsuario(retorno,empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());  
+                            
+                                           if(retorno==0){
+                                                    if(empleado.getTipoEmpleado().equals("FULLTIME")) {
+                                                        retorno=addFullTimeEmpleado(empleado);
+                                                    } else {
+                                                        retorno=addPartTimeEmpleado(empleado);
+                                                    }
+                                            }else {
+                                                retorno=numeroaRetornar(retorno);//retorno de buscarPersonaEmailNameUSer
+                        }
                 }
             
       
       
 
         } catch (Exception e) {
+            retorno =-1;
             logger.error("Error en metodo procesarDatosEmpleadoAdd "+e.getLocalizedMessage());
         }finally{
          return retorno;
         }
     }
 
-    private long addFullTimeEmpleado(DatosEmpleado empleado,GregorianCalendar gc) {
+    private long addFullTimeEmpleado(DatosEmpleado empleado) {
         long retorno =0;
         try {
+            GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
                  FullTimeEmpleado empfulltime = new FullTimeEmpleado();
                                          empfulltime.setApellido(empleado.getApellido().toUpperCase());
-                                         empfulltime.setEmail(empleado.getEmail().toLowerCase());
+                                         if(!empleado.getEmail().isEmpty())
+                                            empfulltime.setEmail(empleado.getEmail().toLowerCase());
                                          empfulltime.setNombre(empleado.getNombre().toUpperCase());
-                                         empfulltime.setNameuser(StringEscapeUtils.escapeXml(empleado.getNombreUsuario()));
+                                         empfulltime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));
                                        
                                          try {
 
 
-                                                empfulltime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml(empleado.getPassword())));
+                                                empfulltime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
 
 
                                        } catch (Exception e) {
@@ -575,12 +586,13 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
          
     }
 
-    private long addPartTimeEmpleado(DatosEmpleado empleado, GregorianCalendar gc) {
+    private long addPartTimeEmpleado(DatosEmpleado empleado) {
         long retorno =0;
         try {
+            GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
               EmpleadoParttime empparttime = new EmpleadoParttime();
                                                     empparttime.setApellido(empleado.getApellido().toUpperCase());
-                                                    empparttime.setNameuser(StringEscapeUtils.escapeXml(empleado.getNombreUsuario()));
+                                                    empparttime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));
                                                     
                                                     
                                                     empparttime.setNombre(empleado.getNombre().toUpperCase());
@@ -588,7 +600,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                     try {
 
 
-                                                            empparttime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml(empleado.getPassword())));
+                                                            empparttime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
 
                                                     } catch (Exception e) {
                                                         retorno=-10;
@@ -600,7 +612,8 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                     empparttime.setNrodocumento(empleado.getNumeroDocumento());
                                                     empparttime.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
                                                     empparttime.setEstado((short)1);
-                                                    empparttime.setEmail(empleado.getEmail());
+                                                    if(!empleado.getEmail().isEmpty())
+                                                         empparttime.setEmail(empleado.getEmail());
                                                     empparttime.setSalarioporhora(BigDecimal.valueOf(Float.valueOf(empleado.getSalarioxhora())));
                                                     em.persist(empparttime);
                                                     em.flush();
@@ -618,7 +631,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         long retorno=0;
         try {
             String numeroDocumento = String.valueOf(empleado.getNumeroDocumento());
-            
+          
             if(ProjectHelpers.NumeroDocumentoValidator.validate(numeroDocumento)){
                         
                         if(!empleado.getNombre().isEmpty()&&ProjectHelpers.NombreyApellidoValidator.validate(empleado.getNombre())){
@@ -626,11 +639,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                     if(empleado.getPassword().equals(empleado.getPasswordre())){
                                                 
                                                   
-                                              if(!ProjectHelpers.NombreUsuarioValidator.validate(StringEscapeUtils.escapeXml(empleado.getNombreUsuario()))) {
+                                              if(!ProjectHelpers.NombreUsuarioValidator.validate(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()))) {
                                                   retorno=-12;
                                               }
 
-                                              if(!ProjectHelpers.PasswordValidator.validate(StringEscapeUtils.escapeXml(empleado.getPassword()))&&empleado.getPassword().equals(empleado.getPasswordre())) {
+                                              if(!ProjectHelpers.PasswordValidator.validate(StringEscapeUtils.escapeXml10(empleado.getPassword())) && (empleado.getPassword().equals(empleado.getPasswordre()))) {
                                                   retorno=-11;
                                               }
 
@@ -649,6 +662,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             
             
         } catch (Exception e) {
+            retorno =-1;
             logger.error("Error en metodo validateData "+e.getLocalizedMessage());
         }finally{
         return retorno;

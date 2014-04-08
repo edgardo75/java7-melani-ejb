@@ -128,10 +128,10 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         String xmlpresupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n";
         try {
-            Query consulta  = em.createNativeQuery("SELECT * FROM PRESUPUESTOS p order by p.FECHAPRESUPUESTO desc ,p.ID_PRESUPUESTO desc", Presupuestos.class);
+            Query consulta  = em.createNamedQuery("Presupuesto.findPresupuestoOrderByFechaIdPresupesto");
             List<Presupuestos>lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xmlpresupuesto="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                xmlpresupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
             } else{
                 for (Presupuestos presupuestos : lista) {
                     xmlpresupuesto+=presupuestos.toXML();
@@ -175,7 +175,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         String presupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n";
         try {
-            Query consulta = em.createNativeQuery(" SELECT * FROM PRESUPUESTOS p WHERE p.FECHAPRESUPUESTO='today'", Presupuestos.class);
+            Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.fechapresupuesto = CURRENT_DATE");
+            //Query consulta = em.createNativeQuery(" SELECT * FROM PRESUPUESTOS p WHERE p.FECHAPRESUPUESTO='today'", Presupuestos.class);
             List<Presupuestos>lista = consulta.getResultList();
             if(lista.isEmpty()) {
                 presupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
@@ -242,8 +243,9 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         String result ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n";
         try {
-            Query paging = em.createNativeQuery("SELECT * FROM PRESUPUESTOS p WHERE p.ID_PRESUPUESTO ="+idpresupuesto+" order by p.FECHAPRESUPUESTO desc ,p.ID_PRESUPUESTO desc", Presupuestos.class);
-            paging.setParameter("idpresupuesto", idpresupuesto);
+            Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");
+            //Query paging = em.createNativeQuery("SELECT * FROM PRESUPUESTOS p WHERE p.ID_PRESUPUESTO ="+idpresupuesto+" order by p.FECHAPRESUPUESTO desc ,p.ID_PRESUPUESTO desc", Presupuestos.class);
+            paging.setParameter("1", idpresupuesto);
             List<Presupuestos>lista = paging.getResultList();
             if(lista.isEmpty()) {
                 result="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
@@ -275,7 +277,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     StringBuilder sb=null;
     try {
         sb=new StringBuilder(xmlPresupuesto);
-            xml=StringEscapeUtils.escapeXml(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
+            xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
             sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
     } catch (Exception e) {
         xml = "Error";

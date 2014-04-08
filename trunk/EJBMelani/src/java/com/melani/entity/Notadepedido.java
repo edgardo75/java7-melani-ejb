@@ -62,7 +62,7 @@ query = "SELECT n FROM Notadepedido n"), @NamedQuery(name = "Notadepedido.findBy
         query = "SELECT n FROM Notadepedido n WHERE n.descuentoNota = :descuentoNota"), @NamedQuery(name = "Notadepedido.findByMontototalapagar",
         query = "SELECT n FROM Notadepedido n WHERE n.montototalapagar = :montototalapagar"), @NamedQuery(name = "Notadepedido.findByPorcdesctotal",
         query = "SELECT n FROM Notadepedido n WHERE n.porcdesctotal = :porcdesctotal"), @NamedQuery(name = "Notadepedido.findByPorcrecargo",
-        query = "SELECT n FROM Notadepedido n WHERE n.porcrecargo = :porcrecargo")})
+        query = "SELECT n FROM Notadepedido n WHERE n.porcrecargo = :porcrecargo"),@NamedQuery(name ="Notadepedido.deleteById",query = "DELETE FROM Notadepedido n WHERE n.id = :id")})
 public class Notadepedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id        
@@ -700,10 +700,7 @@ public class Notadepedido implements Serializable {
             return false;
         }
         Notadepedido other = (Notadepedido) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     @Override
     public String toString() {
@@ -745,63 +742,63 @@ public class Notadepedido implements Serializable {
             
                 
                         item+="<item>\n"                                
-                            + "<id>"+this.getId()+"</id>\n"
+                            + "<id>"+this.getId()+"</id>\n"                            
+                            + "<tarjetadecredito>"+StringEscapeUtils.escapeXml10(this.getIdTarjetaFk().getDescripcion())+"</tarjetadecredito>\n" 
+                            +"<idtarjeta>"+this.getIdTarjetaFk().getIdtarjeta()+"</idtarjeta>\n"
                             + "<numerocupon>"+this.getNumerodecupon().toString()+"</numerocupon>\n"
-                            + "<tarjetadecredito>"+StringEscapeUtils.escapeXml(this.getIdTarjetaFk().getDescripcion())+"</tarjetadecredito>\n" +
-                            "<idtarjeta>"+this.getIdTarjetaFk().getIdtarjeta()+"</idtarjeta>\n"
-                           + "<observaciones>"+StringEscapeUtils.escapeXml(this.getObservaciones())+"</observaciones>\n"
+                           + "<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"
                             + "<anticipo>"+this.getAnticipo().toPlainString()+"</anticipo>\n"
                             + "<anulado>"+this.getAnulado().toString()+"</anulado>\n"
                             + "<cancelado>"+this.getCancelado()+"</cancelado>\n"
                             + "<efectivo>"+this.getEnefectivo()+"</efectivo>\n"
-                            + "<entregado>"+this.getEntregado()+"</entregado>\n"
-                            + "<fechaanulado>"+fechanulado+"</fechaanulado>\n" +
-                            "<descuentonota>" +this.getDescuentonota().toPlainString()+"</descuentonota>\n" +
-                            "<descuentopesos>"+this.getDescuentoPesos().toPlainString()+"</descuentopesos>\n"+
-                            "<fecancel>"+fecancel+"</fecancel>\n"
-                            + "<fechacompra>"+fecompra+"</fechacompra>\n"
+                            + "<entregado>"+this.getEntregado()+"</entregado>\n"                           
+                            +"<descuentonota>" +this.getDescuentonota().toPlainString()+"</descuentonota>\n" 
+                            +"<descuentopesos>"+this.getDescuentoPesos().toPlainString()+"</descuentopesos>\n"
+                            + "<fechaanulado>"+fechanulado+"</fechaanulado>\n" 
+                            +  "<fecancel>"+fecancel+"</fecancel>\n"
+                             + "<fechacompra>"+fecompra+"</fechacompra>\n"
                             + "<fechaentrega>"+feentrega+"</fechaentrega>\n"
+                            + "<horacompra>"+hocompra+"</horacompra>\n"    
                             + "<stockfuturo>"+this.getStockfuturo()+"</stockfuturo>\n"
                             + "<cliente>\n"
                                 + "<id>"+this.getFkIdcliente().getIdPersona()+"</id>\n" +
                                 "<nrodocumento>"+this.getFkIdcliente().getNrodocumento()+"</nrodocumento>\n" 
-                                + "<apellidoynombre>"+StringEscapeUtils.escapeXml(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre())+"</apellidoynombre>\n"
+                                + "<apellidoynombre>"+StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre())+"</apellidoynombre>\n"
                             + "</cliente>\n" 
-                            + "<idporcentajes>"+this.getFkidporcentajenotaId().getIdPorcentajes()+"</idporcentajes>\n"
-                            + "<horacompra>"+hocompra+"</horacompra>\n"                
+                            + "<idporcentajes>"+this.getFkidporcentajenotaId().getIdPorcentajes()+"</idporcentajes>\n"                                       
                             + "<usuarioexpidionota>"+this.getIdUsuarioExpidioNota()+"</usuarioexpidionota>\n"
                             + "<usuarioanulonota>"+this.getIdusuarioAnulado()+"</usuarioanulonota>\n"
-                            + "<usuarioentregonota>"+this.getIdusuarioEntregado()+"</usuarioentregonota>\n" +
-                            "<usuariocancelonota>"+this.getIdusuariocancelo()+"</usuariocancelonota>\n"
+                            + "<usuarioentregonota>"+this.getIdusuarioEntregado()+"</usuarioentregonota>\n" 
+                            +"<usuariocancelonota>"+this.getIdusuariocancelo()+"</usuariocancelonota>\n"
                             + "<idusuarioexpidionota>"+this.getIdUsuarioExpidioNota()+"</idusuarioexpidionota>\n"
                             + "<idusuarioanulonota>"+this.getIdusuarioAnulado()+"</idusuarioanulonota>\n"
-                            + "<idusuarioentregonota>"+this.getIdusuarioEntregado()+"</idusuarioentregonota>\n" +
-                            "<idusuariocancelonota>"+this.getIdusuariocancelo()+"</idusuariocancelonota>\n"
+                            + "<idusuarioentregonota>"+this.getIdusuarioEntregado()+"</idusuarioentregonota>\n" 
+                            +"<idusuariocancelonota>"+this.getIdusuariocancelo()+"</idusuariocancelonota>\n"
                             + "<montoiva>"+this.getMontoiva().toPlainString()+"</montoiva>\n"
                             + "<pendiente>"+this.getPendiente()+"</pendiente>\n"
                             + "<recargo>"+this.getRecargo().toPlainString()+"</recargo>\n"
                             + "<total>"+this.getTotal().toPlainString()+"</total>\n"
-                            + "<saldo>"+this.getSaldo().toPlainString()+"</saldo>\n" +
-                            "<montototalapagar>"+this.getMontototalapagar().toPlainString()+"</montototalapagar>\n" +
-                            "<porcentajedesctotal>"+this.getPorcdesctotal().toPlainString()+"</porcentajedesctotal>\n" +
-                            "<recargototal>"+this.getRecargo().toPlainString()+"</recargototal>\n" +
-                            "<porcrecargo>"+this.getPorcrecargo().toPlainString()+"</porcrecargo>\n"
+                            + "<saldo>"+this.getSaldo().toPlainString()+"</saldo>\n" 
+                            +"<montototalapagar>"+this.getMontototalapagar().toPlainString()+"</montototalapagar>\n" 
+                            +"<porcentajedesctotal>"+this.getPorcdesctotal().toPlainString()+"</porcentajedesctotal>\n" 
+                            +"<recargototal>"+this.getRecargo().toPlainString()+"</recargototal>\n" 
+                            +"<porcrecargo>"+this.getPorcrecargo().toPlainString()+"</porcrecargo>\n"
                             + "<detallenota>\n";
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
                                     item+="</detallenota>\n";
-         } else{
+                                } else{
                                     for (Detallesnotadepedido detallenota : this.getDetallesnotadepedidoList()) {
                                         item+=detallenota.toXML();
-                        }
+                                    }
                                     item+="</detallenota>\n";
                                 }
                                 item+="<detallehistorico>\n";
                                 if(this.getHistoriconotapedidoList().isEmpty()) {
                                     item+="</detallehistorico>\n";
-         } else{
+                                } else{
                                     for (Historiconotapedido historico : this.getHistoriconotapedidoList()) {
                                         item+=historico.toXML();
-                        }
+                                    }
                                     item+="</detallehistorico>\n";
                                 }
                              item+="</item>\n";     

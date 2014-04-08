@@ -41,7 +41,7 @@ public class EJBTimmer {
     @PersistenceContext(unitName = "EJBMelaniPU2")
     EntityManager em;
     
-    @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "15",hour = "23",minute = "31")
+    @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "15",hour = "16",minute = "17")
     private void ventasDiarias(){ 
         final String miCorreo = "micorreo@gmail.com"; 
     final String miContrasena = "*****";
@@ -63,15 +63,16 @@ public class EJBTimmer {
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
 
-        SecurityManager security = System.getSecurityManager();
+        //SecurityManager security = System.getSecurityManager();
         
         
         try {
             GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault()); 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             
-            Query consulta = em.createNativeQuery("SELECT SUM(n.MONTOTOTALAPAGAR) FROM NOTADEPEDIDO n WHERE CAST(n.FECHADECOMPRA as Date) = CAST('"+sdf.format(gc.getTime()).toString()+"' as Date)");     
-       Session session = Session.getDefaultInstance(props, new Authenticator() {
+            Query consulta = em.createQuery("SELECT SUM(n.montototalapagar) FROM Notadepedido n WHERE n.fechadecompra = CURRENT_DATE");
+                
+       Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
              return new PasswordAuthentication("edgardo75@gmail.com", "dunis6648");
@@ -81,10 +82,15 @@ public class EJBTimmer {
         
 
         MimeMessage message = new MimeMessage(session);
+        String result;
+        if( consulta.getResultList().toString() == null)
+            result = "No se registraron ventas!!!";
+        else
+            result =consulta.getResultList().toString().replace("[", "").replace("]", "");
         
         message.setFrom(new InternetAddress("edgardo75@gmail.com"));
-        message.addRecipient(Message.RecipientType.TO,new InternetAddress("fernan2bal@hotmail.com"));
-        message.setSubject("Ventas del Día "+gc.getTime());
+        message.addRecipient(Message.RecipientType.TO,new InternetAddress("edgardo75@gmail.com"));
+        message.setSubject("Ventas del Día "+sdf.format(gc.getTime())+" $ "+result);
         
 
         
@@ -99,12 +105,15 @@ public class EJBTimmer {
             
             MimeBodyPart textPart = new MimeBodyPart();
             
-            String textContext = "Ventas del Día !!"+gc.getTime()+" "+consulta.getResultList().toString();
+            String textContext = "Ventas del Día !!"+sdf.format(gc.getTime())+" $ "+consulta.getResultList().toString().replace("[", "").replace("]", "");
             textPart.setText(textContext);
             
             MimeBodyPart htmlPart = new MimeBodyPart();
-            String htmlContext = "<html><h1>Hi</h1><p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto es por email tambien puede ser via movil decime si no está cool!!!, saludos</p>"
-                    + "<p>Ventas del Día"+gc.getTime()+" "+consulta.getResultList().toString()+"</p></html>";
+            String htmlContext = "<html>"
+                                    + "<h1>Hi</h1>"
+                                    + "<p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto es por email tambien puede ser via movil decime si no está cool!!!, saludos</p>"
+                                    + "<p>Ventas del Día"+sdf.format(gc.getTime())+" $ "+consulta.getResultList().toString().replace("[", "").replace("]", "")+"</p>"
+                                + "</html>";
             htmlPart.setContent(htmlContext, "text/html");
             
             multipart.addBodyPart(textPart);

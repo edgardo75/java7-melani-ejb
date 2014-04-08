@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
  * @author Admin
  */
 @Embeddable
-public class TelefonosPK implements Serializable {
+public class TelefonosPK implements Serializable {    
     @Basic(optional = false)
     @Column(name = "NUMERO", nullable = false)
     private long numero;

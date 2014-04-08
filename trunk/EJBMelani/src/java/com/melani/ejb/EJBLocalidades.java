@@ -121,10 +121,22 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
              }
         } catch (Exception e) {
             logger.error("Error en metodo searchAllLocalidadesbyidprov "+e.getLocalizedMessage());
+            resultado+="<error>Se produjo un error</error>";
         }finally{
               resultado+="</Lista>\n";
               
         return resultado;
         }
     }
+
+    @Override
+    public short addLatitudLongitud(long idProvincia, long idLocalidad, String latitud, String longitud) {
+        Localidades localidad = em.find(Localidades.class, idLocalidad);
+        localidad.setLatitud(latitud);
+        localidad.setLongitud(longitud);
+        em.flush();
+        short retorno = Short.valueOf(String.valueOf(localidad.getIdLocalidad()));
+        return retorno;
+    }
+    
 }
