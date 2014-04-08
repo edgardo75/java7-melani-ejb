@@ -51,6 +51,10 @@ public class Localidades implements Serializable {
     @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Provincias provincias;
+    @Column(name = "LATITUD",length = 15)
+    private String latitud;
+    @Column(name = "LONGITUD",length = 15)
+    private String longitud;
 
     /**
      *
@@ -130,6 +134,22 @@ public class Localidades implements Serializable {
         this.domiciliosList = domiciliosList;
     }
 
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
     /**
      *
      * @return
@@ -175,8 +195,10 @@ public class Localidades implements Serializable {
     public String toXML(){
         String item="<localidades>\n"
                 + "<id>"+this.getIdLocalidad()+"</id>\n"
-                + "<descripcion>"+StringEscapeUtils.escapeXml(this.getDescripcion())+"</descripcion>\n"
+                + "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n"
                 + "<codigopostal>"+this.getCodigopostal()+"</codigopostal>\n"
+                + "<latitud>"+this.getLatitud()+"</latitud>\n"
+                + "<longitud>"+this.getLongitud()+"</longitud>\n"
                 + "</localidades>\n";
         return item;
     }

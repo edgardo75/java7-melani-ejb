@@ -44,7 +44,9 @@ query = "SELECT p FROM Presupuestos p"), @NamedQuery(name = "Presupuestos.findBy
         query = "SELECT p FROM Presupuestos p WHERE p.total = :total"), @NamedQuery(name = "Presupuestos.findByPorcDescTotal", query = "SELECT p FROM Presupuestos p WHERE p.porcetajedescuentoTOTAL = :porcetajedescuentoTOTAL"), @NamedQuery(name = "Presupuestos.findByRecargototal",
         query = "SELECT p FROM Presupuestos p WHERE p.recargototal = :recargototal"), @NamedQuery(name = "Presupuestos.findByPorcentajerecargo",
         query = "SELECT p FROM Presupuestos p WHERE p.porcentajerecargo = :porcentajerecargo"), @NamedQuery(name = "Presupuestos.findByDescuentoresto",
-        query = "SELECT p FROM Presupuestos p WHERE p.descuentoresto = :descuentoresto")})
+        query = "SELECT p FROM Presupuestos p WHERE p.descuentoresto = :descuentoresto"),
+        @NamedQuery(name = "Presupuesto.findPresupuestoOrderByFechaIdPresupesto",query = "SELECT p FROM Presupuestos p ORDER BY p.fechapresupuesto DESC, p.idPresupuesto DESC"),
+        @NamedQuery(name = "Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto",query = "SELECT p FROM Presupuestos p WHERE p.idPresupuesto = ?1 ORDER BY p.fechapresupuesto DESC, p.idPresupuesto DESC")})
 public class Presupuestos implements Serializable {
     private static final long serialVersionUID = 1L;
   @TableGenerator(name="PresupuestosIdGen", table="ID_GEN_PRE",
@@ -380,7 +382,7 @@ public class Presupuestos implements Serializable {
                 "<id>" +this.getIdPresupuesto()+ "</id>\n" +
                 "<nombre>" +this.getNombre()+ "</nombre>\n"+
                 "<apellido>" +this.getApellido()+ "</apellido>\n"+                
-                "<observaciones>"+StringEscapeUtils.escapeXml(this.getObservaciones())+"</observaciones>\n"+
+                "<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"+
                 "<totalapagar>" +this.getTotalapagar().toString()+ "</totalapagar>\n"+
                 "<usuarioexpidio>" +this.getIdUsuarioFk()+ "</usuarioexpidio>\n"+
                 "<iva>" +this.getIva().toString()+ "</iva>\n"+

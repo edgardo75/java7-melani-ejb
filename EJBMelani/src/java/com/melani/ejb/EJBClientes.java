@@ -81,24 +81,28 @@ public class EJBClientes implements EJBClientesRemote {
              //valido el nombre y el apellido 
              
              if(ProjectHelpers.NombreyApellidoValidator.validate(datosClientePersonales.getNombre())){
+             
                  if(ProjectHelpers.NombreyApellidoValidator.validate(datosClientePersonales.getApellido())){
+             
                     String numeroDocu = String.valueOf(datosClientePersonales.getNrodocu());
-                     
+             
                      if(ProjectHelpers.NumeroDocumentoValidator.validate(numeroDocu)){
                         ///++++++++++++++++++++++++++++++++++++la persona si existene en la base de datos
+             
                          long idPersona = existePersona(datosClientePersonales.getNrodocu());
                          
                                 if(idPersona>0) {
                                     persona = em.find(Personas.class, idPersona);
-                         }
-
+                                }
+             
                                     //Verifico que venga un email para ver si existe en la base de datos
                                     if(!datosClientePersonales.getEmail().isEmpty()){
+             
                                         //verifico que venga validado correctamente el email junto con el numero de documento y si tambien lo encontro o no en la base de datos
                                            chequear__email_numDoc = chequearemail(datosClientePersonales.getEmail(),datosClientePersonales.getNrodocu());
-
+                                           
                                            switch((int)chequear__email_numDoc){              
-
+                                               
                                                case -7:{logger.error("Error en metodo chequear email");
                                                retorno = chequear__email_numDoc;
                                                break;
@@ -114,10 +118,10 @@ public class EJBClientes implements EJBClientesRemote {
 
                                                default:{
                                                    //*****************************************************************************++++
-                                                   
+                                           
 
                                                        if(persona!=null){
-                                                           
+                                           
                                                            retorno = buscarPersonaSiEsCliente(persona, datosClientePersonales, getAllDatos, xmlClienteDomicilioTelefono);
                                                        }else{
                                                           
@@ -149,6 +153,7 @@ public class EJBClientes implements EJBClientesRemote {
              }
         } catch (Exception e) {
             retorno = -1;
+            
             logger.error("Error en Metodo addCliente, EJBClientes, verifique "+e);
         }finally{            
             return retorno;
@@ -220,27 +225,25 @@ public class EJBClientes implements EJBClientesRemote {
             //-----------------------------------------------------------------------------------
             
           //------------------------------------------------Proceso el Cliente -------------------------------
-            Clientes cliente = new Clientes();                
-                cliente.setApellido(datosClientePersonales.getApellido().toUpperCase());                
-                cliente.setEmail(datosClientePersonales.getEmail());                
-                cliente.setFechaCarga(calendario.getTime());                
-                cliente.setGeneros(em.find(Generos.class, datosClientePersonales.getGeneros().getIdgenero()));                
-                cliente.setNombre(datosClientePersonales.getNombre().toUpperCase());   
-                
-                cliente.setNrodocumento(datosClientePersonales.getNrodocu());                
-                cliente.setObservaciones(datosClientePersonales.getObservaciones().toUpperCase());                
-                cliente.setTipodocumento(em.find(Tiposdocumento.class, datosClientePersonales.getIdtipodocu()));                
-                cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
-                cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
-                em.persist(cliente);
-                em.flush();
-                retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono, cliente, todosDatos);
+                    Clientes cliente = new Clientes();                
+                        cliente.setApellido(datosClientePersonales.getApellido().toUpperCase());                
+                        cliente.setEmail(datosClientePersonales.getEmail());                
+                        cliente.setFechaCarga(calendario.getTime());                
+                        cliente.setGeneros(em.find(Generos.class, datosClientePersonales.getGeneros().getIdgenero()));                
+                        cliente.setNombre(datosClientePersonales.getNombre().toUpperCase());                  
+                        cliente.setNrodocumento(datosClientePersonales.getNrodocu());                
+                        cliente.setObservaciones(datosClientePersonales.getObservaciones().toUpperCase());                
+                        cliente.setTipodocumento(em.find(Tiposdocumento.class, datosClientePersonales.getIdtipodocu()));                
+                        cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
+                        cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
+                        em.persist(cliente);
+                        em.flush();
+                        retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono, cliente, todosDatos);
             /*//--------------------------------------------------------------------------------------------------*/
         } catch (Exception e) {
             retorno =-1;
             logger.error("Error en metodo agregarTodosLosDatosCliente, EJBClientes "+e.getMessage());
-        }finally{
-            
+        }finally{            
             return retorno;
         }
     }
@@ -293,7 +296,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                                         histcli.setIdgenero(cliente.getGeneros().getIdGenero());
                                         histcli.setNombre(cliente.getNombre().toUpperCase());    
                                         histcli.setObservaciones(cliente.getObservaciones());
-                                       
+                                        
 
                                 cliente.setObservaciones(datosClientePersonales.getObservaciones());            
                                 cliente.setApellido(datosClientePersonales.getApellido().toUpperCase());            
@@ -319,14 +322,9 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                                 cliente.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
                               }
                                 //actualizo la fecha de ultima carga
-                              
                                 cliente.setFechaCarga(new GregorianCalendar().getTime());
-                               
-
                             histcli.setTotalCompras(BigDecimal.valueOf(Double.valueOf(acumTotalCompras)));
                             histcli.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
-
-
                             /*
                              * Actualizo domicilio
                              */
@@ -339,8 +337,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
         } catch (NumberFormatException e) {
             retorno=-6;
             logger.error("Error en metodo actualizarDatos, ejbClientes "+e);
-        }finally{
-            
+        }finally{            
             return retorno;
         }
     }
@@ -356,43 +353,36 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
         String result = "<Lista>\n";
         try {    
             
-            long idPersona = existePersona(nrodDocu);
-            
-            
-            switch((int)idPersona){
-                case 0:{
-                    
-                     result+="<result>NO PASO NADA</result>\n";                        
-                     break;
-                }
-                case -1:{
-                    
-                     result+="<result>ERROR EN METODO EXISTE</result>\n";                        
-                     break;
-                }
-                default:{
-                    
+            long idPersona = existePersona(nrodDocu);    
+                    switch((int)idPersona){
+                        case 0:{
+                             result+="<result>NO PASO NADA</result>\n";                        
+                             break;
+                        }
+                        case -1:{
+
+                             result+="<result>ERROR EN METODO EXISTE</result>\n";                        
+                             break;
+                        }
+                        default:{
                             Clientes cliente = em.find(Clientes.class, idPersona);           
-                            
-                            if(cliente != null){
-                                
-                                result+="<item>\n";
-                                result+=cliente.toXML();
-                                result+="</item>\n";
-                            }else {
-                                result+="<cliente>NO ES UN CLIENTE</cliente>\n";
-                            }                                         
-                }
-                
+                                    if(cliente != null){
+
+                                        result+="<item>\n";
+                                        result+=cliente.toXML();
+                                        result+="</item>\n";
+                                    }else {
+                                        result+="<cliente>NO ES UN CLIENTE</cliente>\n";
+                                    }                                         
+                        }
             }
             
                         
         } catch (Exception e) { 
             result="<result>ERROR EN METODO obtenerClienteXTipoAndNumeroDocu</result>";
             logger.error("Error en metodo obtenerClienteXTipoAndNumeroDocu en EJBClientes "+e.getLocalizedMessage());
-        }finally{  
-             result+="</Lista>\n";                   
-            return result;
+        }finally{               
+            return result+="</Lista>\n";
         }
     }
 
@@ -405,6 +395,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
     public long addClientes(Clientes cliente) {
         long resultCode = 0;
         try {
+            
                             //-----------------------------------------------------------------------------------
                             GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
                             //-----------------------------------------------------------------------------------
@@ -416,6 +407,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                                 throw new IllegalArgumentException("Objeto Cliente es invalido");
 
                             }
+                            
                             //--------------------------------------------------------------------------
                             Query consulta = em.createQuery("SELECT c FROM Clientes c WHERE c.nrodocumento = :nrodocumento");
                             consulta.setParameter("nrodocumento",cliente.getNrodocumento());
@@ -445,9 +437,10 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                             cli.setTotalEnPuntos(BigInteger.ZERO);
                             em.persist(cli);
                             resultCode = cli.getIdPersona();
+                            
                 //---------------------------------------------------------------------------------------------------
         } catch (RuntimeException e) {
-            logger.error("OcurriÃ² un error al insertar un Objeto Cliente, verifique", e);
+            logger.error("Ocurrió un error al insertar un Objeto Cliente, verifique");
             resultCode = -2;
         }finally{            
             return resultCode;
@@ -744,23 +737,42 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
      * @return devuelve el objeto cliente, domicilio, telefono
      */
     private ClienteDomicilioTelefono parsear_a_objetos(String xmlClienteDomicilioTelefono){
+        ClienteDomicilioTelefono datoscliente = null;
         //uso de la libreria Xstream para convertir de xml a objeto tambien valida los datos 
+        try {
+            
+        
              XStream  xstream = new XStream();
+             
+        
                xstream.alias("ClienteDomicilioTelefono",ClienteDomicilioTelefono.class);
+        
                     xstream.alias("item", DatosCliente.class);                      
+        
                     //---------------------------------------------------------------------
                     if(xmlClienteDomicilioTelefono.contains("<Domicilio>")) {
                         xstream.alias("Domicilio", DatosDomicilios.class);
-             }
+                    }
                     //---------------------------------------------------------------------
                     if(xmlClienteDomicilioTelefono.contains("<telefono>")){                   
                         xstream.alias("listaTelefonos", ListaTelefonos.class);
                         xstream.alias("telefono", DatosTelefonos.class);
                         xstream.addImplicitCollection(ListaTelefonos.class,"list");
                     }                      
-         ClienteDomicilioTelefono datoscliente = (ClienteDomicilioTelefono) xstream.fromXML(parsearCaracteresEspecialesXML1(xmlClienteDomicilioTelefono).toString());                                 
-       return datoscliente;
-    
+        
+                    
+                   
+                            datoscliente = (ClienteDomicilioTelefono) xstream.fromXML(parsearCaracteresEspecialesXML1(xmlClienteDomicilioTelefono));                                 
+                   
+          
+         
+        } catch (Exception e) {
+         
+         logger.error("Error en metodo parsear_a_objetos en EJBClientes "+e);
+        }finally{
+         
+            return datoscliente;
+        }
     }
     /**
      * 
@@ -863,16 +875,18 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
         String xml = "No paso Nada";
         StringBuilder sb=null;
     try {        
+        
         sb=new StringBuilder(xmlaParsear);
             if(xmlaParsear.indexOf("<item>")!=-1){
-                xml=StringEscapeUtils.escapeXml(xmlaParsear.substring(xmlaParsear.indexOf("nes>")+4,xmlaParsear.indexOf("</obse")));                
+                xml=StringEscapeUtils.escapeXml10(xmlaParsear.substring(xmlaParsear.indexOf("nes>")+4,xmlaParsear.indexOf("</obse")));                
                 sb.replace(sb.indexOf("nes>")+4, sb.indexOf("</obse"), xml);                
             }
            if(xmlaParsear.indexOf("<Domicilio>")!=-1){
-                xml=StringEscapeUtils.escapeXml(xmlaParsear.substring(xmlaParsear.indexOf("mes>")+4,xmlaParsear.indexOf("</det1")));                
+                xml=StringEscapeUtils.escapeXml10(xmlaParsear.substring(xmlaParsear.indexOf("mes>")+4,xmlaParsear.indexOf("</det1")));                
                 sb.replace(sb.indexOf("mes>")+4, sb.indexOf("</det1"), xml);
            }
            xml=sb.toString();
+          
     } catch (Exception e) {
         xml = "Error";
         logger.error("Error en metodo parsearCaracteresEspecialesXML1 ",e);

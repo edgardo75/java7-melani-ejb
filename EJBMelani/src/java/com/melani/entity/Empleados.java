@@ -12,6 +12,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 /**
  *A Entity Empleados
@@ -22,7 +24,8 @@ import javax.persistence.Temporal;
 @DiscriminatorValue("EMP")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="emptype",discriminatorType=DiscriminatorType.STRING) 
-public class Empleados extends Personas {
+@NamedQueries({@NamedQuery(name = "Empleados.deleteById",query = "DELETE FROM Empleados e WHERE e.idPersona = :idPersona")})
+public abstract class Empleados extends Personas {
 
     /**
      *

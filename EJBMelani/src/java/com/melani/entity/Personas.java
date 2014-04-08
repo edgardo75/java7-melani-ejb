@@ -41,7 +41,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
     @NamedQuery(name = "Personas.findByNombre", query = "SELECT p FROM Personas p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Personas.findByNrodocumento", query = "SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocumento"),
     @NamedQuery(name = "Personas.findByEmail", query = "SELECT p FROM Personas p WHERE p.email = :email"),
-    @NamedQuery(name = "Personas.findByApellido", query = "SELECT p FROM Personas p WHERE p.apellido = :apellido")})
+    @NamedQuery(name = "Personas.findByApellido", query = "SELECT p FROM Personas p WHERE p.apellido = :apellido"),
+@NamedQuery(name = "Personas.deleteById",query = "DELETE FROM Personas p WHERE p.idPersona = :idPersona")})
 public abstract class Personas implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableGenerator(name="PersonaIdGen", table="ID_GEN_PER",
@@ -60,11 +61,7 @@ public abstract class Personas implements Serializable {
     @Column(name = "pertype",length=3)
     private String pertype;
     @Column(name="OBSERVACIONES",columnDefinition="VARCHAR(32000)")
-    private String observaciones;
-
-    /**
-     *
-     */
+    private String observaciones;    
     @Column(name = "NRODOCUMENTO",precision=19,unique=true,updatable=false,nullable=false)
     protected Integer nrodocumento;
     @JoinColumn(name="ID",referencedColumnName="ID",nullable=false,updatable=false)
@@ -296,7 +293,7 @@ public abstract class Personas implements Serializable {
                 + "<nombre>"+this.getNombre()+"</nombre>\n"
                 + "<idtipodocu>"+this.getTipodocumento().getId()+"</idtipodocu>\n"
                 + "<nrodocu>"+this.getNrodocumento()+"</nrodocu>\n"
-                +"<observaciones>"+StringEscapeUtils.escapeXml(this.getObservaciones())+"</observaciones>\n"
+                +"<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"
                 + "<Genero>\n"
                 + "<generoId>"+this.getGeneros().getIdGenero()+"</generoId>\n"
                 + "<generoDescripcion>"+this.getGeneros().getDescripcion()+"</generoDescripcion>\n"

@@ -20,14 +20,14 @@ public interface EJBProductosRemote {
      * @param idusuario
      * @return
      */
-    long addExistenciasProducto(int idproducto, int cantidad,float precio,int idusuario);
+    long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario);
 
     /**
      *
      * @param idProducto
      * @return
      */
-    String leerImagenBaseDatos(int idProducto);
+    String leerImagenBaseDatos(long idProducto);
 
     /**
      *
@@ -80,12 +80,12 @@ public interface EJBProductosRemote {
      * @param magnitud
      * @return
      */
-    int grabarImagen(int id_producto, byte[] longitudImagen,String nameImage,String magnitud);
+    int grabarImagen(long id_producto, byte[] longitudImagen,String nameImage,String magnitud);
 
     /**
      *
      * @param idProducto
      * @return
      */
-    byte[] obtenerImagenProducto(int idProducto);
+    byte[] obtenerImagenProducto(long idProducto);
 }

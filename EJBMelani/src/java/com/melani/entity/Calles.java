@@ -117,7 +117,7 @@ public class Calles implements Serializable {
     public String toXML(){
         String item = "<item>\n" +
                         "<id>"+this.getId()+"</id>\n" +
-                        "<nombre>"+StringEscapeUtils.escapeXml(this.getDescripcion())+"</nombre>\n" +
+                        "<nombre>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</nombre>\n" +
                       "</item>\n";
         return item;
     }

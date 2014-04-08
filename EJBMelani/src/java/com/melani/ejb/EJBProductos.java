@@ -60,7 +60,7 @@ public class EJBProductos implements EJBProductosRemote {
      * @return
      */
         @Override
-    public long addExistenciasProducto(int idproducto, int cantidad,float precio,int idusuario) {
+    public long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario) {
         long retorno = 0;
         try {
                 GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
@@ -100,7 +100,7 @@ public class EJBProductos implements EJBProductosRemote {
      * @return
      */
     @Override
-    public String leerImagenBaseDatos(int idProducto) {
+    public String leerImagenBaseDatos(long idProducto) {
         String result="NADA";
         ByteArrayInputStream is = null;
         FileOutputStream fos = null;
@@ -109,13 +109,13 @@ public class EJBProductos implements EJBProductosRemote {
                 Productos producto = em.find(Productos.class, idProducto);
                     File file = new File(pathActual+"faro.jpg");
                     fos = new FileOutputStream(file);
-                    byte[] buffer= producto.getImg();
-                    is = new ByteArrayInputStream(buffer);
-            //----------------------------------------------------------------------------------
-                    while (is.read(buffer) > 0) {
-                      fos.write(buffer);
-                    }
-            //----------------------------------------------------------------------------------
+//                    //byte[] buffer= producto.getImg();
+//                    is = new ByteArrayInputStream(buffer);
+//            //----------------------------------------------------------------------------------
+//                    while (is.read(buffer) > 0) {
+//                      fos.write(buffer);
+//                    }
+//            //----------------------------------------------------------------------------------
                     result = "LEIDO";
         } catch (IOException e) {
             result = "ERROR";
@@ -197,8 +197,7 @@ public class EJBProductos implements EJBProductosRemote {
                                     producto.setCantidadInicial(BigInteger.valueOf(datosprod.getCantidadinicial()));
                                     producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
                                     producto.setDescripcion(datosprod.getDescripcion().toUpperCase());
-                                    producto.setFecha(calendario.getTime());
-                                    producto.setImg(new byte[10_000]);
+                                    producto.setFecha(calendario.getTime());                                    
                                     producto.setCodproducto(datosprod.getCodproducto().toUpperCase());
                                     em.persist(producto);
                                         ExistenciasProductos existencias = new ExistenciasProductos();
@@ -328,8 +327,9 @@ public class EJBProductos implements EJBProductosRemote {
         String xml = "NADA";
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Query query = em.createNativeQuery("SELECT p.sid,p.DESCRIPCION,p.codproducto,p.PRECIOUNITARIO,p.CANTIDADINICIAL,p.CANTIDADDISPONIBLE,p.img" +
-                    ",p.FECHA FROM PRODUCTOS p Order by p.sid", Productos.class);
+            //Query query = em.createNativeQuery("SELECT p.sid,p.DESCRIPCION,p.codproducto,p.PRECIOUNITARIO,p.CANTIDADINICIAL,p.CANTIDADDISPONIBLE,p.img" +
+              //      ",p.FECHA FROM PRODUCTOS p Order by p.sid", Productos.class);
+            Query query = em.createNamedQuery("Productos.findAll");
             List<Productos> lista = query.getResultList();
                     if(lista.isEmpty()) {
                         xml="LA CONSULTA NO ARROJÓ RESULTADOS";
@@ -349,7 +349,7 @@ public class EJBProductos implements EJBProductosRemote {
                                     + "<img>"+prod.getImagenesProductosList().size()+"</img>\n";
                                     xml+="</producto>\n";
                                    
-                        List<ExistenciasProductos>lista1=prod.getExistenciasProductoss();
+                        //List<ExistenciasProductos>lista1=prod.getExistenciasProductoss();
                             
                         }                        
                         xml+="</Lista>\n";
@@ -473,15 +473,19 @@ public class EJBProductos implements EJBProductosRemote {
      * @return devuelve el identificador si es mayor a cero tuvo exito la operación, si no es menor hubo error, si es cero no paso nada
      */
     @Override
-    public int grabarImagen(int id_producto, byte[] longitudImagen,String nameImage,String magnitud) {
+    public int grabarImagen(long id_producto, byte[] longitudImagen,String nameImage,String magnitud) {
         int retorno = 0;
         String extension=nameImage.substring(nameImage.indexOf(".")+1, nameImage.length());
         String nameImg=nameImage.substring(0, nameImage.indexOf("."));
         try {
             
             Productos producto = em.find(Productos.class, id_producto);
+            
+            
                 ByteArrayInputStream bis = new ByteArrayInputStream(longitudImagen);
+                
                 Iterator<?> readers = ImageIO.getImageReadersByFormatName(extension);
+                
 
                         //ImageIO is a class containing static methods for locating ImageReaders
                         //and ImageWriters, and performing simple encoding and decoding. 
@@ -493,19 +497,22 @@ public class EJBProductos implements EJBProductosRemote {
                         ImageReadParam param = reader.getDefaultReadParam();
 
                         Image image = reader.read(0, param);
+                        
                         //got an image file
 
                         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+                        
                         //bufferedImage is the RenderedImage to be written
 
                         Graphics2D g2 = bufferedImage.createGraphics();
+                        
                         g2.drawImage(image, null, null);
 
                         File imageFile = new File(PATH_IMAGENES+nameImage);       
-
+                        
                         //-----------------------------------------------------------Escribir path de la imagen en disco
                         ImageIO.write(bufferedImage, extension, imageFile);
-
+                        
                         
                //-------------------------------------------------------------------------------------------------------Escribir en Base de Datos
                       retorno= grabarPathImagenEnBaseDeDatos(producto,imageFile.getPath(),extension,magnitud,nameImg);       
@@ -524,11 +531,11 @@ public class EJBProductos implements EJBProductosRemote {
      * @return
      */
     @Override
-    public byte[] obtenerImagenProducto(int idProducto) {
+    public byte[] obtenerImagenProducto(long idProducto) {
         byte[] retorno = null;
         try {
             
-            Query consulta = em.createQuery("Select i From ImagenesProductos i Where i.productos.sid = :sid order by i.id_image");
+            Query consulta = em.createQuery("SELECT i FROM ImagenesProductos i WHERE i.productos.sid = :sid");
             
             
             consulta.setParameter("sid", idProducto);
@@ -539,6 +546,7 @@ public class EJBProductos implements EJBProductosRemote {
                     for(ImagenesProductos imagen:lista){
                            pathImage=PATH_IMAGENES+imagen.getNombreImagen()+"."+imagen.getExtension();             
                     }
+            
                     //Creo objeto file
                     File file = new File(pathImage);
 
@@ -577,6 +585,7 @@ public class EJBProductos implements EJBProductosRemote {
         int retorno=0;
         try {
             //graba las características de la imagen en la base de datos
+            
             ImagenesProductos imgProd =new ImagenesProductos();
             
                     imgProd.setExtension(extension);
@@ -595,7 +604,9 @@ public class EJBProductos implements EJBProductosRemote {
                 Query consulta = em.createQuery("Select i From ImagenesProductos i Where i.productos.sid = :idProducto");
                     consulta.setParameter("idProducto", producto.getSid());
                List<ImagenesProductos>lista = consulta.getResultList();
+               
                producto.setImagenesProductosList(lista);
+               
                em.merge(producto);
             
             retorno=Integer.valueOf(String.valueOf(producto.getSid()));

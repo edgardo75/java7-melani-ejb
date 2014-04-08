@@ -551,7 +551,7 @@ public class Historiconotapedido implements Serializable {
                            "<porcrecargo>"+this.getPorcrecargo().toString()+"</porcrecargo>\n" +
                            "<porcentajedescuento>"+this.getPorcentajedesc().toString()+"</porcentajedescuento>\n" +
                            "<descuento>"+this.getDescuento().toString()+"</descuento>\n" +
-                           "<accion>"+StringEscapeUtils.escapeXml(this.getAccion())+"</accion>\n"
+                           "<accion>"+StringEscapeUtils.escapeXml10(this.getAccion())+"</accion>\n"
                            + "<saldo>"+this.getSaldo().toString()+"</saldo>\n"
                            + "<total>"+this.getTotal().toString()+"</total>\n" +
                    "</item>\n";

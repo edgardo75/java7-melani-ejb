@@ -14,11 +14,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,7 +33,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @Entity
 @Table(name = "PRODUCTOS")
 @NamedQueries({
-    @NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p"),
+    @NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p ORDER BY p.sid"),
     @NamedQuery(name = "Productos.findBySid", query = "SELECT p FROM Productos p WHERE p.sid = :sid"),
     @NamedQuery(name = "Productos.findByCantidadInicial", query = "SELECT p FROM Productos p WHERE p.cantidadInicial = :cantidadInicial"),
     @NamedQuery(name = "Productos.findByCantidadDisponible", query = "SELECT p FROM Productos p WHERE p.cantidadDisponible = :cantidadDisponible"),
@@ -64,10 +62,7 @@ public class Productos implements Serializable {
     private BigInteger cantidadDisponible;
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @Lob @Basic(fetch=FetchType.EAGER)
-    @Column(name = "IMG")
-    private byte[] img;
+    private Date fecha;    
     @OneToMany(mappedBy = "productos",cascade={CascadeType.ALL})
     private List<ExistenciasProductos> existenciasProductoss;
     @OneToMany(mappedBy = "productos",cascade = CascadeType.ALL)
@@ -218,21 +213,7 @@ public class Productos implements Serializable {
         this.precioUnitario = precioUnitario;
     }
 
-    /**
-     *
-     * @return
-     */
-    public byte[] getImg() {
-        return img;
-    }
-
-    /**
-     *
-     * @param img
-     */
-    public void setImg(byte[] img) {
-        this.img = img;
-    }
+   
 
     /**
      *
@@ -313,7 +294,7 @@ public class Productos implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String item="<producto>\n" +
                 "<id>" +this.getSid()+"</id>\n" +
-                "<descripcion>"+StringEscapeUtils.escapeXml(this.getDescripcion())+"</descripcion>\n" +
+                "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n" +
                 "<cantidadinicial>"+this.getCantidadInicial()+"</cantidadinicial>\n" +
                 "<cantidaddisponible>"+this.getCantidadDisponible()+"</cantidaddisponible>\n" +
                 "<fechacarga>"+sdf.format(this.getFecha())+"</fechacarga>\n" +

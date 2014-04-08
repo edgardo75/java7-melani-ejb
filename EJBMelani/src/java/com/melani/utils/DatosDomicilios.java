@@ -214,7 +214,7 @@ public class DatosDomicilios {
     /////////////////////--------------------------------------------------
 
         public class Barrioss{
-        private int barrioId;
+        private long barrioId;
 
         /**
          *
@@ -225,13 +225,13 @@ public class DatosDomicilios {
          *
          * @return
          */
-        public int getBarrioId(){
+        public long getBarrioId(){
             return barrioId;
         }
     }
 
     public class Calless{
-        private int calleId;
+        private long calleId;
 
         /**
          *
@@ -242,7 +242,7 @@ public class DatosDomicilios {
          *
          * @param calleId
          */
-        public Calless(int calleId){
+        public Calless(long calleId){
             this.calleId = calleId;
         }
 
@@ -250,7 +250,7 @@ public class DatosDomicilios {
          *
          * @return
          */
-        public int getCalleId(){
+        public long getCalleId(){
             return calleId;
         }
 
@@ -258,7 +258,7 @@ public class DatosDomicilios {
          *
          * @param calleId
          */
-        public void setCalleId(int calleId){
+        public void setCalleId(long calleId){
             this.calleId = calleId;
         }
     }

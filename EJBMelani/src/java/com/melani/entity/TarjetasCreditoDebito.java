@@ -151,7 +151,7 @@ public class TarjetasCreditoDebito implements Serializable {
     public String toXML(){
         String item ="<item>\n" +
                 "<id>"+this.getIdtarjeta()+"</id>\n" +
-                "<descripcion>"+StringEscapeUtils.escapeXml(this.getDescripcion())+"</descripcion>\n" +
+                "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n" +
                 "</item>\n";
     return item;
     }
