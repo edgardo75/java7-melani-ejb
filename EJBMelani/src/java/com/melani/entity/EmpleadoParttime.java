@@ -44,7 +44,7 @@ public class EmpleadoParttime extends Empleados implements Serializable{
      */
     @Override
     public String toXML(){
-        String xml="<salarioporhora>"+this.getSalarioporhora()+"</salarioporhora>\n";
-        return xml;
+        StringBuilder xml = new StringBuilder("<salarioporhora>"+this.getSalarioporhora()+"</salarioporhora>\n");
+        return xml.toString();
     }
 }

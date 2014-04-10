@@ -31,23 +31,21 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
       */
     @Override
     public String searchLocXProvincia(short idProvincia) {
-        String xml ="<Lista>\n";
+        StringBuilder xml = new StringBuilder("<Lista>\n");
         Query jpql = null;
         try {
             
             jpql = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia");
             jpql.setParameter("idProvincia",idProvincia);
             List<Localidades>localidad = jpql.getResultList();
-            
             for (Localidades localidades : localidad) {
-                xml += localidades.toXML();
+                xml.append(localidades.toXML());
             }
         } catch (Exception e) {
-            xml+="<error>Error</error>";
+            xml.append("<error>Error</error>");
             logger.error("error en metodo serachlocxprovincia "+e.getMessage());
         }finally{
-            
-            return xml+="</Lista>\n";
+           return xml.append("</Lista>\n").toString();
         }
     }
 /**
@@ -73,18 +71,18 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                     consulta.setParameter("descripcion",descripcion.toString());
                     consulta.setParameter("codigopostal", codigopostal);
                     consulta.setParameter("idProvincia", idProvincia);
-                    List<Localidades> lista = consulta.getResultList();
-                    if (lista.isEmpty()) {
-                        Localidades depto = new Localidades();
-                        depto.setDescripcion(descripcion.toUpperCase());
-                        depto.setProvincias(em.find(Provincias.class, idProvincia));
-                        depto.setCodigopostal(codigopostal);
-                        em.persist(depto);
-                        em.flush();
-                        retorno = depto.getIdLocalidad();
-                    } else {
-                        retorno = -6;
-                    }
+                            List<Localidades> lista = consulta.getResultList();
+                            if (lista.isEmpty()) {
+                                Localidades depto = new Localidades();
+                                depto.setDescripcion(descripcion.toUpperCase());
+                                depto.setProvincias(em.find(Provincias.class, idProvincia));
+                                depto.setCodigopostal(codigopostal);
+                                em.persist(depto);
+                                em.flush();
+                                retorno = depto.getIdLocalidad();
+                            } else {
+                                retorno = -6;
+                            }
             }else {
                 retorno = -7;
             }
@@ -106,26 +104,25 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
      */
     @Override
     public String searchAllLocalidadesbyidprov(Short idProvincia) {
-         String resultado = "<Lista>\n";
+         StringBuilder resultado = new StringBuilder("<Lista>\n");
          try {
              Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia order by l.descripcion asc");
              consulta.setParameter("idProvincia", idProvincia);
              List<Localidades>lista = consulta.getResultList();
              if(lista.isEmpty()) {
-                 resultado="NO HAY LOCALIDADES CARGADAS en "+em.find(Provincias.class, idProvincia).getProvincia();
+                 resultado.append("NO HAY LOCALIDADES CARGADAS en ").append(em.find(Provincias.class, idProvincia).getProvincia());
              } else{
                  for (Localidades localidades : lista) {
-                     resultado+=localidades.toXML();
+                     resultado.append(localidades.toXML());
                  }
             
              }
         } catch (Exception e) {
             logger.error("Error en metodo searchAllLocalidadesbyidprov "+e.getLocalizedMessage());
-            resultado+="<error>Se produjo un error</error>";
+            resultado.append("<error>Se produjo un error</error>");
         }finally{
-              resultado+="</Lista>\n";
-              
-        return resultado;
+              resultado.append("</Lista>\n");              
+            return resultado.toString();
         }
     }
 

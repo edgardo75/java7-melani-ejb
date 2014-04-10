@@ -166,10 +166,7 @@ public class Personastelefonos implements Serializable {
             return false;
         }
         Personastelefonos other = (Personastelefonos) object;
-        if ((this.personastelefonosPK == null && other.personastelefonosPK != null) || (this.personastelefonosPK != null && !this.personastelefonosPK.equals(other.personastelefonosPK))) {
-            return false;
-        }
-        return true;
+        return (this.personastelefonosPK != null || other.personastelefonosPK == null) && (this.personastelefonosPK == null || this.personastelefonosPK.equals(other.personastelefonosPK));
     }
     @Override
     public String toString() {

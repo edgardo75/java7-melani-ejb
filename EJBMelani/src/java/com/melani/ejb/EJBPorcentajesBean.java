@@ -39,7 +39,6 @@ public class EJBPorcentajesBean implements EJBPorcentajesRemote {
         } catch (Exception e) {
             logger.error("Error en metodo agregarDatosPorcenta, verifique "+ e.getLocalizedMessage());
         }finally{
-            
             return retorno;
         }
     }

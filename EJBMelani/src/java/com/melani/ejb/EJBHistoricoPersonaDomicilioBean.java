@@ -46,8 +46,7 @@ public class EJBHistoricoPersonaDomicilioBean implements EJBHistoricoPersonaDomi
             retorno = -4;
             logger.error("Error en metodo addOneHomePerson, EJBHistoricoPersonaDomicilioBean "+e.getMessage());
         }finally{
-            
-          return retorno;
+           return retorno;
         }
     }        
 }

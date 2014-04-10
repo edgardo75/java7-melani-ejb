@@ -378,32 +378,30 @@ public class Presupuestos implements Serializable {
      */
     public String toXML(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String xml ="<Item>\n" +
-                "<id>" +this.getIdPresupuesto()+ "</id>\n" +
-                "<nombre>" +this.getNombre()+ "</nombre>\n"+
-                "<apellido>" +this.getApellido()+ "</apellido>\n"+                
-                "<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"+
-                "<totalapagar>" +this.getTotalapagar().toString()+ "</totalapagar>\n"+
-                "<usuarioexpidio>" +this.getIdUsuarioFk()+ "</usuarioexpidio>\n"+
-                "<iva>" +this.getIva().toString()+ "</iva>\n"+
-                "<total>" +this.getTotal().toString()+ "</total>\n"+
-                "<fechapresupuesto>" +sdf.format(this.getFechapresupuesto())+ "</fechapresupuesto>\n"+
-                "<fechavalidez>" +sdf.format(this.getValidez())+ "</fechavalidez>\n" +
-                "<porcentajedescuentototal>" +this.getPorcetajedescuentoTOTAL().toString()+ "</porcentajedescuentototal>\n" +
-                "<descuentoresto>"+this.getDescuentoresto().toString()+"</descuentoresto>\n" +
-                "<recargototal>"+this.getRecargototal().toString()+"</recargototal>\n" +
-                "<porcentajerecargo>"+this.getPorcentajerecargo().toString()+"</porcentajerecargo>\n"+
-                "<Detallepresupuesto>\n" ;
+        StringBuilder xml = new StringBuilder("<Item>\n").append("<id>").append(this.getIdPresupuesto()).append("</id>\n");
+                xml.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
+                xml.append("<apellido>").append(this.getApellido()).append("</apellido>\n");                
+                xml.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
+                xml.append("<totalapagar>").append(this.getTotalapagar().toString()).append("</totalapagar>\n");
+                xml.append("<usuarioexpidio>").append(this.getIdUsuarioFk()).append("</usuarioexpidio>\n");
+                xml.append("<iva>").append(this.getIva().toString()).append("</iva>\n");
+                xml.append("<total>").append(this.getTotal().toString()).append("</total>\n");
+                xml.append("<fechapresupuesto>").append(sdf.format(this.getFechapresupuesto())).append("</fechapresupuesto>\n");
+                xml.append("<fechavalidez>").append(sdf.format(this.getValidez())).append("</fechavalidez>\n" );
+                xml.append("<porcentajedescuentototal>").append(this.getPorcetajedescuentoTOTAL().toString()).append("</porcentajedescuentototal>\n");
+                xml.append("<descuentoresto>").append(this.getDescuentoresto().toString()).append("</descuentoresto>\n");
+                xml.append("<recargototal>").append(this.getRecargototal().toString()).append("</recargototal>\n");
+                xml.append("<porcentajerecargo>").append(this.getPorcentajerecargo().toString()).append("</porcentajerecargo>\n");
+                xml.append("<Detallepresupuesto>\n" );
                 if(this.getDetallepresupuestosList().isEmpty()) {
-                    xml+=   "</Detallepresupuesto>\n";
+                    xml.append("</Detallepresupuesto>\n");
         } else{
                     List<Detallespresupuesto>lista = this.getDetallepresupuestosList();
                         for (Detallespresupuesto detallespresupuesto : lista) {
-                            xml+=detallespresupuesto.toXML();
+                            xml.append(detallespresupuesto.toXML());
                         }
                 }
-            xml+=   "</Detallepresupuesto>\n"+
-                "</Item>\n";
-    return xml;
+            xml.append("</Detallepresupuesto>\n").append("</Item>\n");
+    return xml.toString();
     }
 }

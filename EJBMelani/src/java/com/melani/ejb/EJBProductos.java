@@ -277,16 +277,15 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String selectoneproducto(long idproducto) {
-        String result = "NADA";
+        StringBuilder result = new StringBuilder("NADA");
         try {
             Productos producto = em.find(Productos.class, idproducto);
-            result = producto.toXML();
+            result.append(producto.toXML());
         } catch (Exception e) {
-            result = "ERROR";
+            result.append("ERROR");
             logger.error("Error en metodo selectoneproducto "+e);
         }finally{
-            
-            return result;
+            return result.toString();
         }
     }
 
@@ -323,40 +322,39 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String searchAllProductos() {
-        String xml = "NADA";
+        StringBuilder xml = new StringBuilder("NADA");
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             
             Query query = em.createNamedQuery("Productos.findAll");
             List<Productos> lista = query.getResultList();
                     if(lista.isEmpty()) {
-                        xml="LA CONSULTA NO ARROJÓ RESULTADOS";
+                        xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
             } else{
                         Iterator iter = lista.iterator();
-                        xml="<Lista>\n";
+                        xml.append("<Lista>\n");
                         while(iter.hasNext()){
                             Productos prod = (Productos) iter.next();
-                            xml+="<producto>\n"
-                                    + "<id>"+prod.getSid()+"</id>\n"
-                                    + "<idproduct>"+prod.getCodproducto()+"</idproduct>\n"
-                                    + "<descripcion>"+prod.getDescripcion()+"</descripcion>\n"
-                                    + "<cantidadDisponible>"+prod.getCantidadDisponible()+"</cantidadDisponible>\n"
-                                    + "<cantidadInicial>"+prod.getCantidadInicial()+"</cantidadInicial>\n"
-                                    + "<fecha>"+sdf.format(prod.getFecha())+"</fecha>\n" 
-                                    +"<precio>"+prod.getPrecioUnitario()+"</precio>\n"
-                                    + "<img>"+prod.getImagenesProductosList().size()+"</img>\n";
-                                    xml+="</producto>\n";
+                            xml.append("<producto>\n");
+                                    xml.append("<id>").append(prod.getSid()).append("</id>\n");
+                                    xml.append("<idproduct>").append(prod.getCodproducto()).append("</idproduct>\n");
+                                    xml.append("<descripcion>").append(prod.getDescripcion()).append("</descripcion>\n");
+                                    xml.append("<cantidadDisponible>").append(prod.getCantidadDisponible()).append("</cantidadDisponible>\n");
+                                    xml.append("<cantidadInicial>").append(prod.getCantidadInicial()).append("</cantidadInicial>\n");
+                                    xml.append("<fecha>").append(sdf.format(prod.getFecha())).append("</fecha>\n");
+                                    xml.append("<precio>").append(prod.getPrecioUnitario()).append("</precio>\n");
+                                    xml.append("<img>").append(prod.getImagenesProductosList().size()).append("</img>\n");
+                                    xml.append("</producto>\n");
                                    
-                        //List<ExistenciasProductos>lista1=prod.getExistenciasProductoss();
+                        
                             
                         }                        
-                        xml+="</Lista>\n";
+                        xml.append("</Lista>\n");
                     }
         }catch (Exception e) {
             logger.error("Error al buscar todos los producto EJBProducto", e);
         }finally{
-            
-            return xml;
+            return xml.toString();
         }
     }
 
@@ -405,20 +403,20 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String actualizarProducto(String xmlProducto) {
-          String retorno = "0L";
+          StringBuilder retorno = new StringBuilder("0L");
         Productos producto = null;
         long idproduct;
         try {
         idproduct =updateProducto(producto, xmlProducto);
-            retorno="<Lista>\n" +
-                    "<producto>\n" +
-                    "<id>"+idproduct+"</id>\n" +
-                    "</producto>\n"+
-                    "</Lista>\n";
+            retorno.append("<Lista>\n");
+                    retorno.append("<producto>\n");
+                    retorno.append("<id>").append(idproduct).append("</id>\n");
+                    retorno.append("</producto>\n");
+                    retorno.append("</Lista>\n");
         } catch (Exception e) {
             logger.error("Error en metodo addProducto "+e);
         }finally{
-            return retorno;
+            return retorno.toString();
         }
     }
     private long updateProducto(Productos producto, String xmlProducto) {

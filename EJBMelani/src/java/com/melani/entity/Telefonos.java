@@ -143,10 +143,7 @@ import javax.persistence.Table;
             return false;
         }
         Telefonos other = (Telefonos) object;
-        if ((this.telefonosPK == null && other.telefonosPK != null) || (this.telefonosPK != null && !this.telefonosPK.equals(other.telefonosPK))) {
-            return false;
-        }
-        return true;
+        return (this.telefonosPK != null || other.telefonosPK == null) && (this.telefonosPK == null || this.telefonosPK.equals(other.telefonosPK));
     }
     @Override
     public String toString() {

@@ -261,7 +261,6 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             logger.error("Error en metodo almacenarDetalleNotaConControlStock "+e.getLocalizedMessage());
             retorno =-1;
         }finally{
-            
             return retorno;
         }
     }
@@ -313,23 +312,21 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
      */
     @Override
     public String selectUnaNota(long idnta) {
-        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").append("<Lista>\n");
         try {
             //Si encuentro la nota de pedido devuelve el resultado si no mensaje de nota no encontrada
             Notadepedido nota = em.find(Notadepedido.class, idnta);
             if(nota != null) {               
-                xml+=devolverNotaProcesadaSB(nota);
+                xml.append(devolverNotaProcesadaSB(nota));
             } else {
-                xml+="<nota>nota no encontrada</nota>";
+                xml.append("<nota>nota no encontrada</nota>");
             }
-            //xml+=nota.toXML();
+            
         } catch (Exception e) {
             logger.error("Error en metodo selectUnaNota "+e.getLocalizedMessage());
-            xml += "Error no paso nada";
+            xml.append("Error no paso nada");
         }finally{
-            
-            return xml+="</Lista>";
+            return xml.append("</Lista>").toString();
         }
     }
 
@@ -552,8 +549,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             logger.error("Error en metodo entregarNotaPedido "+e.getLocalizedMessage());
             result = -1;
         }finally{
-            
-            return result;
+           return result;
         }
     }
 //-----------------------------------------------------------------------------------------------
@@ -587,8 +583,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
      */
     @Override
     public String selectNotaEntreFechas(String fecha1, String fecha2,int idvendedor) {
-        String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder xml= new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").append( "<Lista>\n");
         List<Notadepedido>lista = null;
         try {
             
@@ -604,25 +599,24 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                     lista= jpasql.getResultList();
                                                     if(lista.size()>0){
                                                             for (Notadepedido notadepedido1 : lista) {
-                                                                xml+=notadepedido1.toXML();
+                                                                xml.append(notadepedido1.toXML());
                                                             }
                                                                
-                                                          xml=agregarDatosAlxml(xml,fecha1,fecha2);
+                                                          xml=agregarDatosAlxml(xml.toString(),fecha1,fecha2);
                                                     }else {
-                                                        xml+="<result>lista vacia</result>\n";
+                                                        xml.append("<result>lista vacia</result>\n");
                     }
             }else {
-                xml+=resultProcFechas;
+                xml.append(resultProcFechas);
             }
             
             
             
         } catch(ParseException e){
-            xml+="<error>Error</error>\n";
+            xml.append("<error>Error</error>\n");
             logger.error("Error en metodo selectnotaEntreFechas",e.fillInStackTrace());
         }finally{
-                
-                return xml+="</Lista>\n";
+                return xml.append("</Lista>\n").toString();
         }
     }
 
@@ -739,10 +733,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                        
                                 }
         } catch (Exception e) {
-            
             logger.error("Error en metodo devolverNotaProcesadaSB "+e.getLocalizedMessage());
         }finally{
-            
             return sb;
         }
     }
@@ -1003,8 +995,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
      */
     @Override
     public String selecNotaEntreFechasEntrega(String fecha1, String fecha2, int idvendedor) {
-        String xml="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").append("<Lista>\n");
         List<Notadepedido>lista = null;
         try {
             
@@ -1016,31 +1007,30 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
                 jpasql.setParameter("3", '0');
                 jpasql.setParameter("4", '1');
-                        //Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n WHERE CAST(n.FECHAENTREGA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.fechaentrega,n.horacompra,n.id desc", Notadepedido.class);
+                        
                             lista= jpasql.getResultList();
                             if(lista.size()>0){
                                 
-                                try {
+                                
                                     for (Notadepedido notadepedido1 : lista) {
-                                        xml+=notadepedido1.toXML();
+                                        xml.append(notadepedido1.toXML());
                                    }
-                                } catch (Exception e) {
-                                }
+                                
                                     
                                
-                                 xml=agregarDatosAlxml(xml, fecha1, fecha2);
+                                 xml=agregarDatosAlxml(xml.toString(), fecha1, fecha2);
                             }else {
-                                xml+="<result>lista vacia</result>\n";
+                                xml.append("<result>lista vacia</result>\n");
                         }
             }else {
-                xml+=resultChequeoFechas;
+                xml.append(resultChequeoFechas);
             }
                          
         } catch (ParseException e) {
-            xml+="<error>Error</error>\n";
+            xml.append("<error>Error</error>\n");
             logger.error("Error en metodo selectnotaEntreFechasEntrega "+e.getLocalizedMessage());
         }finally{                
-                return  xml+="</Lista>\n";  
+                return  xml.append("</Lista>\n").toString();  
         }
     }
     private void backupLogListDetalleNotaAntesdeBorrar(Notadepedido nota) {
@@ -1114,7 +1104,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     @Override
     @SuppressWarnings("FinallyDiscardsException")
     public String calcularVentasMensualesHastaFechaYAnoActual() {
-        String xml="<Lista>\n";
+        StringBuilder xml= new StringBuilder("<Lista>\n");
         try {
             GregorianCalendar gc = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("MM");
@@ -1131,56 +1121,50 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                             Query consulta = em.createQuery("SELECT SUM(n.montototalapagar) FROM Notadepedido n WHERE SQL('EXTRACT(MONTH FROM ?)',n.fechadecompra) = ?1 AND SQL('EXTRACT(YEAR FROM ?)',n.fechadecompra) = ?2");
                             consulta.setParameter("1", month);
                             consulta.setParameter("2", year);
-                            //Query consulta = em.createNativeQuery("SELECT SUM(n.MONTOTOTALAPAGAR) FROM NOTADEPEDIDO n WHERE EXTRACT(MONTH FROM n.FECHADECOMPRA)="+month+" AND EXTRACT(YEAR FROM n.FECHADECOMPRA)="+year+"");
-                            
-
-                                ventaMensual=consulta.getResultList().toString().replace("[", "").replace("]", "");
-                                //ventaMensual=ventaMensual.substring(ventaMensual.indexOf("[")+1, ventaMensual.length()-1).toLowerCase();
-                                
-
-                            xml+="<Item>\n";
+                            ventaMensual=consulta.getResultList().toString().replace("[", "").replace("]", "");
+                            xml.append("<Item>\n");
                             switch(i){
-                                case 0:xml+="<month>ENE</month>\n";
+                                case 0:xml.append("<month>ENE</month>\n");
                                     break;
-                                case 1:xml+="<month>FEB</month>\n";    
+                                case 1:xml.append("<month>FEB</month>\n");    
                                     break;
-                                case 2:xml+="<month>MAR</month>\n";       
+                                case 2:xml.append("<month>MAR</month>\n");       
                                     break;
-                                case 3:xml+="<month>ABR</month>\n";       
+                                case 3:xml.append("<month>ABR</month>\n");       
                                     break;
-                                case 4:xml+="<month>MAY</month>\n";       
+                                case 4:xml.append("<month>MAY</month>\n");       
                                     break;
-                                case 5:xml+="<month>JUN</month>\n";       
+                                case 5:xml.append("<month>JUN</month>\n");       
                                     break;
-                                case 6:xml+="<month>JUL</month>\n";       
+                                case 6:xml.append("<month>JUL</month>\n");       
                                     break;
-                                case 7:xml+="<month>AGO</month>\n";       
+                                case 7:xml.append("<month>AGO</month>\n");       
                                     break;
-                                case 8:xml+="<month>SEP</month>\n";       
+                                case 8:xml.append("<month>SEP</month>\n");       
                                     break;
-                                case 9:xml+="<month>OCT</month>\n";       
+                                case 9:xml.append("<month>OCT</month>\n");       
                                     break;    
-                                case 10:xml+="<month>NOV</month>\n";       
+                                case 10:xml.append("<month>NOV</month>\n");       
                                     break;        
-                                case 11:xml+="<month>DIC</month>\n";       
+                                case 11:xml.append("<month>DIC</month>\n");       
                                             
                             }
                                     
                                   if(!"null".equals(ventaMensual)) {
-                                      xml+= "<totalMonthlySales>"+ventaMensual+"</totalMonthlySales>\n";
+                                      xml.append("<totalMonthlySales>").append(ventaMensual).append("</totalMonthlySales>\n");
                             } else {
-                                      xml+= "<totalMonthlySales>0</totalMonthlySales>\n";
+                                      xml.append("<totalMonthlySales>0</totalMonthlySales>\n");
                             }
-                                    xml+= "</Item>\n";
+                                    xml.append("</Item>\n");
                 
             }
-            xml+="</Lista>";
+            xml.append("</Lista>");
             
         } catch (NumberFormatException e) {
             logger.error("Error en metodo calcularVentasMensualesHastaFechaYAnoActual"+e.getLocalizedMessage());
         }finally{
             
-            return xml;
+            return xml.toString();
         }
     }
 
@@ -1232,7 +1216,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         }
     }
 
-    private String agregarDatosAlxml(String xml,String fecha1,String fecha2) {
+    private StringBuilder agregarDatosAlxml(String xml,String fecha1,String fecha2) {
         
          fecha1=fecha1.substring(3, 5)+"/"+fecha1.substring(0, 2)+"/"+fecha1.substring(6, 10);
          
@@ -1246,7 +1230,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                 
                                                                  sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoconsultado);
                                                                  
-                              return sb.toString();
+                              return sb;
     }
     
 }

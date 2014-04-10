@@ -252,10 +252,7 @@ public class EntradasySalidasCaja implements Serializable {
             return false;
         }
         EntradasySalidasCaja other = (EntradasySalidasCaja) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     @Override
     public String toString() {
@@ -269,18 +266,18 @@ public class EntradasySalidasCaja implements Serializable {
     public String toXML(){
     SimpleDateFormat sdf =new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");
-    String item="<item>\n"
-            + "<id>"+this.getId()+"</id>\n"
-            + "<detalles>"+this.getDetalles()+"</detalles>\n"
-            + "<numerocupon>"+this.getNumerocupon()+"</numerocupon>\n"
-            + "<enefectivo>"+this.getEnefectivo()+"</enefectivo>\n"
-            + "<entradas>"+this.getEntradas()+"</entradas>\n"
-            + "<fecha>"+sdf.format(this.getFecha())+"</fecha>\n"
-            + "<hora>"+sdfh.format(this.getHora())+"</hora>\n"
-            + "<idtarjeta>"+this.getIdTarjetaFk().getIdtarjeta()+"</idtarjeta>\n"
-            + "<idusuario>"+this.getIdUsuario()+"</idusuario>\n"
-            + "<salidas>"+this.getSalidas()+"</salidas>\n"
-            + "</item>\n";
-return item;
+    StringBuilder item = new StringBuilder("<item>\n");
+            item.append("<id>").append(this.getId()).append("</id>\n");
+            item.append("<detalles>").append(this.getDetalles()).append("</detalles>\n");
+            item.append("<numerocupon>").append(this.getNumerocupon()).append( "</numerocupon>\n");
+            item.append("<enefectivo>").append(this.getEnefectivo()).append( "</enefectivo>\n");
+            item.append("<entradas>").append(this.getEntradas()).append( "</entradas>\n");
+            item.append("<fecha>").append(sdf.format(this.getFecha())).append( "</fecha>\n");
+            item.append("<hora>").append(sdfh.format(this.getHora())).append( "</hora>\n");
+            item.append("<idtarjeta>").append(this.getIdTarjetaFk().getIdtarjeta()).append( "</idtarjeta>\n");
+            item.append("<idusuario>").append(this.getIdUsuario()).append( "</idusuario>\n");
+            item.append("<salidas>").append(this.getSalidas()).append( "</salidas>\n");
+            item.append( "</item>\n");
+return item.toString();
 }    
 }

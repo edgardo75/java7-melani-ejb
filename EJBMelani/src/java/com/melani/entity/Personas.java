@@ -269,10 +269,7 @@ public abstract class Personas implements Serializable {
             return false;
         }
         Personas other = (Personas) object;
-        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
-            return false;
-        }
-        return true;
+        return (this.idPersona != null || other.idPersona == null) && (this.idPersona == null || this.idPersona.equals(other.idPersona));
     }
     @Override
     public String toString() {

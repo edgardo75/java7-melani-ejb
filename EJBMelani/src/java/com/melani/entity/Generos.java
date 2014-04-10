@@ -111,10 +111,7 @@ public class Generos implements Serializable {
             return false;
         }
         Generos other = (Generos) object;
-        if ((this.idGenero == null && other.idGenero != null) || (this.idGenero != null && !this.idGenero.equals(other.idGenero))) {
-            return false;
-        }
-        return true;
+        return (this.idGenero != null || other.idGenero == null) && (this.idGenero == null || this.idGenero.equals(other.idGenero));
     }
     @Override
     public String toString() {
