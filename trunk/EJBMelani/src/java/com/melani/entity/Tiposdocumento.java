@@ -105,10 +105,7 @@ public class Tiposdocumento implements Serializable {
             return false;
         }
         Tiposdocumento other = (Tiposdocumento) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     @Override
     public String toString() {

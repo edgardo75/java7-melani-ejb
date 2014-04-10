@@ -199,10 +199,7 @@ public class ExistenciasProductos implements Serializable {
             return false;
         }
         ExistenciasProductos other = (ExistenciasProductos) object;
-        if ((this.idExistencias == null && other.idExistencias != null) || (this.idExistencias != null && !this.idExistencias.equals(other.idExistencias))) {
-            return false;
-        }
-        return true;
+        return (this.idExistencias != null || other.idExistencias == null) && (this.idExistencias == null || this.idExistencias.equals(other.idExistencias));
     }
     @Override
     public String toString() {

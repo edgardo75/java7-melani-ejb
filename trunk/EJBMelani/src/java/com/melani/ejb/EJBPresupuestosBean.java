@@ -125,25 +125,23 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String selectAllPresupuestosJPA() {
-        String xmlpresupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder xmlpresupuesto = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").append("<Lista>\n");
         try {
             Query consulta  = em.createNamedQuery("Presupuesto.findPresupuestoOrderByFechaIdPresupesto");
             List<Presupuestos>lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xmlpresupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                xmlpresupuesto.append("LA CONSULTA NO ARROJÓ RESULTADOS!!!");
             } else{
                 for (Presupuestos presupuestos : lista) {
-                    xmlpresupuesto+=presupuestos.toXML();
+                    xmlpresupuesto.append(presupuestos.toXML());
                 }
-            
             }
         } catch (Exception e) {
-            xmlpresupuesto="Error";
+            xmlpresupuesto.append("Error");
             logger.error("Error en metodo selectAllPresupuestoJPA "+e.getMessage());
         }finally{
-            xmlpresupuesto+="</Lista>\n";                    
-            return xmlpresupuesto;
+            xmlpresupuesto.append("</Lista>\n");                    
+            return xmlpresupuesto.toString();
         }
     }
 

@@ -41,7 +41,7 @@ public class FullTimeEmpleado extends Empleados implements Serializable{
      */
     @Override
     public String toXML(){
-        String xml="<salario>" +this.getSalario()+"</salario>\n";
-        return xml;
+        StringBuilder xml = new StringBuilder("<salario>" +this.getSalario()+"</salario>\n");
+        return xml.toString();
     }
 }

@@ -134,13 +134,13 @@ public class HistPersonasDomicilios implements Serializable {
      * @return
      */
     public String toXML(){
-        String item ="<item>\n";
-        item+="<id>"+this.getIdhistperdom()+"</id>\n" +
-                "<idper>"+this.getIdPersona()+"</idper>\n" +
-                "<iddom>"+this.getIdDomicilio()+"<iddom>\n" +
-                "<fechacambio>"+this.getFechadecambio()+"</fechacambio>\n" +
-                "<idusuario>"+this.getIdusuario()+"</idusuario>\n" +
-                "</item>\n";
-        return item;
+        StringBuilder item = new StringBuilder("<item>\n");
+        item.append("<id>").append(this.getIdhistperdom()).append("</id>\n");
+                item.append("<idper>").append(this.getIdPersona()).append("</idper>\n");
+                item.append("<iddom>").append(this.getIdDomicilio()).append("<iddom>\n");
+                item.append("<fechacambio>").append(this.getFechadecambio()).append("</fechacambio>\n");
+                item.append("<idusuario>").append(this.getIdusuario()).append("</idusuario>\n");
+                item.append("</item>\n");
+        return item.toString();
     }
 }

@@ -28,15 +28,15 @@ private EntityManager em;
  */
 @Override
     public String searchAllProvincias() {
-        String xml = "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<Lista>\n");
         try {
             Query consulta = em.createNamedQuery("Provincias.findAll");
             List<Provincias> lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xml+="NO HAY PROVINCIAS CARGADAS";
+                xml.append("NO HAY PROVINCIAS CARGADAS");
             } else{
                 for (Provincias provincias : lista) {
-                    xml+=provincias.toXML();
+                    xml.append(provincias.toXML());
                 }
                 
             }
@@ -44,8 +44,8 @@ private EntityManager em;
             logger.error("error en metodo searchallPRovincias", e);
         }finally{
             
-            xml+="</Lista>\n";
-        return xml;
+            xml.append("</Lista>\n");
+        return xml.toString();
         }
     }
 }

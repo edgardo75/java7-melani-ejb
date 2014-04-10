@@ -29,23 +29,23 @@ public class EJBTarjetasBean implements EJBTarjetasRemote {
      */
     @Override
     public String searchAllTarjetasCreditoDebito() {
-        String xml = "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<Lista>\n");
         try {
             Query consulta = em.createQuery("SELECT t FROM TarjetasCreditoDebito t Order by t.idtarjeta");
             List<TarjetasCreditoDebito>lista = consulta.getResultList();
             if(lista.size()>0){
                 for (TarjetasCreditoDebito tarjetasCreditoDebito : lista) {
-                    xml+=tarjetasCreditoDebito.toXML();
+                    xml.append(tarjetasCreditoDebito.toXML());
                 }
             }else {
-                xml+="no hay tarjetas";
+                xml.append("no hay tarjetas");
             }
-            xml+="</Lista>\n";
+            xml.append("</Lista>\n");
         } catch (Exception e) {
             logger.error("Error en metodo searchalltarjetascreditodebito "+ e.getLocalizedMessage());
         }finally{
             
-            return xml;
+            return xml.toString();
         }
     }
 }

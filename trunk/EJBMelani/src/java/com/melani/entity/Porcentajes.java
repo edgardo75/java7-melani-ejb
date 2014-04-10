@@ -140,10 +140,7 @@ public class Porcentajes implements Serializable {
             return false;
         }
         Porcentajes other = (Porcentajes) object;
-        if ((this.idPorcentajes == null && other.idPorcentajes != null) || (this.idPorcentajes != null && !this.idPorcentajes.equals(other.idPorcentajes))) {
-            return false;
-        }
-        return true;
+        return (this.idPorcentajes != null || other.idPorcentajes == null) && (this.idPorcentajes == null || this.idPorcentajes.equals(other.idPorcentajes));
     }
     @Override
     public String toString() {

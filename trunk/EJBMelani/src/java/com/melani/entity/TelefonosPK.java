@@ -87,10 +87,7 @@ public class TelefonosPK implements Serializable {
            if(this.numero != other.numero) {
                return false;
         }
-        if (this.idPrefijo != other.idPrefijo) {
-            return false;
-        }
-        return true;
+        return this.idPrefijo == other.idPrefijo;
     }
     @Override
     public String toString() {

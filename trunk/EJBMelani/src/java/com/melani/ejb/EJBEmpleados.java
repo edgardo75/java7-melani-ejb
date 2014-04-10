@@ -88,25 +88,15 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      * @return
      */
     public long addEmpleadoParttime(String xmlEmpleado){
-    
         long retorno =0;
-        try {
-            
+        try {           
              DatosEmpleado datosEmpleado = datosEmpleadosObject(xmlEmpleado);
-                       
-                
-                
-                
                 retorno = procesarDatosEmpleadoAdd(datosEmpleado);
-            
-            
-
-        } catch (Exception e) {
+            } catch (Exception e) {
             retorno = -1;
             logger.error("Error en metodo addEmpleadoParttime "+e.getLocalizedMessage());
         }finally{
-            
-            return retorno;
+           return retorno;
         }
     }
 
@@ -122,19 +112,18 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             List<Empleados>lista = consulta.getResultList();
             if(lista.size()>0){
                 for (Empleados empleados : lista) {                    
-                    xml.append("<item>\n");
-                    xml.append("<id>").append(empleados.getIdPersona()).append("</id>\n").append("<nombre>").append(StringEscapeUtils.escapeXml10(empleados.getNombre())).append("</nombre>\n");
+                            xml.append("<item>\n");
+                            xml.append("<id>").append(empleados.getIdPersona()).append("</id>\n").append("<nombre>").append(StringEscapeUtils.escapeXml10(empleados.getNombre())).append("</nombre>\n");
                             xml.append("<apellido>").append(StringEscapeUtils.escapeXml10(empleados.getApellido())).append("</apellido>\n");
                             xml.append("<genero>").append(empleados.getGeneros().getIdGenero()).append("</genero>\n");
                             xml.append("<tipodocu>").append(empleados.getTipodocumento().getId()).append("</tipodocu>\n");
                             xml.append("<documento>").append(empleados.getNrodocumento()).append("</documento>\n");
                             xml.append("<observaciones>").append(StringEscapeUtils.escapeXml10(empleados.getObservaciones())).append("</observaciones>\n");
                             xml.append("<email>").append(empleados.getEmail()).append("</email>\n");
-                    xml.append(obtenerEmpleado(empleados));
-                    xml.append(empleados.toXMLEmpleado());
-                    xml.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
-                            
-                    xml.append("</item>\n");
+                            xml.append(obtenerEmpleado(empleados));
+                            xml.append(empleados.toXMLEmpleado());
+                            xml.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
+                            xml.append("</item>\n");
                 }
             }else {
                 xml.append("<result>Lista Vacia</result>\n");
@@ -143,7 +132,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             logger.error("error al obtener lista de empleados "+e.getMessage());
             xml.append("<error>").append(e.getLocalizedMessage()).append("</error>\n");
         }finally{
-            
             return xml.append("</Lista>\n").toString();
         }
     }
@@ -155,7 +143,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      */
     protected String obtenerEmpleado(Empleados emp){
         String xml=null;
-        
         if(emp.getEmptype().equals("FULLTIME")){
                         Query sqlFullTimeEmp = em.createQuery("Select f From FullTimeEmpleado f Where f.idPersona = :idpersona");
                         sqlFullTimeEmp.setParameter("idpersona", emp.getIdPersona());
@@ -163,7 +150,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             for (FullTimeEmpleado fullTimeEmpleado : list) {
                 xml=fullTimeEmpleado.toXML();
             }
-
         }else{
                         Query sqlParTTimeEmp = em.createQuery("Select e From EmpleadoParttime e Where e.idPersona = :idpersona");
                         sqlParTTimeEmp.setParameter("idpersona", emp.getIdPersona());
@@ -200,7 +186,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             retorno=-1;
             logger.error("Error en metodo deshabilitarEmpleado "+ e.getLocalizedMessage());
         }finally{
-            
             return retorno;
         }
     }
@@ -229,14 +214,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                         retorno=3;
                 }
             }
-            
-            
-        } catch (Exception e) {
+          } catch (Exception e) {
             retorno =-3;
             logger.error("Error en metodo buscar persona and email "+ e.getLocalizedMessage());
         }finally{
-            
-            return retorno;
+           return retorno;
         }
     }
 
@@ -284,12 +266,8 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             
            retorno=validateData(empleado);//retorno el resultado de validar datos
            if(retorno==0){
-                        
                         retorno = valorRetornadoAlBuscarEmailyNombreUsuario(retorno, empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());
-                        
-                             
-
-                              if(retorno>0){               
+                            if(retorno>0){               
              
                                            //selecciono la persona con el tipo de empleado a buscar
                                                Query sqlEmpleadoEmptype =em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona and e.emptype like :emptype");
@@ -462,7 +440,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             logger.error("Error en metodo actualizarEmpleado en EJBEmpleados "+e.getLocalizedMessage());
        
         }finally{
-            
             return retorno;
         }
     }
@@ -511,10 +488,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         
         long retorno=0;
         try {
-            
-        
-              
-                retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
+              retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
                 if(retorno==0){
                         retorno =valorRetornadoAlBuscarEmailyNombreUsuario(retorno,empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());  
                             
@@ -550,14 +524,9 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                             empfulltime.setEmail(empleado.getEmail().toLowerCase());
                                          empfulltime.setNombre(empleado.getNombre().toUpperCase());
                                          empfulltime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));
-                                       
-                                         try {
-
-
-                                                empfulltime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
-
-
-                                       } catch (Exception e) {
+                                       try {
+                                            empfulltime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
+                                        } catch (Exception e) {
                                            retorno=-10;
                                            logger.error(e.getLocalizedMessage());
                                        }
@@ -579,9 +548,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         }finally{
              return retorno;
         }
-        
-       
-         
     }
 
     private long addPartTimeEmpleado(DatosEmpleado empleado) {

@@ -178,10 +178,7 @@ public class Localidades implements Serializable {
             return false;
         }
         Localidades other = (Localidades) object;
-        if ((this.idLocalidad == null && other.idLocalidad != null) || (this.idLocalidad != null && !this.idLocalidad.equals(other.idLocalidad))) {
-            return false;
-        }
-        return true;
+        return (this.idLocalidad != null || other.idLocalidad == null) && (this.idLocalidad == null || this.idLocalidad.equals(other.idLocalidad));
     }
     @Override
     public String toString() {
@@ -193,13 +190,12 @@ public class Localidades implements Serializable {
      * @return
      */
     public String toXML(){
-        String item="<localidades>\n"
-                + "<id>"+this.getIdLocalidad()+"</id>\n"
-                + "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n"
-                + "<codigopostal>"+this.getCodigopostal()+"</codigopostal>\n"
-                + "<latitud>"+this.getLatitud()+"</latitud>\n"
-                + "<longitud>"+this.getLongitud()+"</longitud>\n"
-                + "</localidades>\n";
-        return item;
+        StringBuilder item  = new StringBuilder("<localidades>\n");
+                item.append("<id>").append(this.getIdLocalidad()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
+                item.append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n");
+                item.append("<latitud>").append(this.getLatitud()).append("</latitud>\n");
+                item.append("<longitud>").append(this.getLongitud()).append("</longitud>\n");
+                item.append("</localidades>\n");
+        return item.toString();
     }
 }

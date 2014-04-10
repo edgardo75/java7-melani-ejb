@@ -276,10 +276,7 @@ public class Productos implements Serializable {
             return false;
         }
         Productos other = (Productos) object;
-        if ((this.sid == null && other.sid != null) || (this.sid != null && !this.sid.equals(other.sid))) {
-            return false;
-        }
-        return true;
+        return (this.sid != null || other.sid == null) && (this.sid == null || this.sid.equals(other.sid));
     }
     @Override
     public String toString() {

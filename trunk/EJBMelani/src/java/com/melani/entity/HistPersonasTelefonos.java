@@ -133,13 +133,13 @@ public class HistPersonasTelefonos implements Serializable {
      * @return
      */
     public String toXML(){
-        String item="<item>\n" +
-                "<id>"+this.getIdhistperdom()+"</id>\n" +
-                "<prefijo>"+this.getPrefijo()+"</prefijo>\n" +
-                "<numerotel>"+this.getNumerotel()+"</numerotel>\n" +
-                "<fecha>"+this.getFechacambio()+"</fecha>\n" +
-                "<idusuario>"+this.getIdusuario()+"</idusuario>\n" +
-               "</item>\n";
-        return item;
+        StringBuilder item = new StringBuilder("<item>\n");
+                item.append("<id>").append(this.getIdhistperdom()).append("</id>\n");
+                item.append("<prefijo>").append(this.getPrefijo()).append("</prefijo>\n");
+                item.append("<numerotel>").append(this.getNumerotel()).append("</numerotel>\n");
+                item.append("<fecha>").append(this.getFechacambio()).append("</fecha>\n");
+                item.append("<idusuario>").append(this.getIdusuario()).append("</idusuario>\n");
+               item.append("</item>\n");
+        return item.toString();
     }
 }

@@ -134,10 +134,7 @@ public class TarjetasCreditoDebito implements Serializable {
             return false;
         }
         TarjetasCreditoDebito other = (TarjetasCreditoDebito) object;
-        if ((this.idtarjeta == null && other.idtarjeta != null) || (this.idtarjeta != null && !this.idtarjeta.equals(other.idtarjeta))) {
-            return false;
-        }
-        return true;
+        return (this.idtarjeta != null || other.idtarjeta == null) && (this.idtarjeta == null || this.idtarjeta.equals(other.idtarjeta));
     }
     @Override
     public String toString() {
@@ -149,10 +146,8 @@ public class TarjetasCreditoDebito implements Serializable {
      * @return
      */
     public String toXML(){
-        String item ="<item>\n" +
-                "<id>"+this.getIdtarjeta()+"</id>\n" +
-                "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n" +
-                "</item>\n";
-    return item;
+        StringBuilder item = new StringBuilder("<item>\n");
+                item.append("<id>").append(this.getIdtarjeta()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n").append("</item>\n");
+    return item.toString();
     }
 }
