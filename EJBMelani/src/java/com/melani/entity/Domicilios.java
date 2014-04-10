@@ -417,37 +417,37 @@ public class Domicilios implements Serializable {
      * @return
      */
     public String toXML(){
-        String item="<domicilio>\n"
-                + "<id>"+this.getId()+"</id>\n"
-                    + "<Barrio>\n"
-                        + "<idbarrio>"+this.getBarrios().getId()+"</idbarrio>\n"
-                        + "<descbarrio>"+StringEscapeUtils.escapeXml10(this.getBarrios().getDescripcion())+"</descbarrio>\n"
-                    + "</Barrio>\n"
-                + "<Calle>\n"
-                    + "<idcalle>"+this.getCalles().getId()+"</idcalle>\n"
-                    + "<desccalle>"+StringEscapeUtils.escapeXml10(this.getCalles().getDescripcion())+"</desccalle>\n"
-                + "</Calle>\n"
-                + "<Orientacion>\n"
-                    + "<idorientacion>"+this.getOrientacion().getId()+"</idorientacion>\n"
-                    + "<descorientacion>"+this.getOrientacion().getDescripcion()+"</descorientacion>\n"
-                + "</Orientacion>\n"
-                + "<Localidad>\n"
-                    + "<idlocalidad>"+this.getLocalidades().getIdLocalidad()+"</idlocalidad>\n"
-                    + "<codigopostal>"+this.getLocalidades().getCodigopostal()+"</codigopostal>\n"
-                    + "<idprovincia>"+this.getLocalidades().getProvincias().getIdProvincia()+"</idprovincia>\n"
-                + "<desclocalidad>"+StringEscapeUtils.escapeXml10(this.getLocalidades().getDescripcion())+"</desclocalidad>\n"
-                + "</Localidad>\n"
-                + "<area>"+StringEscapeUtils.escapeXml10(this.getArea())+"</area>\n"
-                + "<entrecalleycalle>"+StringEscapeUtils.escapeXml10(this.getEntrecalleycalle())+"</entrecalleycalle>\n"
-                + "<manzana>"+StringEscapeUtils.escapeXml10(this.getManzana())+"</manzana>\n"
-                + "<monoblock>"+StringEscapeUtils.escapeXml10(this.getMonoblock())+"</monoblock>\n"
-                + "<numdepto>"+this.getNumdepto()+"</numdepto>\n"
-                + "<numero>"+this.getNumero()+"</numero>\n"
-                + "<piso>"+StringEscapeUtils.escapeXml10(this.getPiso())+"</piso>\n"
-                + "<sector>"+StringEscapeUtils.escapeXml10(this.getSector())+"</sector>\n" +
-                "<torre>"+StringEscapeUtils.escapeXml10(this.getTorre())+"</torre>\n"
-                +"<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"
-                + "</domicilio>\n";
-    return item;
+        StringBuilder item = new StringBuilder("<domicilio>\n");
+                item.append("<id>").append(this.getId()).append("</id>\n");
+                    item.append("<Barrio>\n");
+                        item.append("<idbarrio>").append(this.getBarrios().getId()).append("</idbarrio>\n");
+                        item.append("<descbarrio>").append(StringEscapeUtils.escapeXml10(this.getBarrios().getDescripcion())).append("</descbarrio>\n");
+                    item.append("</Barrio>\n");
+                item.append("<Calle>\n");
+                    item.append("<idcalle>").append(this.getCalles().getId()).append("</idcalle>\n");
+                    item.append("<desccalle>").append(StringEscapeUtils.escapeXml10(this.getCalles().getDescripcion())).append("</desccalle>\n");
+                item.append("</Calle>\n");
+                item.append("<Orientacion>\n");
+                    item.append("<idorientacion>").append(this.getOrientacion().getId()).append("</idorientacion>\n");
+                    item.append("<descorientacion>").append(this.getOrientacion().getDescripcion()).append("</descorientacion>\n");
+                item.append("</Orientacion>\n");
+                item.append("<Localidad>\n");
+                    item.append("<idlocalidad>").append(this.getLocalidades().getIdLocalidad()).append("</idlocalidad>\n");
+                    item.append("<codigopostal>").append(this.getLocalidades().getCodigopostal()).append("</codigopostal>\n");
+                    item.append("<idprovincia>").append(this.getLocalidades().getProvincias().getIdProvincia()).append("</idprovincia>\n");
+                item.append("<desclocalidad>").append(StringEscapeUtils.escapeXml10(this.getLocalidades().getDescripcion())).append("</desclocalidad>\n");
+                item.append("</Localidad>\n");
+                item.append("<area>").append(StringEscapeUtils.escapeXml10(this.getArea())).append("</area>\n");
+                item.append("<entrecalleycalle>").append(StringEscapeUtils.escapeXml10(this.getEntrecalleycalle())).append("</entrecalleycalle>\n");
+                item.append("<manzana>").append(StringEscapeUtils.escapeXml10(this.getManzana())).append("</manzana>\n");
+                item.append("<monoblock>").append(StringEscapeUtils.escapeXml10(this.getMonoblock())).append("</monoblock>\n");
+                item.append("<numdepto>").append(this.getNumdepto()).append("</numdepto>\n");
+                item.append("<numero>").append(this.getNumero()).append("</numero>\n");
+                item.append("<piso>").append(StringEscapeUtils.escapeXml10(this.getPiso())).append("</piso>\n");
+                item.append("<sector>").append(StringEscapeUtils.escapeXml10(this.getSector())).append("</sector>\n");
+                item.append("<torre>").append(StringEscapeUtils.escapeXml10(this.getTorre())).append("</torre>\n");
+                item.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
+                item.append("</domicilio>\n");
+    return item.toString();
     }
 }

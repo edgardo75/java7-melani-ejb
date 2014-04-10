@@ -47,6 +47,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
                     GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
                     PersonasdomiciliosPK perpk = new PersonasdomiciliosPK(idDomicilio, idCliente);
                     PersonasDomicilios personadomici = renovarDomicilio(idDomicilio,idCliente,idUsuario);
+                    logger.info("Persona domicilio renovado "+personadomici.getPersonasdomiciliosPK().getId()+" "+personadomici.getPersonasdomiciliosPK().getIdPersona());
                         PersonasDomicilios personadomicilio = new PersonasDomicilios();
                         personadomicilio.setDomicilioss(em.find(Domicilios.class, idDomicilio));
                         personadomicilio.setEstado("Habitable".toUpperCase());

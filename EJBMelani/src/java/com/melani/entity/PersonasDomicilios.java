@@ -158,7 +158,7 @@ public class PersonasDomicilios implements Serializable {
      * @return
      */
     public String toXML(){
-    String item=domicilioss.toXML();
+        String item=domicilioss.toXML();
     return item;
 }
 }

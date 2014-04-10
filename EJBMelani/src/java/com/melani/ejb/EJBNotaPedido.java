@@ -48,7 +48,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
       EJBProductosRemote producto;
     @EJB
     EJBPresupuestosRemote ejbpresupuesto;
-      DatosNotaPedido notadepedido;
+    DatosNotaPedido notadepedido;
     
     private DatosNotaPedido xestreaNotapedido(String xmlNotapedido){
             XStream xestream = new XStream();
@@ -600,7 +600,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
                 jpasql.setParameter("3", '0');
                 jpasql.setParameter("4", '1');
-                   // Query jpasql=em.createNativeQuery("SELECT * FROM NOTADEPEDIDO n where CAST(n.FECHADECOMPRA as date)  between CAST('"+fecha1+"' as DATE) and cast('"+fecha2+"' as date) and n.entregado=0 and n.pendiente=1 order by n.id desc", Notadepedido.class);
+                   
                                                     lista= jpasql.getResultList();
                                                     if(lista.size()>0){
                                                             for (Notadepedido notadepedido1 : lista) {
@@ -1206,14 +1206,14 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                         sdf.parse(fecha1.trim());
                                         sdf.parse(fecha2.trim());
                                         
-                                        
-                                        if(sdf.parse(fecha1).compareTo(sdf.parse(fecha2))<=0) {
-                                            xml="TODO OK";
-                                } else {                                   
-                                            xml="<result>rango no correcto de fechas elegido</result>\n";
-                                }
-                                   
-                                   
+
+                                           if(sdf.parse(fecha1).compareTo(sdf.parse(fecha2))<=0) {
+                                              xml="TODO OK";
+                                           } else {                                   
+                                              xml="<result>rango no correcto de fechas elegido</result>\n";
+                                            }
+
+
                                         
                                     } catch (ParseException e) {
                                         xml="<error>Error en parse de fechas</error>\n";                            

@@ -43,9 +43,9 @@ public class EJBClienteTelefono implements EJBClienteTelefonoRemote {
                     TelefonosPK telepk = new TelefonosPK(Long.valueOf(numero), Long.valueOf(prefijo));
                     Query consulta = em.createQuery("SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.prefijo = :prefijo and " +
                             "p.personastelefonosPK.numerotel = :numerotel and p.personastelefonosPK.idPersona = :idPersona");
-                    consulta.setParameter("prefijo", Long.valueOf(prefijo.trim()));
-                    consulta.setParameter("numerotel", Long.valueOf(numero.trim()));
-                    consulta.setParameter("idPersona", idcliente);
+                        consulta.setParameter("prefijo", Long.valueOf(prefijo.trim()));
+                        consulta.setParameter("numerotel", Long.valueOf(numero.trim()));
+                        consulta.setParameter("idPersona", idcliente);
                     if(consulta.getResultList().size()==1) {
                         retorno ="RelacionTelefonoExistente";
                     } else{

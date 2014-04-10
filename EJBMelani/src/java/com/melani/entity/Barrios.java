@@ -132,10 +132,10 @@ public class Barrios implements Serializable {
      * @return
      */
     public String toXML(){
-       String item = "<item>\n" +
-                "<id>"+this.getId()+"</id>\n" +
-                "<nombre>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</nombre>\n" +
-                "</item>\n";
-        return item;
+        StringBuilder item = new StringBuilder("<item>\n");
+                item.append("<id>").append(this.getId()).append("</id>\n");
+                item.append("<nombre>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</nombre>\n");
+                item.append("</item>\n");
+        return item.toString();
     }
 }

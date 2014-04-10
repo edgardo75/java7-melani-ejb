@@ -116,37 +116,35 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      */
     @Override
     public String selectAllEmpleados() {
-       String xml = "<?xml version='1.0' encoding='utf-8'?>\n"
-               + "<Lista>\n";
+       StringBuilder xml = new StringBuilder("<?xml version='1.0' encoding='utf-8'?>\n").append("<Lista>\n");
         try {
             Query consulta = em.createQuery("SELECT e FROM Empleados e order by e.idPersona desc");            
             List<Empleados>lista = consulta.getResultList();
             if(lista.size()>0){
                 for (Empleados empleados : lista) {                    
-                    xml+="<item>\n";
-                    xml+="<id>" +empleados.getIdPersona()+"</id>\n"+
-                            "<nombre>"+StringEscapeUtils.escapeXml10(empleados.getNombre())+"</nombre>\n" +
-                            "<apellido>"+StringEscapeUtils.escapeXml10(empleados.getApellido())+"</apellido>\n" +
-                            "<genero>"+empleados.getGeneros().getIdGenero()+"</genero>\n" +
-                            "<tipodocu>"+empleados.getTipodocumento().getId()+"</tipodocu>\n" +
-                            "<documento>"+empleados.getNrodocumento()+"</documento>\n" +
-                            "<observaciones>"+StringEscapeUtils.escapeXml10(empleados.getObservaciones())+"</observaciones>\n"+
-                            "<email>"+empleados.getEmail()+"</email>\n" ;
-                    xml+= obtenerEmpleado(empleados);
-                    xml+=empleados.toXMLEmpleado();
-                    xml+="<clave>"+ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())+"</clave>";
+                    xml.append("<item>\n");
+                    xml.append("<id>").append(empleados.getIdPersona()).append("</id>\n").append("<nombre>").append(StringEscapeUtils.escapeXml10(empleados.getNombre())).append("</nombre>\n");
+                            xml.append("<apellido>").append(StringEscapeUtils.escapeXml10(empleados.getApellido())).append("</apellido>\n");
+                            xml.append("<genero>").append(empleados.getGeneros().getIdGenero()).append("</genero>\n");
+                            xml.append("<tipodocu>").append(empleados.getTipodocumento().getId()).append("</tipodocu>\n");
+                            xml.append("<documento>").append(empleados.getNrodocumento()).append("</documento>\n");
+                            xml.append("<observaciones>").append(StringEscapeUtils.escapeXml10(empleados.getObservaciones())).append("</observaciones>\n");
+                            xml.append("<email>").append(empleados.getEmail()).append("</email>\n");
+                    xml.append(obtenerEmpleado(empleados));
+                    xml.append(empleados.toXMLEmpleado());
+                    xml.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
                             
-                    xml+="</item>\n";
+                    xml.append("</item>\n");
                 }
             }else {
-                xml+="<result>Lista Vacia</result>\n";
+                xml.append("<result>Lista Vacia</result>\n");
             }
         } catch (Exception e) {
             logger.error("error al obtener lista de empleados "+e.getMessage());
-            xml+="<error>"+e.getLocalizedMessage()+"</error>\n";
+            xml.append("<error>").append(e.getLocalizedMessage()).append("</error>\n");
         }finally{
             
-            return xml+="</Lista>\n";
+            return xml.append("</Lista>\n").toString();
         }
     }
 

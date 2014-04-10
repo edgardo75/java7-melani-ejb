@@ -257,8 +257,7 @@ private long actualizarDomicilio(DatosDomicilios domiciXML,long iddomicilio) {
                         domicilio.setOrientacion(em.find(Orientacion.class, domiciXML.getOrientacion().getOrientacion()));
                         domicilio.setPiso(domiciXML.getPiso());
                         domicilio.setSector(domiciXML.getSector());
-                        domicilio.setEntrecalleycalle(domiciXML.getEntrecalleycalle());
-                        
+                        domicilio.setEntrecalleycalle(domiciXML.getEntrecalleycalle());                        
                         domicilio.setTorre(domiciXML.getTorre());
                       em.merge(domicilio);
                 retorno = domicilio.getId();

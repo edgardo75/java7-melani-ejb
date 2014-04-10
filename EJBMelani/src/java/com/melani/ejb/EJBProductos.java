@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -44,7 +45,8 @@ import org.apache.log4j.Logger;
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBProductos implements EJBProductosRemote {
     private static final Logger logger = Logger.getLogger(EJBProductos.class);
-    static final String PATH_IMAGENES=System.getProperty("user.dir")+File.separator+"var"+File.separator+"webapp"+File.separator+"upload"+File.separator;
+    static final StringBuilder PATH_IMAGENES = new StringBuilder(System.getProperty("user.dir")+File.separator+"var"+File.separator+"webapp"+File.separator+"upload"+File.separator);
+    
     @PersistenceContext(unitName="EJBMelaniPU2")    
     private EntityManager em;    
     //--------------------------------------------------------------------------------------------------
@@ -117,7 +119,7 @@ public class EJBProductos implements EJBProductosRemote {
 //                    }
 //            //----------------------------------------------------------------------------------
                     result = "LEIDO";
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             result = "ERROR";
             e.getMessage();
         }finally{
@@ -144,24 +146,21 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String addProducto(String xmlProducto) {
-        String retorno = "0L";
+        StringBuilder retorno = new StringBuilder("0L");
         Productos producto = null;
         long idproduct;
         try {
         idproduct =agregarProducto(producto, xmlProducto);
         if(idproduct>0){
-            retorno=searchAllProductos();
+            retorno.append(searchAllProductos());
         }else{
-            retorno="<Lista>\n" +
-                    "<producto>\n" +
-                    "<id>"+idproduct+"</id>\n" +
-                    "</producto>\n"+
-                    "</Lista>\n";
+            retorno.append("<Lista>\n").append("<producto>\n").append("<id>").append(idproduct).append("</id>\n");
+                    retorno.append("</producto>\n").append("</Lista>\n");
         }
         } catch (Exception e) {
             logger.error("Error en metodo addProducto "+e);
         }finally{
-            return retorno;
+            return retorno.toString();
         }
     }
     private long agregarProducto(Productos producto, String xmlProducto) {
@@ -327,8 +326,7 @@ public class EJBProductos implements EJBProductosRemote {
         String xml = "NADA";
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            //Query query = em.createNativeQuery("SELECT p.sid,p.DESCRIPCION,p.codproducto,p.PRECIOUNITARIO,p.CANTIDADINICIAL,p.CANTIDADDISPONIBLE,p.img" +
-              //      ",p.FECHA FROM PRODUCTOS p Order by p.sid", Productos.class);
+            
             Query query = em.createNamedQuery("Productos.findAll");
             List<Productos> lista = query.getResultList();
                     if(lista.isEmpty()) {

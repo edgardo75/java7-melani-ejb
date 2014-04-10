@@ -79,28 +79,28 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public String searchAllBarrios() {
         
-        String xml ="<?xml version='1.0' encoding='UTF-8'?>\n"
-                + "<Lista>\n";        
+        StringBuilder xml = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n"
+                + "<Lista>\n");        
         try {
         
             //Consulta jpql
             Query consulta = em.createNamedQuery("Barrios.findAll");
             List<Barrios>lista = consulta.getResultList();
                 if(lista.isEmpty()) {
-                    xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
+                    xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
             } else{
                     for (Barrios barrios : lista) {
-                        xml+=barrios.toXML();
+                        xml.append(barrios.toXML());
                     }                    
                 }                         
         //*********************************************************************
-            xml +="</Lista>";          
+            xml.append("</Lista>");          
            
         } catch (Exception e) {            
-            xml="error en metodo searchAllBarrios";
+            xml.append("error en metodo searchAllBarrios");
             logger.error("Error en metodo searchAllBarrios "+e.getLocalizedMessage());
         } finally {           
-            return xml;
+            return xml.toString();
         }
     }
 
@@ -119,8 +119,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             } catch (Exception e) {
                 retorno = -1;
                 logger.error("Error al Obtener la cantidad de registros de la tabla barrios", e);
-            }finally{
-                
+            }finally{                
               return retorno;
             }
     }
@@ -133,8 +132,8 @@ public class EJBBarrios implements EJBBarriosRemote {
 
    @Override
    public String obtenrItemsPaginados(int indiceInicio, int numeroItems) {
-        String xml = "<?xml version = '1.0' encoding = 'UTF-8'?>\n" +
-                "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<?xml version = '1.0' encoding = 'UTF-8'?>\n" +
+                "<Lista>\n");
         int indice = 0;
         int nroItems=0;
         try {
@@ -149,17 +148,15 @@ public class EJBBarrios implements EJBBarriosRemote {
             List<Barrios>lista = consulta.getResultList();
             
             for (Barrios barrios : lista) {
-                xml+=barrios.toXML();
+                xml.append(barrios.toXML());
             }
-            xml+="</Lista>\n";       
+            xml.append("</Lista>\n");       
             
         } catch (Exception e) {
-            xml="Error en método obtenerItemsPaginados";
+            xml.append("Error en método obtenerItemsPaginados");
             logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
-        }finally{              
-            
-            return xml;
-    }
+        }finally{return xml.toString();
+        }
 }
 /**
  *
@@ -174,9 +171,9 @@ public class EJBBarrios implements EJBBarriosRemote {
         try {   
             
             Query consulta = em.createNamedQuery("Barrios.findAll");
-            consulta.setMaxResults(numitems);
-             consulta.setFirstResult(startindex*numitems);
-            List<Barrios>lista = consulta.getResultList();
+                consulta.setMaxResults(numitems);
+                consulta.setFirstResult(startindex*numitems);
+                List<Barrios>lista = consulta.getResultList();
             if(lista.size()>0){
                 try {
                     int len = lista.size();

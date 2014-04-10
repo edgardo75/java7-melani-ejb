@@ -325,23 +325,21 @@ public class Detallesnotadepedido implements Serializable {
      * @return
      */
     public String toXML(){
-    String item="<itemdetalle>\n" +
-                  "<idnota>"+this.getNotadepedido().getId()+"</idnota>\n"
-                                    + "<producto>\n" +
-                                        "<id>"+this.getProductos().getSid()+"</id>\n" +
-                                        "<code>"+this.getProductos().getCodproducto()+"</code>\n"
-                                    + "<descripcion>"+this.getProductos().getDescripcion()+"</descripcion>\n"
-                                    + "</producto>\n"
-                                    + "<cantidad>"+this.getCantidad()+"</cantidad>\n"
-                                    + "<precio>"+this.getPrecio()+"</precio>\n" +
-                                    "<preciocondescuento>"+this.getPreciocondescuento().toPlainString()+"</preciocondescuento>\n" +
-                                    "<descuento>"+this.getDescuento().toPlainString()+"</descuento>\n" +
-                                    "<subtotal>"+this.getSubtotal().toPlainString()+"</subtotal>\n" +
-                                    "<entregado>"+this.getEntregado()+"</entregado>\n" +
-                                    "<iva>"+this.getIva().toPlainString()+"</iva>\n" +
-                                    "<cancelado>"+this.getCancelado()+"</cancelado>\n" +
-                                    "<anulado>"+this.getAnulado()+"</anulado>\n"
-                                    + "</itemdetalle>\n";
-    return item;
+    StringBuilder item = new StringBuilder("<itemdetalle>\n").append("<idnota>").append(this.getNotadepedido().getId()).append("</idnota>\n");
+                                    item.append("<producto>\n").append("<id>").append(this.getProductos().getSid()).append("</id>\n");
+                                        item.append("<code>").append(this.getProductos().getCodproducto()).append("</code>\n");
+                                    item.append("<descripcion>").append(this.getProductos().getDescripcion()).append("</descripcion>\n");
+                                    item.append("</producto>\n");
+                                    item.append("<cantidad>").append(this.getCantidad()).append("</cantidad>\n");
+                                    item.append("<precio>").append(this.getPrecio()).append("</precio>\n");
+                                    item.append("<preciocondescuento>").append(this.getPreciocondescuento().toPlainString()).append("</preciocondescuento>\n");
+                                    item.append("<descuento>").append(this.getDescuento().toPlainString()).append("</descuento>\n");
+                                    item.append("<subtotal>").append(this.getSubtotal().toPlainString()).append("</subtotal>\n");
+                                    item.append("<entregado>").append(this.getEntregado()).append("</entregado>\n");
+                                    item.append("<iva>").append(this.getIva().toPlainString()).append("</iva>\n");
+                                    item.append("<cancelado>").append(this.getCancelado()).append("</cancelado>\n");
+                                    item.append("<anulado>").append(this.getAnulado()).append("</anulado>\n");
+                                    item.append("</itemdetalle>\n");
+    return item.toString();
     }
 }

@@ -292,36 +292,36 @@ public class Productos implements Serializable {
      */
     public String toXML(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String item="<producto>\n" +
-                "<id>" +this.getSid()+"</id>\n" +
-                "<descripcion>"+StringEscapeUtils.escapeXml10(this.getDescripcion())+"</descripcion>\n" +
-                "<cantidadinicial>"+this.getCantidadInicial()+"</cantidadinicial>\n" +
-                "<cantidaddisponible>"+this.getCantidadDisponible()+"</cantidaddisponible>\n" +
-                "<fechacarga>"+sdf.format(this.getFecha())+"</fechacarga>\n" +
-                "<preciovigente>"+this.getPrecioUnitario().toString()+"</preciovigente>"
-                + "<img>"+this.getImagenesProductosList().size()+"</img>\n";
-                item+="<existencias>\n";
+        StringBuilder item = new StringBuilder("<producto>\n");
+                item.append("<id>").append(this.getSid()).append("</id>\n");
+                item.append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
+                item.append("<cantidadinicial>").append(this.getCantidadInicial()).append("</cantidadinicial>\n");
+                item.append("<cantidaddisponible>").append(this.getCantidadDisponible()).append("</cantidaddisponible>\n");
+                item.append("<fechacarga>").append(sdf.format(this.getFecha())).append("</fechacarga>\n");
+                item.append("<preciovigente>").append(this.getPrecioUnitario().toString()).append("</preciovigente>");
+                item.append("<img>").append(this.getImagenesProductosList().size()).append("</img>\n");
+                item.append("<existencias>\n");
                     if(this.getExistenciasProductoss().isEmpty()) {
-                        item+="</existencias>\n";
+                        item.append("</existencias>\n");
         } else{
                         List<ExistenciasProductos>lista = this.getExistenciasProductoss();
             for (ExistenciasProductos existenciasProductos : lista) {
-                item+=existenciasProductos.toXML();
+                item.append(existenciasProductos.toXML());
             }
-                        item+="</existencias>\n";
+                        item.append("</existencias>\n");
                     }
-                    item+="<listImages>\n";
+                    item.append("<listImages>\n");
                     if(this.getImagenesProductosList().isEmpty()) {
-                        item+="</listImages>\n";
+                        item.append("</listImages>\n");
         } else{
                         List<ImagenesProductos>lista = this.getImagenesProductosList();
                         for(ImagenesProductos i:lista){
-                            item+="<pathImage>"+i.getPathImagenEnDisco()+"</pathImage>\n";
+                            item.append("<pathImage>").append(i.getPathImagenEnDisco()).append("</pathImage>\n");
                         }
-                                item+="</listImages>\n";
+                                item.append("</listImages>\n");
                     }
                     
-        item+=        "</producto>";
-    return item;
+        item.append("</producto>");
+    return item.toString();
     }
 }
