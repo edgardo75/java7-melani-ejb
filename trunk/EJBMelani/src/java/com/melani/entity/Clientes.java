@@ -109,21 +109,19 @@ public class Clientes extends Personas implements Serializable {
      */
     public String toXMLCLI(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String xml=
-                "<totalcompras>"+this.getTotalCompras()+"</totalcompras>\n" +
-                "<totalpuntos>"+this.getTotalEnPuntos()+"</totalpuntos>\n" +
-                "<fechacarga>"+sdf.format(this.getFechaCarga())+"</fechacarga>\n";
-                xml+="<notapedidolist>\n";
+        StringBuilder xml = new StringBuilder("<totalcompras>"+this.getTotalCompras()+"</totalcompras>\n").append("<totalpuntos>").append(this.getTotalEnPuntos()).append("</totalpuntos>\n");
+                xml.append("<fechacarga>").append(sdf.format(this.getFechaCarga())).append("</fechacarga>\n");
+                xml.append("<notapedidolist>\n");
                 if(this.getNotadepedidoList().isEmpty()) {
-                    xml+="</notapedidolist>\n";
+                    xml.append("</notapedidolist>\n");
         } else{
                     List<Notadepedido>lista = this.getNotadepedidoList();
             for (Notadepedido notadepedido : lista) {
-                xml+=notadepedido.toXML();
+                xml.append(notadepedido.toXML());
             }
-                    xml+="</notapedidolist>\n";
+                    xml.append("</notapedidolist>\n");
                 }
-        return xml;
+        return xml.toString();
     }
 }
 

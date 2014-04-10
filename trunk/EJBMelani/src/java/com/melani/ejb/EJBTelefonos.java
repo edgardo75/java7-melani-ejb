@@ -31,26 +31,26 @@ public class EJBTelefonos implements EJBTelefonosRemote {
     public long addTelefonos(DatosTelefonos datosTel) {
         long retorno =0;
         try {
-            //-----------------------------------------------------------------------------
-            //-----------------------------------------------------------------------------
-            TelefonosPK telepk = new TelefonosPK(Long.valueOf(datosTel.getNumero().trim()),Long.valueOf(datosTel.getPrefijo().trim()));
-            //-----------------------------------------------------------------------------
-            Query consulta = em.createQuery("SELECT t FROM Telefonos t WHERE t.telefonosPK.idPrefijo = :idPrefijo and " +
-                    "t.telefonosPK.numero = :numero");
-            consulta.setParameter("idPrefijo", Long.valueOf(datosTel.getPrefijo().trim()));
-            consulta.setParameter("numero", Long.valueOf(datosTel.getNumero().trim()));
-            if(consulta.getResultList().size()==1) {
-                retorno = 1;
-            } else{
-                Telefonos telefono = new Telefonos();
-                telefono.setIdEmpresatelefonia(em.find(EmpresaTelefonia.class, datosTel.getIdEmpresaTelefonia().getIdempresatelefonia()));
-                telefono.setIdTipotelefono(em.find(Tipostelefono.class, datosTel.getTipoTelefono().getTipoTelefono()));
-                telefono.setTelefonosPK(telepk);
-                em.persist(telefono);
-                em.flush();
-                retorno = 2;
-            }
-            //--------------------------------------------------------------------------------------
+                    //-----------------------------------------------------------------------------
+                    //-----------------------------------------------------------------------------
+                    TelefonosPK telepk = new TelefonosPK(Long.valueOf(datosTel.getNumero().trim()),Long.valueOf(datosTel.getPrefijo().trim()));
+                            //-----------------------------------------------------------------------------
+                            Query consulta = em.createQuery("SELECT t FROM Telefonos t WHERE t.telefonosPK.idPrefijo = :idPrefijo and " +
+                                            "t.telefonosPK.numero = :numero");
+                                    consulta.setParameter("idPrefijo", Long.valueOf(datosTel.getPrefijo().trim()));
+                                    consulta.setParameter("numero", Long.valueOf(datosTel.getNumero().trim()));
+                                            if(consulta.getResultList().size()==1) {
+                                                retorno = 1;
+                                            } else{
+                                                Telefonos telefono = new Telefonos();
+                                                telefono.setIdEmpresatelefonia(em.find(EmpresaTelefonia.class, datosTel.getIdEmpresaTelefonia().getIdempresatelefonia()));
+                                                telefono.setIdTipotelefono(em.find(Tipostelefono.class, datosTel.getTipoTelefono().getTipoTelefono()));
+                                                telefono.setTelefonosPK(telepk);
+                                                em.persist(telefono);
+                                                em.flush();
+                                                retorno = 2;
+                                            }
+                    //--------------------------------------------------------------------------------------
         } catch (NumberFormatException e) {
             retorno = -1;
             logger.error("Error en metodo addTelefonos, EJBTelefonos "+e);

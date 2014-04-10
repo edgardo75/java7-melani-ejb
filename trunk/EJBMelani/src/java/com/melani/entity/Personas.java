@@ -284,43 +284,36 @@ public abstract class Personas implements Serializable {
      * @return
      */
     public String toXML(){
-        String item=null;
+        StringBuilder item=new StringBuilder();
        
             
         
-        item= "<id>"+this.getIdPersona()+"</id>\n"
-                + "<apellido>"+this.getApellido()+"</apellido>\n"
-                + "<nombre>"+this.getNombre()+"</nombre>\n"
-                + "<idtipodocu>"+this.getTipodocumento().getId()+"</idtipodocu>\n"
-                + "<nrodocu>"+this.getNrodocumento()+"</nrodocu>\n"
-                +"<observaciones>"+StringEscapeUtils.escapeXml10(this.getObservaciones())+"</observaciones>\n"
-                + "<Genero>\n"
-                + "<generoId>"+this.getGeneros().getIdGenero()+"</generoId>\n"
-                + "<generoDescripcion>"+this.getGeneros().getDescripcion()+"</generoDescripcion>\n"
-                + "</Genero>\n"
-                + "<email>"+this.getEmail()+"</email>\n";
-                item+="<personadomicilio>\n";
+        item.append("<id>").append(this.getIdPersona()).append("</id>\n");
+        item.append("<apellido>").append(this.getApellido()).append("</apellido>\n");
+                item.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
+                item.append("<idtipodocu>").append(this.getTipodocumento().getId()).append("</idtipodocu>\n" + "<nrodocu>").append(this.getNrodocumento()).append("</nrodocu>\n" + "<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n" + "<Genero>\n" + "<generoId>").append(this.getGeneros().getIdGenero()).append("</generoId>\n" + "<generoDescripcion>").append(this.getGeneros().getDescripcion()).append("</generoDescripcion>\n" + "</Genero>\n" + "<email>").append(this.getEmail()).append("</email>\n");
+                item.append("<personadomicilio>\n");
                     if(this.getPersonasDomicilioss().isEmpty()) {
-                        item+="</personadomicilio>\n";
+                        item.append("</personadomicilio>\n");
         } else{
                         List<PersonasDomicilios>lista = this.getPersonasDomicilioss();
             for (PersonasDomicilios personasDomicilios : lista) {
-                item+=personasDomicilios.toXML();
+                item.append(personasDomicilios.toXML());
             }
-                        item+="</personadomicilio>\n";
+                        item.append("</personadomicilio>\n");
                     }
-                item+="<personatelefono>\n";
+                item.append("<personatelefono>\n");
                     if(this.getPersonastelefonoss().isEmpty()) {
-                        item+="</personatelefono>\n";
+                        item.append("</personatelefono>\n");
         } else{
                         List<Personastelefonos>lista=this.getPersonastelefonoss();
             for (Personastelefonos personastelefonos : lista) {
-                item+=personastelefonos.toXML();
+                item.append(personastelefonos.toXML());
             }
-                        item+="</personatelefono>\n";
+                        item.append("</personatelefono>\n");
                     }
                
          
-         return item;
+         return item.toString();
     }
 }

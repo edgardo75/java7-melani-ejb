@@ -64,8 +64,7 @@ public class EJBCalles implements EJBCallesRemote {
         } catch (Exception e) {
             retorno = -1;
             logger.error("Error en metodo addCalles "+e.getLocalizedMessage());
-        } finally {      
-             
+        } finally {    
             return retorno;
         }
     }
@@ -75,26 +74,26 @@ public class EJBCalles implements EJBCallesRemote {
  */
    @Override
     public String searchAllCalles() {
-        String xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
-                + "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n"
+                + "<Lista>\n");
         try {
             Query consulta =em.createQuery("SELECT c FROM Calles c Order by c.id");
             List<Calles>lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xml="LA CONSULTA NO ARROJÓ RESULTADOS";
+                xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
             } else{
                 for (Calles calles : lista) {
-                    xml+=calles.toXML();
+                    xml.append(calles.toXML());
                 }
              
             }      
         } catch (Exception e) {
-            xml="Error";
+            xml.append("Error");
             logger.error("Error en metodo searchallcalles "+ e.getLocalizedMessage());
             e.getMessage();
         } finally {           
-               xml+="</Lista>";               
-            return xml;
+               xml.append("</Lista>");               
+            return xml.toString();
         }
     }
 /**
@@ -110,7 +109,6 @@ public class EJBCalles implements EJBCallesRemote {
         } catch (Exception e) {
             logger.error("Error en metodo recorCountCalles "+e.getLocalizedMessage());
         }finally{
-            
             return retorno;
         }
     }

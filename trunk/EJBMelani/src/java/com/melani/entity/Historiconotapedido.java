@@ -531,34 +531,24 @@ public class Historiconotapedido implements Serializable {
             hourreg=sdf.format(this.getHoraregistro());
         }
         //-------------------------------------------------------------------------------------
-            String item = "";
+            StringBuilder item = new StringBuilder();
         try {
-              item+="<item>\n"
-                           + "<idhistorico>"+this.getIdhistorico()+"</idhistorico>\n"                          
-                           + "<anticipo>"+this.getAnticipo().toString()+"</anticipo>\n"
-                           + "<entregado>"+this.getEntregado().toString()+"</entregado>\n"
-                           + "<fecharegistro>"+fereg+"</fecharegistro>\n"
-                           + "<horaregistro>"+hourreg+"</horaregistro>\n" 
-                          + "<cancelado>"+this.getCancelado().toString()+"</cancelado>\n"
-                          + "<anulado>"+this.getAnulado().toString()+"</anulado>\n"
-                           + "<idnota>"+this.getFkidnotapedido().getId()+"</idnota>\n"
-                           + "<iduseranulo>"+this.getIdusuarioanulo().toString()+"</iduseranulo>\n"
-                           + "<iduserentrega>"+this.getIdusuarioentrega().toString()+"</iduserentrega>\n"
-                           + "<iduserexpidio>"+this.getIdusuarioexpidio().toString()+"</iduserexpidio>\n" +
-                           "<idusuariocancelo>"+this.getIdusuariocancelo().toString()+"</idusuariocancelo>\n" +
-                           "<recargo>"+this.getRecargo().toString()+"</recargo>\n" +
-                           "<totalapagar>"+this.getTotalapagar().toString()+"</totalapagar>\n" +
-                           "<porcrecargo>"+this.getPorcrecargo().toString()+"</porcrecargo>\n" +
-                           "<porcentajedescuento>"+this.getPorcentajedesc().toString()+"</porcentajedescuento>\n" +
-                           "<descuento>"+this.getDescuento().toString()+"</descuento>\n" +
-                           "<accion>"+StringEscapeUtils.escapeXml10(this.getAccion())+"</accion>\n"
-                           + "<saldo>"+this.getSaldo().toString()+"</saldo>\n"
-                           + "<total>"+this.getTotal().toString()+"</total>\n" +
-                   "</item>\n";
+              item.append("<item>\n").append("<idhistorico>").append(this.getIdhistorico()).append("</idhistorico>\n").append("<anticipo>").append(this.getAnticipo().toString()).append("</anticipo>\n");
+                           item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
+                           item.append("<fecharegistro>").append(fereg).append("</fecharegistro>\n");
+                           item.append("<horaregistro>").append(hourreg).append("</horaregistro>\n");
+                          item.append("<cancelado>").append(this.getCancelado().toString()).append("</cancelado>\n");
+                          item.append("<anulado>").append(this.getAnulado().toString()).append("</anulado>\n");
+                           item.append("<idnota>").append(this.getFkidnotapedido().getId()).append("</idnota>\n");
+                           item.append("<iduseranulo>").append(this.getIdusuarioanulo().toString()).append("</iduseranulo>\n");
+                           item.append("<iduserentrega>").append(this.getIdusuarioentrega().toString()).append("</iduserentrega>\n");
+                           item.append("<iduserexpidio>").append(this.getIdusuarioexpidio().toString()).append("</iduserexpidio>\n");
+                           item.append("<idusuariocancelo>").append(this.getIdusuariocancelo().toString()).append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo().toString()).append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar().toString()).append("</totalapagar>\n" + "<porcrecargo>").append(this.getPorcrecargo().toString()).append("</porcrecargo>\n" + "<porcentajedescuento>").append(this.getPorcentajedesc().toString()).append("</porcentajedescuento>\n" + "<descuento>").append(this.getDescuento().toString()).append("</descuento>\n" + "<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion())).append("</accion>\n" + "<saldo>").append(this.getSaldo().toString()).append("</saldo>\n" + "<total>").append(this.getTotal().toString()).append("</total>\n");
+                   item.append("</item>\n");
         } catch (Exception e) {
             e.getMessage();
         }finally{
-                    return item;
+                    return item.toString();
         }
     }
 }
