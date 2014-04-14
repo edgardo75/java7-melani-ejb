@@ -5,6 +5,7 @@
 package com.melani.ejb;
 import com.melani.entity.Calles;
 import com.melani.utils.ProjectHelpers;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -36,14 +37,18 @@ public class EJBCalles implements EJBCallesRemote {
    @Override
     public long addCalles(String descripcion,int idUsuario) {
         long retorno = 0;
+        StringBuilder internalDescripcion = new StringBuilder();
+        String out = null;
         try {
-                             
+            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            internalDescripcion.append(out);
+            System.out.println(out);                 
             //verifico que descripcion no s
-            if(!descripcion.isEmpty()&& ProjectHelpers.DescripcionValidator.validate(descripcion)){
+            if(internalDescripcion.length()>0&& ProjectHelpers.DescripcionValidator.validate(internalDescripcion.toString())){
 //                //paso a minúsculas las letras de la palabra
                     descripcion = descripcion.toLowerCase();
                     Query consulta = em.createQuery("SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)",Calles.class);
-                    consulta.setParameter("descripcion", descripcion.concat("%"));
+                    consulta.setParameter("descripcion", internalDescripcion.append("%").toString().toLowerCase());
                     
                     List<Calles> lista = consulta.getResultList();
                     
@@ -61,7 +66,7 @@ public class EJBCalles implements EJBCallesRemote {
                 retorno = -4;
             }
             
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             retorno = -1;
             logger.error("Error en metodo addCalles "+e.getLocalizedMessage());
         } finally {    

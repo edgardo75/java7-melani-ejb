@@ -154,10 +154,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             orientacion=domiciXML.getOrientacion().getOrientacion();
             localidadN=domiciXML.getLocalidad().getIdLocalidad();
             
-//            String sql = "SELECT d.ID_DOMICILIO FROM DOMICILIOS d WHERE d.entrecalleycalle like '"+entrecalle+"' and d.manzana like '"
-//                    + ""+manzana+"' and d.numero = "+numeroDomicilio+" and d.area like '"+area+"' and d.torre like '"+torre+"' and d.piso like '"+piso+"' and d.sector like '"
-//                    +sector+"' and d.monoblock like '"+monoblock+"' and d.numdepto = "+numdepto+" and d.ID_BARRIO = "+barrioN+" and d.ID_CALLE = "
-//                    +calleN+" and d.ID_ORIENTACION = "+orientacion+" and d.ID_LOCALIDAD = "+localidadN;
+
             
             
             Query consulta = em.createQuery("SELECT d FROM Domicilios d WHERE d.entrecalleycalle like ?1 and d.manzana like ?2 and d.numero = ?3 and d.area like ?4 and d.torre like ?5 and d.piso like ?6 and d.sector like ?7 and d.monoblock like ?8 and d.numdepto = ?9 and d.idbarrio.id = ?10 and d.idcalle.id = ?11 and d.idorientacion.id = ?12 and d.localidades.idLocalidad = ?13",Domicilios.class);

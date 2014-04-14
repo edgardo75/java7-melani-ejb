@@ -153,7 +153,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     public Integer getRecordCount() {
         int retorno =0;
         try {
-            Query presupuesto = em.createNamedQuery("Presupuestos.findAll");
+            Query presupuesto = em.createQuery("SELECT p FROM Presupuestos p");
             retorno =presupuesto.getResultList().size();
         } catch (Exception e) {
             retorno=-1;
@@ -238,28 +238,27 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String searchOneBudget(int idpresupuesto) {
-        String result ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<Lista>\n");
         try {
-            Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");
-            //Query paging = em.createNativeQuery("SELECT * FROM PRESUPUESTOS p WHERE p.ID_PRESUPUESTO ="+idpresupuesto+" order by p.FECHAPRESUPUESTO desc ,p.ID_PRESUPUESTO desc", Presupuestos.class);
+            Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");            
             paging.setParameter("1", idpresupuesto);
             List<Presupuestos>lista = paging.getResultList();
             if(lista.isEmpty()) {
-                result="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                result.append("LA CONSULTA NO ARROJÓ RESULTADOS!!!");
             } else{
                 for (Presupuestos presupuestos : lista) {
-                    result+=presupuestos.toXML();
+                    result.append(presupuestos.toXML());
                 }
                 
             }
         } catch (Exception e) {
-            result="Error";
+            result.append("Error");
             logger.error("Error en metodo verPresupuestos en EBPresupuestosBean "+e.getMessage());
         }finally{
-            result +="</Lista>\n";
+            result.append("</Lista>\n");
             
-            return result;
+            return result.toString();
         }
     }
     //-----------------------------------------------------------------------------------------------------
@@ -292,8 +291,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String ShowReportPresupuesto(Integer idPresupuesto) {
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<Lista>\n";      
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<Lista>\n");      
         try {
 
             Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.idPresupuesto = :idPresupuesto");
@@ -302,17 +301,17 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             List<Presupuestos>lista = consulta.getResultList();
             if(!lista.isEmpty()){
                     for (Presupuestos presupuestos : lista) {
-                        xml+=presupuestos.toXML();
+                        xml.append(presupuestos.toXML());
                     }        
             }else {
-                xml+="<result>La consulta no arrojó resultados</result>";
+                xml.append("<result>La consulta no arrojó resultados</result>");
             }
             
         } catch (Exception e) {
             logger.error("Error en metodo ShowReportPresupuesto "+e.getLocalizedMessage());
         }finally{
             
-        return xml+="</Lista>\n";
+        return xml.append("</Lista>\n").toString();
         }
     }  
 
@@ -325,8 +324,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     public String ShowReportVerPresupuesto(Long first, Long last) {
         
         
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<Lista>\n";
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<Lista>\n");
         try {
             long uno=first;
             long dos=last;
@@ -340,17 +339,17 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
            
             if(!lista.isEmpty()){
                 for (Presupuestos presupuestos : lista) {
-                    xml+=presupuestos.toXML();
+                    xml.append(presupuestos.toXML());
                 }
             }else {
-                xml+="<result>La consulta no arrojó resultados</result>";
+                xml.append("<result>La consulta no arrojó resultados</result>");
             }
            
         } catch (Exception e) {
             logger.error("Error en metodo ShowReportVerPresupuesto "+e.getLocalizedMessage());
-            xml+="<result>Error en metodo ShowReportVerPresupuesto \n"+e.getLocalizedMessage()+"</result>";
+            xml.append("<result>Error en metodo ShowReportVerPresupuesto \n").append(e.getLocalizedMessage()).append("</result>");
         }finally{            
-            return xml+="</Lista>";
+            return xml.append("</Lista>").toString();
         }
     }
 }

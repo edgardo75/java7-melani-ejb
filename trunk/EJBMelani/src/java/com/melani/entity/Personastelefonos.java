@@ -28,7 +28,9 @@ import javax.persistence.Table;
     @NamedQuery(name = "Personastelefonos.findByEstado", query = "SELECT p FROM Personastelefonos p WHERE p.estado = :estado"),
     @NamedQuery(name = "Personastelefonos.findByPrefijo", query = "SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.prefijo = :prefijo"),
     @NamedQuery(name = "Personastelefonos.findByNumerotel", query = "SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.numerotel = :numerotel"),
-    @NamedQuery(name = "Personastelefonos.findByIdPersona", query = "SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.idPersona = :idPersona")})
+    @NamedQuery(name = "Personastelefonos.findByIdPersona", query = "SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.idPersona = :idPersona"),
+    @NamedQuery(name = "Personastelefonos.addRelationship",query = "SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.prefijo = :prefijo and " +
+                            "p.personastelefonosPK.numerotel = :numerotel and p.personastelefonosPK.idPersona = :idPersona")})
 public class Personastelefonos implements Serializable {
     private static final long serialVersionUID = 1L;
 

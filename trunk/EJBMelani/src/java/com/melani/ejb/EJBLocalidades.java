@@ -6,6 +6,7 @@ package com.melani.ejb;
 import com.melani.entity.Localidades;
 import com.melani.entity.Provincias;
 import com.melani.utils.ProjectHelpers;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -59,16 +60,19 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     @Override
     public long addLocalidadCompleto(String descripcion, short idProvincia, int codigopostal) {
         long retorno = 0;
+        StringBuilder internalDescripcion = new StringBuilder();
+        String out = null;
         try {
-            descripcion = descripcion.toUpperCase();
+            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            internalDescripcion.append(out);
             
-            if(ProjectHelpers.DescripcionValidator.validate(descripcion)&&!descripcion.isEmpty()){
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(descripcion);
-                    sb.append("%");
+            
+            if(ProjectHelpers.DescripcionValidator.validate(descripcion) && internalDescripcion.length()>0){
+                    
+                    internalDescripcion.append("%");
                     Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.descripcion LIKE :descripcion and l.codigopostal = :codigopostal and " +
                             " l.provincias.idProvincia = :idProvincia");
-                    consulta.setParameter("descripcion",descripcion.toString());
+                    consulta.setParameter("descripcion",descripcion.toString().toLowerCase());
                     consulta.setParameter("codigopostal", codigopostal);
                     consulta.setParameter("idProvincia", idProvincia);
                             List<Localidades> lista = consulta.getResultList();
@@ -87,7 +91,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                 retorno = -7;
             }
             
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             retorno =-1;
             logger.error("Error en metodo addLocalidades " + e.getLocalizedMessage());
        }finally{

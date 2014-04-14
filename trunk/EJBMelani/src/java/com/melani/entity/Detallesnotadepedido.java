@@ -310,10 +310,7 @@ public class Detallesnotadepedido implements Serializable {
             return false;
         }
         Detallesnotadepedido other = (Detallesnotadepedido) object;
-        if ((this.detallesnotadepedidoPK == null && other.detallesnotadepedidoPK != null) || (this.detallesnotadepedidoPK != null && !this.detallesnotadepedidoPK.equals(other.detallesnotadepedidoPK))) {
-            return false;
-        }
-        return true;
+        return (this.detallesnotadepedidoPK != null || other.detallesnotadepedidoPK == null) && (this.detallesnotadepedidoPK == null || this.detallesnotadepedidoPK.equals(other.detallesnotadepedidoPK));
     }
     @Override
     public String toString() {

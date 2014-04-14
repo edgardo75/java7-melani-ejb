@@ -15,8 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -80,11 +78,11 @@ public class EJBProductos implements EJBProductosRemote {
                     }else {
                         existencias.setPreciounitario(BigDecimal.valueOf(0));
                 }
-            Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :sid");
-            consulta.setParameter("sid", producto.getSid());
-                        List<ExistenciasProductos>lista = consulta.getResultList();
-                    producto.setExistenciasProductoss(lista);
-                    retorno = producto.getSid();
+                        Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :sid");
+                            consulta.setParameter("sid", producto.getSid());
+                            List<ExistenciasProductos>lista = consulta.getResultList();
+                                producto.setExistenciasProductoss(lista);
+                                retorno = producto.getSid();
                     em.merge(producto);
                     em.persist(existencias);
         } catch (Exception e) {
@@ -96,48 +94,47 @@ public class EJBProductos implements EJBProductosRemote {
         }
     }
 
-    /**
-     *
-     * @param idProducto
-     * @return
-     */
-    @Override
-    public String leerImagenBaseDatos(long idProducto) {
-        String result="NADA";
-        ByteArrayInputStream is = null;
-        FileOutputStream fos = null;
-        try {
-            String pathActual = System.getProperty("user.dir") + File.separatorChar + "Imagen" + File.separatorChar;
-                Productos producto = em.find(Productos.class, idProducto);
-                    File file = new File(pathActual+"faro.jpg");
-                    fos = new FileOutputStream(file);
-//                    //byte[] buffer= producto.getImg();
-//                    is = new ByteArrayInputStream(buffer);
-//            //----------------------------------------------------------------------------------
-//                    while (is.read(buffer) > 0) {
-//                      fos.write(buffer);
-//                    }
-//            //----------------------------------------------------------------------------------
-                    result = "LEIDO";
-        } catch (FileNotFoundException e) {
-            result = "ERROR";
-            e.getMessage();
-        }finally{
-           try{
-               if(fos!=null) {
-                   fos.close();
-               }
-               if(is!=null) {
-                   is.close();
-               }
-           }catch(IOException e){
-                logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos "+e);
-            }finally{
-                
-                return result;
-           }
-        }
-    }
+//    /**
+//     *
+//     * @param idProducto
+//     * @return
+//     */
+//    @Override
+//    public String leerImagenBaseDatos(long idProducto) {
+//        String result="NADA";
+//        ByteArrayInputStream is = null;
+//        FileOutputStream fos = null;
+//        try {
+//            String pathActual = System.getProperty("user.dir") + File.separatorChar + "Imagen" + File.separatorChar;
+//                Productos producto = em.find(Productos.class, idProducto);
+//                    File file = new File(pathActual+"faro.jpg");
+//                    fos = new FileOutputStream(file);
+////                    //byte[] buffer= producto.getImg();
+////                    is = new ByteArrayInputStream(buffer);
+////            //----------------------------------------------------------------------------------
+////                    while (is.read(buffer) > 0) {
+////                      fos.write(buffer);
+////                    }
+////            //----------------------------------------------------------------------------------
+//                    result = "LEIDO";
+//        } catch (FileNotFoundException e) {
+//            result = "ERROR";
+//            e.getMessage();
+//        }finally{
+//           try{
+//               if(fos!=null) {
+//                   fos.close();
+//               }
+//               if(is!=null) {
+//                   is.close();
+//               }
+//           }catch(IOException e){
+//                logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos "+e);
+//            }finally{                
+//                return result;
+//           }
+//        }
+//    }
 
     /**
      *
@@ -381,17 +378,16 @@ public class EJBProductos implements EJBProductosRemote {
                                     existencias.setPreciounitario(producto.getPrecioUnitario());
                                     existencias.setProductos(em.find(Productos.class, idProducto));
                                     em.persist(existencias);
-                               Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :idproducto");
-                               consulta.setParameter("idproducto", producto.getSid());
-                               List<ExistenciasProductos>lista = consulta.getResultList();
-                                   producto.setExistenciasProductoss(lista);
-                               em.persist(producto);
-                                    resultado = producto.getCantidadDisponible().intValue();
+                                        Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :idproducto");
+                                        consulta.setParameter("idproducto", producto.getSid());
+                                            List<ExistenciasProductos>lista = consulta.getResultList();
+                                                producto.setExistenciasProductoss(lista);
+                        em.persist(producto);
+                        resultado = producto.getCantidadDisponible().intValue();
         } catch (Exception e) {
             logger.error("Error en metodo controlStockProducto "+ e.getLocalizedMessage());
             resultado = -1;
-        } finally {
-            
+        } finally {            
             return resultado;
         }
     }
@@ -439,14 +435,14 @@ public class EJBProductos implements EJBProductosRemote {
                                         em.persist(producto);
                                         em.flush();
                 //---------------------------------------------------------------------------------
-                                        ExistenciasProductos existencias = new ExistenciasProductos();
-                                        existencias.setCantidadactual(datosprod.getCantidaddisponible());
-                                        existencias.setCantidadinicial(0);
-                                        existencias.setFechaagregado(calendario.getTime());
-                                        existencias.setPreciounitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
-                                        existencias.setProductos(em.find(Productos.class, producto.getSid()));
-                                        existencias.setIdUsuario(datosprod.getIdusuario());
-                                        em.persist(existencias);
+                                                ExistenciasProductos existencias = new ExistenciasProductos();
+                                                existencias.setCantidadactual(datosprod.getCantidaddisponible());
+                                                existencias.setCantidadinicial(0);
+                                                existencias.setFechaagregado(calendario.getTime());
+                                                existencias.setPreciounitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
+                                                existencias.setProductos(em.find(Productos.class, producto.getSid()));
+                                                existencias.setIdUsuario(datosprod.getIdusuario());
+                                                em.persist(existencias);
                                         em.flush();
                 //---------------------------------------------------------------------------------
                                     retorno = existencias(producto);
@@ -516,7 +512,6 @@ public class EJBProductos implements EJBProductosRemote {
             retorno=-1;
             logger.error("Error al Almacenar Imagen en Base de Datos "+e.getLocalizedMessage());
         }finally{
-            
             return retorno;
         }
     }
@@ -531,14 +526,11 @@ public class EJBProductos implements EJBProductosRemote {
         byte[] retorno = null;
         try {
             
-            Query consulta = em.createQuery("SELECT i FROM ImagenesProductos i WHERE i.productos.sid = :sid");
-            
-            
-            consulta.setParameter("sid", idProducto);
-            
+            Query consulta = em.createNamedQuery("ImagenesProductos.findById");
+                consulta.setParameter("sid", idProducto);
             List<ImagenesProductos>lista = consulta.getResultList();
             
-                    String pathImage = null;
+                    String pathImage = "";
                     for(ImagenesProductos imagen:lista){
                            pathImage=PATH_IMAGENES+imagen.getNombreImagen()+"."+imagen.getExtension();             
                     }
@@ -597,7 +589,7 @@ public class EJBProductos implements EJBProductosRemote {
                     em.persist(imgProd);
             
                     //Enlazando las imagenes de un producto
-                Query consulta = em.createQuery("Select i From ImagenesProductos i Where i.productos.sid = :idProducto");
+                Query consulta = em.createNamedQuery("ImagenesProductos.findByIdProduct");
                     consulta.setParameter("idProducto", producto.getSid());
                List<ImagenesProductos>lista = consulta.getResultList();
                
