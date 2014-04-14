@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +22,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "IMAGENESPRODUCTOS")
+@NamedQueries({@NamedQuery(name = "ImagenesProductos.findById",query = "SELECT i FROM ImagenesProductos i WHERE i.productos.sid = :sid"),
+@NamedQuery(name = "ImagenesProductos.findByIdProduct", query = "Select i From ImagenesProductos i Where i.productos.sid = :idProducto")})
 public class ImagenesProductos implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id

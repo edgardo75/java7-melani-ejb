@@ -22,12 +22,12 @@ public interface EJBProductosRemote {
      */
     long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario);
 
-    /**
-     *
-     * @param idProducto
-     * @return
-     */
-    String leerImagenBaseDatos(long idProducto);
+//    /**
+//     *
+//     * @param idProducto
+//     * @return
+//     */
+//    String leerImagenBaseDatos(long idProducto);
 
     /**
      *

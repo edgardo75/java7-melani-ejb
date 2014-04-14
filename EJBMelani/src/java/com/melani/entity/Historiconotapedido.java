@@ -52,7 +52,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @NamedQuery(name = "Historiconotapedido.findByEntregado", query = "SELECT h FROM Historiconotapedido h WHERE h.entregado = :entregado"),
 @NamedQuery(name = "Historiconotapedido.findByCancelado", query = "SELECT h FROM Historiconotapedido h WHERE h.cancelado = :cancelado"),
 @NamedQuery(name = "Historiconotapedido.findByAnulado", query = "SELECT h FROM Historiconotapedido h WHERE h.anulado = :anulado"),
-@NamedQuery(name = "Historiconotapedido.findByPorcdesc", query = "SELECT h FROM Historiconotapedido h WHERE h.porcdesc = :porcdesc")})
+@NamedQuery(name = "Historiconotapedido.findByPorcdesc", query = "SELECT h FROM Historiconotapedido h WHERE h.porcdesc = :porcdesc"),
+@NamedQuery(name = "Historiconotapedido.findByFkidnotapedido",query = "SELECT h FROM Historiconotapedido h WHERE h.fkidnotapedido.id = :idnota")})
 public class Historiconotapedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

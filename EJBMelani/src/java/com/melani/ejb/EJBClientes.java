@@ -194,8 +194,8 @@ public class EJBClientes implements EJBClientesRemote {
     private long existePersona(int nrodocu) {
         long retorno =0;
         try {
-            Query consulta = em.createQuery("SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocu");
-                consulta.setParameter("nrodocu", nrodocu);
+            Query consulta = em.createNamedQuery("Personas.findByNrodocumento");
+                consulta.setParameter("nrodocumento", nrodocu);
                         List<Personas>lista = consulta.getResultList();
                         if(lista.size()==1)      {
                                 for (Personas personas : lista) {
@@ -389,61 +389,61 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
      * @param cliente objeto cliente
      * @return
      */
-    @Override
-    public long addClientes(Clientes cliente) {
-        long resultCode = 0;
-        try {
-            
-                            //-----------------------------------------------------------------------------------
-                            GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
-                            //-----------------------------------------------------------------------------------
-                            //--------------------------------------------------------------------------
-                            if(cliente == null)
-                            {
-                                logger.info("Objeto Cliente es invalido");
-                                resultCode = -1;
-                                throw new IllegalArgumentException("Objeto Cliente es invalido");
-
-                            }
-                            
-                            //--------------------------------------------------------------------------
-                            Query consulta = em.createQuery("SELECT c FROM Clientes c WHERE c.nrodocumento = :nrodocumento");
-                            consulta.setParameter("nrodocumento",cliente.getNrodocumento());
-                            //--------------------------------------------------------------------------
-                            if(consulta.getResultList().size()==1){
-                                 logger.info("Clientes existente, numero de documento");
-                                 resultCode=-3;
-                                 throw new RuntimeException("Entrada Cliente existente");
-                            }
-                            //-------------------------------------------------------------------------
-                            String nombre = cliente.getNombre();
-                            String apellido = cliente.getApellido();
-                            short idtipo = cliente.getTipodocumento().getId();
-                            int nrodocu = cliente.getNrodocumento();
-                            String email = cliente.getEmail();
-                            String observaciones = cliente.getObservaciones();
-                            //------------------------------------------------------------------------
-                            Clientes cli = new Clientes();
-                            cli.setApellido(apellido.toUpperCase());
-                            cli.setNombre(nombre.toUpperCase());
-                            cli.setEmail(email);
-                            cli.setObservaciones(observaciones);
-                            cli.setNrodocumento(nrodocu);
-                            cli.setTipodocumento(em.find(Tiposdocumento.class, idtipo));
-                            cli.setFechaCarga(calendario.getTime());
-                            cli.setTotalCompras(BigDecimal.ZERO);
-                            cli.setTotalEnPuntos(BigInteger.ZERO);
-                            em.persist(cli);
-                            resultCode = cli.getIdPersona();
-                            
-                //---------------------------------------------------------------------------------------------------
-        } catch (RuntimeException e) {
-            logger.error("Ocurrió un error al insertar un Objeto Cliente, verifique");
-            resultCode = -2;
-        }finally{            
-            return resultCode;
-        }
-    }
+//    @Override
+//    public long addClientes(Clientes cliente) {
+//        long resultCode = 0;
+//        try {
+//            
+//                            //-----------------------------------------------------------------------------------
+//                            GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
+//                            //-----------------------------------------------------------------------------------
+//                            //--------------------------------------------------------------------------
+//                            if(cliente == null)
+//                            {
+//                                logger.info("Objeto Cliente es invalido");
+//                                resultCode = -1;
+//                                throw new IllegalArgumentException("Objeto Cliente es invalido");
+//
+//                            }
+//                            
+//                            //--------------------------------------------------------------------------
+//                            Query consulta = em.createQuery("SELECT c FROM Clientes c WHERE c.nrodocumento = :nrodocumento");
+//                            consulta.setParameter("nrodocumento",cliente.getNrodocumento());
+//                            //--------------------------------------------------------------------------
+//                            if(consulta.getResultList().size()==1){
+//                                 logger.info("Clientes existente, numero de documento");
+//                                 resultCode=-3;
+//                                 throw new RuntimeException("Entrada Cliente existente");
+//                            }
+//                            //-------------------------------------------------------------------------
+//                            String nombre = cliente.getNombre();
+//                            String apellido = cliente.getApellido();
+//                            short idtipo = cliente.getTipodocumento().getId();
+//                            int nrodocu = cliente.getNrodocumento();
+//                            String email = cliente.getEmail();
+//                            String observaciones = cliente.getObservaciones();
+//                            //------------------------------------------------------------------------
+//                            Clientes cli = new Clientes();
+//                            cli.setApellido(apellido.toUpperCase());
+//                            cli.setNombre(nombre.toUpperCase());
+//                            cli.setEmail(email);
+//                            cli.setObservaciones(observaciones);
+//                            cli.setNrodocumento(nrodocu);
+//                            cli.setTipodocumento(em.find(Tiposdocumento.class, idtipo));
+//                            cli.setFechaCarga(calendario.getTime());
+//                            cli.setTotalCompras(BigDecimal.ZERO);
+//                            cli.setTotalEnPuntos(BigInteger.ZERO);
+//                            em.persist(cli);
+//                            resultCode = cli.getIdPersona();
+//                            
+//                //---------------------------------------------------------------------------------------------------
+//        } catch (RuntimeException e) {
+//            logger.error("Ocurrió un error al insertar un Objeto Cliente, verifique");
+//            resultCode = -2;
+//        }finally{            
+//            return resultCode;
+//        }
+//    }
 
     /**
      *
@@ -591,8 +591,8 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                }
                                ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++Relaciono las Entidades****************************+++++
                                //------------------------------------------------------------------------------
-                                       Query clitele = em.createQuery("SELECT p FROM Personastelefonos p WHERE p.personastelefonosPK.idPersona = :idpersona");
-                                       clitele.setParameter("idpersona", cliente.getIdPersona());
+                                       Query clitele = em.createNamedQuery("Personastelefonos.findByIdPersona");
+                                       clitele.setParameter("idPersona", cliente.getIdPersona());
                                        List<Personastelefonos>listaTel = clitele.getResultList();
                                        cliente.setPersonastelefonoss(listaTel);
                                         Telefonos telef=null;
@@ -626,8 +626,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
     public String getCustomerDocNumber(Integer docNumber) {
         String xml="";
         try {
-            Query jsql=em.createQuery("SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocumento and " +
-                    "p.pertype = :pertype");
+            Query jsql=em.createNamedQuery("Personas.searchByNroDocuAndPertype");
             jsql.setParameter("nrodocumento", docNumber);
             jsql.setParameter("pertype", "CLI");
             List<Clientes>lista = jsql.getResultList();
@@ -667,13 +666,13 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
         try {
             if(!email.isEmpty()&&nrodocu>0){
                 if(ProjectHelpers.EmailValidator.validate(email)){
-                    Query sqlemail = em.createQuery("SELECT p FROM Personas p WHERE p.email = :email and p.nrodocumento = :nrodocumento");
+                    Query sqlemail = em.createNamedQuery("Personas.searchByEmailAndNroDocu");
                                 sqlemail.setParameter("email", email.toLowerCase());
                                 sqlemail.setParameter("nrodocumento", nrodocu);
                         if(sqlemail.getResultList().size()==1) {
                             retorno = -5;
                     } else{
-                            sqlemail = em.createQuery("SELECT p FROM Personas p WHERE p.email = :email");
+                            sqlemail = em.createNamedQuery("Personas.findByEmail");
                                 sqlemail.setParameter("email", email.toLowerCase());
                                 if(sqlemail.getResultList().size()==1) {
                                     retorno =-8;
@@ -708,20 +707,20 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                     StringBuilder sblastname = new StringBuilder();
                         sblastname.append(lastname);
                         sblastname.append("%");
-            String sql = "SELECT p FROM Personas p WHERE p.nombre LIKE :nombre and p.apellido LIKE :apellido";
-            Query consulta = em.createQuery(sql);
-            consulta.setParameter("nombre", sbname.toString().toUpperCase());
-            consulta.setParameter("apellido", sblastname.toString().toUpperCase());
-            List<Personas>lista = consulta.getResultList();
-            for (Personas personas : lista) {
-                xml+="<item>\n"
-                        + "<id>"+personas.getIdPersona()+"</id>\n"
-                        + "<apellido>"+personas.getApellido()+"</apellido>\n"
-                        + "<nombre>"+personas.getNombre()+"</nombre>\n"
-                        + "<idtipodocu>"+personas.getTipodocumento().getId()+"</idtipodocu>\n"
-                        + "<nrodocu>"+personas.getNrodocumento()+"</nrodocu>\n" +
-                        "</item>\n";
-            }
+                    String sql = "SELECT p FROM Personas p WHERE p.nombre LIKE :nombre and p.apellido LIKE :apellido";
+                            Query consulta = em.createQuery(sql);
+                            consulta.setParameter("nombre", sbname.toString().toUpperCase());
+                            consulta.setParameter("apellido", sblastname.toString().toUpperCase());
+                            List<Personas>lista = consulta.getResultList();
+                                for (Personas personas : lista) {
+                                    xml+="<item>\n"
+                                            + "<id>"+personas.getIdPersona()+"</id>\n"
+                                            + "<apellido>"+personas.getApellido()+"</apellido>\n"
+                                            + "<nombre>"+personas.getNombre()+"</nombre>\n"
+                                            + "<idtipodocu>"+personas.getTipodocumento().getId()+"</idtipodocu>\n"
+                                            + "<nrodocu>"+personas.getNrodocumento()+"</nrodocu>\n" +
+                                            "</item>\n";
+                                }
         } catch (Exception e) {
             logger.error("Error en metodo searchClientForNameAndLastName "+e.getLocalizedMessage());
         }finally{

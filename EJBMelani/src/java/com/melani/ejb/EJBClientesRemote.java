@@ -34,12 +34,12 @@ public interface EJBClientesRemote {
      */
     String obtenerClienteXTipoAndNumeroDocu(short idTipo, int nrodDocu);
 
-    /**
-     *
-     * @param clientes
-     * @return
-     */
-    long addClientes(Clientes clientes);
+//    /**
+//     *
+//     * @param clientes
+//     * @return
+//     */
+//    long addClientes(Clientes clientes);
 
     /**
      *

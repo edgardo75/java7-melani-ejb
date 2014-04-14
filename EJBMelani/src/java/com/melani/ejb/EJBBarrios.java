@@ -1,6 +1,7 @@
 package com.melani.ejb;
 import com.melani.entity.Barrios;
 import com.melani.utils.ProjectHelpers;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -34,16 +35,21 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public long addBarrio(String descripcion,int idUsuario) {
         long retorno = 0;
+        StringBuilder internalDescripcion =new StringBuilder();
+        String out = null;
         try {
-            
+            //convierto string a su correspondiente encoding
+            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            internalDescripcion.append(out);        
             //metodo que agrega un nombre de barrio
            //variable estatica para indicar el nivel de error
             logger.setLevel(Level.ERROR);
-            if(!descripcion.isEmpty()&&ProjectHelpers.DescripcionValidator.validate(descripcion)){
+           
+            if(internalDescripcion.length()>0&&ProjectHelpers.DescripcionValidator.validate(internalDescripcion.toString())){
             //------------------------------------------------------------------------------------------------
-                    descripcion = descripcion.toLowerCase();//paso a minuscula la descripcion ingresada
-                    Query consulta =  em.createNamedQuery("Barrios.findByDescripcionByLike",Barrios.class);
-                    consulta.setParameter("1",descripcion.concat("%"));
+                    
+                    Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
+                    consulta.setParameter("1",internalDescripcion.append("%").toString().toLowerCase());
                     List<Barrios> lista = consulta.getResultList();
                     
                     //------------------------------------------------------------------------------------------------
@@ -62,7 +68,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             }else {
                 retorno=-2;
             }
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             retorno = -1;
             logger.error("Error en metodo addBarrio "+e);
         } finally {                              
@@ -114,7 +120,7 @@ public class EJBBarrios implements EJBBarriosRemote {
        int retorno =0;      
        try {
                       //consulta jpql
-                       Query consulta = em.createNamedQuery("Barrios.findAll");
+                       Query consulta = em.createQuery("SELECT b FROM Barrios b");
                        retorno = consulta.getResultList().size();
             } catch (Exception e) {
                 retorno = -1;
@@ -140,7 +146,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             indice=indiceInicio;
             nroItems=numeroItems;
             
-            Query consulta = em.createNamedQuery("Barrios.findAll", Barrios.class);
+            Query consulta = em.createQuery("SELECT b FROM Barrios b", Barrios.class);
             consulta.setMaxResults(nroItems);
              consulta.setFirstResult(indice*nroItems);
             
@@ -155,7 +161,8 @@ public class EJBBarrios implements EJBBarriosRemote {
         } catch (Exception e) {
             xml.append("Error en método obtenerItemsPaginados");
             logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
-        }finally{return xml.toString();
+        }finally{
+            return xml.toString();
         }
 }
 /**
@@ -170,7 +177,7 @@ public class EJBBarrios implements EJBBarriosRemote {
          Barrios[]fBarrios=null;       
         try {   
             
-            Query consulta = em.createNamedQuery("Barrios.findAll");
+            Query consulta = em.createQuery("SELECT b FROM Barrios b");
                 consulta.setMaxResults(numitems);
                 consulta.setFirstResult(startindex*numitems);
                 List<Barrios>lista = consulta.getResultList();

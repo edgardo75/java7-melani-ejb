@@ -35,8 +35,7 @@ public class EJBTelefonos implements EJBTelefonosRemote {
                     //-----------------------------------------------------------------------------
                     TelefonosPK telepk = new TelefonosPK(Long.valueOf(datosTel.getNumero().trim()),Long.valueOf(datosTel.getPrefijo().trim()));
                             //-----------------------------------------------------------------------------
-                            Query consulta = em.createQuery("SELECT t FROM Telefonos t WHERE t.telefonosPK.idPrefijo = :idPrefijo and " +
-                                            "t.telefonosPK.numero = :numero");
+                            Query consulta = em.createNamedQuery("Telefonos.addByCodeAndNumber");
                                     consulta.setParameter("idPrefijo", Long.valueOf(datosTel.getPrefijo().trim()));
                                     consulta.setParameter("numero", Long.valueOf(datosTel.getNumero().trim()));
                                             if(consulta.getResultList().size()==1) {

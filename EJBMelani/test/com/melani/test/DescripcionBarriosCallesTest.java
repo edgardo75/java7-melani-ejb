@@ -66,7 +66,7 @@ public class DescripcionBarriosCallesTest {
          @Test
      public void chequearDescripcion() {
             //assertEquals(true, desc.validate("6 ' av.argentina"));
-            assertEquals(true, ProjectHelpers.DescripcionValidator.validate("AV. ING. JOSÉ IGNACIÓN DE LA ROZA 1"));
+            assertEquals(true, ProjectHelpers.DescripcionValidator.validate("bladés"));
 //            assertEquals(true, desc.validate("15 de abril"));
 //            assertEquals(true, desc.validate  ("???%$%==%$#))"));
 //            String s = " humbapumpa jim";

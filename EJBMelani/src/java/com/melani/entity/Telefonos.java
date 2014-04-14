@@ -26,7 +26,9 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Telefonos.findAll", query = "SELECT t FROM Telefonos t"),
     @NamedQuery(name = "Telefonos.findByIdPrefijo", query = "SELECT t FROM Telefonos t WHERE t.telefonosPK.idPrefijo = :idPrefijo"),
-    @NamedQuery(name = "Telefonos.findByNumero", query = "SELECT t FROM Telefonos t WHERE t.telefonosPK.numero = :numero")})
+    @NamedQuery(name = "Telefonos.findByNumero", query = "SELECT t FROM Telefonos t WHERE t.telefonosPK.numero = :numero"),
+    @NamedQuery(name = "Telefonos.addByCodeAndNumber",query = "SELECT t FROM Telefonos t WHERE t.telefonosPK.idPrefijo = :idPrefijo and " +
+                                            "t.telefonosPK.numero = :numero")})
     public class Telefonos implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -6,6 +6,7 @@
 
 package com.melani.utils;
 
+import static com.sun.xml.ws.security.addressing.impl.policy.Constants.logger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -15,14 +16,13 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author win7
  */
 public class ProjectHelpers {
-    private static final Logger logger = Logger.getLogger(ProjectHelpers.class);
+    
     private static final SecretKeySpec key = new SecretKeySpec("MyKey".getBytes(), "Blowfish");
     private static  Pattern pattern;
     private static  Matcher matcher;
@@ -46,7 +46,7 @@ public class ProjectHelpers {
                                 byte[]encrypted=cipher.doFinal(frase.getBytes());            
                                 encryptedRet=new String(encrypted);            
                             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
-                                logger.error("Error en metodo al encriptar frase "+e.getLocalizedMessage());
+                                e.getLocalizedMessage();
                             }finally{
                                return encryptedRet;
                             }    
@@ -68,7 +68,7 @@ public class ProjectHelpers {
                                     String afterEncryption = new String(decrypted);
                                     decriptedRet=afterEncryption;
                                 } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                                    logger.error("Error en metodo al desencriptar frase "+e.getLocalizedMessage());
+                                    e.getLocalizedMessage();
                                 }finally{
                                    return decriptedRet;
                                 }

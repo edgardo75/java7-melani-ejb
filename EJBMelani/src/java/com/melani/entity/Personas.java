@@ -42,7 +42,10 @@ import org.apache.commons.lang3.StringEscapeUtils;
     @NamedQuery(name = "Personas.findByNrodocumento", query = "SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocumento"),
     @NamedQuery(name = "Personas.findByEmail", query = "SELECT p FROM Personas p WHERE p.email = :email"),
     @NamedQuery(name = "Personas.findByApellido", query = "SELECT p FROM Personas p WHERE p.apellido = :apellido"),
-@NamedQuery(name = "Personas.deleteById",query = "DELETE FROM Personas p WHERE p.idPersona = :idPersona")})
+@NamedQuery(name = "Personas.deleteById",query = "DELETE FROM Personas p WHERE p.idPersona = :idPersona"),
+@NamedQuery(name = "Personas.searchByEmailAndNroDocu",query = "SELECT p FROM Personas p WHERE p.email = :email and p.nrodocumento = :nrodocumento"),
+@NamedQuery(name = "Personas.searchByNroDocuAndPertype",query = "SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocumento and " +
+                    "p.pertype = :pertype")})
 public abstract class Personas implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableGenerator(name="PersonaIdGen", table="ID_GEN_PER",
