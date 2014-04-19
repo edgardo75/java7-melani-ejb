@@ -11,14 +11,10 @@
     <message name="searchallbarriosResponse"/>
     <message name="recordCountBarrios"/>
     <message name="recordCountBarriosResponse"/>
-    <message name="obtenrItemsPaginados"/>
-    <message name="obtenrItemsPaginadosResponse"/>
     <message name="barrios_paging"/>
     <message name="barrios_pagingResponse"/>
     <message name="searchAllBarrios"/>
     <message name="searchAllBarriosResponse"/>
-    <message name="barrios_Paging"/>
-    <message name="barrios_PagingResponse"/>
     <message name="selectAllBarrios"/>
     <message name="selectAllBarriosResponse"/>
     <portType name="BarriosWs">
@@ -34,10 +30,6 @@
             <input message="tns:recordCountBarrios"/>
             <output message="tns:recordCountBarriosResponse"/>
         </operation>
-        <operation name="obtenrItemsPaginados">
-            <input message="tns:obtenrItemsPaginados"/>
-            <output message="tns:obtenrItemsPaginadosResponse"/>
-        </operation>
         <operation name="barrios_paging">
             <input message="tns:barrios_paging"/>
             <output message="tns:barrios_pagingResponse"/>
@@ -45,10 +37,6 @@
         <operation name="searchAllBarrios">
             <input message="tns:searchAllBarrios"/>
             <output message="tns:searchAllBarriosResponse"/>
-        </operation>
-        <operation name="barrios_Paging">
-            <input message="tns:barrios_Paging"/>
-            <output message="tns:barrios_PagingResponse"/>
         </operation>
         <operation name="selectAllBarrios">
             <input message="tns:selectAllBarrios"/>
@@ -68,19 +56,11 @@
             <input></input>
             <output></output>
         </operation>
-        <operation name="obtenrItemsPaginados">
-            <input></input>
-            <output></output>
-        </operation>
         <operation name="barrios_paging">
             <input></input>
             <output></output>
         </operation>
         <operation name="searchAllBarrios">
-            <input></input>
-            <output></output>
-        </operation>
-        <operation name="barrios_Paging">
             <input></input>
             <output></output>
         </operation>
@@ -92,6 +72,54 @@
     <service name="ServiceBarrios">
         <port name="BarriosWsPort" binding="tns:BarriosWsPortBinding"/>
     </service>
+    <wsp1:Policy wsu:Id="BarriosWsPortBinding_obtenrItemsPaginados_Input_Policy">
+        <wsp1:ExactlyOne>
+            <wsp1:All>
+                <sp1:EncryptedParts>
+                    <sp1:Body/>
+                </sp1:EncryptedParts>
+                <sp1:SignedParts>
+                    <sp1:Body/>
+                </sp1:SignedParts>
+            </wsp1:All>
+        </wsp1:ExactlyOne>
+    </wsp1:Policy>
+    <wsp1:Policy wsu:Id="BarriosWsPortBinding_obtenrItemsPaginados_Output_Policy">
+        <wsp1:ExactlyOne>
+            <wsp1:All>
+                <sp1:EncryptedParts>
+                    <sp1:Body/>
+                </sp1:EncryptedParts>
+                <sp1:SignedParts>
+                    <sp1:Body/>
+                </sp1:SignedParts>
+            </wsp1:All>
+        </wsp1:ExactlyOne>
+    </wsp1:Policy>
+    <wsp1:Policy wsu:Id="BarriosWsPortBinding_barrios_Paging_Input_Policy">
+        <wsp1:ExactlyOne>
+            <wsp1:All>
+                <sp1:EncryptedParts>
+                    <sp1:Body/>
+                </sp1:EncryptedParts>
+                <sp1:SignedParts>
+                    <sp1:Body/>
+                </sp1:SignedParts>
+            </wsp1:All>
+        </wsp1:ExactlyOne>
+    </wsp1:Policy>
+    <wsp1:Policy wsu:Id="BarriosWsPortBinding_barrios_Paging_Output_Policy">
+        <wsp1:ExactlyOne>
+            <wsp1:All>
+                <sp1:EncryptedParts>
+                    <sp1:Body/>
+                </sp1:EncryptedParts>
+                <sp1:SignedParts>
+                    <sp1:Body/>
+                </sp1:SignedParts>
+            </wsp1:All>
+        </wsp1:ExactlyOne>
+    </wsp1:Policy>
 </definitions>
 
 

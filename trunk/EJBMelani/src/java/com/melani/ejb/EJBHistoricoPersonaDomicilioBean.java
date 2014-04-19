@@ -30,7 +30,7 @@ public class EJBHistoricoPersonaDomicilioBean implements EJBHistoricoPersonaDomi
      * @return 
      */
     @Override
-    public long addOneHomePerson(Integer idDomicilio, Integer idPersona,Integer idUsuario) {
+    public long addHistoricoPersonaDomicilio(Integer idDomicilio, Integer idPersona,Integer idUsuario) {
         long retorno =0;
         try {
             //agrega una persona al historico de personas domicilio para almacenar el domicilio antiguo luego de un cambio realizado
@@ -44,7 +44,7 @@ public class EJBHistoricoPersonaDomicilioBean implements EJBHistoricoPersonaDomi
                     retorno=histpd.getIdhistperdom();
         } catch (Exception e) {
             retorno = -4;
-            logger.error("Error en metodo addOneHomePerson, EJBHistoricoPersonaDomicilioBean "+e.getMessage());
+            logger.error("Error en metodo addHistoricoPersonaDomicilio, EJBHistoricoPersonaDomicilioBean "+e.getMessage());
         }finally{
            return retorno;
         }

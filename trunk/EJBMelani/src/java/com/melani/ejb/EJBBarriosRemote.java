@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package com.melani.ejb;
-import com.melani.entity.Barrios;
 import javax.ejb.Remote;
 /**
  * interfaz remota EJBBarrios
@@ -38,7 +37,7 @@ public interface EJBBarriosRemote {
      * @param numeroItems cantidad de elementos o registros por pagina
      * @return lista de barrios
      */
-    String obtenrItemsPaginados(int indiceInicio, int numeroItems);
+   // String obtenrItemsPaginados(int indiceInicio, int numeroItems);
 
     /**
      *
@@ -46,5 +45,5 @@ public interface EJBBarriosRemote {
      * @param numitems cantidad de elementos o registros por pagina
      * @return lista de barrios
      */
-    Barrios[] barrios_Paging(int startindex, int numitems);
+   // Barrios[] barrios_Paging(int startindex, int numitems);
 }

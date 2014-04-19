@@ -32,7 +32,7 @@ public interface EJBNotaPedidoRemote {
      * @param idusuario
      * @return
      */
-    long modificarSaldoNota(long idnota, double saldo, int idusuario);
+   // long modificarSaldoNota(long idnota, double saldo, int idusuario);
 
     /**
      *

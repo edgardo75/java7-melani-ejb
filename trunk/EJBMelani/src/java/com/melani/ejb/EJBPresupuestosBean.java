@@ -44,10 +44,10 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         long retorno =0L;
         try {
             XStream xstream = new XStream();
-            xstream.alias("presupuesto", DatosPresupuestos.class);
-            xstream.alias("detallepresupuesto", DetallesPresupuesto.class);
-            xstream.alias("itemdetallespresupuesto", ItemDetallesPresupuesto.class);
-            xstream.addImplicitCollection(DetallesPresupuesto.class, "lista");
+                xstream.alias("presupuesto", DatosPresupuestos.class);
+                xstream.alias("detallepresupuesto", DetallesPresupuesto.class);
+                xstream.alias("itemdetallespresupuesto", ItemDetallesPresupuesto.class);
+                xstream.addImplicitCollection(DetallesPresupuesto.class, "lista");
             DatosPresupuestos datospresupuesto = (DatosPresupuestos) xstream.fromXML(parsearCaracteresEspecialesXML(xmlPresupuesto).toString());
             retorno = almacenarPresupuesto(datospresupuesto);
         }catch(NullPointerException npe)    {
@@ -89,26 +89,26 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             //**************************************************************************************
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
             for (ItemDetallesPresupuesto itemDetallesPresupuesto : lista) {
-                Productos producto = em.find(Productos.class, Long.valueOf(Integer.valueOf(itemDetallesPresupuesto.getFk_id_producto())));
-                DetallespresupuestoPK detpresPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), itemDetallesPresupuesto.getFk_id_producto());
-                Detallespresupuesto detpres = new Detallespresupuesto(detpresPK);
-                detpres.setCantidad(Short.valueOf(itemDetallesPresupuesto.getCantidad()));
-                detpres.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
-                detpres.setPrecioDesc(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio_desc()));
-                detpres.setPrecio(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio()));
-                detpres.setDetallespresupuestoPK(detpresPK);
-                detpres.setPresupuestos(em.find(Presupuestos.class, presupuesto.getIdPresupuesto()));
-                detpres.setProductos(producto);
-                detpres.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
-                em.persist(detpres);
-                Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.fkProducto = :fkProducto");
-                consultaListProdPres.setParameter("fkProducto", itemDetallesPresupuesto.getFk_id_producto());
-                producto.setDetallepresupuestosList(consultaListProdPres.getResultList());
+                        Productos producto = em.find(Productos.class, Long.valueOf(Integer.valueOf(itemDetallesPresupuesto.getFk_id_producto())));
+                        DetallespresupuestoPK detpresPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), itemDetallesPresupuesto.getFk_id_producto());
+                        Detallespresupuesto detpres = new Detallespresupuesto(detpresPK);
+                        detpres.setCantidad(Short.valueOf(itemDetallesPresupuesto.getCantidad()));
+                        detpres.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
+                        detpres.setPrecioDesc(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio_desc()));
+                        detpres.setPrecio(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio()));
+                        detpres.setDetallespresupuestoPK(detpresPK);
+                        detpres.setPresupuestos(em.find(Presupuestos.class, presupuesto.getIdPresupuesto()));
+                        detpres.setProductos(producto);
+                        detpres.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
+                     em.persist(detpres);
+                            Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.fkProducto = :fkProducto");
+                            consultaListProdPres.setParameter("fkProducto", itemDetallesPresupuesto.getFk_id_producto());
+                            producto.setDetallepresupuestosList(consultaListProdPres.getResultList());
             }
-                        Query consulta1 = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.idDpFk = :idDpFk");
-                        consulta1.setParameter("idDpFk", presupuesto.getIdPresupuesto());
-                        presupuesto.setDetallepresupuestosList(consulta1.getResultList());
-                        em.merge(presupuesto);
+                                Query consulta1 = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.idDpFk = :idDpFk");
+                                consulta1.setParameter("idDpFk", presupuesto.getIdPresupuesto());
+                                presupuesto.setDetallepresupuestosList(consulta1.getResultList());
+                                em.merge(presupuesto);
                         result=Long.valueOf(Integer.valueOf(presupuesto.getIdPresupuesto()));
         } catch (Exception e) {
             result=-2;
@@ -153,7 +153,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     public Integer getRecordCount() {
         int retorno =0;
         try {
-            Query presupuesto = em.createQuery("SELECT p FROM Presupuestos p");
+            Query presupuesto = em.createNamedQuery("Presupuestos.findAll");
             retorno =presupuesto.getResultList().size();
         } catch (Exception e) {
             retorno=-1;
@@ -168,30 +168,29 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      *
      * @return
      */
-    @Override
-    public String selectPresupuestoOfTheDay(){
-        String presupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<Lista>\n";
-        try {
-            Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.fechapresupuesto = CURRENT_DATE");
-            //Query consulta = em.createNativeQuery(" SELECT * FROM PRESUPUESTOS p WHERE p.FECHAPRESUPUESTO='today'", Presupuestos.class);
-            List<Presupuestos>lista = consulta.getResultList();
-            if(lista.isEmpty()) {
-                presupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
-            } else{
-                for (Presupuestos presupuestoss : lista) {
-                    presupuesto+=presupuestoss.toXML();
-                }
-            }
-            presupuesto+="</Lista>\n";
-        } catch (Exception e) {
-            presupuesto="Error";
-            logger.error("Error en selectPresupuestoPaging en EJBPresupuestosBean"+e.getMessage());
-        }finally{
-            
-         return presupuesto;
-        }
-    }
+//    @Override
+//    public String selectPresupuestoOfTheDay(){
+//        String presupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+//                + "<Lista>\n";
+//        try {
+//            Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.fechapresupuesto = CURRENT_DATE");            
+//            List<Presupuestos>lista = consulta.getResultList();
+//            if(lista.isEmpty()) {
+//                presupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+//            } else{
+//                for (Presupuestos presupuestoss : lista) {
+//                    presupuesto+=presupuestoss.toXML();
+//                }
+//            }
+//            presupuesto+="</Lista>\n";
+//        } catch (Exception e) {
+//            presupuesto="Error";
+//            logger.error("Error en selectPresupuestoPaging en EJBPresupuestosBean"+e.getMessage());
+//        }finally{
+//            
+//         return presupuesto;
+//        }
+//    }
 
     /**
      *

@@ -99,41 +99,33 @@ public class EJBProductos implements EJBProductosRemote {
 //     * @param idProducto
 //     * @return
 //     */
-//    @Override
-//    public String leerImagenBaseDatos(long idProducto) {
+//        public String leerImagenBaseDatos(long idProducto) {
 //        String result="NADA";
 //        ByteArrayInputStream is = null;
 //        FileOutputStream fos = null;
+//        
 //        try {
 //            String pathActual = System.getProperty("user.dir") + File.separatorChar + "Imagen" + File.separatorChar;
 //                Productos producto = em.find(Productos.class, idProducto);
 //                    File file = new File(pathActual+"faro.jpg");
 //                    fos = new FileOutputStream(file);
-////                    //byte[] buffer= producto.getImg();
-////                    is = new ByteArrayInputStream(buffer);
-////            //----------------------------------------------------------------------------------
-////                    while (is.read(buffer) > 0) {
-////                      fos.write(buffer);
-////                    }
-////            //----------------------------------------------------------------------------------
+//                    byte[] buffer= producto.getImg();
+//                    is = new ByteArrayInputStream(buffer);
+//            //----------------------------------------------------------------------------------
+//                    while (is.read(buffer) > 0) {
+//                      fos.write(buffer);
+//                    }
+//            //----------------------------------------------------------------------------------
 //                    result = "LEIDO";
-//        } catch (FileNotFoundException e) {
-//            result = "ERROR";
-//            e.getMessage();
-//        }finally{
-//           try{
-//               if(fos!=null) {
-//                   fos.close();
-//               }
-//               if(is!=null) {
-//                   is.close();
-//               }
-//           }catch(IOException e){
-//                logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos "+e);
-//            }finally{                
-//                return result;
-//           }
+//            } catch (FileNotFoundException e) {
+//                result = "ERROR";
+//                e.getMessage();
+//            }catch(IOException e){
+//                    logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos "+e);
+//            }
+//        return result;
 //        }
+//       
 //    }
 
     /**

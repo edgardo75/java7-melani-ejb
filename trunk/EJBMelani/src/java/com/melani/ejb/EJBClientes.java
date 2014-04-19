@@ -97,7 +97,7 @@ public class EJBClientes implements EJBClientesRemote {
                                     if(!datosClientePersonales.getEmail().isEmpty()){
              
                                         //verifico que venga validado correctamente el email junto con el numero de documento y si tambien lo encontro o no en la base de datos
-                                           chequear__email_numDoc = chequearemail(datosClientePersonales.getEmail(),datosClientePersonales.getNrodocu());
+                                           chequear__email_numDoc = chequearEmail(datosClientePersonales.getEmail(),datosClientePersonales.getNrodocu());
                                            
                                            switch((int)chequear__email_numDoc){              
                                                
@@ -105,7 +105,7 @@ public class EJBClientes implements EJBClientesRemote {
                                                retorno = chequear__email_numDoc;
                                                break;
                                                }
-                                               case -8:{logger.error("Email encontrado en metodo chequearemail");
+                                               case -8:{logger.error("Email encontrado en metodo chequearEmail");
                                                retorno = chequear__email_numDoc;
                                                 break;
                                                }
@@ -450,56 +450,56 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
      * @param cliente objeto cliente
      * @return devuelve el id del cliente
      */
-    @Override
-    public long updateCliente(Clientes cliente) {
-        long resultCode =0L;
-        try {
-            //--------------------------------------------------------
-            if(cliente==null){
-                logger.info("Error Objeto Cliente Invalido al actualizar");
-                resultCode=-2;
-                throw new IllegalArgumentException("Objeto Cliente invalido al actualizar");
-            }
-            //--------------------------------------------------------
-            String apellido = cliente.getApellido();
-            String nombre = cliente.getNombre();
-            String email = cliente.getEmail();
-            String observaciones = cliente.getObservaciones();
-            BigDecimal totalCompras = cliente.getTotalCompras();
-            BigInteger puntos = cliente.getTotalEnPuntos();
-            short idTipo = cliente.getTipodocumento().getId();
-            int nroDocu = cliente.getNrodocumento();
-            long clientId = cliente.getIdPersona();
-            //--------------------------------------------------------
-                    if(clientId <= 0 ||
-                            nombre == null ||
-                            apellido == null)
-                        {
-                        logger.info("Error Objeto Cliente Invalido al actualizar");
-                        resultCode=-3;
-                            throw new IllegalArgumentException("Objeto Cliente invalido al actualizar");
-                        }
-                       //---------------------------------------------------------
-                        Clientes cli = em.find(Clientes.class, clientId);
-                        cli.setApellido(apellido.toUpperCase());
-                        cli.setEmail(email);
-                        cli.setNombre(nombre.toUpperCase());
-                        cli.setObservaciones(observaciones);
-                        cli.setTotalCompras(totalCompras);
-                        cli.setTotalEnPuntos(puntos);
-                        cli.setTipodocumento(em.find(Tiposdocumento.class, idTipo));
-                        cli.setNrodocumento(nroDocu);
-                        //--------------------------------------------------------
-                            resultCode = cli.getIdPersona();
-                        //--------------------------------------------------------
-        } catch (IllegalArgumentException e) {
-            logger.error("Error en metodo updateCliente, verifique ",e);
-            resultCode =-1;
-        }finally{
-            
-            return resultCode;
-        }
-    }
+//    @Override
+//    public long updateCliente(Clientes cliente) {
+//        long resultCode =0L;
+//        try {
+//            //--------------------------------------------------------
+//            if(cliente==null){
+//                logger.info("Error Objeto Cliente Invalido al actualizar");
+//                resultCode=-2;
+//                throw new IllegalArgumentException("Objeto Cliente invalido al actualizar");
+//            }
+//            //--------------------------------------------------------
+//            String apellido = cliente.getApellido();
+//            String nombre = cliente.getNombre();
+//            String email = cliente.getEmail();
+//            String observaciones = cliente.getObservaciones();
+//            BigDecimal totalCompras = cliente.getTotalCompras();
+//            BigInteger puntos = cliente.getTotalEnPuntos();
+//            short idTipo = cliente.getTipodocumento().getId();
+//            int nroDocu = cliente.getNrodocumento();
+//            long clientId = cliente.getIdPersona();
+//            //--------------------------------------------------------
+//                    if(clientId <= 0 ||
+//                            nombre == null ||
+//                            apellido == null)
+//                        {
+//                        logger.info("Error Objeto Cliente Invalido al actualizar");
+//                        resultCode=-3;
+//                            throw new IllegalArgumentException("Objeto Cliente invalido al actualizar");
+//                        }
+//                       //---------------------------------------------------------
+//                        Clientes cli = em.find(Clientes.class, clientId);
+//                        cli.setApellido(apellido.toUpperCase());
+//                        cli.setEmail(email);
+//                        cli.setNombre(nombre.toUpperCase());
+//                        cli.setObservaciones(observaciones);
+//                        cli.setTotalCompras(totalCompras);
+//                        cli.setTotalEnPuntos(puntos);
+//                        cli.setTipodocumento(em.find(Tiposdocumento.class, idTipo));
+//                        cli.setNrodocumento(nroDocu);
+//                        //--------------------------------------------------------
+//                            resultCode = cli.getIdPersona();
+//                        //--------------------------------------------------------
+//        } catch (IllegalArgumentException e) {
+//            logger.error("Error en metodo updateCliente, verifique ",e);
+//            resultCode =-1;
+//        }finally{
+//            
+//            return resultCode;
+//        }
+//    }
     /**
      * 
      * @param xmlClienteDomicilioTelefono datos del cliente completo
@@ -661,7 +661,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
      * @param nrodocu numero de documento
      * @return devuelve un número deacuerdo a los datos entregados al método
      */
-    public long chequearemail(String email,Integer nrodocu) {
+    public long chequearEmail(String email,Integer nrodocu) {
         long retorno = -6;
         try {
             if(!email.isEmpty()&&nrodocu>0){
@@ -793,15 +793,15 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                    
                    if(ProjectHelpers.NumeroDocumentoValidator.validate(String.valueOf(getcliente.getNrodocu()))){
                        //reviso el email y numero de documento si estan en la base de datos y pertenecen a este id de cliente u otro
-                       chequear__email_numDoc = chequearemail(getcliente.getEmail(),getcliente.getNrodocu());
+                       chequear__email_numDoc = chequearEmail(getcliente.getEmail(),getcliente.getNrodocu());
                     
                             switch((int)chequear__email_numDoc){
                                      case -7:{logger.error("Error en metodo chequear email");
                                          xml+="<error>Error en metodo chequear email</error>\n";
                                          break;
                                       }
-                                     case -8:{logger.error("Email encontrado en metodo chequearemail");
-                                         xml+="<info>Email encontrado en metodo chequearemail<info>\n";
+                                     case -8:{logger.error("Email encontrado en metodo chequearEmail");
+                                         xml+="<info>Email encontrado en metodo chequearEmail<info>\n";
                                        break;
                                       }
                                       case -11:{logger.error("Email no válido");
