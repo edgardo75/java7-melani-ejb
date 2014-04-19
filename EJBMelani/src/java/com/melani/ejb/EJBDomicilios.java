@@ -152,11 +152,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             barrioN=domiciXML.getBarrio().getBarrioId();
             calleN=domiciXML.getCalle().getCalleId();
             orientacion=domiciXML.getOrientacion().getOrientacion();
-            localidadN=domiciXML.getLocalidad().getIdLocalidad();
-            
-
-            
-            
+            localidadN=domiciXML.getLocalidad().getIdLocalidad();            
             Query consulta = em.createQuery("SELECT d FROM Domicilios d WHERE d.entrecalleycalle like ?1 and d.manzana like ?2 and d.numero = ?3 and d.area like ?4 and d.torre like ?5 and d.piso like ?6 and d.sector like ?7 and d.monoblock like ?8 and d.numdepto = ?9 and d.idbarrio.id = ?10 and d.idcalle.id = ?11 and d.idorientacion.id = ?12 and d.localidades.idLocalidad = ?13",Domicilios.class);
                     consulta.setParameter("1", entrecalle);
                     consulta.setParameter("2", manzana);

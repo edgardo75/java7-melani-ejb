@@ -46,7 +46,7 @@ public interface EJBClientesRemote {
      * @param cliente
      * @return
      */
-    long updateCliente(Clientes cliente);
+   // long updateCliente(Clientes cliente);
 
     /**
      *

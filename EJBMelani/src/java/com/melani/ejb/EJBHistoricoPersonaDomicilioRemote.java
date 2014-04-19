@@ -18,5 +18,5 @@ public interface EJBHistoricoPersonaDomicilioRemote {
      * @param idUsuario
      * @return
      */
-    long addOneHomePerson(Integer idDomicilio, Integer idPersona,Integer idUsuario);   
+    long addHistoricoPersonaDomicilio(Integer idDomicilio, Integer idPersona,Integer idUsuario);   
 }

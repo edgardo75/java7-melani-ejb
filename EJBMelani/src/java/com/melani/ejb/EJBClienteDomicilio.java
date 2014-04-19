@@ -85,7 +85,7 @@ private PersonasDomicilios renovarDomicilio(long idDomicilio, long idCliente,int
                             for (Iterator<PersonasDomicilios> it = lista.iterator(); it.hasNext();) {
                                  personasDomicilios = it.next();
                                  //agrego el domicilio relacion al historico antes de remover la relacion para que quede constancia en la base de datos del cambio
-                                ejbhistperdom.addOneHomePerson(Integer.valueOf(String.valueOf(personasDomicilios.getDomicilioss().getId())),Integer.valueOf(String.valueOf(personasDomicilios.getPersonas().getIdPersona())), idUsuario);
+                                ejbhistperdom.addHistoricoPersonaDomicilio(Integer.valueOf(String.valueOf(personasDomicilios.getDomicilioss().getId())),Integer.valueOf(String.valueOf(personasDomicilios.getPersonas().getIdPersona())), idUsuario);
                                 em.remove(personasDomicilios);
                             }
                     }

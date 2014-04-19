@@ -81,6 +81,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                                 depto.setDescripcion(descripcion.toUpperCase());
                                 depto.setProvincias(em.find(Provincias.class, idProvincia));
                                 depto.setCodigopostal(codigopostal);
+                                
                                 em.persist(depto);
                                 em.flush();
                                 retorno = depto.getIdLocalidad();
@@ -107,7 +108,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
      * @return devuelve un listado de las localidades de la provincia correspondiente
      */
     @Override
-    public String searchAllLocalidadesbyidprov(Short idProvincia) {
+    public String searchAllLocalidadesByIdProvincia(Short idProvincia) {
          StringBuilder resultado = new StringBuilder("<Lista>\n");
          try {
              Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia order by l.descripcion asc");
@@ -122,7 +123,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             
              }
         } catch (Exception e) {
-            logger.error("Error en metodo searchAllLocalidadesbyidprov "+e.getLocalizedMessage());
+            logger.error("Error en metodo searchAllLocalidadesByIdProvincia "+e.getLocalizedMessage());
             resultado.append("<error>Se produjo un error</error>");
         }finally{
               resultado.append("</Lista>\n");              

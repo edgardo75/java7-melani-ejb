@@ -421,16 +421,6 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                }
 
                                                       em.flush();
-
-
-
-
-
-
-
-
-
-
                                                 }  //end if
                          }
            }
@@ -476,16 +466,14 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      *
      * @return
      */
-    public String desencriptarClavesYNombresUsuario(){
-    Empleados emp=em.find(Empleados.class, 38);
-        
-    String clave = ProjectHelpers.ClaveSeguridad.decriptar(emp.getPassword());
-    
-    return clave;
-    }
+//    public String desencriptarClavesYNombresUsuario(){
+//    Empleados emp=em.find(Empleados.class, 38);        
+//    String clave = ProjectHelpers.ClaveSeguridad.decriptar(emp.getPassword());
+//    
+//    return clave;
+//    }
 
-    private long procesarDatosEmpleadoAdd(DatosEmpleado empleado) {
-        
+    private long procesarDatosEmpleadoAdd(DatosEmpleado empleado) {        
         long retorno=0;
         try {
               retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
@@ -674,7 +662,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             
         } catch (Exception e) {
             retorno =-1;
-            logger.error("error en metodo valorRetornadoAlBuscarEmailyNombreUsuario ");
+            logger.error("error en metodo valorRetornadoAlBuscarEmailyNombreUsuario "+e.getLocalizedMessage());
         }finally{
             return retorno;
         }

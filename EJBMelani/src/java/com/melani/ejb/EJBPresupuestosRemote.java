@@ -34,7 +34,7 @@ public interface EJBPresupuestosRemote {
      *
      * @return
      */
-    String selectPresupuestoOfTheDay();
+   // String selectPresupuestoOfTheDay();
 
     /**
      *

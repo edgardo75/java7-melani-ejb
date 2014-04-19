@@ -136,35 +136,35 @@ public class EJBBarrios implements EJBBarriosRemote {
  * @return devuelve una lista de barrios instanciados
  */
 
-   @Override
-   public String obtenrItemsPaginados(int indiceInicio, int numeroItems) {
-        StringBuilder xml = new StringBuilder("<?xml version = '1.0' encoding = 'UTF-8'?>\n" +
-                "<Lista>\n");
-        int indice = 0;
-        int nroItems=0;
-        try {
-            indice=indiceInicio;
-            nroItems=numeroItems;
-            
-            Query consulta = em.createQuery("SELECT b FROM Barrios b", Barrios.class);
-            consulta.setMaxResults(nroItems);
-             consulta.setFirstResult(indice*nroItems);
-            
-            
-            List<Barrios>lista = consulta.getResultList();
-            
-            for (Barrios barrios : lista) {
-                xml.append(barrios.toXML());
-            }
-            xml.append("</Lista>\n");       
-            
-        } catch (Exception e) {
-            xml.append("Error en método obtenerItemsPaginados");
-            logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
-        }finally{
-            return xml.toString();
-        }
-}
+//   @Override
+//   public String obtenrItemsPaginados(int indiceInicio, int numeroItems) {
+//        StringBuilder xml = new StringBuilder("<?xml version = '1.0' encoding = 'UTF-8'?>\n" +
+//                "<Lista>\n");
+//        int indice = 0;
+//        int nroItems=0;
+//        try {
+//            indice=indiceInicio;
+//            nroItems=numeroItems;
+//            
+//            Query consulta = em.createQuery("SELECT b FROM Barrios b", Barrios.class);
+//            consulta.setMaxResults(nroItems);
+//             consulta.setFirstResult(indice*nroItems);
+//            
+//            
+//            List<Barrios>lista = consulta.getResultList();
+//            
+//            for (Barrios barrios : lista) {
+//                xml.append(barrios.toXML());
+//            }
+//            xml.append("</Lista>\n");       
+//            
+//        } catch (Exception e) {
+//            xml.append("Error en método obtenerItemsPaginados");
+//            logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
+//        }finally{
+//            return xml.toString();
+//        }
+//}
 /**
  *
  * @param startindex indice de pagina
@@ -172,29 +172,29 @@ public class EJBBarrios implements EJBBarriosRemote {
  * @return devuelve la lista de barrios instanciados
  */
   
-   @Override
-   public Barrios[] barrios_Paging(int startindex, int numitems) {
-         Barrios[]fBarrios=null;       
-        try {   
-            
-            Query consulta = em.createQuery("SELECT b FROM Barrios b");
-                consulta.setMaxResults(numitems);
-                consulta.setFirstResult(startindex*numitems);
-                List<Barrios>lista = consulta.getResultList();
-            if(lista.size()>0){
-                try {
-                    int len = lista.size();
-                    fBarrios = new Barrios[len];
-                    lista.toArray(fBarrios);
-                } catch (Exception ee) {
-                   ee.getMessage();
-                }
-            }          
-        } catch (Exception e) {
-            e.getMessage();
-            logger.warn(e.getLocalizedMessage());
-        }finally{                
-             return fBarrios;
-        }
-    }   
+//   @Override
+//   public Barrios[] barrios_Paging(int startindex, int numitems) {
+//         Barrios[]fBarrios=null;       
+//        try {   
+//            
+//            Query consulta = em.createQuery("SELECT b FROM Barrios b");
+//                consulta.setMaxResults(numitems);
+//                consulta.setFirstResult(startindex*numitems);
+//                List<Barrios>lista = consulta.getResultList();
+//            if(lista.size()>0){
+//                try {
+//                    int len = lista.size();
+//                    fBarrios = new Barrios[len];
+//                    lista.toArray(fBarrios);
+//                } catch (Exception ee) {
+//                   ee.getMessage();
+//                }
+//            }          
+//        } catch (Exception e) {
+//            e.getMessage();
+//            logger.warn(e.getLocalizedMessage());
+//        }finally{                
+//             return fBarrios;
+//        }
+//    }   
 }

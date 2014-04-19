@@ -63,7 +63,8 @@ query = "SELECT n FROM Notadepedido n"), @NamedQuery(name = "Notadepedido.findBy
         query = "SELECT n FROM Notadepedido n WHERE n.montototalapagar = :montototalapagar"), @NamedQuery(name = "Notadepedido.findByPorcdesctotal",
         query = "SELECT n FROM Notadepedido n WHERE n.porcdesctotal = :porcdesctotal"), @NamedQuery(name = "Notadepedido.findByPorcrecargo",
         query = "SELECT n FROM Notadepedido n WHERE n.porcrecargo = :porcrecargo"),@NamedQuery(name ="Notadepedido.deleteById",
-        query = "DELETE FROM Notadepedido n WHERE n.id = :id"),@NamedQuery(name = "Notadepedido.searchAllOrderDesc",query = "SELECT n FROM Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC")})
+        query = "DELETE FROM Notadepedido n WHERE n.id = :id"),@NamedQuery(name = "Notadepedido.searchAllOrderDesc",query = "SELECT n FROM Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC"),
+@NamedQuery(name = "Notadepedido.findClientFk",query = "SELECT n FROM Notadepedido n WHERE n.fkIdcliente.idPersona = :id")})
 public class Notadepedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id        

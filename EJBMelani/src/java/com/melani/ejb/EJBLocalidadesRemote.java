@@ -32,7 +32,7 @@ public interface EJBLocalidadesRemote {
      * @param idprovincia
      * @return
      */
-    String searchAllLocalidadesbyidprov(Short idprovincia);
+    String searchAllLocalidadesByIdProvincia(Short idprovincia);
 
     short addLatitudLongitud(long idProvincia, long idLocalidad, String latitud, String longitud);
 }
