@@ -137,7 +137,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 }
             }
         } catch (Exception e) {
-            xmlpresupuesto.append("Error");
+            
             logger.error("Error en metodo selectAllPresupuestoJPA "+e.getMessage());
         }finally{
             xmlpresupuesto.append("</Lista>\n");                    
@@ -252,7 +252,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 
             }
         } catch (Exception e) {
-            result.append("Error");
+            
             logger.error("Error en metodo verPresupuestos en EBPresupuestosBean "+e.getMessage());
         }finally{
             result.append("</Lista>\n");
