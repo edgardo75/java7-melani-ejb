@@ -102,8 +102,7 @@ public class EJBBarrios implements EJBBarriosRemote {
         //*********************************************************************
             xml.append("</Lista>");          
            
-        } catch (Exception e) {            
-            xml.append("error en metodo searchAllBarrios");
+        } catch (Exception e) {                        
             logger.error("Error en metodo searchAllBarrios "+e.getLocalizedMessage());
         } finally {           
             return xml.toString();
@@ -159,7 +158,6 @@ public class EJBBarrios implements EJBBarriosRemote {
 //            xml.append("</Lista>\n");       
 //            
 //        } catch (Exception e) {
-//            xml.append("Error en método obtenerItemsPaginados");
 //            logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
 //        }finally{
 //            return xml.toString();

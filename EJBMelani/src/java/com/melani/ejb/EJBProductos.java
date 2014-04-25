@@ -271,7 +271,7 @@ public class EJBProductos implements EJBProductosRemote {
             Productos producto = em.find(Productos.class, idproducto);
             result.append(producto.toXML());
         } catch (Exception e) {
-            result.append("ERROR");
+            
             logger.error("Error en metodo selectoneproducto "+e);
         }finally{
             return result.toString();

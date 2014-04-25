@@ -189,21 +189,13 @@ public class Localidades implements Serializable {
      *
      * @return
      */
-    public String toXML(){
-         
-         StringBuilder item  = new StringBuilder("<localidades>\n");
-        
-          
+    public String toXML(){         
+         StringBuilder item  = new StringBuilder("<localidades>\n");    
                 item.append("<id>").append(this.getIdLocalidad()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
                 item.append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n");
                 item.append("<latitud>").append(this.getLatitud()).append("</latitud>\n");
                 item.append("<longitud>").append(this.getLongitud()).append("</longitud>\n");
-                item.append("</localidades>\n");
-        
-        
-        
-        return item.toString();
- 
-        
+                item.append("</localidades>\n");       
+        return item.toString();      
     }
 }

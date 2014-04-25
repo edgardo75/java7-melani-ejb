@@ -326,7 +326,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             
         } catch (Exception e) {
             logger.error("Error en metodo selectUnaNota "+e.getLocalizedMessage());
-            xml.append("Error no paso nada");
+            
         }finally{
             return xml.append("</Lista>").toString();
         }
@@ -664,7 +664,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             }
            
         } catch (Exception e) {
-            lista.append("ERROR EN METODO selectAllNotas");
+            
             logger.error("Error en metodo selecAllNotas "+e.getMessage());
         }finally{                                
                 return lista.append("</Lista>").toString();
@@ -768,7 +768,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             }
             
         } catch (Exception e) {
-            result.append("Error en metodo vernotaspedidopaginadas");
+            
             logger.error("Error en metodo vernotasPedidoPaginadas "+e.getLocalizedMessage());
         }finally{
             result.append("</Lista>");

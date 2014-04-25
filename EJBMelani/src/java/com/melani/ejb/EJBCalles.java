@@ -92,8 +92,7 @@ public class EJBCalles implements EJBCallesRemote {
                 }
              
             }      
-        } catch (Exception e) {
-            xml.append("Error");
+        } catch (Exception e) {            
             logger.error("Error en metodo searchallcalles "+ e.getLocalizedMessage());
             e.getMessage();
         } finally {           

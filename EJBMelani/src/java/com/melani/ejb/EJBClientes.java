@@ -55,10 +55,8 @@ public class EJBClientes implements EJBClientesRemote {
     @EJB
     EJBClienteTelefonoRemote ejbclitel;
     private long chequear__email_numDoc=0L;
-    //----------------------------------------------------------------------------
-    
-//-----------------------------------------------------------------------------------------------------
-
+    //----------------------------------------------------------------------------    
+//--------------------------------------------------------------------------------
     /**
      *
      * @param xmlClienteDomicilioTelefono cadena con todos los datos del cliente, domicilio y telefono
@@ -69,12 +67,9 @@ public class EJBClientes implements EJBClientesRemote {
         Personas persona = null;
         try {
             //----------------------------------------------------------------------------------------
-            //libreria Xstream que transforma un Objeto a XML o viceversa
-            
-            
+            //libreria Xstream que transforma un Objeto a XML o viceversa          
             ClienteDomicilioTelefono getAllDatos = parsear_a_objetos(xmlClienteDomicilioTelefono);
              DatosCliente datosClientePersonales = getAllDatos.getCliente();
-             
            //------------------------------------------------------------------------------------------
              //valido el nombre y el apellido 
              
@@ -180,10 +175,6 @@ public class EJBClientes implements EJBClientesRemote {
         }finally{
             return retorno; 
         }
-        
-       
-       
-        
     }
     /**
      * 

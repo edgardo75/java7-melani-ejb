@@ -198,10 +198,8 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             XStream xstream = new XStream();
             xstream.alias("Domicilio",DatosDomicilios.class);
             DatosDomicilios domiciXML = (DatosDomicilios) xstream.fromXML(xmlDomicilio);
-            //------------------------------------------------------------------
-           
-           
-                            long idDomicilio1 = existe(domiciXML);
+            //------------------------------------------------------------------  
+            long idDomicilio1 = existe(domiciXML);
                             switch((int)idDomicilio1){
                                     case 1:{
                                         retorno=actualizarDomicilio(domiciXML,idDomicilio1);                        
@@ -215,8 +213,6 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                                     retorno = procesarAddDomicilio(domiciXML);                   
                                 }
                             }
-             
-            
         } catch (Exception e) {
             retorno =-2;
             logger.error("Error en Metodo addDomicilio "+e);
@@ -258,7 +254,6 @@ private long actualizarDomicilio(DatosDomicilios domiciXML,long iddomicilio) {
             retorno = -3;
             logger.error("Error en metodo actualizarDomicilio, EJBDomicilio "+e);
         }finally{
-            
             return retorno;
         }
     }
