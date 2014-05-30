@@ -51,9 +51,12 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     public long addEmpleadoFullTime(String xmlEmpleado){
         long retorno = 0;
         try { 
+            logger.info("addEmpleado");
                     //llamo a metodo interno para convertir a objeto los datos del empleado
                     DatosEmpleado datosEmpleado = datosEmpleadosObject(xmlEmpleado);
+                    logger.info("addEmpleado1");
                       retorno = procesarDatosEmpleadoAdd(datosEmpleado);
+                      logger.info("addEmpleado2");
                    } catch (NumberFormatException e) {
                     retorno = -1;
                     logger.error("Error en metodo addEmpleadoFullTime "+e.getLocalizedMessage());
@@ -124,6 +127,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                             xml.append(empleados.toXMLEmpleado());
                             xml.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
                             xml.append("</item>\n");
+                            
                 }
             }else {
                 xml.append("<result>Lista Vacia</result>\n");
@@ -261,13 +265,18 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         long retorno = 0;
         int retEmpleadoEmptype = 0;
         int retEmployee = 0;
-        try {           
+        try {        
+           
             DatosEmpleado empleado = datosEmpleadosObject(xmlEmpleado);//convierto a objeto
-            
-           retorno=validateData(empleado);//retorno el resultado de validar datos
+           
+           retorno=validateData(empleado);//retorno el resultado de validar datos nombre y apellido, password
+           
            if(retorno==0){
+               
                         retorno = valorRetornadoAlBuscarEmailyNombreUsuario(retorno, empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());
-                            if(retorno>0){               
+                        
+                            if(retorno>0){
+                                
              
                                            //selecciono la persona con el tipo de empleado a buscar
                                                Query sqlEmpleadoEmptype =em.createQuery("Select e From Empleados e Where e.idPersona = :idpersona and e.emptype like :emptype");
@@ -363,7 +372,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
                                                                                                        fulltimeEmploy.setObservaciones(empleado.getObservaciones());
 
-                                                                                                     logger.info("pass a encriptar"+empleado.getPassword());
+                                                                                                     logger.info("pass a encriptar "+empleado.getPassword());
 
                                                                                                        fulltimeEmploy.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                               
 
@@ -476,7 +485,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     private long procesarDatosEmpleadoAdd(DatosEmpleado empleado) {        
         long retorno=0;
         try {
-              retorno=validateData(empleado);//retorno el resultado de validar ambas cosas
+              retorno=validateData(empleado);//retorno el resultado de validar ambas cosas nombre, apellido, password
                 if(retorno==0){
                         retorno =valorRetornadoAlBuscarEmailyNombreUsuario(retorno,empleado.getNumeroDocumento(),empleado.getEmail(),empleado.getNombreUsuario());  
                             
@@ -589,7 +598,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                         if(!empleado.getNombre().isEmpty()&&ProjectHelpers.NombreyApellidoValidator.validate(empleado.getNombre())){
                             if(!empleado.getApellido().isEmpty()&&ProjectHelpers.NombreyApellidoValidator.validate(empleado.getApellido())){
                                     if(empleado.getPassword().equals(empleado.getPasswordre())){
-                                                
+                                                    
                                                   
                                               if(!ProjectHelpers.NombreUsuarioValidator.validate(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()))) {
                                                   retorno=-12;
@@ -598,10 +607,20 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                               if(!ProjectHelpers.PasswordValidator.validate(StringEscapeUtils.escapeXml10(empleado.getPassword())) && (empleado.getPassword().equals(empleado.getPasswordre()))) {
                                                   retorno=-11;
                                               }
+                                              
+                                              String encriptedText = ProjectHelpers.ClaveSeguridad.encriptar(empleado.getPassword());
+                                              
+                                              String decriptedText = ProjectHelpers.ClaveSeguridad.decriptar(encriptedText);
+                                              
+                                              if(!ProjectHelpers.PasswordValidator.validate(decriptedText)){
+                                                  retorno = -17;
+                                              }
 
-                                    }else {
-                                        retorno=-13;
+                                    }else{
+                                        retorno =-13;
                                     }
+                                    
+                                    
                             }else {
                                 retorno =-15;
                             }

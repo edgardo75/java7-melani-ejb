@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,7 +66,7 @@ public class Presupuestos implements Serializable {
     private BigDecimal total;
     @Column(name = "OBSERVACIONES",length=5_000)
     private String observaciones;
-    @Basic(optional = false)
+    @Basic(optional = false,fetch = FetchType.LAZY)
     @Column(name = "ID_USUARIO_EXPIDIO_PRESUPUESTO")
     private int idUsuarioFk;    
     @Column(name="TOTALAPAGAR",precision=15,scale=3)
@@ -86,7 +85,7 @@ public class Presupuestos implements Serializable {
     private BigDecimal porcentajerecargo;
      @Column(name = "DESCUENTORESTO",precision=15,scale=3)
     private BigDecimal descuentoresto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "presupuestos",fetch=FetchType.LAZY)
+    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",fetch=FetchType.LAZY)
     private List<Detallespresupuesto> detallepresupuestosList;
 
     /**

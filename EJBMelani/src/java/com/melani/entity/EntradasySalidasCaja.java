@@ -6,8 +6,10 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,27 +45,35 @@ public class EntradasySalidasCaja implements Serializable {
     @TableGenerator(name="EntradasySalidasCajaIdGen", table="ID_GEN_ENTRADASYSALIDASCAJA",
     pkColumnName="FNAME",pkColumnValue="EntradasySalidasCaja", valueColumnName="FKEY",
     allocationSize=1)
+    @Basic(fetch = FetchType.LAZY)
     private Integer id;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "DETALLES")
     private String detalles;
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "ENTRADAS")
     private Long entradas;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "SALIDAS")
     private Long salidas;
-    @Column(name = "ID_USUARIO")
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "ID_USUARIO")    
     private Integer idUsuario;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "NUMEROCUPON")
     private String numerocupon;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "ENEFECTIVO")
     private Character enefectivo;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "HORA")
     @Temporal(TemporalType.TIME)
     private Date hora;
     @JoinColumn(name = "ID_TARJETA_FK", referencedColumnName = "IDTARJETA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private TarjetasCreditoDebito idTarjetaFk;
 
     /**

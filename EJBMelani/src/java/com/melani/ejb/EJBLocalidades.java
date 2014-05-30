@@ -5,7 +5,6 @@
 package com.melani.ejb;
 import com.melani.entity.Localidades;
 import com.melani.entity.Provincias;
-import com.melani.utils.ProjectHelpers;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -36,15 +35,14 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
         Query jpql = null;
         try {
             
-            jpql = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia");
+            jpql = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia and l.latitud <> null and l.longitud <> null");
             jpql.setParameter("idProvincia",idProvincia);
             List<Localidades>localidad = jpql.getResultList();
             for (Localidades localidades : localidad) {
                 xml.append(localidades.toXML());
             }
-        } catch (Exception e) {
-            xml.append("<error>Error</error>");
-            logger.error("error en metodo serachlocxprovincia "+e.getMessage());
+        } catch (Exception e) {            
+            logger.error("error en metodo searchLocXProvincia "+e.getMessage());
         }finally{
            return xml.append("</Lista>\n").toString();
         }
@@ -67,7 +65,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             internalDescripcion.append(out);
             
             
-            if(ProjectHelpers.DescripcionValidator.validate(descripcion) && internalDescripcion.length()>0){
+            if(internalDescripcion.length()>0){
                     
                     internalDescripcion.append("%");
                     Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.descripcion LIKE :descripcion and l.codigopostal = :codigopostal and " +
@@ -81,6 +79,8 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                                 depto.setDescripcion(descripcion.toUpperCase());
                                 depto.setProvincias(em.find(Provincias.class, idProvincia));
                                 depto.setCodigopostal(codigopostal);
+                                depto.setLatitud("0");
+                                depto.setLongitud("0");
                                 
                                 em.persist(depto);
                                 em.flush();
@@ -111,7 +111,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     public String searchAllLocalidadesByIdProvincia(Short idProvincia) {
          StringBuilder resultado = new StringBuilder("<Lista>\n");
          try {
-             Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia order by l.descripcion asc");
+             Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia and l.latitud is not null and l.longitud is not null order by l.descripcion asc");
              consulta.setParameter("idProvincia", idProvincia);
              List<Localidades>lista = consulta.getResultList();
              if(lista.isEmpty()) {

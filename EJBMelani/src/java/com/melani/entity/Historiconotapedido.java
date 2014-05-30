@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +30,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @Entity
 @Table(name = "HISTORICONOTAPEDIDO", catalog = "", schema = "")
 @NamedQueries({@NamedQuery(name = "Historiconotapedido.findAll", query = "SELECT h FROM Historiconotapedido h"),
-@NamedQuery(name = "Historiconotapedido.findByIdhistorico", query = "SELECT h FROM Historiconotapedido h WHERE h.idhistorico = :idhistorico"),
+@NamedQuery(name = "Historiconotapedido.findByIdhistorico", query = "SELECT h FROM Historiconotapedido h WHERE h.id = :id"),
 @NamedQuery(name = "Historiconotapedido.findByAnticipo", query = "SELECT h FROM Historiconotapedido h WHERE h.anticipo = :anticipo"),
 @NamedQuery(name = "Historiconotapedido.findByIdusuariocancelo", query = "SELECT h FROM Historiconotapedido h WHERE h.idusuariocancelo = :idusuariocancelo"),
 @NamedQuery(name = "Historiconotapedido.findByPendiente", query = "SELECT h FROM Historiconotapedido h WHERE h.pendiente = :pendiente"),
@@ -57,13 +56,13 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class Historiconotapedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
+    @Basic(optional = false,fetch = FetchType.LAZY)
     @GeneratedValue(strategy=GenerationType.TABLE,generator="HistoriconotapedidoIdGen")
     @TableGenerator(name="HistoriconotapedidoIdGen", table="ID_GEN_HIST_NOTAP",
     pkColumnName="FNAME",pkColumnValue="Historiconotapedido" , valueColumnName="FKEY",
     allocationSize=1)
-    @Column(name = "IDHISTORICO")
-    private Integer idhistorico;
+    @Column(name = "IDHISTORICO")    
+    private Integer id;
     @Column(name = "ANTICIPO",precision=15,scale=3)
     private BigDecimal anticipo;
     @Column(name = "IDUSUARIOCANCELO")
@@ -92,6 +91,7 @@ public class Historiconotapedido implements Serializable {
     private Integer idusuarioexpidio;
     @Column(name = "TOTALAPAGAR",precision=15,scale=3)
     private BigDecimal totalapagar;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "OBSERVACIONES",length=32_000)
     private String observaciones;
     @Column(name = "RECARGO",precision=15,scale=3)
@@ -109,7 +109,7 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "PORCDESC",precision=15,scale=3)
     private BigDecimal porcdesc;
     @JoinColumn(name="FKIDNOTAPEDIDO_ID",referencedColumnName="ID")
-    @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Notadepedido fkidnotapedido;
 
     /**
@@ -120,10 +120,10 @@ public class Historiconotapedido implements Serializable {
 
     /**
      *
-     * @param idhistorico
+     * @param id
      */
-    public Historiconotapedido(Integer idhistorico) {
-        this.idhistorico = idhistorico;
+    public Historiconotapedido(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -371,15 +371,15 @@ public class Historiconotapedido implements Serializable {
      * @return
      */
     public Integer getIdhistorico() {
-        return idhistorico;
+        return id;
     }
 
     /**
      *
-     * @param idhistorico
+     * @param id
      */
-    public void setIdhistorico(Integer idhistorico) {
-        this.idhistorico = idhistorico;
+    public void setIdhistorico(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -496,7 +496,7 @@ public class Historiconotapedido implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idhistorico != null ? idhistorico.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
     @Override
@@ -506,14 +506,14 @@ public class Historiconotapedido implements Serializable {
             return false;
         }
         Historiconotapedido other = (Historiconotapedido) object;
-        if ((this.idhistorico == null && other.idhistorico != null) || (this.idhistorico != null && !this.idhistorico.equals(other.idhistorico))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
     @Override
     public String toString() {
-        return "com.melani.entidades.Historiconotapedido[idhistorico=" + idhistorico + "]";
+        return "com.melani.entidades.Historiconotapedido[id=" + id + "]";
     }
 
     /**
@@ -534,7 +534,7 @@ public class Historiconotapedido implements Serializable {
         //-------------------------------------------------------------------------------------
             StringBuilder item = new StringBuilder();
         try {
-              item.append("<item>\n").append("<idhistorico>").append(this.getIdhistorico()).append("</idhistorico>\n").append("<anticipo>").append(this.getAnticipo().toString()).append("</anticipo>\n");
+              item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo().toString()).append("</anticipo>\n");
                            item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
                            item.append("<fecharegistro>").append(fereg).append("</fecharegistro>\n");
                            item.append("<horaregistro>").append(hourreg).append("</horaregistro>\n");

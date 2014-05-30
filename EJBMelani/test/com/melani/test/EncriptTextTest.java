@@ -65,7 +65,8 @@ public class EncriptTextTest {
     public void texto_encript_test() {
          //for (int i = 0; i < 1000; i++) {
              
-             assertEquals("Exito", ProjectHelpers.ClaveSeguridad.encriptar("sara S 120"));
+             assertEquals("Exito", ProjectHelpers.ClaveSeguridad.encriptar("monoTitu29"));
+             
          //}
          
     }

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,15 +39,16 @@ public class Porcentajes implements Serializable {
         @TableGenerator(name="PorcentajesIdGen", table="ID_GEN_PORCENTAJES",
             pkColumnName="ID_POR", valueColumnName="ID_VAL_POR",
             pkColumnValue="Porcentajes")
-    @Basic(optional = false)
+    @Basic(optional = false,fetch = FetchType.LAZY)
     @Column(name = "ID_PORCENTAJES")
     private Short idPorcentajes;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "DESCRIPCION",length=100,unique=true)
     private String descripcion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "VALOR",precision=10,scale=2)
     private Double valor;
-    @OneToMany(mappedBy = "fkidporcentajenotaId")
+    @OneToMany(mappedBy = "fkidporcentajenotaId",fetch = FetchType.LAZY)
     private List<Notadepedido> notadepedidoList;
 
     /**

@@ -5,8 +5,10 @@
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +27,7 @@ public class HistPersonasDomicilios implements Serializable {
     pkColumnName="FNAME",pkColumnValue="HistPersonasDomicilios", valueColumnName="FKEY",
     allocationSize=1)
     @GeneratedValue(generator="HistPerDomIdGen",strategy=GenerationType.TABLE)
+    @Basic(fetch = FetchType.LAZY)
     private Long idhistperdom; 
     @Column(name="IDDOMICILIO",nullable=false,precision=16)
     private Long idDomicilio;

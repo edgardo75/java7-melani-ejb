@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -31,7 +30,7 @@ public class Clientes extends Personas implements Serializable {
     private BigInteger totalEnPuntos;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaCarga;
-    @OneToMany(mappedBy = "fkIdcliente",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkIdcliente",orphanRemoval = true)
     private List<Notadepedido> notadepedidoList;
 
     /**

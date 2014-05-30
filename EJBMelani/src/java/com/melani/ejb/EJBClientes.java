@@ -279,12 +279,12 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
             Clientes cliente = em.find(Clientes.class, idcliente);
             if(cliente!=null){
                               //almacena los datos del cliente en HistoricoDatosClientes
-                                HistoricoDatosClientes histcli = new HistoricoDatosClientes();
-                                        histcli.setApellido(cliente.getApellido().toUpperCase());                
-                                        histcli.setIdCliente(idcliente);
-                                        histcli.setIdgenero(cliente.getGeneros().getIdGenero());
-                                        histcli.setNombre(cliente.getNombre().toUpperCase());    
-                                        histcli.setObservaciones(cliente.getObservaciones());
+                                HistoricoDatosClientes historicoClient = new HistoricoDatosClientes();
+                                        historicoClient.setApellido(cliente.getApellido().toUpperCase());                
+                                        historicoClient.setIdCliente(idcliente);
+                                        historicoClient.setIdgenero(cliente.getGeneros().getIdGenero());
+                                        historicoClient.setNombre(cliente.getNombre().toUpperCase());    
+                                        historicoClient.setObservaciones(cliente.getObservaciones());
                                         
 
                                 cliente.setObservaciones(datosClientePersonales.getObservaciones());            
@@ -293,7 +293,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                                 cliente.setGeneros(em.find(Generos.class, datosClientePersonales.getGeneros().getIdgenero()));
                                  if(chequear__email_numDoc != -5){
                                     
-                                            histcli.setEmail(cliente.getEmail());
+                                            historicoClient.setEmail(cliente.getEmail());
                                             cliente.setEmail(datosClientePersonales.getEmail());
                                  }         
                                  //acumulo la cantidad de pesos comprados por un cliente
@@ -312,8 +312,8 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                               }
                                 //actualizo la fecha de ultima carga
                                 cliente.setFechaCarga(new GregorianCalendar().getTime());
-                            histcli.setTotalCompras(BigDecimal.valueOf(Double.valueOf(acumTotalCompras)));
-                            histcli.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
+                            historicoClient.setTotalCompras(BigDecimal.valueOf(Double.valueOf(acumTotalCompras)));
+                            historicoClient.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
                             /*
                              * Actualizo domicilio
                              */
@@ -321,7 +321,7 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos, DatosCliente d
                             retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono,cliente,todosDatos);              
                                //-------------------------------------------------------------------------------------------------
                                 em.merge(cliente);
-                                em.persist(histcli);                
+                                em.persist(historicoClient);                
             }
         } catch (NumberFormatException e) {
             retorno=-6;

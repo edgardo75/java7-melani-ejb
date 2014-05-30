@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,9 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tipostelefono implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
+    @Basic(optional = false,fetch = FetchType.LAZY)
     @Column(name = "ID_TIPOTEL")
     private Short idTipotel;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "idTipotelefono")

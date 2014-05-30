@@ -6,7 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,15 +29,17 @@ import javax.persistence.Table;
 public class Tiposdocumento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @Basic(fetch = FetchType.LAZY)
     @Column(name="ID",nullable=false,updatable=false)
     private Short id;
 
     /**
      *
      */
+    @Basic(fetch = FetchType.LAZY)
     @Column(length=20,name="DESCRIPCION")
     protected String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodocumento",fetch=FetchType.LAZY)
+    @OneToMany( mappedBy = "tipodocumento",fetch=FetchType.LAZY)
     private List<Personas> personasList;
 
     /**

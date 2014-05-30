@@ -42,6 +42,8 @@ public class DatosNotaPedido {
     private String fechaanulada;
     private String fechacancelada;
     private String fechacompra;
+    private String fecancel;
+    private String horacompra;
 
     /**
      *
@@ -127,6 +129,16 @@ public class DatosNotaPedido {
      *
      * @return
      */
+    
+    public String getHoracompra() {
+        return horacompra;
+    }
+
+    /**
+     *
+     * @return
+     */
+    
     public Double getDescuentopesos() {
         return descuentopesos;
     }
@@ -143,6 +155,15 @@ public class DatosNotaPedido {
      *
      * @return
      */
+    
+    public String getFecancel() {
+        return fecancel;
+    }
+    /**
+     *
+     * @return
+     */
+    
     public String getFechacancelada() {
         return fechacancelada;
     }
@@ -159,6 +180,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
+    
     public Porcentajes getPorcentaje() {
         return porcentaje;
     }

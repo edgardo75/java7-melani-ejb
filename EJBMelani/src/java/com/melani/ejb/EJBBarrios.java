@@ -1,6 +1,5 @@
 package com.melani.ejb;
 import com.melani.entity.Barrios;
-import com.melani.utils.ProjectHelpers;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -37,15 +36,18 @@ public class EJBBarrios implements EJBBarriosRemote {
         long retorno = 0;
         StringBuilder internalDescripcion =new StringBuilder();
         String out = null;
-        try {
+        try {            
             //convierto string a su correspondiente encoding
             out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
             internalDescripcion.append(out);        
             //metodo que agrega un nombre de barrio
            //variable estatica para indicar el nivel de error
             logger.setLevel(Level.ERROR);
+            
+            
            
-            if(internalDescripcion.length()>0&&ProjectHelpers.DescripcionValidator.validate(internalDescripcion.toString())){
+            if(internalDescripcion.length()>0){
+                  
             //------------------------------------------------------------------------------------------------
                     
                     Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
@@ -71,7 +73,8 @@ public class EJBBarrios implements EJBBarriosRemote {
         } catch (UnsupportedEncodingException e) {
             retorno = -1;
             logger.error("Error en metodo addBarrio "+e);
-        } finally {                              
+        } finally {           
+            
             return retorno;
         }
     }
