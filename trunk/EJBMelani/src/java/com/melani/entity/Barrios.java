@@ -6,7 +6,6 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -51,8 +52,10 @@ public class Barrios implements Serializable {
     private Long id;
     @Column(length = 100,name="DESCRIPCION",nullable = false,unique=true)    
     @XmlAttribute(name = "descripcion")
+    @NotNull(message = "El nombre del Barrio es requerido")
+    @Pattern(message = "El nombre de Barrio no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;    
-    @OneToMany(mappedBy = "idbarrio",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idbarrio",fetch = FetchType.LAZY)
     private List<Domicilios> domicilioss;
 
     /**

@@ -6,6 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,6 +66,7 @@ public class Domicilios implements Serializable {
     private String entrecalleycalle;
     @Column(name="MANZANA",columnDefinition="VARCHAR(10)")
     private String manzana;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name="OBSERVACIONES",columnDefinition="VARCHAR(5000)")
     private String observaciones;
     @Column(name = "TORRE",columnDefinition="VARCHAR(10)")

@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,13 +63,13 @@ public class Productos implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;    
-    @OneToMany(mappedBy = "productos",cascade={CascadeType.ALL})
+    @OneToMany(mappedBy = "productos",orphanRemoval = true,fetch = FetchType.LAZY)
     private List<ExistenciasProductos> existenciasProductoss;
-    @OneToMany(mappedBy = "productos",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productos",fetch = FetchType.LAZY)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
-    @OneToMany( mappedBy = "productos",cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "productos",fetch = FetchType.LAZY)
     private List<Detallespresupuesto> detallepresupuestosList;
-    @OneToMany(mappedBy = "productos",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productos",fetch = FetchType.LAZY)
     private List<ImagenesProductos>imagenesProductosList;
 
     /**

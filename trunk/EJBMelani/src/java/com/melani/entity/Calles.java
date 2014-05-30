@@ -6,7 +6,6 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * A Entity Calles
@@ -34,8 +35,10 @@ public class Calles implements Serializable {
     @Column(name="ID_CALLE")
     private Long id;
     @Column(length = 100,name="DESCRIPCION",nullable = false,unique=true)
+    @NotNull(message = "El nombre de la Calle es requerido")
+    @Pattern(message = "El nombre de Calle no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;
-    @OneToMany(mappedBy = "idcalle",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idcalle",fetch = FetchType.LAZY)
     private List<Domicilios> domicilioss;
 
     /**

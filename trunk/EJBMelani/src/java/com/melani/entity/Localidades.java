@@ -6,7 +6,6 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * A Entity Localidades
@@ -45,15 +46,19 @@ public class Localidades implements Serializable {
     @Column(name = "CODIGOPOSTAL")
     private Integer codigopostal;
     @Column(name = "DESCRIPCION",length=100)
+    @NotNull(message = "El nombre de la Localidad es requerido")
+    @Pattern(message = "El nombre de Localidad no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidades", fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "localidades", fetch = FetchType.LAZY)
     private List<Domicilios> domiciliosList;
     @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Provincias provincias;
     @Column(name = "LATITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'")
+    @NotNull()
     private String latitud;
     @Column(name = "LONGITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'")
+    @NotNull
     private String longitud;
 
     /**
@@ -189,12 +194,16 @@ public class Localidades implements Serializable {
      *
      * @return
      */
-    public String toXML(){         
+    public String toXML(){    
+        
+            
          StringBuilder item  = new StringBuilder("<localidades>\n");    
                 item.append("<id>").append(this.getIdLocalidad()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
                 item.append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n");
-                item.append("<latitud>").append(this.getLatitud()).append("</latitud>\n");
-                item.append("<longitud>").append(this.getLongitud()).append("</longitud>\n");
+            
+                    item.append("<latitud>").append(this.getLatitud()).append("</latitud>\n");
+            
+                    item.append("<longitud>").append(this.getLongitud()).append("</longitud>\n");
                 item.append("</localidades>\n");       
         return item.toString();      
     }

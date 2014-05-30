@@ -6,7 +6,6 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,12 +37,12 @@ import javax.persistence.Table;
     @EmbeddedId
     protected TelefonosPK telefonosPK;
     @JoinColumn(name = "ID_EMPRESATELEFONIA", referencedColumnName = "ID_EMP_TELEFONIA", nullable = false)
-    @ManyToOne(cascade={CascadeType.ALL},optional = false,fetch=FetchType.LAZY)
+    @ManyToOne(optional = false,fetch=FetchType.LAZY)
     private EmpresaTelefonia idEmpresatelefonia;
     @JoinColumn(name = "ID_TIPOTELEFONO", referencedColumnName = "ID_TIPOTEL")
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     private Tipostelefono idTipotelefono;
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefonos")
+     @OneToMany(mappedBy = "telefonos",fetch = FetchType.LAZY)
     private List<Personastelefonos> personastelefonosCollection;
 
     /**

@@ -6,8 +6,10 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,7 @@ public class HistoricoDatosClientes implements Serializable {
     private Long idCliente;
     @Column(name="EMAIL",columnDefinition="VARCHAR(50)")
     private String email;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name="OBSERVACIONES",columnDefinition="VARCHAR(32000)")
     private String Observaciones;
     @Column(name="IDGENERO")
@@ -39,7 +42,7 @@ public class HistoricoDatosClientes implements Serializable {
     private String nombre;
     @Column(name="APELLIDO",columnDefinition="VARCHAR(30)")
     private String apellido;
-   @Column(precision = 15,scale=3,name="TOTALCOMPRAS")
+    @Column(precision = 15,scale=3,name="TOTALCOMPRAS")
     private BigDecimal totalCompras;
     @Column(precision = 15,name = "TOTALPUNTOS")
     private BigInteger totalEnPuntos;

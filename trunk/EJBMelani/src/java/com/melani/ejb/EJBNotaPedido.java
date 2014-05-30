@@ -150,9 +150,9 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                        historico =  almacenarHistorico(notadepedido,notape);
                                                     }
                                          }
-                                         Query consulta =em.createNamedQuery("Notadepedido.findClientFk");
-                                            consulta.setParameter("id", cliente.getIdPersona());
-                                            List<Notadepedido>lista=consulta.getResultList();
+                                         Query queryFindByIdProducto =em.createNamedQuery("Notadepedido.findClientFk");
+                                            queryFindByIdProducto.setParameter("id", cliente.getIdPersona());
+                                            List<Notadepedido>lista=queryFindByIdProducto.getResultList();
                                                 cliente.setNotadepedidoList(lista);
                                                     Double totalCompras = cliente.getTotalCompras().doubleValue()+notape.getMontototalapagar().doubleValue();
                                                     int totalPuntos = cliente.getTotalEnPuntos().intValue()+totalCompras.intValue();
@@ -200,15 +200,15 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                             detalles.setAnulado(Character.valueOf(itemdetallesnota.getAnulado()));
                             detalles.setPreciocondescuento(BigDecimal.valueOf(itemdetallesnota.getPreciocondescuento()));
                             em.persist(detalles);
-                            Query consulta = em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto");
-                                consulta.setParameter("fkIdproducto", itemdetallesnota.getId_producto());
-                                productos.setDetallesnotadepedidoList(consulta.getResultList());
+                            Query queryFindByIdProducto = em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto");
+                                queryFindByIdProducto.setParameter("fkIdproducto", itemdetallesnota.getId_producto());
+                                productos.setDetallesnotadepedidoList(queryFindByIdProducto.getResultList());
                     }
-            Query consulta1 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
-            consulta1.setParameter("fkIdnota", notape.getId());
-            notape.setDetallesnotadepedidoList(consulta1.getResultList());
-            em.merge(notape);
-            retorno = notape.getId();
+                            Query queryDetailsOrders = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
+                            queryDetailsOrders.setParameter("fkIdnota", notape.getId());
+                            notape.setDetallesnotadepedidoList(queryDetailsOrders.getResultList());
+                            em.merge(notape);
+                            retorno = notape.getId();
         } catch (Exception e) {
             logger.error("Error en metdodo almacenarDetalleNota "+e.getLocalizedMessage());
             retorno=-3;
@@ -242,9 +242,9 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                 detalles.setSubtotal(BigDecimal.valueOf(itemdetallesnota.getSubtotal()));
                                 detalles.setDetallesnotadepedidoPK(detallespk);
                                 em.persist(detalles);
-                                    Query consulta = em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto");
-                                        consulta.setParameter("fkIdproducto", itemdetallesnota.getId_producto());
-                                        productos.setDetallesnotadepedidoList(consulta.getResultList());
+                                    Query queryFindByIdProducto = em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto");
+                                        queryFindByIdProducto.setParameter("fkIdproducto", itemdetallesnota.getId_producto());
+                                        productos.setDetallesnotadepedidoList(queryFindByIdProducto.getResultList());
                                 stockDisponible=producto.controlStockProducto(itemdetallesnota.getId_producto(), itemdetallesnota.getCantidad(), notadepedido.getUsuario_expidio_nota());
                             if(stockDisponible<=50 &&stockDisponible>=0 ) {
                                 logger.info("El stock Disponible para el producto "+productos.getDescripcion()+" está bajando a nivel máximo debe actualizar o agregar mas productos");
@@ -254,9 +254,9 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                     }
                             }
                     }
-                                Query consulta1 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
-                                    consulta1.setParameter("fkIdnota", notape.getId());
-                                        notape.setDetallesnotadepedidoList(consulta1.getResultList());
+                                        Query queryDetailsOrders = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
+                                        queryDetailsOrders.setParameter("fkIdnota", notape.getId());
+                                        notape.setDetallesnotadepedidoList(queryDetailsOrders.getResultList());
                                         em.merge(notape);
                   retorno = notape.getId();
         }catch(Exception e){
@@ -294,11 +294,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                     historico.setAccion("Historico Almacenado con exito nota de pedido N "+notape.getId());
                     em.persist(historico);
                     try {
-                        Query consulta = em.createNamedQuery("Historiconotapedido.findByFkidnotapedido");
-                        consulta.setParameter("idnota", notape.getId());
-                        notape.setHistoriconotapedidoList(consulta.getResultList());
+                        Query queryFindByIdProducto = em.createNamedQuery("Historiconotapedido.findByFkidnotapedido");
+                        queryFindByIdProducto.setParameter("idnota", notape.getId());
+                        notape.setHistoriconotapedidoList(queryFindByIdProducto.getResultList());
                     } catch (Exception e) {
-                        logger.error("Error en la consulta historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
+                        logger.error("Error en la queryFindByIdProducto historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
                         resultado = -2;
                     }
                     em.persist(notape);
@@ -458,11 +458,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             //-----------------------------------------------------------------
                      try {
-                            Query consulta = em.createNamedQuery("Historiconotapedido.findByFkidnotapedido");
-                             consulta.setParameter("idnota", nota.getId());
-                           nota.setHistoriconotapedidoList(consulta.getResultList());
+                            Query queryFindByIdProducto = em.createNamedQuery("Historiconotapedido.findByFkidnotapedido");
+                             queryFindByIdProducto.setParameter("idnota", nota.getId());
+                           nota.setHistoriconotapedidoList(queryFindByIdProducto.getResultList());
                       } catch (Exception e) {
-                          logger.error("Error en la consulta historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
+                          logger.error("Error en la queryFindByIdProducto historiconotadepedido, metodo almacenar historico "+ e.getLocalizedMessage());
                           result = -2;
                       }
                      //-----------------------------------------------------------------
@@ -651,9 +651,9 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             em.flush();
             
-            Query consulta =em.createQuery("Select n From Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC,n.fkIdcliente.idPersona",Notadepedido.class);
+            Query queryFindByIdProducto =em.createQuery("Select n From Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC,n.fkIdcliente.idPersona",Notadepedido.class);
             
-            result = consulta.getResultList();
+            result = queryFindByIdProducto.getResultList();
             
             if(result.isEmpty()) {
                 lista.append("LA CONSULTA NO ARROJÓ RESULTADOS");
@@ -753,10 +753,10 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             
             
-            Query consulta = em.createNamedQuery("Notadepedido.searchAllOrderDesc",Notadepedido.class);
-             consulta.setMaxResults(recordCount);
-             consulta.setFirstResult(index*recordCount);
-            List<Notadepedido>lista = consulta.getResultList();
+            Query queryFindByIdProducto = em.createNamedQuery("Notadepedido.searchAllOrderDesc",Notadepedido.class);
+             queryFindByIdProducto.setMaxResults(recordCount);
+             queryFindByIdProducto.setFirstResult(index*recordCount);
+            List<Notadepedido>lista = queryFindByIdProducto.getResultList();
             
             if(lista.isEmpty()) {
                 result.append("LA CONSULTA NO ARROJÓ RESULTADOS!!!");
@@ -934,8 +934,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                 deletsql.setParameter("idNota", nota.getId());
                                                 int retorno = deletsql.executeUpdate();
                                                 
-                                                Query consulta11 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
-                                                consulta11.setParameter("fkIdnota", nota.getId());
+                                                Query queryDetailsOrders1 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
+                                                queryDetailsOrders1.setParameter("fkIdnota", nota.getId());
                                                 em.flush();
                                                  Productos productos=null;
                                                  Itemdetallesnota itemdetallesnota=null;
@@ -960,16 +960,17 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                                 em.persist(detallesnotadepedido);
                                                                                 em.flush();
                                                            ///+++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                  List<Detallesnotadepedido> listDNP= em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto")
+                                                  List<Detallesnotadepedido> queryDetailsOrdersFindProduc= em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto")
                                                             .setParameter("fkIdproducto", itemdetallesnota.getId_producto()).getResultList();
-                                                            productos.setDetallesnotadepedidoList(listDNP);
+                                                            productos.setDetallesnotadepedidoList(queryDetailsOrdersFindProduc);
                                                             em.merge(productos);
                                                             em.flush();
                                                   ///*****************************************************+
                                                      }//end for
-                                List<Detallesnotadepedido> listDNP= em.createNamedQuery("Detallesnotadepedido.findByFkIdnota")
-                                   .setParameter("fkIdnota", nota.getId()).getResultList();
-                                   nota.setDetallesnotadepedidoList(listDNP);
+                                            List<Detallesnotadepedido> queryDetailsOrdersFindIdOrder= em.createNamedQuery("Detallesnotadepedido.findByFkIdnota")
+                                               .setParameter("fkIdnota", nota.getId()).getResultList();
+                                               nota.setDetallesnotadepedidoList(queryDetailsOrdersFindIdOrder);
+                                               
                                 if(datosnotapedido.getAnticipoacum()!=nota.getAnticipo().doubleValue()){
                                     nota.setAnticipo(BigDecimal.valueOf(datosnotapedido.getAnticipoacum()));
                                     result =  almacenarHistorico(datosnotapedido,nota);
@@ -981,8 +982,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         } catch (ParseException e) {
             result=-4;
             logger.error("Error en metodo procesarNotaaActualizar "+e.getLocalizedMessage());
-        }finally{
-            
+        }finally{            
             return result;
         }
     }
@@ -1075,10 +1075,10 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         int idRetorno=0;
         try {
            
-            Query consulta=em.createQuery("SELECT n FROM Notadepedido n WHERE n.id = :id");
-            consulta.setParameter("id", idnota);
+            Query queryFindByIdProducto=em.createQuery("SELECT n FROM Notadepedido n WHERE n.id = :id");
+            queryFindByIdProducto.setParameter("id", idnota);
             
-            if(!consulta.getResultList().isEmpty()){
+            if(!queryFindByIdProducto.getResultList().isEmpty()){
                 Notadepedido nota =em.find(Notadepedido.class, idnota);
                 em.remove(nota);
                 em.flush();
@@ -1114,10 +1114,10 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             for (int i = 0; i < Integer.valueOf(sdf.format(gc.getTime())); i++) {
                             month++;
                             String ventaMensual="0";
-                            Query consulta = em.createQuery("SELECT SUM(n.montototalapagar) FROM Notadepedido n WHERE SQL('EXTRACT(MONTH FROM ?)',n.fechadecompra) = ?1 AND SQL('EXTRACT(YEAR FROM ?)',n.fechadecompra) = ?2");
-                            consulta.setParameter("1", month);
-                            consulta.setParameter("2", year);
-                            ventaMensual=consulta.getResultList().toString().replace("[", "").replace("]", "");
+                            Query queryFindByIdProducto = em.createQuery("SELECT SUM(n.montototalapagar) FROM Notadepedido n WHERE SQL('EXTRACT(MONTH FROM ?)',n.fechadecompra) = ?1 AND SQL('EXTRACT(YEAR FROM ?)',n.fechadecompra) = ?2");
+                            queryFindByIdProducto.setParameter("1", month);
+                            queryFindByIdProducto.setParameter("2", year);
+                            ventaMensual=queryFindByIdProducto.getResultList().toString().replace("[", "").replace("]", "");
                             xml.append("<Item>\n");
                             switch(i){
                                 case 0:xml.append("<month>ENE</month>\n");
@@ -1220,11 +1220,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                 
                                                                 StringBuilder sb =new StringBuilder(xml);
                                                                 
-                                                                String periodoconsultado = "<fechainicio>"+fecha1+"</fechainicio>\n" +
+                                                                String periodoqueryFindByIdProductodo = "<fechainicio>"+fecha1+"</fechainicio>\n" +
                                                                         
                                                                         "<fechafinal>"+fecha2+"</fechafinal>\n";
                                                                 
-                                                                 sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoconsultado);
+                                                                 sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>"), "\n"+periodoqueryFindByIdProductodo);
                                                                  
       return sb;
     }

@@ -4,7 +4,6 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -43,13 +42,13 @@ public class Personastelefonos implements Serializable {
     private String estado;
     @Column(name = "DETALLES", length = 60)
     private String detalles;
-    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false, insertable = false, updatable = false)//@ManyToOne(optional = false,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-    @ManyToOne(optional = false,cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
+    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false,fetch=FetchType.LAZY)
     private Personas idPersona;
     @JoinColumns({
         @JoinColumn(name = "NUMEROTEL", referencedColumnName = "NUMERO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PREFIJO", referencedColumnName = "ID_PREFIJO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false,cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
+    @ManyToOne(optional = false,fetch=FetchType.LAZY)
     private Telefonos telefonos;
 
     /**

@@ -6,7 +6,6 @@
 
 package com.melani.utils;
 
-import static com.sun.xml.ws.security.addressing.impl.policy.Constants.logger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -44,7 +43,7 @@ public class ProjectHelpers {
                                 // initialize for encrypting
                                 cipher.init(Cipher.ENCRYPT_MODE, key);            
                                 byte[]encrypted=cipher.doFinal(frase.getBytes());            
-                                encryptedRet=new String(encrypted);            
+                                encryptedRet=new String(encrypted);                          
                             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
                                 e.getLocalizedMessage();
                             }finally{
@@ -99,7 +98,8 @@ public class ProjectHelpers {
             }
 
     public static class PasswordValidator{
-                    private static final  String PASSWORD_PATTERN="((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,20})";
+                    private static final  String PASSWORD_PATTERN="^(?=.*[A-Z])(?=.*\\d)(?!.*(.)\\1\\1)[a-zA-Z0-9@]{4,20}$";
+                           
 
         /**
          *
@@ -151,9 +151,8 @@ public class ProjectHelpers {
                         return matcher.matches();
                     }
 
-        private NombreyApellidoValidator() {
-        }
-            }
+       
+       }
 
     public static class EmailValidator {
                private static final  String EMAIL_PATTERN="^[\\w\\-\\+\\*]+[\\w\\S]@(\\w+\\.)+[\\w]{2,4}$";
@@ -168,28 +167,10 @@ public class ProjectHelpers {
                             matcher = pattern.matcher(email);                  
                         return matcher.matches();
                }
-
-        private EmailValidator() {
-        }
-           }
-
-    public static class DescripcionValidator {
-                private static final  String DESCRIPCION_PATTERN = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$";
-   
-        /**
-         *
-         * @param descripcion
-         * @return
-         */
-        public static  boolean validate(final String descripcion){   
-                 pattern=Pattern.compile(DESCRIPCION_PATTERN);
-		  matcher = pattern.matcher(descripcion);                  
-		  return matcher.matches();
-            }
-
         
-           
-    }
+   }
+
+    
     public static class TelefonoValidator{
         private static final String TELEFONO_PATTERN ="^(4|15)(\\d){6,}+$";
         private static final String PREFIJO_PATTERN ="^(\\d){1,8}+$";

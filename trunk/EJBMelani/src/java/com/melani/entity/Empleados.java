@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Pattern;
 /**
  *A Entity Empleados
  * @version 1.0
@@ -30,7 +31,7 @@ public abstract class Empleados extends Personas {
     /**
      *
      */
-    @Column(name="PASSWORD",nullable=false)
+    @Column(name="PASSWORD",nullable=false)    
     protected String password;
 
     /**
@@ -44,8 +45,9 @@ public abstract class Empleados extends Personas {
      */
     @Column(name = "emptype",length = 10)
     protected String emptype;
-     @Column(name="NAME_USER",unique=true,nullable = false) 
-     private String nameuser;
+    
+    @Column(name="NAME_USER",unique=true,nullable = false)     
+    private String nameuser;
 
     /**
      *

@@ -19,6 +19,7 @@ public interface EJBClienteDomicilioRemote {
      * @return
      */
     public String addRelacionClienteDomicilio(long idCliente, long idDomicilio,int idUsuario);
+    
 
     
 }

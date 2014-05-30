@@ -6,7 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,13 +33,14 @@ public class TarjetasCreditoDebito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Basic(fetch = FetchType.LAZY)
     @Column(name="IDTARJETA")
     private Integer idtarjeta;
     @Column(name="DESCRIPCION",length=30)
     private String descripcion;
-    @OneToMany(mappedBy = "idTarjetaFk")
+    @OneToMany(mappedBy = "idTarjetaFk",fetch = FetchType.LAZY)
     private List<Notadepedido> notadepedidoList;
-    @OneToMany(cascade= CascadeType.ALL,mappedBy="idTarjetaFk",fetch= FetchType.LAZY)
+    @OneToMany(orphanRemoval = true,mappedBy="idTarjetaFk",fetch= FetchType.LAZY)
     private List<EntradasySalidasCaja>entradasysalidascajaList;
 
     /**

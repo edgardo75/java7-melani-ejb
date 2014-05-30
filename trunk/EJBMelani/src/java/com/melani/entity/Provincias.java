@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,14 +31,14 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class Provincias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
+    @Basic(optional = false,fetch = FetchType.LAZY)
     @Column(name = "ID_PROVINCIA")
     private Short idProvincia;
     @Column(name = "PROVINCIA",length=30)
     private String provincia;
     @Column(name = "CODIGO")
     private Character codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincias", fetch = FetchType.LAZY)
+    @OneToMany(orphanRemoval = true, mappedBy = "provincias", fetch = FetchType.LAZY)
     private List<Localidades> localidadesList;
 
     /**

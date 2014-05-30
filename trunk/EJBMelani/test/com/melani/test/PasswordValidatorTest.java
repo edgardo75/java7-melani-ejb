@@ -64,7 +64,7 @@ public class PasswordValidatorTest {
      */
          @Test
      public void passTest() {
-         assertEquals(true, ProjectHelpers.PasswordValidator.validate("piernin&A2010"));
+         assertEquals(true, ProjectHelpers.PasswordValidator.validate("monoTiti29"));
      
      }
 }

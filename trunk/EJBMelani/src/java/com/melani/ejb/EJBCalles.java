@@ -4,7 +4,6 @@
  */
 package com.melani.ejb;
 import com.melani.entity.Calles;
-import com.melani.utils.ProjectHelpers;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -42,9 +41,10 @@ public class EJBCalles implements EJBCallesRemote {
         try {
             out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
             internalDescripcion.append(out);
-            System.out.println(out);                 
+                        
             //verifico que descripcion no s
-            if(internalDescripcion.length()>0&& ProjectHelpers.DescripcionValidator.validate(internalDescripcion.toString())){
+            if(internalDescripcion.length()>0){
+                    //&& ProjectHelpers.DescripcionValidator.validate(internalDescripcion.toString())){
 //                //paso a minúsculas las letras de la palabra
                     descripcion = descripcion.toLowerCase();
                     Query consulta = em.createQuery("SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)",Calles.class);
