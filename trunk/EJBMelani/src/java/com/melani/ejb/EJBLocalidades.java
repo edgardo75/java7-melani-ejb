@@ -35,8 +35,8 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
         Query jpql = null;
         try {
             
-            jpql = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia and l.latitud <> null and l.longitud <> null");
-            jpql.setParameter("idProvincia",idProvincia);
+            jpql = em.createNamedQuery("Localidades.findByLatLongNotNull");
+            jpql.setParameter("1",idProvincia);
             List<Localidades>localidad = jpql.getResultList();
             for (Localidades localidades : localidad) {
                 xml.append(localidades.toXML());
@@ -83,7 +83,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                                 depto.setLongitud("0");
                                 
                                 em.persist(depto);
-                                em.flush();
+                                
                                 retorno = depto.getIdLocalidad();
                             } else {
                                 retorno = -6;
@@ -111,8 +111,8 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     public String searchAllLocalidadesByIdProvincia(Short idProvincia) {
          StringBuilder resultado = new StringBuilder("<Lista>\n");
          try {
-             Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia and l.latitud is not null and l.longitud is not null order by l.descripcion asc");
-             consulta.setParameter("idProvincia", idProvincia);
+             Query consulta = em.createNamedQuery("Localidades.findByLatLongNotNull");
+                   consulta.setParameter("idProvincia", idProvincia);
              List<Localidades>lista = consulta.getResultList();
              if(lista.isEmpty()) {
                  resultado.append("NO HAY LOCALIDADES CARGADAS en ").append(em.find(Provincias.class, idProvincia).getProvincia());
@@ -134,6 +134,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     @Override
     public short addLatitudLongitud(long idProvincia, long idLocalidad, String latitud, String longitud) {
         Localidades localidad = em.find(Localidades.class, idLocalidad);
+        
         localidad.setLatitud(latitud);
         localidad.setLongitud(longitud);
         em.flush();

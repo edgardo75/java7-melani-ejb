@@ -46,7 +46,7 @@ public class EJBTelefonos implements EJBTelefonosRemote {
                                                 telefono.setIdTipotelefono(em.find(Tipostelefono.class, datosTel.getTipoTelefono().getTipoTelefono()));
                                                 telefono.setTelefonosPK(telepk);
                                                 em.persist(telefono);
-                                                em.flush();
+                                                
                                                 retorno = 2;
                                             }
                     //--------------------------------------------------------------------------------------

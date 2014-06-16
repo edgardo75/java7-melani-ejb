@@ -54,8 +54,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
                         personadomicilio.setPersonasdomiciliosPK(perpk);
                         personadomicilio.setFechaingresovivienda(calendario.getTime());
                         personadomicilio.setPersonas(em.find(Clientes.class, idCliente));
-                        em.persist(personadomicilio);
-                        em.flush();
+                        em.persist(personadomicilio);                        
                         retorno ="InyectóRelacion";
             }
         } catch (Exception e) {

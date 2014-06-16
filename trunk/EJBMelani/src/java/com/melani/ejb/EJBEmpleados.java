@@ -537,7 +537,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                          empfulltime.setNrodocumento(empleado.getNumeroDocumento());
                                          empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf(empleado.getSalario())));
                                          em.persist(empfulltime);
-                                         em.flush();
+                                         
                                        retorno = empfulltime.getIdPersona();
             
         } catch (NumberFormatException e) {
@@ -577,7 +577,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                          empparttime.setEmail(empleado.getEmail());
                                                     empparttime.setSalarioporhora(BigDecimal.valueOf(Float.valueOf(empleado.getSalarioxhora())));
                                                     em.persist(empparttime);
-                                                    em.flush();
+                                                    
                                                     retorno = empparttime.getIdPersona();
             
         } catch (NumberFormatException e) {

@@ -115,7 +115,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                         domicilioss.setObservaciones("NO INGRESADO");
                     }
             em.persist(domicilioss);
-            em.flush();
+            
           retorno = domicilioss.getId();
         } catch (Exception xst) {
             logger.error("Error en metodo procesarAddDomicilio  "+xst.getLocalizedMessage());

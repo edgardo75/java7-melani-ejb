@@ -33,7 +33,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
     @NamedQuery(name = "Localidades.findAll", query = "SELECT l FROM Localidades l"),
     @NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"),
     @NamedQuery(name = "Localidades.findByDescripcion", query = "SELECT l FROM Localidades l WHERE l.descripcion = :descripcion"),
-    @NamedQuery(name = "Localidades.findByCodigopostal", query = "SELECT l FROM Localidades l WHERE l.codigopostal = :codigopostal")})
+    @NamedQuery(name = "Localidades.findByCodigopostal", query = "SELECT l FROM Localidades l WHERE l.codigopostal = :codigopostal"),
+    @NamedQuery(name = "Localidades.findByLatLongNotNull",query = "SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia "
+                        + "and l.latitud is not null and l.longitud is not null order by l.descripcion asc")})
 public class Localidades implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableGenerator(name="LocalidadIdGen", table="ID_GEN_LOC",

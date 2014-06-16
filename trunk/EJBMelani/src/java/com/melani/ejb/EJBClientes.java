@@ -226,7 +226,7 @@ public class EJBClientes implements EJBClientesRemote {
                                 cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
                                 cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
                                 em.persist(cliente);
-                                em.flush();
+                                
                                 retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono, cliente, todosDatos);
             /*//--------------------------------------------------------------------------------------------------*/
         } catch (Exception e) {
@@ -596,7 +596,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                //*****************************************************************************************************************
                       }                         
                     }
-                    em.flush();
+                    
                 retorno = cliente.getIdPersona();
             //---------------------------------------------------------------------------------------------
         } catch (Exception e) {
