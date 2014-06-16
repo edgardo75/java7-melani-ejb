@@ -425,7 +425,7 @@ public class EJBProductos implements EJBProductosRemote {
                                         producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible().intValue()+datosprod.getCantidaddisponible()));
                                         producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
                                         em.persist(producto);
-                                        em.flush();
+                                        
                 //---------------------------------------------------------------------------------
                                                 ExistenciasProductos existencias = new ExistenciasProductos();
                                                 existencias.setCantidadactual(datosprod.getCantidaddisponible());
@@ -435,7 +435,7 @@ public class EJBProductos implements EJBProductosRemote {
                                                 existencias.setProductos(em.find(Productos.class, producto.getSid()));
                                                 existencias.setIdUsuario(datosprod.getIdusuario());
                                                 em.persist(existencias);
-                                        em.flush();
+                                        
                 //---------------------------------------------------------------------------------
                                     retorno = existencias(producto);
                 //---------------------------------------------------------------------------------

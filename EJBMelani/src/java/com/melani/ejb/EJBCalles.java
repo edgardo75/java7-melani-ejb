@@ -57,7 +57,7 @@ public class EJBCalles implements EJBCallesRemote {
                             Calles calle = new Calles();
                             calle.setDescripcion(descripcion.toUpperCase());
                             em.persist(calle);
-                            em.flush();
+                            
                             retorno = calle.getId();
                         } else {
                             retorno = -5;

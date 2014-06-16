@@ -59,8 +59,9 @@ public class EJBBarrios implements EJBBarriosRemote {
                           if (lista.isEmpty()) {
                                 Barrios barrio = new Barrios();
                                 barrio.setDescripcion(descripcion.toUpperCase());
+                                
                                 em.persist(barrio);
-                                em.flush();
+                                
 
                                 retorno = barrio.getId();
                             } else {

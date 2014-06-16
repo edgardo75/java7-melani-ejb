@@ -160,7 +160,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                     cliente.setTotalEnPuntos(BigInteger.valueOf(totalPuntos));
                                                     cliente.setFechaCarga(gc.getTime());                                           
                                                 em.persist(cliente);
-                                                em.flush();
+                                                
                                  if(historico<0) {
                                      retorno = historico;
                                  } else{
@@ -302,7 +302,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                         resultado = -2;
                     }
                     em.persist(notape);
-                    em.flush();
+                    
                     resultado = historico.getIdhistorico();
         return resultado;
     }
@@ -332,51 +332,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         }
     }
 
-    /**
-     *
-     * @param idnota
-     * @param saldo
-     * @param idusuario
-     * @return
-     */
-//    @Override
-//    public long modificarSaldoNota(long idnota, double saldo, int idusuario) {
-//        long result =0L;
-//        try {
-//            //--------------------------------------------------------------------------
-//            GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
-//            //--------------------------------------------------------------------------
-//                        Notadepedido nota = em.find(Notadepedido.class, idnota);
-//                    //------------------------------------------------------------------
-//                        nota.setSaldo(nota.getSaldo().subtract(BigDecimal.valueOf(saldo)));
-//                    //------------------------------------------------------------------
-//                        Historiconotapedido historico = new Historiconotapedido();
-//                    //------------------------------------------------------------------
-//                                historico.setAnticipo(BigDecimal.valueOf(saldo));
-//                                historico.setEntregado(Character.valueOf(nota.getEntregado()));
-//                                historico.setFecharegistro(gc.getTime());
-//                                historico.setFkidnotapedido(nota);
-//                                historico.setHoraregistro(gc.getTime());
-//                                historico.setIdusuarioanulo(nota.getIdusuarioAnulado());
-//                                historico.setIdusuarioentrega(nota.getIdusuarioEntregado());
-//                                historico.setIdusuarioexpidio(idusuario);
-//                                historico.setIdusuariocancelo(0);
-//                                historico.setPendiente(Character.valueOf(nota.getPendiente()));
-//                                historico.setPorcentajeaplicado(nota.getFkidporcentajenotaId().getIdPorcentajes());
-//                                historico.setSaldo(nota.getSaldo());
-//                                historico.setTotal(nota.getTotal());
-//               //----------------------------------------------------------------------------------
-//                        long notaID = procesaListNotaHistorico(nota,historico);
-//               //----------------------------------------------------------------------------------
-//                    em.flush();
-//                result = notaID;
-//        } catch (Exception e) {
-//            logger.error("Error en metodo modificarSaldoNota "+e.getLocalizedMessage());
-//            result = -1;
-//        }finally{            
-//            return result;
-//        }
-//    }
+   
 
     /**
      *
@@ -443,7 +399,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
           //----------------------------------------------------------------------------------
                             long notaID = procesaListNotaHistorico(nota,historico);
           //----------------------------------------------------------------------------------
-            em.flush();
+            
                 result = notaID;
         } catch (NumberFormatException e) {
             logger.error("Error en metodo cancelaNotaPedido "+ e.getLocalizedMessage());
@@ -544,7 +500,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 //----------------------------------------------------------------------------------
                             long notaID = procesaListNotaHistorico(nota,historico);
           //----------------------------------------------------------------------------------
-                            em.flush();
+                            
                        result = notaID;
         } catch (NumberFormatException e) {
             logger.error("Error en metodo entregarNotaPedido "+e.getLocalizedMessage());
@@ -839,7 +795,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 //----------------------------------------------------------------------------------
                             long notaID = procesaListNotaHistorico(nota,historico);
           //----------------------------------------------------------------------------------
-                            em.flush();
+                            
                        result = notaID;
         } catch (NumberFormatException e) {
             logger.error("Error en metodo anularNotaPedido "+e.getLocalizedMessage());
@@ -958,7 +914,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                                 detallesnotadepedido.setProductos(productos);
                                                                                 detallesnotadepedido.setSubtotal(BigDecimal.valueOf(itemdetallesnota.getSubtotal()));
                                                                                 em.persist(detallesnotadepedido);
-                                                                                em.flush();
+                                                                                
                                                            ///+++++++++++++++++++++++++++++++++++++++++++++++++++
                                                   List<Detallesnotadepedido> queryDetailsOrdersFindProduc= em.createNamedQuery("Detallesnotadepedido.findByFkIdproducto")
                                                             .setParameter("fkIdproducto", itemdetallesnota.getId_producto()).getResultList();
@@ -976,7 +932,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                     result =  almacenarHistorico(datosnotapedido,nota);
                                 }
               em.persist(nota);
-              em.flush();
+              
                   result=nota.getId();
                                   //-----------------------------------------------------------------------------
         } catch (ParseException e) {

@@ -55,7 +55,7 @@ public class EJBClienteTelefono implements EJBClienteTelefonoRemote {
                             personatel.setPersonastelefonosPK(persotelpk);
                             personatel.setTelefonos(em.find(Telefonos.class, telepk));
                             em.persist(personatel);
-                            em.flush();
+                            
                             retorno = "InyectoRelacionClienteTelefono";
                     }
             }
