@@ -45,10 +45,10 @@ public class Porcentajes implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "DESCRIPCION",length=100,unique=true)
     private String descripcion;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Column(name = "VALOR",precision=10,scale=2)
     private Double valor;
-    @OneToMany(mappedBy = "fkidporcentajenotaId",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fkidporcentajenotaId")
     private List<Notadepedido> notadepedidoList;
 
     /**

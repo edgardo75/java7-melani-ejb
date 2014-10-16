@@ -9,7 +9,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,7 +33,7 @@ public class EmpresaTelefonia implements Serializable {
     private Short idEmpTelefonia;
     @Column(name = "NOMBRE", length = 30,unique=true)
     private String nombre;
-    @OneToMany( mappedBy = "idEmpresatelefonia",fetch=FetchType.LAZY)
+    @OneToMany( mappedBy = "idEmpresatelefonia")
     private List<Telefonos> telefonosList;
 
     /**

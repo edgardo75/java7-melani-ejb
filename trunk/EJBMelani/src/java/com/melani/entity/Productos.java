@@ -50,6 +50,7 @@ public class Productos implements Serializable {
     @GeneratedValue(generator="ProductoIdGen",strategy=GenerationType.TABLE)
     @Column(name = "SID")
     private Long sid;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "DESCRIPCION",length=100,nullable=false,unique=true)
     private String descripcion;
     @Column(name="CODPRODUCTO",length=100,unique=true,nullable=true)
@@ -63,13 +64,13 @@ public class Productos implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;    
-    @OneToMany(mappedBy = "productos",orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productos",orphanRemoval = true)
     private List<ExistenciasProductos> existenciasProductoss;
-    @OneToMany(mappedBy = "productos",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productos")
     private List<Detallesnotadepedido> detallesnotadepedidoList;
-    @OneToMany( mappedBy = "productos",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "productos")
     private List<Detallespresupuesto> detallepresupuestosList;
-    @OneToMany(mappedBy = "productos",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productos")
     private List<ImagenesProductos>imagenesProductosList;
 
     /**

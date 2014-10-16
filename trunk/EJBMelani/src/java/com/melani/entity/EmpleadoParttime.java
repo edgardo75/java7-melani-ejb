@@ -17,7 +17,8 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @DiscriminatorValue("EMPPARTTIME")
-@NamedQueries({@NamedQuery(name = "EmpleadoParttime.deleteById",query = "DELETE FROM EmpleadoParttime e WHERE e.idPersona = :idPersona")})
+@NamedQueries({@NamedQuery(name = "EmpleadoParttime.deleteById",
+        query = "DELETE FROM EmpleadoParttime e WHERE e.idPersona = :idPersona")})
 public class EmpleadoParttime extends Empleados implements Serializable{
     @Column(name="SALARIO_POR_HORA",precision=10,scale=2)
     private BigDecimal salarioporhora;

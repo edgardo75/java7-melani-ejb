@@ -51,12 +51,12 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     public long addEmpleadoFullTime(String xmlEmpleado){
         long retorno = 0;
         try { 
-            logger.info("addEmpleado");
+            
                     //llamo a metodo interno para convertir a objeto los datos del empleado
                     DatosEmpleado datosEmpleado = datosEmpleadosObject(xmlEmpleado);
-                    logger.info("addEmpleado1");
+            
                       retorno = procesarDatosEmpleadoAdd(datosEmpleado);
-                      logger.info("addEmpleado2");
+            
                    } catch (NumberFormatException e) {
                     retorno = -1;
                     logger.error("Error en metodo addEmpleadoFullTime "+e.getLocalizedMessage());
@@ -184,7 +184,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                     sb.append(empleadoDesabilito.getNombre());
                     sb.append(" ");
                     sb.append(empleadoDesabilito.getApellido());
-                    logger.info("EMPLEADO DESHABILITADO EL DIA DE LA FECHA "+gc.getTime()+", EL EMPLEADO QUE REALIZÓ LA OPERACION FUE "+sb.toString());
+                    
              retorno=Integer.valueOf(String.valueOf(empleadoDesabilitado.getIdPersona()));
         } catch (NumberFormatException e) {
             retorno=-1;
@@ -244,7 +244,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                     sb.append(empleadohabilito.getNombre());
                     sb.append(" ");
                     sb.append(empleadohabilito.getApellido());
-                    logger.info("EMPLEADO HABILITADO EL DIA DE LA FECHA "+gc.getTime()+", EL EMPLEADO QUE REALIZÓ LA OPERACION FUE "+sb.toString());
+                    
              retorno=Integer.valueOf(String.valueOf(empleadohabilito.getIdPersona()));
         } catch (NumberFormatException e) {
             retorno=-1;
@@ -372,14 +372,14 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
                                                                                                        fulltimeEmploy.setObservaciones(empleado.getObservaciones());
 
-                                                                                                     logger.info("pass a encriptar "+empleado.getPassword());
+                                                                                                     
 
                                                                                                        fulltimeEmploy.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                               
 
                                                                                                        fulltimeEmploy.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
 
                                                                                                        em.persist(fulltimeEmploy);
-                                                                                                        logger.info("passs  encriptado "+fulltimeEmploy.getPassword());
+                                                                                                     
                                                                                                        retorno = fulltimeEmploy.getIdPersona();
 
 
@@ -414,7 +414,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                                                        
                                                                                                        empleadoPartime.setObservaciones(empleado.getObservaciones());
                                                                                                        
-                                                                                                       logger.info("passs a encriptar "+empleado.getPassword());
+                                                                                                       
                                                                                                        
                                                                                                        empleadoPartime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                           
 
@@ -422,7 +422,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                                                        empleadoPartime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
 
                                                                                                        em.persist(empleadoPartime);
-                                                                                                       logger.info("passs  encriptado "+empleadoPartime.getPassword());
+                                                                                                       
                                                                                                        
                                                                                                    retorno = empleadoPartime.getIdPersona();
                                                                            }
@@ -465,7 +465,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                 }
             }
             em.flush();
-            logger.info("TODAS LAS REFERENCIAS FUERON ACTUALIZADAS PARA EL EMPLEADO "+nuevoEmployee);
+            
         } catch (NumberFormatException e) {
             logger.error("error al actulizar referencias de nota de pedidos de empleado "+e.getLocalizedMessage());
         }
@@ -606,14 +606,15 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
                                               if(!ProjectHelpers.PasswordValidator.validate(StringEscapeUtils.escapeXml10(empleado.getPassword())) && (empleado.getPassword().equals(empleado.getPasswordre()))) {
                                                   retorno=-11;
-                                              }
+                                              }else{
                                               
-                                              String encriptedText = ProjectHelpers.ClaveSeguridad.encriptar(empleado.getPassword());
-                                              
-                                              String decriptedText = ProjectHelpers.ClaveSeguridad.decriptar(encriptedText);
-                                              
-                                              if(!ProjectHelpers.PasswordValidator.validate(decriptedText)){
-                                                  retorno = -17;
+                                                    String encriptedText = ProjectHelpers.ClaveSeguridad.encriptar(empleado.getPassword());
+
+                                                    String decriptedText = ProjectHelpers.ClaveSeguridad.decriptar(encriptedText);
+
+                                                    if(!ProjectHelpers.PasswordValidator.validate(decriptedText)){
+                                                        retorno = -17;
+                                                    }
                                               }
 
                                     }else{

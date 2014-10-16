@@ -6,6 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
     @NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"),
     @NamedQuery(name = "Localidades.findByDescripcion", query = "SELECT l FROM Localidades l WHERE l.descripcion = :descripcion"),
     @NamedQuery(name = "Localidades.findByCodigopostal", query = "SELECT l FROM Localidades l WHERE l.codigopostal = :codigopostal"),
-    @NamedQuery(name = "Localidades.findByLatLongNotNull",query = "SELECT l FROM Localidades l WHERE l.provincias.idProvincia = :idProvincia "
+    @NamedQuery(name = "Localidades.findByLatLongNotNull",query = "SELECT l FROM Localidades l WHERE l.provincias.idProvincia = ?1 "
                         + "and l.latitud is not null and l.longitud is not null order by l.descripcion asc")})
 public class Localidades implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -45,16 +46,16 @@ public class Localidades implements Serializable {
     @GeneratedValue(generator="LocalidadIdGen",strategy=GenerationType.TABLE)
     @Column(name = "ID_LOCALIDAD")
     private Long idLocalidad;
-    @Column(name = "CODIGOPOSTAL")
+    @Column(name = "CODIGOPOSTAL")    
     private Integer codigopostal;
     @Column(name = "DESCRIPCION",length=100)
     @NotNull(message = "El nombre de la Localidad es requerido")
     @Pattern(message = "El nombre de Localidad no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;    
-    @OneToMany( mappedBy = "localidades", fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "localidades")
     private List<Domicilios> domiciliosList;
     @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Provincias provincias;
     @Column(name = "LATITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'")
     @NotNull()

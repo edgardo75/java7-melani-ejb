@@ -64,6 +64,7 @@ public class Presupuestos implements Serializable {
     private Date validez;
     @Column(name = "TOTAL",precision=15,scale=3)
     private BigDecimal total;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "OBSERVACIONES",length=5_000)
     private String observaciones;
     @Basic(optional = false,fetch = FetchType.LAZY)
@@ -85,7 +86,7 @@ public class Presupuestos implements Serializable {
     private BigDecimal porcentajerecargo;
      @Column(name = "DESCUENTORESTO",precision=15,scale=3)
     private BigDecimal descuentoresto;
-    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",fetch=FetchType.LAZY)
+    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos")
     private List<Detallespresupuesto> detallepresupuestosList;
 
     /**

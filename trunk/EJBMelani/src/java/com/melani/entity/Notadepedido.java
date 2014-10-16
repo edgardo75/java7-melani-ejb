@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -96,6 +97,7 @@ public class Notadepedido implements Serializable {
     @Column(name = "FECHADECOMPRA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechadecompra;
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "OBSERVACIONES",length=32_000)
     private String observaciones;
     @Column(name = "PENDIENTE")
@@ -115,7 +117,7 @@ public class Notadepedido implements Serializable {
     @Column(name="FECHAENTREGA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaentrega;
-     @Column(name = "DESCUENTO_PESOS",precision=15,scale=3)
+    @Column(name = "DESCUENTO_PESOS",precision=15,scale=3)
     private BigDecimal descuentoPesos;
     @OneToMany(mappedBy = "notadepedido",orphanRemoval = true)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
@@ -125,7 +127,7 @@ public class Notadepedido implements Serializable {
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private TarjetasCreditoDebito idTarjetaFk;
     @JoinColumn(name = "FK_IDCLIENTE", referencedColumnName = "ID_PERSONA")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Personas fkIdcliente;
     @JoinColumn(name = "FKIDPORCENTAJENOTA_ID", referencedColumnName = "ID_PORCENTAJES")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
