@@ -38,7 +38,7 @@ public class Calles implements Serializable {
     @NotNull(message = "El nombre de la Calle es requerido")
     @Pattern(message = "El nombre de Calle no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;
-    @OneToMany(mappedBy = "idcalle",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idcalle")
     private List<Domicilios> domicilioss;
 
     /**

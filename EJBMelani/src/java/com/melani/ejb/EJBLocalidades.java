@@ -112,7 +112,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
          StringBuilder resultado = new StringBuilder("<Lista>\n");
          try {
              Query consulta = em.createNamedQuery("Localidades.findByLatLongNotNull");
-                   consulta.setParameter("idProvincia", idProvincia);
+                   consulta.setParameter("1", idProvincia);
              List<Localidades>lista = consulta.getResultList();
              if(lista.isEmpty()) {
                  resultado.append("NO HAY LOCALIDADES CARGADAS en ").append(em.find(Provincias.class, idProvincia).getProvincia());

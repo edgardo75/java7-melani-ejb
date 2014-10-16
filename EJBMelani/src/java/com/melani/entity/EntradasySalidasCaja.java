@@ -73,7 +73,7 @@ public class EntradasySalidasCaja implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date hora;
     @JoinColumn(name = "ID_TARJETA_FK", referencedColumnName = "IDTARJETA")
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TarjetasCreditoDebito idTarjetaFk;
 
     /**

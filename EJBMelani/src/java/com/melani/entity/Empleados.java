@@ -15,7 +15,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
-import javax.validation.constraints.Pattern;
 /**
  *A Entity Empleados
  * @version 1.0
@@ -26,11 +25,12 @@ import javax.validation.constraints.Pattern;
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="emptype",discriminatorType=DiscriminatorType.STRING) 
 @NamedQueries({@NamedQuery(name = "Empleados.deleteById",query = "DELETE FROM Empleados e WHERE e.idPersona = :idPersona")})
-public abstract class Empleados extends Personas {
+public class Empleados extends Personas {
 
     /**
      *
      */
+    
     @Column(name="PASSWORD",nullable=false)    
     protected String password;
 

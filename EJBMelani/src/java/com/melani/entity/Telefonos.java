@@ -42,7 +42,7 @@ import javax.persistence.Table;
     @JoinColumn(name = "ID_TIPOTELEFONO", referencedColumnName = "ID_TIPOTEL")
     @ManyToOne(fetch=FetchType.LAZY)
     private Tipostelefono idTipotelefono;
-     @OneToMany(mappedBy = "telefonos",fetch = FetchType.LAZY)
+     @OneToMany(mappedBy = "telefonos")
     private List<Personastelefonos> personastelefonosCollection;
 
     /**

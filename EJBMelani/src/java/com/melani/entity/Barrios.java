@@ -37,8 +37,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
     @NamedQuery(name = "Barrios.findByDescripcion", query = "SELECT b FROM Barrios b WHERE b.descripcion = :descripcion"),
     @NamedQuery(name = "Barrios.findByDescripcionByLike",query = "SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)")
 })
-@XmlRootElement(name = "Barrios")
-@XmlAccessorType(XmlAccessType.NONE)
 public class Barrios implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -48,14 +46,12 @@ public class Barrios implements Serializable {
     @TableGenerator(name="BarrioIdGen", table="ID_GEN_BARRIO",
     pkColumnName="FNAME",pkColumnValue="Barrios", valueColumnName="FKEY",
     allocationSize=1)
-    @XmlAttribute(name = "id")
     private Long id;
     @Column(length = 100,name="DESCRIPCION",nullable = false,unique=true)    
-    @XmlAttribute(name = "descripcion")
     @NotNull(message = "El nombre del Barrio es requerido")
     @Pattern(message = "El nombre de Barrio no es válido",regexp = "(?=^.{3,100}$)^([\\w\\.\\p{IsLatin}][\\s]?)+$")
     private String descripcion;    
-    @OneToMany(mappedBy = "idbarrio",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idbarrio")
     private List<Domicilios> domicilioss;
 
     /**

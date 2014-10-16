@@ -9,7 +9,6 @@ import java.util.Collections;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,7 +33,7 @@ public class Generos implements Serializable {
     private Short idGenero;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "generos",fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "generos")
     private Collection<Personas> personasCollection;
 
     /**

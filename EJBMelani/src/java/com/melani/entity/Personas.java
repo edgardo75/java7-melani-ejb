@@ -6,6 +6,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -46,8 +47,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @NamedQuery(name = "Personas.searchByEmailAndNroDocu",query = "SELECT p FROM Personas p WHERE p.email = :email and p.nrodocumento = :nrodocumento"),
 @NamedQuery(name = "Personas.searchByNroDocuAndPertype",query = "SELECT p FROM Personas p WHERE p.nrodocumento = :nrodocumento and " +
                     "p.pertype = :pertype")})
-public abstract class Personas implements Serializable {
+public class Personas implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @TableGenerator(name="PersonaIdGen", table="ID_GEN_PER",
     pkColumnName="FNAME",pkColumnValue="Personas", valueColumnName="FKEY",
     allocationSize=1)
@@ -70,9 +72,10 @@ public abstract class Personas implements Serializable {
     @JoinColumn(name="ID",referencedColumnName="ID",nullable=false,updatable=false)
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
     private Tiposdocumento tipodocumento;
-    @OneToMany(mappedBy = "personas",fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "personas")
     private List<PersonasDomicilios> personasDomicilioss;
-    @OneToMany(mappedBy = "idPersona",fetch=FetchType.LAZY)
+    @CollectionTable
+    @OneToMany(mappedBy = "idPersona")
     private List<Personastelefonos> personastelefonoss;
     @JoinColumn(name = "ID_GENERO", referencedColumnName = "ID_GENERO")
     @ManyToOne(fetch=FetchType.LAZY,optional = false)

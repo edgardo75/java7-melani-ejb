@@ -38,9 +38,9 @@ public class TarjetasCreditoDebito implements Serializable {
     private Integer idtarjeta;
     @Column(name="DESCRIPCION",length=30)
     private String descripcion;
-    @OneToMany(mappedBy = "idTarjetaFk",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idTarjetaFk")
     private List<Notadepedido> notadepedidoList;
-    @OneToMany(orphanRemoval = true,mappedBy="idTarjetaFk",fetch= FetchType.LAZY)
+    @OneToMany(orphanRemoval = true,mappedBy="idTarjetaFk")
     private List<EntradasySalidasCaja>entradasysalidascajaList;
 
     /**

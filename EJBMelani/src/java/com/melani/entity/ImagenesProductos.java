@@ -5,10 +5,8 @@
 package com.melani.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,8 +25,7 @@ import javax.persistence.Table;
 @NamedQuery(name = "ImagenesProductos.findByIdProduct", query = "Select i From ImagenesProductos i Where i.productos.sid = :idProducto")})
 public class ImagenesProductos implements Serializable{
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false,fetch = FetchType.LAZY)
+    @Id    
     @Column(name = "ID")
     @GeneratedValue(generator="ImagenProductoIdGen",strategy=GenerationType.IDENTITY)          
     private Long id;

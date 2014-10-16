@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tipostelefono implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false,fetch = FetchType.LAZY)
+    
     @Column(name = "ID_TIPOTEL")
     private Short idTipotel;
-    @Basic(fetch = FetchType.LAZY)
+    
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "idTipotelefono")

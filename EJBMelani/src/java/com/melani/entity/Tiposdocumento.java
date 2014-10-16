@@ -28,18 +28,16 @@ import javax.persistence.Table;
     @NamedQuery(name = "Tiposdocumento.findByDescripcion", query = "SELECT t FROM Tiposdocumento t WHERE t.descripcion = :descripcion")})
 public class Tiposdocumento implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(fetch = FetchType.LAZY)
+    @Id    
     @Column(name="ID",nullable=false,updatable=false)
     private Short id;
 
     /**
      *
-     */
-    @Basic(fetch = FetchType.LAZY)
+     */    
     @Column(length=20,name="DESCRIPCION")
     protected String descripcion;
-    @OneToMany( mappedBy = "tipodocumento",fetch=FetchType.LAZY)
+    @OneToMany( mappedBy = "tipodocumento")
     private List<Personas> personasList;
 
     /**

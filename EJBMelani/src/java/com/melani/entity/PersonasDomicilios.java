@@ -44,10 +44,10 @@ public class PersonasDomicilios implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaingresovivienda;
     @JoinColumn(name="ID_PERSONA",referencedColumnName="ID_PERSONA",insertable=false,updatable=false)
-    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER,optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Personas personas;
     @JoinColumn(name = "IDDOMICILIO", referencedColumnName = "ID_DOMICILIO",insertable = false, updatable = false)
-    @ManyToOne(cascade={CascadeType.PERSIST},optional=false,fetch=FetchType.EAGER)
+    @ManyToOne(optional=false,fetch = FetchType.LAZY)
     private Domicilios domicilioss;
 
     /**
