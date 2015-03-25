@@ -50,7 +50,7 @@ public class EJBBarrios implements EJBBarriosRemote {
                   
             //------------------------------------------------------------------------------------------------
                     
-                    Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
+                    Query consulta =  em.createNamedQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
                     consulta.setParameter("1",internalDescripcion.append("%").toString().toLowerCase());
                     List<Barrios> lista = consulta.getResultList();
                     

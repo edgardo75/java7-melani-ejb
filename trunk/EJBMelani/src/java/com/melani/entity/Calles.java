@@ -8,10 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 @Entity
 @Table(name="CALLES")
+@NamedQueries({@NamedQuery(name = "Calles.findDescripcion",query = "SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)")})
 public class Calles implements Serializable {
     private static final long serialVersionUID = 1L;   
     @TableGenerator(name="CalleIdGen", table="ID_GEN_CALLE",
