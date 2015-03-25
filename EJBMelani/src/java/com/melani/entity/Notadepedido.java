@@ -762,7 +762,27 @@ public class Notadepedido implements Serializable {
                             item.append("<fechaentrega>").append(feentrega).append("</fechaentrega>\n");
                             item.append("<horacompra>").append(hocompra).append("</horacompra>\n");    
                             item.append("<stockfuturo>").append(this.getStockfuturo()).append("</stockfuturo>\n");
-                            item.append("<cliente>\n" + "<id>").append(this.getFkIdcliente().getIdPersona()).append("</id>\n" + "<nrodocumento>").append(this.getFkIdcliente().getNrodocumento()).append("</nrodocumento>\n" + "<apellidoynombre>").append(StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre())).append("</apellidoynombre>\n" + "</cliente>\n" + "<idporcentajes>").append(this.getFkidporcentajenotaId().getIdPorcentajes()).append("</idporcentajes>\n" + "<usuarioexpidionota>").append(this.getIdUsuarioExpidioNota()).append("</usuarioexpidionota>\n" + "<usuarioanulonota>").append(this.getIdusuarioAnulado()).append("</usuarioanulonota>\n" + "<usuarioentregonota>").append(this.getIdusuarioEntregado()).append("</usuarioentregonota>\n" + "<usuariocancelonota>").append(this.getIdusuariocancelo()).append("</usuariocancelonota>\n" + "<idusuarioexpidionota>").append(this.getIdUsuarioExpidioNota()).append("</idusuarioexpidionota>\n" + "<idusuarioanulonota>").append(this.getIdusuarioAnulado()).append("</idusuarioanulonota>\n" + "<idusuarioentregonota>").append(this.getIdusuarioEntregado()).append("</idusuarioentregonota>\n" + "<idusuariocancelonota>").append(this.getIdusuariocancelo()).append("</idusuariocancelonota>\n" + "<montoiva>").append(this.getMontoiva().toPlainString()).append("</montoiva>\n" + "<pendiente>").append(this.getPendiente()).append("</pendiente>\n" + "<recargo>").append(this.getRecargo().toPlainString()).append("</recargo>\n" + "<total>").append(this.getTotal().toPlainString()).append("</total>\n" + "<saldo>").append(this.getSaldo().toPlainString()).append("</saldo>\n" + "<montototalapagar>").append(this.getMontototalapagar().toPlainString()).append("</montototalapagar>\n" + "<porcentajedesctotal>").append(this.getPorcdesctotal().toPlainString()).append("</porcentajedesctotal>\n" + "<recargototal>").append(this.getRecargo().toPlainString()).append("</recargototal>\n" + "<porcrecargo>").append(this.getPorcrecargo().toPlainString()).append("</porcrecargo>\n");
+                            item.append("<cliente>\n" + "<id>").append(this.getFkIdcliente().getIdPersona())
+                                    .append("</id>\n" + "<nrodocumento>").append(this.getFkIdcliente().getNrodocumento())
+                                    .append("</nrodocumento>\n" + "<apellidoynombre>")
+                                    .append(StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre()))
+                                    .append("</apellidoynombre>\n" + "</cliente>\n" + "<idporcentajes>").append(this.getFkidporcentajenotaId().getIdPorcentajes())
+                                    .append("</idporcentajes>\n" +"<usuarioexpidionota>").append(this.getIdUsuarioExpidioNota())
+                                    .append("</usuarioexpidionota>\n" + "<usuarioanulonota>").append(this.getIdusuarioAnulado())
+                                    .append("</usuarioanulonota>\n" + "<usuarioentregonota>").append(this.getIdusuarioEntregado())
+                                    .append("</usuarioentregonota>\n" + "<usuariocancelonota>").append(this.getIdusuariocancelo())
+                                    .append("</usuariocancelonota>\n" + "<idusuarioexpidionota>").append(this.getIdUsuarioExpidioNota())
+                                    .append("</idusuarioexpidionota>\n" + "<idusuarioanulonota>").append(this.getIdusuarioAnulado())
+                                    .append("</idusuarioanulonota>\n" + "<idusuarioentregonota>").append(this.getIdusuarioEntregado())
+                                    .append("</idusuarioentregonota>\n" + "<idusuariocancelonota>").append(this.getIdusuariocancelo())
+                                    .append("</idusuariocancelonota>\n" + "<montoiva>").append(this.getMontoiva().toPlainString())
+                                    .append("</montoiva>\n" + "<pendiente>").append(this.getPendiente()).append("</pendiente>\n" + "<recargo>")
+                                    .append(this.getRecargo().toPlainString()).append("</recargo>\n" + "<total>").append(this.getTotal().toPlainString())
+                                    .append("</total>\n" + "<saldo>").append(this.getSaldo().toPlainString()).append("</saldo>\n" + "<montototalapagar>")
+                                    .append(this.getMontototalapagar().toPlainString()).append("</montototalapagar>\n" + "<porcentajedesctotal>")
+                                    .append(this.getPorcdesctotal().toPlainString()).append("</porcentajedesctotal>\n" + "<recargototal>")
+                                    .append(this.getRecargo().toPlainString()).append("</recargototal>\n" + "<porcrecargo>")
+                                    .append(this.getPorcrecargo().toPlainString()).append("</porcrecargo>\n");
                             item.append("<detallenota>\n");
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
                                     item.append("</detallenota>\n");

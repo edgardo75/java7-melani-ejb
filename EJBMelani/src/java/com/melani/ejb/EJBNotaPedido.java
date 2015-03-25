@@ -547,7 +547,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             String resultProcFechas=chequearFechas(fecha1,fecha2);
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             if(resultProcFechas.equals("TODO OK")){    
-                Query jpasql=em.createQuery("SELECT n FROM Notadepedido n WHERE  n.fechadecompra BETWEEN ?1 and ?2 AND n.entregado = ?3 AND n.pendiente = ?4 ORDER BY n.id desc",Notadepedido.class);                
+                Query jpasql=em.createQuery("SELECT n FROM Notadepedido n WHERE  "
+                        + "n.fechadecompra BETWEEN ?1 and ?2 AND n.entregado = ?3 AND n.pendiente = ?4 ORDER BY n.id desc",Notadepedido.class);                
                 jpasql.setParameter("1", sdf.parse(fecha1),TemporalType.TIMESTAMP);
                 jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
                 jpasql.setParameter("3", '0');
@@ -607,7 +608,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         try {
             em.flush();
             
-            Query queryFindByIdProducto =em.createQuery("Select n From Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC,n.fkIdcliente.idPersona",Notadepedido.class);
+            Query queryFindByIdProducto =em.createQuery("Select n From Notadepedido n ORDER BY n.id DESC, "
+                    + "n.fechadecompra DESC,n.fkIdcliente.idPersona",Notadepedido.class);
             
             result = queryFindByIdProducto.getResultList();
             
