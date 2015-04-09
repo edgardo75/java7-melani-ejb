@@ -103,23 +103,22 @@ public class EJBTimmer {
                         Multipart multipart = new MimeMultipart("alternative");
 
                         MimeBodyPart textPart = new MimeBodyPart();
-                        String textContext=null;
+                        StringBuilder textContext = new StringBuilder(10);
                         String resultParser = consulta.getResultList().toString().replace("[", "").replace("]","");
                         if(resultParser.equals("null")){
-                             textContext = "Ventas del Día "+sdf.format(gc.getTime())+" $ 0";
+                             textContext.append("Ventas del Día ").append(sdf.format(gc.getTime())).append(" $ 0");
                         }else
-                            textContext = "Ventas del Día "+sdf.format(gc.getTime())+" $ "+resultParser;
+                            textContext.append("Ventas del Día ").append(sdf.format(gc.getTime())).append(" $ ").append(resultParser);
                         
-                        message.setSubject(textContext);
+                        message.setSubject(textContext.toString());
                         
-                        textPart.setText(textContext);
+                        textPart.setText(textContext.toString());
 
                         MimeBodyPart htmlPart = new MimeBodyPart();
-                        String htmlContext = "<html>"
-                                                + "<h1>Hi</h1>"
-                                                + "<p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto es por email tambien puede ser via movil decime si no está <strong>cool</strong>!!!, saludos</p>"
-                                                + "<p>"+textContext+"</p>"
-                                            + "</html>";
+                        StringBuilder htmlContext = new StringBuilder("<html>").append("<h1>Hi</h1>")
+                                .append("<p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto es por email tambien puede ser via movil decime si no está <strong>cool</strong>!!!, saludos</p>")
+                                .append("<p>").append(textContext).append("</p>")
+                                .append("</html>");
                         htmlPart.setContent(htmlContext, "text/html");
 
                         multipart.addBodyPart(textPart);

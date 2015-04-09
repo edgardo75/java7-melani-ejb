@@ -42,7 +42,7 @@ public class EJBTarjetasBean implements EJBTarjetasRemote {
             }
             xml.append("</Lista>\n");
         } catch (Exception e) {
-            logger.error("Error en metodo searchalltarjetascreditodebito "+ e.getLocalizedMessage());
+            logger.error("Error en metodo searchalltarjetascreditodebito "+e.getMessage());
         }finally{            
             return xml.toString();
         }

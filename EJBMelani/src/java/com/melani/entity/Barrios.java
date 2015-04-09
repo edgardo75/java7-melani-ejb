@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
@@ -124,11 +125,12 @@ public class Barrios implements Serializable {
     /**
      *
      * @return
+     * @throws java.io.UnsupportedEncodingException
      */
-    public String toXML(){
+    public String toXML() throws UnsupportedEncodingException{
         StringBuilder item = new StringBuilder("<item>\n");
                 item.append("<id>").append(this.getId()).append("</id>\n");
-                item.append("<nombre>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</nombre>\n");
+                item.append("<nombre>").append(StringEscapeUtils.escapeXml10(new String(this.getDescripcion().getBytes("ISO-8859-1"),"ISO-8859-1"))).append("</nombre>\n");
                 item.append("</item>\n");
         return item.toString();
     }

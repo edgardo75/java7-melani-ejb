@@ -90,7 +90,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
             for (ItemDetallesPresupuesto itemDetallesPresupuesto : lista) {
                         Productos producto = em.find(Productos.class, Long.valueOf(Integer.valueOf(itemDetallesPresupuesto.getFk_id_producto())));
-                        DetallespresupuestoPK detpresPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), itemDetallesPresupuesto.getFk_id_producto());
+                        DetallespresupuestoPK detpresPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), 
+                                itemDetallesPresupuesto.getFk_id_producto());
                         Detallespresupuesto detpres = new Detallespresupuesto(detpresPK);
                         detpres.setCantidad(Short.valueOf(itemDetallesPresupuesto.getCantidad()));
                         detpres.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
@@ -101,11 +102,13 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                         detpres.setProductos(producto);
                         detpres.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
                      em.persist(detpres);
-                            Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.fkProducto = :fkProducto");
+                            Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE "
+                                    + "d.detallespresupuestoPK.fkProducto = :fkProducto");
                             consultaListProdPres.setParameter("fkProducto", itemDetallesPresupuesto.getFk_id_producto());
                             producto.setDetallepresupuestosList(consultaListProdPres.getResultList());
             }
-                                Query consulta1 = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE d.detallespresupuestoPK.idDpFk = :idDpFk");
+                                Query consulta1 = em.createQuery("SELECT d FROM Detallespresupuesto "
+                                        + "d WHERE d.detallespresupuestoPK.idDpFk = :idDpFk");
                                 consulta1.setParameter("idDpFk", presupuesto.getIdPresupuesto());
                                 presupuesto.setDetallepresupuestosList(consulta1.getResultList());
                                 em.merge(presupuesto);
@@ -125,7 +128,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String selectAllPresupuestosJPA() {
-        StringBuilder xmlpresupuesto = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").append("<Lista>\n");
+        StringBuilder xmlpresupuesto = new StringBuilder(4);
+                xmlpresupuesto.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").append("<Lista>\n");
         try {
             Query consulta  = em.createNamedQuery("Presupuesto.findPresupuestoOrderByFechaIdPresupesto");
             List<Presupuestos>lista = consulta.getResultList();
@@ -157,7 +161,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             retorno =presupuesto.getResultList().size();
         } catch (Exception e) {
             retorno=-1;
-            logger.error("Error en getRecordCount en EJBPresupuestosBean "+ e.getLocalizedMessage());
+            logger.error("Error en getRecordCount en EJBPresupuestosBean ");
         }finally{
             
             return retorno;
@@ -185,7 +189,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
 //            presupuesto+="</Lista>\n";
 //        } catch (Exception e) {
 //            presupuesto="Error";
-//            logger.error("Error en selectPresupuestoPaging en EJBPresupuestosBean"+e.getMessage());
+//            logger.error("Error en selectPresupuestoPaging en EJBPresupuestosBean");
 //        }finally{
 //            
 //         return presupuesto;
@@ -222,7 +226,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             
         } catch (Exception e) {
             result="Error";
-            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean "+e.getMessage());
+            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean ");
         }finally{
             result +="</Lista>\n";
             
@@ -237,7 +241,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String searchOneBudget(int idpresupuesto) {
-        StringBuilder result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        StringBuilder result = new StringBuilder(32);
+                result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n");
         try {
             Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");            
@@ -253,7 +258,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             }
         } catch (Exception e) {
             
-            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean "+e.getMessage());
+            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean ");
         }finally{
             result.append("</Lista>\n");
             
@@ -272,12 +277,12 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     String xml = "No paso Nada";
     StringBuilder sb=null;
     try {
-        sb=new StringBuilder(xmlPresupuesto);
+        sb=new StringBuilder(xmlPresupuesto.length());
             xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
             sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
     } catch (Exception e) {
         xml = "Error";
-        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getLocalizedMessage());
+        logger.error("Error en metodo parsearCaracteresEspecialesXML ");
     }finally{
     return sb;
     }
@@ -290,7 +295,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     @Override
     public String ShowReportPresupuesto(Integer idPresupuesto) {
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        StringBuilder xml = new StringBuilder(50);
+                xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n");      
         try {
 
@@ -307,7 +313,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             }
             
         } catch (Exception e) {
-            logger.error("Error en metodo ShowReportPresupuesto "+e.getLocalizedMessage());
+            logger.error("Error en metodo ShowReportPresupuesto ");
         }finally{
             
         return xml.append("</Lista>\n").toString();
@@ -323,7 +329,8 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     public String ShowReportVerPresupuesto(Long first, Long last) {
         
         
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        StringBuilder xml = new StringBuilder(4);
+                xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n");
         try {
             long uno=first;
@@ -345,7 +352,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             }
            
         } catch (Exception e) {
-            logger.error("Error en metodo ShowReportVerPresupuesto "+e.getLocalizedMessage());
+            logger.error("Error en metodo ShowReportVerPresupuesto ");
             xml.append("<result>Error en metodo ShowReportVerPresupuesto \n").append(e.getLocalizedMessage()).append("</result>");
         }finally{            
             return xml.append("</Lista>").toString();

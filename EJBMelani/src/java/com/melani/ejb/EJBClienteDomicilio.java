@@ -38,7 +38,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
  */
     
     
-    @Override
+    
     public String addRelacionClienteDomicilio(long idCliente, long idDomicilio,int idUsuario) {
         String retorno = "NADA";
         try {
@@ -46,8 +46,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
             if((idDomicilio>0) && (idCliente>0)&&idUsuario>=0){
                     GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
                     PersonasdomiciliosPK perpk = new PersonasdomiciliosPK(idDomicilio, idCliente);
-                    PersonasDomicilios personadomici = renovarDomicilio(idDomicilio,idCliente,idUsuario);
-                    logger.info("Persona domicilio renovado "+personadomici.getPersonasdomiciliosPK().getId()+" "+personadomici.getPersonasdomiciliosPK().getIdPersona());
+                    PersonasDomicilios personadomici = renovarDomicilio(idDomicilio,idCliente,idUsuario);                    
                         PersonasDomicilios personadomicilio = new PersonasDomicilios();
                         personadomicilio.setDomicilioss(em.find(Domicilios.class, idDomicilio));
                         personadomicilio.setEstado("Habitable".toUpperCase());
@@ -59,7 +58,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
             }
         } catch (Exception e) {
             retorno ="Error";
-            logger.error("Error en metodo addRelacionClienteDomicilio "+e);
+            logger.error("Error en metodo addRelacionClienteDomicilio ");
         }finally{            
             return retorno;
         }
@@ -84,7 +83,8 @@ private PersonasDomicilios renovarDomicilio(long idDomicilio, long idCliente,int
                             for (Iterator<PersonasDomicilios> it = lista.iterator(); it.hasNext();) {
                                  personasDomicilios = it.next();
                                  //agrego el domicilio relacion al historico antes de remover la relacion para que quede constancia en la base de datos del cambio
-                                ejbhistperdom.addHistoricoPersonaDomicilio(Integer.valueOf(String.valueOf(personasDomicilios.getDomicilioss().getId())),Integer.valueOf(String.valueOf(personasDomicilios.getPersonas().getIdPersona())), idUsuario);
+                                ejbhistperdom.addHistoricoPersonaDomicilio(Integer.valueOf(String.valueOf(personasDomicilios.getDomicilioss()
+                                .getId())),Integer.valueOf(String.valueOf(personasDomicilios.getPersonas().getIdPersona())), idUsuario);
                                 em.remove(personasDomicilios);
                             }
                     }
@@ -93,7 +93,7 @@ private PersonasDomicilios renovarDomicilio(long idDomicilio, long idCliente,int
            }
          } catch (NumberFormatException e) {
              perdomi=null;
-            logger.error("Error en metodo renovarDomicilio EJBClienteDomicilio "+e.getLocalizedMessage());
+            logger.error("Error en metodo renovarDomicilio EJBClienteDomicilio "+e.getMessage());
          }finally{            
             return perdomi;
          }

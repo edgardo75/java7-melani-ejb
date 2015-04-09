@@ -61,7 +61,7 @@ public class EJBClienteTelefono implements EJBClienteTelefonoRemote {
             }
         } catch (NumberFormatException e) {
             retorno = "Error";
-            logger.error("Error en metodo addClienteTelefono "+e);
+            logger.error("Error en metodo addClienteTelefono "+e.getMessage());
         }finally{            
             return retorno;
         }

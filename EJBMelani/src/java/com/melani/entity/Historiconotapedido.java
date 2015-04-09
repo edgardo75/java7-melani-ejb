@@ -544,7 +544,17 @@ public class Historiconotapedido implements Serializable {
                            item.append("<iduseranulo>").append(this.getIdusuarioanulo().toString()).append("</iduseranulo>\n");
                            item.append("<iduserentrega>").append(this.getIdusuarioentrega().toString()).append("</iduserentrega>\n");
                            item.append("<iduserexpidio>").append(this.getIdusuarioexpidio().toString()).append("</iduserexpidio>\n");
-                           item.append("<idusuariocancelo>").append(this.getIdusuariocancelo().toString()).append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo().toString()).append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar().toString()).append("</totalapagar>\n" + "<porcrecargo>").append(this.getPorcrecargo().toString()).append("</porcrecargo>\n" + "<porcentajedescuento>").append(this.getPorcentajedesc().toString()).append("</porcentajedescuento>\n" + "<descuento>").append(this.getDescuento().toString()).append("</descuento>\n" + "<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion())).append("</accion>\n" + "<saldo>").append(this.getSaldo().toString()).append("</saldo>\n" + "<total>").append(this.getTotal().toString()).append("</total>\n");
+                           item.append("<idusuariocancelo>").append(this.getIdusuariocancelo().toString())
+                           .append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo().toString())
+                           .append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar().toString())
+                                   .append("</totalapagar>\n").append("<porcrecargo>")
+                                   .append(this.getPorcrecargo().toString()).append("</porcrecargo>\n")
+                                   .append("<porcentajedescuento>").append(this.getPorcentajedesc().toString())
+                                   .append("</porcentajedescuento>\n" ).append("<descuento>")
+                                   .append(this.getDescuento().toString()).append("</descuento>\n" )
+                                   .append("<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion()))
+                                   .append("</accion>\n" ).append("<saldo>").append(this.getSaldo().toString())
+                                   .append("</saldo>\n" ).append("<total>").append(this.getTotal().toString()).append("</total>\n");
                    item.append("</item>\n");
         } catch (Exception e) {
             e.getMessage();

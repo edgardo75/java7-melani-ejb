@@ -34,10 +34,10 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public long addBarrio(String descripcion,int idUsuario) {
         long retorno = 0;
-        StringBuilder internalDescripcion =new StringBuilder();
+        StringBuilder internalDescripcion =new StringBuilder(50);
         String out = null;
         try {            
-            //convierto string a su correspondiente encoding
+            //convierto string a su correspondiente encoding para evitar errores de parseo
             out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
             internalDescripcion.append(out);        
             //metodo que agrega un nombre de barrio
@@ -73,7 +73,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             }
         } catch (UnsupportedEncodingException e) {
             retorno = -1;
-            logger.error("Error en metodo addBarrio "+e);
+            logger.error("Error en metodo addBarrio");
         } finally {           
             
             return retorno;
@@ -89,7 +89,8 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public String searchAllBarrios() {
         
-        StringBuilder xml = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n"
+        StringBuilder xml = new StringBuilder(4);
+                xml.append("<?xml version='1.0' encoding='ISO-8859-1'?>\n"
                 + "<Lista>\n");        
         try {
         
@@ -106,8 +107,8 @@ public class EJBBarrios implements EJBBarriosRemote {
         //*********************************************************************
             xml.append("</Lista>");          
            
-        } catch (Exception e) {                        
-            logger.error("Error en metodo searchAllBarrios "+e.getLocalizedMessage());
+        } catch (UnsupportedEncodingException e) {                        
+            logger.error("Error en metodo searchAllBarrios ");
         } finally {           
             return xml.toString();
         }

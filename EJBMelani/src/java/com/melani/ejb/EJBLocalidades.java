@@ -31,7 +31,8 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
       */
     @Override
     public String searchLocXProvincia(short idProvincia) {
-        StringBuilder xml = new StringBuilder("<Lista>\n");
+        StringBuilder xml = new StringBuilder(4);
+                xml.append("<Lista>\n");
         Query jpql = null;
         try {
             
@@ -58,7 +59,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     @Override
     public long addLocalidadCompleto(String descripcion, short idProvincia, int codigopostal) {
         long retorno = 0;
-        StringBuilder internalDescripcion = new StringBuilder();
+        StringBuilder internalDescripcion = new StringBuilder(32);
         String out = null;
         try {
             out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
@@ -68,8 +69,8 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             if(internalDescripcion.length()>0){
                     
                     internalDescripcion.append("%");
-                    Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.descripcion LIKE :descripcion and l.codigopostal = :codigopostal and " +
-                            " l.provincias.idProvincia = :idProvincia");
+                    Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.descripcion LIKE "
+                            + ":descripcion and l.codigopostal = :codigopostal and  l.provincias.idProvincia = :idProvincia");
                     consulta.setParameter("descripcion",descripcion.toString().toLowerCase());
                     consulta.setParameter("codigopostal", codigopostal);
                     consulta.setParameter("idProvincia", idProvincia);
@@ -94,7 +95,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             
         } catch (UnsupportedEncodingException e) {
             retorno =-1;
-            logger.error("Error en metodo addLocalidades " + e.getLocalizedMessage());
+            logger.error("Error en metodo addLocalidades "+e.getMessage());
        }finally{
             
             return retorno;
@@ -123,7 +124,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             
              }
         } catch (Exception e) {
-            logger.error("Error en metodo searchAllLocalidadesByIdProvincia "+e.getLocalizedMessage());
+            logger.error("Error en metodo searchAllLocalidadesByIdProvincia "+e.getMessage());
             resultado.append("<error>Se produjo un error</error>");
         }finally{
               resultado.append("</Lista>\n");              

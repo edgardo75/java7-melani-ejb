@@ -36,7 +36,7 @@ public class EJBCalles implements EJBCallesRemote {
    @Override
     public long addCalles(String descripcion,int idUsuario) {
         long retorno = 0;
-        StringBuilder internalDescripcion = new StringBuilder();
+        StringBuilder internalDescripcion = new StringBuilder(5);
         String out = null;
         try {
             out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
@@ -68,7 +68,7 @@ public class EJBCalles implements EJBCallesRemote {
             
         } catch (UnsupportedEncodingException e) {
             retorno = -1;
-            logger.error("Error en metodo addCalles "+e.getLocalizedMessage());
+            logger.error("Error en metodo addCalles ");
         } finally {    
             return retorno;
         }
@@ -79,7 +79,8 @@ public class EJBCalles implements EJBCallesRemote {
  */
    @Override
     public String searchAllCalles() {
-        StringBuilder xml = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n"
+        StringBuilder xml = new StringBuilder(4);
+                xml.append("<?xml version='1.0' encoding='UTF-8'?>\n"
                 + "<Lista>\n");
         try {
             Query consulta =em.createQuery("SELECT c FROM Calles c Order by c.id");
@@ -93,8 +94,8 @@ public class EJBCalles implements EJBCallesRemote {
              
             }      
         } catch (Exception e) {            
-            logger.error("Error en metodo searchallcalles "+ e.getLocalizedMessage());
-            e.getMessage();
+            logger.error("Error en metodo searchallcalles ");
+            logger.error(e.getMessage());
         } finally {           
                xml.append("</Lista>");               
             return xml.toString();
@@ -111,7 +112,7 @@ public class EJBCalles implements EJBCallesRemote {
             Query consulta = em.createQuery("Select c From Calles c");
                 retorno =consulta.getResultList().size();
         } catch (Exception e) {
-            logger.error("Error en metodo recorCountCalles "+e.getLocalizedMessage());
+            logger.error("Error en metodo recorCountCalles ");
         }finally{
             return retorno;
         }

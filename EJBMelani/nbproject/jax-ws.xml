@@ -31,9 +31,6 @@
     <service name="NotaPedidoWs">
       <implementation-class>com.melani.ejb.EJBNotaPedido</implementation-class>
     </service>
-    <service name="ClientesWs">
-      <implementation-class>com.melani.ejb.EJBClientes</implementation-class>
-    </service>
     <service name="PresupuestoWs">
       <implementation-class>com.melani.ejb.EJBPresupuestosBean</implementation-class>
     </service>
@@ -42,6 +39,9 @@
     </service>
     <service name="EJBTimmer">
       <implementation-class>com.melani.ejb.EJBTimmer</implementation-class>
+    </service>
+    <service name="ClientesWs">
+      <implementation-class>com.melani.ejb.EJBClientes</implementation-class>
     </service>
   </services>
   <clients/>

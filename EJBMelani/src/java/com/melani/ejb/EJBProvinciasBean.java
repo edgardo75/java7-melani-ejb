@@ -41,7 +41,7 @@ private EntityManager em;
                 
             }
         } catch (Exception e) {
-            logger.error("error en metodo searchallPRovincias", e);
+            logger.error("error en metodo searchallPRovincias"+e.getMessage());
         }finally{
             
             xml.append("</Lista>\n");
