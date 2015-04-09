@@ -108,7 +108,7 @@ public class Clientes extends Personas implements Serializable {
      */
     public String toXMLCLI(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        StringBuilder xml = new StringBuilder("<totalcompras>"+this.getTotalCompras()+"</totalcompras>\n").append("<totalpuntos>").append(this.getTotalEnPuntos()).append("</totalpuntos>\n");
+        StringBuilder xml = new StringBuilder("<totalcompras>").append(this.getTotalCompras()).append("</totalcompras>\n").append("<totalpuntos>").append(this.getTotalEnPuntos()).append("</totalpuntos>\n");
                 xml.append("<fechacarga>").append(sdf.format(this.getFechaCarga())).append("</fechacarga>\n");
                 xml.append("<notapedidolist>\n");
                 if(this.getNotadepedidoList().isEmpty()) {

@@ -43,7 +43,9 @@ import org.apache.log4j.Logger;
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBProductos implements EJBProductosRemote {
     private static final Logger logger = Logger.getLogger(EJBProductos.class);
-    static final StringBuilder PATH_IMAGENES = new StringBuilder(System.getProperty("user.dir")+File.separator+"var"+File.separator+"webapp"+File.separator+"upload"+File.separator);
+    static final StringBuilder PATH_IMAGENES = new StringBuilder(System.getProperty("user.dir"))
+                                                    .append(File.separator).append("var").append(File.separator).append("webapp")
+                                                    .append(File.separator).append("upload").append(File.separator);
     
     @PersistenceContext(unitName="EJBMelaniPU2")    
     private EntityManager em;    
@@ -87,7 +89,7 @@ public class EJBProductos implements EJBProductosRemote {
                     em.persist(existencias);
         } catch (Exception e) {
             retorno = -1;
-            logger.error("Error en metodo addExistenciasProducto, ejbproductos "+e);
+            logger.error("Error en metodo addExistenciasProducto, ejbproductos "+e.getMessage());
         }finally{
             
             return retorno;
@@ -121,7 +123,7 @@ public class EJBProductos implements EJBProductosRemote {
 //                result = "ERROR";
 //                e.getMessage();
 //            }catch(IOException e){
-//                    logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos "+e);
+//                    logger.error("Error leyendo imagen leerImagenBaseDatos, en ejbproductos ");
 //            }
 //        return result;
 //        }
@@ -135,7 +137,7 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String addProducto(String xmlProducto) {
-        StringBuilder retorno = new StringBuilder("0L");
+        StringBuilder retorno = new StringBuilder(10);
         Productos producto = null;
         long idproduct;
         try {
@@ -147,7 +149,7 @@ public class EJBProductos implements EJBProductosRemote {
                     retorno.append("</producto>\n").append("</Lista>\n");
         }
         } catch (Exception e) {
-            logger.error("Error en metodo addProducto "+e);
+            logger.error("Error en metodo addProducto "+e.getMessage());
         }finally{
             return retorno.toString();
         }
@@ -236,7 +238,7 @@ public class EJBProductos implements EJBProductosRemote {
                 
         } catch (Exception e) {
             retorno =-2;
-            logger.error("Error en metodo agregarProducto, ejbProducto "+e);
+            logger.error("Error en metodo agregarProducto, ejbProducto "+e.getMessage());
         }finally{
             
             return retorno;
@@ -252,7 +254,7 @@ public class EJBProductos implements EJBProductosRemote {
                 retorno = producto.getSid();
         } catch (Exception e) {
             retorno =-1;
-            logger.error("Error en metodo existencias ejbProductos "+e);
+            logger.error("Error en metodo existencias ejbProductos "+e.getMessage());
         }finally{
             
             return retorno;
@@ -272,7 +274,7 @@ public class EJBProductos implements EJBProductosRemote {
             result.append(producto.toXML());
         } catch (Exception e) {
             
-            logger.error("Error en metodo selectoneproducto "+e);
+            logger.error("Error en metodo selectoneproducto "+e.getMessage());
         }finally{
             return result.toString();
         }
@@ -298,7 +300,7 @@ public class EJBProductos implements EJBProductosRemote {
                           em.merge(producto);
                     }
         } catch (Exception e) {
-            logger.error("Error en metodo addProductos "+e);
+            logger.error("Error en metodo addProductos "+e.getMessage());
         }finally{
             
             return producto;
@@ -341,7 +343,7 @@ public class EJBProductos implements EJBProductosRemote {
                         xml.append("</Lista>\n");
                     }
         }catch (Exception e) {
-            logger.error("Error al buscar todos los producto EJBProducto", e);
+            logger.error("Error al buscar todos los producto EJBProducto "+e.getMessage());
         }finally{
             return xml.toString();
         }
@@ -377,7 +379,7 @@ public class EJBProductos implements EJBProductosRemote {
                         em.persist(producto);
                         resultado = producto.getCantidadDisponible().intValue();
         } catch (Exception e) {
-            logger.error("Error en metodo controlStockProducto "+ e.getLocalizedMessage());
+            logger.error("Error en metodo controlStockProducto "+e.getMessage());
             resultado = -1;
         } finally {            
             return resultado;
@@ -391,7 +393,7 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String actualizarProducto(String xmlProducto) {
-          StringBuilder retorno = new StringBuilder("0L");
+          StringBuilder retorno = new StringBuilder(10);
         Productos producto = null;
         long idproduct;
         try {
@@ -402,7 +404,7 @@ public class EJBProductos implements EJBProductosRemote {
                     retorno.append("</producto>\n");
                     retorno.append("</Lista>\n");
         } catch (Exception e) {
-            logger.error("Error en metodo addProducto "+e);
+            logger.error("Error en metodo addProducto "+e.getMessage());
         }finally{
             return retorno.toString();
         }
@@ -422,7 +424,8 @@ public class EJBProductos implements EJBProductosRemote {
              }
                         
                 //--------------------------------Actualizo Producto Los CamposNecesarios-------------------------------
-                                        producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible().intValue()+datosprod.getCantidaddisponible()));
+                                        producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible()
+                                                .intValue()+datosprod.getCantidaddisponible()));
                                         producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
                                         em.persist(producto);
                                         
@@ -442,7 +445,7 @@ public class EJBProductos implements EJBProductosRemote {
                                 retorno = producto.getSid();
         } catch (Exception e) {
             retorno =-2;
-            logger.error("Error en metodo updateProducto, ejbProducto "+e);
+            logger.error("Error en metodo updateProducto, ejbProducto "+e.getMessage());
         }finally{
             
             return retorno;
@@ -492,7 +495,7 @@ public class EJBProductos implements EJBProductosRemote {
                         
                         g2.drawImage(image, null, null);
 
-                        File imageFile = new File(PATH_IMAGENES+nameImage);       
+                        File imageFile = new File(new StringBuilder(PATH_IMAGENES).append(nameImage).toString());       
                         
                         //-----------------------------------------------------------Escribir path de la imagen en disco
                         ImageIO.write(bufferedImage, extension, imageFile);
@@ -502,7 +505,7 @@ public class EJBProductos implements EJBProductosRemote {
                       retorno= grabarPathImagenEnBaseDeDatos(producto,imageFile.getPath(),extension,magnitud,nameImg);       
         } catch (IOException e) {
             retorno=-1;
-            logger.error("Error al Almacenar Imagen en Base de Datos "+e.getLocalizedMessage());
+            logger.error("Error al Almacenar Imagen en Base de Datos "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -519,6 +522,7 @@ public class EJBProductos implements EJBProductosRemote {
         try {
             
             Query consulta = em.createNamedQuery("ImagenesProductos.findById");
+            
                 consulta.setParameter("sid", idProducto);
             List<ImagenesProductos>lista = consulta.getResultList();
             
@@ -543,7 +547,7 @@ public class EJBProductos implements EJBProductosRemote {
                     }
                     retorno = bos.toByteArray();
         } catch (IOException e) {            
-            logger.error("Error en metodo obtenerImagenProducto en EJBProductos "+e.getLocalizedMessage());
+            logger.error("Error en metodo obtenerImagenProducto en EJBProductos "+e.getMessage());
         }finally{
             
             return retorno;
@@ -592,7 +596,7 @@ public class EJBProductos implements EJBProductosRemote {
             retorno=Integer.valueOf(String.valueOf(producto.getSid()));
             
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            logger.error("Error en metodo grabarPathImagenEnBaseDeDatos "+e.getMessage());
             retorno=-1;
         }finally{
             

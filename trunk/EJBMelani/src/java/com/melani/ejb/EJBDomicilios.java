@@ -62,7 +62,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             }
         } catch (Exception e) {
             retorno =-2;
-            logger.error("Error en Metodo addDomicilios "+e);
+            logger.error("Error en Metodo addDomicilios "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -118,7 +118,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             
           retorno = domicilioss.getId();
         } catch (Exception xst) {
-            logger.error("Error en metodo procesarAddDomicilio  "+xst.getLocalizedMessage());
+            logger.error("Error en metodo procesarAddDomicilio  "+xst.getMessage());
             retorno = -2;
         }  finally {    
             
@@ -152,8 +152,12 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             barrioN=domiciXML.getBarrio().getBarrioId();
             calleN=domiciXML.getCalle().getCalleId();
             orientacion=domiciXML.getOrientacion().getOrientacion();
-            localidadN=domiciXML.getLocalidad().getIdLocalidad();            
-            Query consulta = em.createQuery("SELECT d FROM Domicilios d WHERE d.entrecalleycalle like ?1 and d.manzana like ?2 and d.numero = ?3 and d.area like ?4 and d.torre like ?5 and d.piso like ?6 and d.sector like ?7 and d.monoblock like ?8 and d.numdepto = ?9 and d.idbarrio.id = ?10 and d.idcalle.id = ?11 and d.idorientacion.id = ?12 and d.localidades.idLocalidad = ?13",Domicilios.class);
+            localidadN=domiciXML.getLocalidad().getIdLocalidad();   
+            
+            Query consulta = em.createQuery("SELECT d FROM Domicilios d WHERE d.entrecalleycalle "
+                    + "like ?1 and d.manzana like ?2 and d.numero = ?3 and d.area like ?4 and d.torre like ?5 and "
+                    + "d.piso like ?6 and d.sector like ?7 and d.monoblock like ?8 and d.numdepto = ?9 and d.idbarrio.id = ?10 "
+                    + "and d.idcalle.id = ?11 and d.idorientacion.id = ?12 and d.localidades.idLocalidad = ?13",Domicilios.class);
                     consulta.setParameter("1", entrecalle);
                     consulta.setParameter("2", manzana);
                     consulta.setParameter("3", numeroDomicilio);
@@ -166,7 +170,8 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                     consulta.setParameter("10", barrioN);
                     consulta.setParameter("11", calleN);
                     consulta.setParameter("12", orientacion);
-                    consulta.setParameter("13", localidadN);            
+                    consulta.setParameter("13", localidadN);      
+                    
             if(consulta.getResultList().isEmpty()) {
                 retorno =0;
             } else{
@@ -178,7 +183,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
             
         } catch (Exception e) {
             retorno=-1;
-            logger.error("Error en metodo existe de EJBDomicilio "+e);
+            logger.error("Error en metodo existe de EJBDomicilio "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -215,7 +220,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                             }
         } catch (Exception e) {
             retorno =-2;
-            logger.error("Error en Metodo addDomicilio "+e);
+            logger.error("Error en Metodo addDomicilio "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -252,7 +257,7 @@ private long actualizarDomicilio(DatosDomicilios domiciXML,long iddomicilio) {
                 retorno = domicilio.getId();
         } catch (Exception e) {
             retorno = -3;
-            logger.error("Error en metodo actualizarDomicilio, EJBDomicilio "+e);
+            logger.error("Error en metodo actualizarDomicilio, EJBDomicilio "+e.getMessage());
         }finally{
             return retorno;
         }

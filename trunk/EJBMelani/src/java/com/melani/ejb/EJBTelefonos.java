@@ -42,8 +42,10 @@ public class EJBTelefonos implements EJBTelefonosRemote {
                                                 retorno = 1;
                                             } else{
                                                 Telefonos telefono = new Telefonos();
-                                                telefono.setIdEmpresatelefonia(em.find(EmpresaTelefonia.class, datosTel.getIdEmpresaTelefonia().getIdempresatelefonia()));
-                                                telefono.setIdTipotelefono(em.find(Tipostelefono.class, datosTel.getTipoTelefono().getTipoTelefono()));
+                                                telefono.setIdEmpresatelefonia(em.find(EmpresaTelefonia.class, 
+                                                        datosTel.getIdEmpresaTelefonia().getIdempresatelefonia()));
+                                                telefono.setIdTipotelefono(em.find(Tipostelefono.class, 
+                                                        datosTel.getTipoTelefono().getTipoTelefono()));
                                                 telefono.setTelefonosPK(telepk);
                                                 em.persist(telefono);
                                                 
@@ -52,7 +54,7 @@ public class EJBTelefonos implements EJBTelefonosRemote {
                     //--------------------------------------------------------------------------------------
         } catch (NumberFormatException e) {
             retorno = -1;
-            logger.error("Error en metodo addTelefonos, EJBTelefonos "+e);
+            logger.error("Error en metodo addTelefonos, EJBTelefonos "+e.getMessage());
         }finally{
             
             return retorno;

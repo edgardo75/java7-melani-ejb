@@ -39,6 +39,8 @@ public interface EJBEmpleadosRemote {
      * @return
      */
     int habilitarEmpleado(int idEmpleado, int idEmpleadohabilito);
+
+    boolean checkPassEmployee(long idEmpleado,String pass);
    
      
      

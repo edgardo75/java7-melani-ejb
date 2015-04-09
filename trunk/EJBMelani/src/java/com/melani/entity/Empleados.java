@@ -24,7 +24,8 @@ import javax.persistence.Temporal;
 @DiscriminatorValue("EMP")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="emptype",discriminatorType=DiscriminatorType.STRING) 
-@NamedQueries({@NamedQuery(name = "Empleados.deleteById",query = "DELETE FROM Empleados e WHERE e.idPersona = :idPersona")})
+@NamedQueries({@NamedQuery(name = "Empleados.deleteById",query = "DELETE FROM Empleados e WHERE e.idPersona = :idPersona"),
+               @NamedQuery(name = "Empleados.chkpass",query ="SELECT e FROM Empleados e WHERE e.idPersona = ?1")})
 public class Empleados extends Personas {
 
     /**
@@ -146,7 +147,7 @@ public class Empleados extends Personas {
      */
     public String toXMLEmpleado(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        StringBuilder item = new StringBuilder("<nameuser>"+this.getNameuser()+"</nameuser>");
+        StringBuilder item = new StringBuilder("<nameuser>").append(this.getNameuser()).append("</nameuser>");
                  item.append("<emptype>").append(this.getEmptype()).append("</emptype>\n");
                 item.append("<estado>").append(this.getEstado()).append("</estado>\n");
                 item.append("<fechacarga>").append(sdf.format(this.getFechacarga())).append("</fechacarga>\n");

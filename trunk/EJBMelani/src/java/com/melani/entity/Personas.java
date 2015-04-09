@@ -294,7 +294,14 @@ public class Personas implements Serializable {
         item.append("<id>").append(this.getIdPersona()).append("</id>\n");
         item.append("<apellido>").append(this.getApellido()).append("</apellido>\n");
                 item.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
-                item.append("<idtipodocu>").append(this.getTipodocumento().getId()).append("</idtipodocu>\n" + "<nrodocu>").append(this.getNrodocumento()).append("</nrodocu>\n" + "<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n" + "<Genero>\n" + "<generoId>").append(this.getGeneros().getIdGenero()).append("</generoId>\n" + "<generoDescripcion>").append(this.getGeneros().getDescripcion()).append("</generoDescripcion>\n" + "</Genero>\n" + "<email>").append(this.getEmail()).append("</email>\n");
+                item.append("<idtipodocu>").append(this.getTipodocumento().getId())
+                        .append("</idtipodocu>\n" ).append( "<nrodocu>").append(this.getNrodocumento())
+                        .append("</nrodocu>\n").append("<observaciones>")
+                        .append(StringEscapeUtils.escapeXml10(this.getObservaciones()))
+                        .append("</observaciones>\n").append("<Genero>\n").append("<generoId>")
+                        .append(this.getGeneros().getIdGenero()).append("</generoId>\n").append("<generoDescripcion>")
+                        .append(this.getGeneros().getDescripcion()).append("</generoDescripcion>\n")
+                        .append("</Genero>\n").append("<email>").append(this.getEmail()).append("</email>\n");
                 item.append("<personadomicilio>\n");
                     if(this.getPersonasDomicilioss().isEmpty()) {
                         item.append("</personadomicilio>\n");
