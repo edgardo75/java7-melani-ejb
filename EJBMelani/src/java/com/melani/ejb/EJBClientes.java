@@ -35,6 +35,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Edgardo
@@ -221,13 +223,21 @@ public class EJBClientes implements EJBClientesRemote {
             
           //------------------------------------------------Proceso el Cliente -------------------------------
                     Clientes cliente = new Clientes();                
-                                cliente.setApellido(datosClientePersonales.getApellido().toUpperCase());                
-                                cliente.setEmail(datosClientePersonales.getEmail());                
+                                cliente.setApellido(datosClientePersonales.getApellido().toUpperCase()); 
+                                if(datosClientePersonales.getEmail().length()>0){
+                                    cliente.setEmail(datosClientePersonales.getEmail());                
+                                }else{
+                                    cliente.setEmail("");                
+                                }
                                 cliente.setFechaCarga(calendario.getTime());                
                                 cliente.setGeneros(em.find(Generos.class, datosClientePersonales.getGeneros().getIdgenero()));                
                                 cliente.setNombre(datosClientePersonales.getNombre().toUpperCase());                  
-                                cliente.setNrodocumento(datosClientePersonales.getNrodocu());                
-                                cliente.setObservaciones(datosClientePersonales.getObservaciones().toUpperCase());                
+                                cliente.setNrodocumento(datosClientePersonales.getNrodocu());     
+                                if(datosClientePersonales.getObservaciones().length()>0){
+                                    cliente.setObservaciones(datosClientePersonales.getObservaciones().toUpperCase());                
+                                }else{
+                                        cliente.setObservaciones("");                
+                                }
                                 cliente.setTipodocumento(em.find(Tiposdocumento.class, datosClientePersonales.getIdtipodocu()));                
                                 cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
                                 cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
@@ -294,8 +304,11 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos,
                                         historicoClient.setNombre(cliente.getNombre().toUpperCase());    
                                         historicoClient.setObservaciones(cliente.getObservaciones());
                                         
-
-                                cliente.setObservaciones(datosClientePersonales.getObservaciones());            
+                                if(datosClientePersonales.getObservaciones().length()>0){        
+                                    cliente.setObservaciones(datosClientePersonales.getObservaciones());            
+                                }else{
+                                    cliente.setObservaciones("");            
+                                }
                                 cliente.setApellido(datosClientePersonales.getApellido().toUpperCase());            
                                 cliente.setNombre(datosClientePersonales.getNombre().toUpperCase());      
                                 cliente.setGeneros(em.find(Generos.class, datosClientePersonales.getGeneros().getIdgenero()));

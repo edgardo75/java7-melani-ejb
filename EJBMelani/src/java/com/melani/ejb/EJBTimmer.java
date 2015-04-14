@@ -27,6 +27,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -38,7 +40,7 @@ public class EJBTimmer {
 
     @PersistenceContext(unitName = "EJBMelaniPU2")
     EntityManager em;
-    org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EJBTimmer.class);
+    private static final Logger logger = Logger.getLogger(EJBTimmer.class);
     @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "50",hour = "10",minute = "17")
     private void ventasDiarias(){ 
         final String miCorreo = "micorreo@gmail.com"; 

@@ -22,6 +22,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Edgardo
@@ -30,7 +32,7 @@ import org.apache.log4j.Logger;
 @WebService(serviceName="ServicesPresupuestos",name="PresupuestoWs")
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBPresupuestosBean implements EJBPresupuestosRemote {
-    Logger logger = Logger.getLogger(EJBPresupuestosBean.class);
+    private static final Logger logger = Logger.getLogger(EJBPresupuestosBean.class);
     @PersistenceContext
     private EntityManager em;  
 
@@ -68,7 +70,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         try {
             GregorianCalendar gc = new GregorianCalendar();
             GregorianCalendar fvalidez = new GregorianCalendar();
-            fvalidez.add(GregorianCalendar.DATE, 60);
+            fvalidez.add(GregorianCalendar.DATE,20);
                     Presupuestos presupuesto = new Presupuestos();
                             presupuesto.setTotalapagar(BigDecimal.valueOf(datospresupuesto.getTotalapagar()));
                             presupuesto.setFechapresupuesto(gc.getTime());
@@ -85,6 +87,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                             presupuesto.setDescuentoresto(BigDecimal.valueOf(datospresupuesto.getDescuentoresto()));
                             presupuesto.setPorcetajedescuentoTOTAL(BigDecimal.valueOf(datospresupuesto.getPorc_descuento_total()));
                             em.persist(presupuesto);
+                            
             //++++++++++++++++++++++++++Alamcenar Detalle del Presupuesto+++++++++++++++++++++++++++
             //**************************************************************************************
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
@@ -275,14 +278,18 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
      */
     protected StringBuilder parsearCaracteresEspecialesXML(String xmlPresupuesto){
     String xml = "No paso Nada";
-    StringBuilder sb=null;
+    StringBuilder sb = null;
     try {
-        sb=new StringBuilder(xmlPresupuesto.length());
+        sb = new StringBuilder(xmlPresupuesto);
+        
+        
             xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
+            
             sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
+        
     } catch (Exception e) {
         xml = "Error";
-        logger.error("Error en metodo parsearCaracteresEspecialesXML ");
+        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getLocalizedMessage());
     }finally{
     return sb;
     }

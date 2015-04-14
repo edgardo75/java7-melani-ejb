@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
+
 /**
  *
  * @author Edgardo
@@ -47,7 +48,7 @@ public class EJBCalles implements EJBCallesRemote {
                     
 //                //paso a minúsculas las letras de la palabra
                     descripcion = descripcion.toLowerCase();
-                    Query consulta = em.createNamedQuery("SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)",Calles.class);
+                    Query consulta = em.createQuery("SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)",Calles.class);
                     consulta.setParameter("descripcion", internalDescripcion.append("%").toString().toLowerCase());
                     
                     List<Calles> lista = consulta.getResultList();

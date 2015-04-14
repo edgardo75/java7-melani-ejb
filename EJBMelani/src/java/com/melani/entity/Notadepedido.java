@@ -84,14 +84,14 @@ public class Notadepedido implements Serializable {
     @Column(name = "ENTREGADO")
     private Character entregado;
     @Column(name = "ID_USUARIO_EXPIDIO_NOTA")
-    private Integer idUsuarioExpidioNota;
+    private Long idUsuarioExpidioNota;
     @Column(name = "STOCKFUTURO")
     private Integer stockfuturo;
     @Column(name = "FECHA_ANULADO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAnulado;
     @Column(name = "IDUSUARIO_ENTREGADO")
-    private Integer idusuarioEntregado;
+    private Long idusuarioEntregado;
     @Column(name = "ANULADO")
     private Character anulado;
     @Column(name = "FECHADECOMPRA")
@@ -107,7 +107,7 @@ public class Notadepedido implements Serializable {
     @Column(name = "RECARGO",precision=15,scale=3)
     private BigDecimal recargo;
     @Column(name = "IDUSUARIO_ANULADO")
-    private Integer idusuarioAnulado;
+    private Long idusuarioAnulado;
     @Column(name = "TOTAL",precision=15,scale=3)
     private BigDecimal total;    
     @Column(name = "NUMERODECUPON",length=20)
@@ -138,7 +138,7 @@ public class Notadepedido implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecancelado;
     @Column(name="ID_USUARIO_CANCELO")
-    private Integer idUsuarioCancelo;
+    private Long idUsuarioCancelo;
     @Column(name="DESCUENTO_NOTA",precision=15,scale=3)
     private BigDecimal descuentoNota;
     @Column(name = "MONTOTOTALAPAGAR",precision=15,scale=3)
@@ -147,6 +147,8 @@ public class Notadepedido implements Serializable {
     private BigDecimal porcdesctotal;
     @Column(name = "PORCRECARGO",precision=12,scale=2)
     private BigDecimal porcrecargo;
+    @Column(name = "ULTIMA_ACTUALIZACION")
+    private String ultimaActualizacion;
 
     /**
      *
@@ -230,7 +232,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdUsuarioExpidioNota() {
+    public Long getIdUsuarioExpidioNota() {
         return idUsuarioExpidioNota;
     }
 
@@ -238,7 +240,7 @@ public class Notadepedido implements Serializable {
      *
      * @param idUsuarioExpidioNota
      */
-    public void setIdUsuarioExpidioNota(Integer idUsuarioExpidioNota) {
+    public void setIdUsuarioExpidioNota(Long idUsuarioExpidioNota) {
         this.idUsuarioExpidioNota = idUsuarioExpidioNota;
     }
 
@@ -310,7 +312,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuarioEntregado() {
+    public Long getIdusuarioEntregado() {
         return idusuarioEntregado;
     }
 
@@ -318,7 +320,7 @@ public class Notadepedido implements Serializable {
      *
      * @param idusuarioEntregado
      */
-    public void setIdusuarioEntregado(Integer idusuarioEntregado) {
+    public void setIdusuarioEntregado(Long idusuarioEntregado) {
         this.idusuarioEntregado = idusuarioEntregado;
     }
 
@@ -406,7 +408,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuarioAnulado() {
+    public Long getIdusuarioAnulado() {
         return idusuarioAnulado;
     }
 
@@ -414,7 +416,7 @@ public class Notadepedido implements Serializable {
      *
      * @param idusuarioAnulado
      */
-    public void setIdusuarioAnulado(Integer idusuarioAnulado) {
+    public void setIdusuarioAnulado(Long idusuarioAnulado) {
         this.idusuarioAnulado = idusuarioAnulado;
     }
 
@@ -632,7 +634,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuariocancelo() {
+    public Long getIdusuariocancelo() {
         return idUsuarioCancelo;
     }
 
@@ -640,7 +642,7 @@ public class Notadepedido implements Serializable {
      *
      * @param idusuariocancelo
      */
-    public void setIdusuariocancelo(Integer idusuariocancelo) {
+    public void setIdusuariocancelo(Long idusuariocancelo) {
         this.idUsuarioCancelo = idusuariocancelo;
     }
 
@@ -706,6 +708,31 @@ public class Notadepedido implements Serializable {
         Notadepedido other = (Notadepedido) object;
         return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
+
+    public Long getIdUsuarioCancelo() {
+        return idUsuarioCancelo;
+    }
+
+    public void setIdUsuarioCancelo(Long idUsuarioCancelo) {
+        this.idUsuarioCancelo = idUsuarioCancelo;
+    }
+
+    public BigDecimal getDescuentoNota() {
+        return descuentoNota;
+    }
+
+    public void setDescuentoNota(BigDecimal descuentoNota) {
+        this.descuentoNota = descuentoNota;
+    }
+
+    public String getUltimaActualizacion() {
+        return ultimaActualizacion;
+    }
+
+    public void setUltimaActualizacion(String ultimaActualizacion) {
+        this.ultimaActualizacion = ultimaActualizacion;
+    }
+    
     @Override
     public String toString() {
         return "com.melani.entity.Notadepedido[ id=" + id + " ]";
@@ -763,6 +790,7 @@ public class Notadepedido implements Serializable {
                              item.append("<fechacompra>").append(fecompra).append("</fechacompra>\n");
                             item.append("<fechaentrega>").append(feentrega).append("</fechaentrega>\n");
                             item.append("<horacompra>").append(hocompra).append("</horacompra>\n");    
+                            item.append("<ultimaActualizacion>").append(this.getUltimaActualizacion()).append("</ultimaActualizacion>");
                             item.append("<stockfuturo>").append(this.getStockfuturo()).append("</stockfuturo>\n");
                             item.append("<cliente>\n" ).append("<id>").append(this.getFkIdcliente().getIdPersona())
                                     .append("</id>\n" ).append("<nrodocumento>").append(this.getFkIdcliente().getNrodocumento())
