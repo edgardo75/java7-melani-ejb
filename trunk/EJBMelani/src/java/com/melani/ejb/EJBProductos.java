@@ -34,6 +34,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Edgardo
@@ -357,7 +359,7 @@ public class EJBProductos implements EJBProductosRemote {
      * @return
      */
     @Override
-    public int controlStockProducto(long idProducto, int cantidad, int idUsuario) {
+    public int controlStockProducto(long idProducto, int cantidad, long idUsuario) {
         int resultado = 0;
         try {
                         GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());

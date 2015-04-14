@@ -40,7 +40,7 @@ public interface EJBEmpleadosRemote {
      */
     int habilitarEmpleado(int idEmpleado, int idEmpleadohabilito);
 
-    boolean checkPassEmployee(long idEmpleado,String pass);
+    String checkPassEmployee(long idEmpleado,String pass);
    
      
      

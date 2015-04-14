@@ -63,7 +63,7 @@ public interface EJBProductosRemote {
      * @param idUsuario
      * @return
      */
-    int controlStockProducto(long idProducto, int cantidad, int idUsuario);
+    int controlStockProducto(long idProducto, int cantidad, long idUsuario);
     
     /**
      *

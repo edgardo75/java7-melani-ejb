@@ -62,17 +62,17 @@ public class Historiconotapedido implements Serializable {
     pkColumnName="FNAME",pkColumnValue="Historiconotapedido" , valueColumnName="FKEY",
     allocationSize=1)
     @Column(name = "IDHISTORICO")    
-    private Integer id;
+    private Long id;
     @Column(name = "ANTICIPO",precision=15,scale=3)
     private BigDecimal anticipo;
     @Column(name = "IDUSUARIOCANCELO")
-    private Integer idusuariocancelo;
+    private Long idusuariocancelo;
     @Column(name = "PENDIENTE",length=1)
     private Character pendiente;
     @Column(name = "TOTAL",precision=15,scale=3)
     private BigDecimal total;
     @Column(name = "IDUSUARIOANULO")
-    private Integer idusuarioanulo;
+    private Long idusuarioanulo;
     @Column(name = "SALDO",precision=15,scale=3)
     private BigDecimal saldo;
     @Column(name = "HORAREGISTRO")
@@ -88,7 +88,7 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "DESCUENTO",precision=15,scale=3)
     private BigDecimal descuento;
     @Column(name = "IDUSUARIOEXPIDIO")
-    private Integer idusuarioexpidio;
+    private Long idusuarioexpidio;
     @Column(name = "TOTALAPAGAR",precision=15,scale=3)
     private BigDecimal totalapagar;
     @Basic(fetch = FetchType.LAZY)
@@ -97,7 +97,7 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "RECARGO",precision=15,scale=3)
     private BigDecimal recargo;
     @Column(name = "IDUSUARIOENTREGA")
-    private Integer idusuarioentrega;
+    private Long idusuarioentrega;
     @Column(name = "PORCRECARGO",precision=15,scale=3)
     private BigDecimal porcrecargo;
     @Column(name = "ENTREGADO",length=1)
@@ -122,7 +122,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param id
      */
-    public Historiconotapedido(Integer id) {
+    public Historiconotapedido(long id) {
         this.id = id;
     }
 
@@ -242,7 +242,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuarioexpidio() {
+    public Long getIdusuarioexpidio() {
         return idusuarioexpidio;
     }
 
@@ -250,7 +250,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param idusuarioexpidio
      */
-    public void setIdusuarioexpidio(Integer idusuarioexpidio) {
+    public void setIdusuarioexpidio(long idusuarioexpidio) {
         this.idusuarioexpidio = idusuarioexpidio;
     }
 
@@ -274,7 +274,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuarioentrega() {
+    public Long getIdusuarioentrega() {
         return idusuarioentrega;
     }
 
@@ -282,7 +282,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param idusuarioentrega
      */
-    public void setIdusuarioentrega(Integer idusuarioentrega) {
+    public void setIdusuarioentrega(long idusuarioentrega) {
         this.idusuarioentrega = idusuarioentrega;
     }
 
@@ -298,7 +298,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuariocancelo() {
+    public Long getIdusuariocancelo() {
         return idusuariocancelo;
     }
 
@@ -306,7 +306,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param idusuariocancelo
      */
-    public void setIdusuariocancelo(Integer idusuariocancelo) {
+    public void setIdusuariocancelo(long idusuariocancelo) {
         this.idusuariocancelo = idusuariocancelo;
     }    
 
@@ -370,7 +370,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdhistorico() {
+    public Long getIdhistorico() {
         return id;
     }
 
@@ -378,7 +378,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param id
      */
-    public void setIdhistorico(Integer id) {
+    public void setIdhistorico(long id) {
         this.id = id;
     }
 
@@ -386,7 +386,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @return
      */
-    public Integer getIdusuarioanulo() {
+    public Long getIdusuarioanulo() {
         return idusuarioanulo;
     }
 
@@ -394,7 +394,7 @@ public class Historiconotapedido implements Serializable {
      *
      * @param idusuarioanulo
      */
-    public void setIdusuarioanulo(Integer idusuarioanulo) {
+    public void setIdusuarioanulo(Long idusuarioanulo) {
         this.idusuarioanulo = idusuarioanulo;
     }
 

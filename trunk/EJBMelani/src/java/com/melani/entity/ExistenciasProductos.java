@@ -53,9 +53,9 @@ public class ExistenciasProductos implements Serializable {
     pkColumnName="FNAME",pkColumnValue="ExistenciasProductos", valueColumnName="FKEY",
     allocationSize=1)
     @Column(name = "ID_EXISTENCIAS")
-    private Integer idExistencias;
+    private Long idExistencias;
     @Column(name="ID_USUARIO")
-    private Integer idUsuario;
+    private Long idUsuario;
     @JoinColumn(name = "PRODUCTOS_SID", referencedColumnName = "SID")
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
     private Productos productos;
@@ -70,7 +70,7 @@ public class ExistenciasProductos implements Serializable {
      *
      * @param idExistencias
      */
-    public ExistenciasProductos(Integer idExistencias) {
+    public ExistenciasProductos(long idExistencias) {
         this.idExistencias = idExistencias;
     }
 
@@ -94,7 +94,7 @@ public class ExistenciasProductos implements Serializable {
      *
      * @return
      */
-    public Integer getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
@@ -102,7 +102,7 @@ public class ExistenciasProductos implements Serializable {
      *
      * @param idUsuario
      */
-    public void setIdUsuario(Integer idUsuario) {
+    public void setIdUsuario(long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -126,7 +126,7 @@ public class ExistenciasProductos implements Serializable {
      *
      * @return
      */
-    public Integer getIdExistencias() {
+    public Long getIdExistencias() {
         return idExistencias;
     }
 
@@ -134,7 +134,7 @@ public class ExistenciasProductos implements Serializable {
      *
      * @param idExistencias
      */
-    public void setIdExistencias(Integer idExistencias) {
+    public void setIdExistencias(Long idExistencias) {
         this.idExistencias = idExistencias;
     }
 

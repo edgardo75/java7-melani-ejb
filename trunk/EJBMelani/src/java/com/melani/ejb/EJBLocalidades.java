@@ -13,6 +13,8 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Edgardo
@@ -21,7 +23,7 @@ import javax.persistence.Query;
 @WebService(serviceName="ServicesLocalidades",name="LocalidadesWs")
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBLocalidades implements EJBLocalidadesRemote {
-    org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EJBLocalidades.class);
+    private static final Logger logger = Logger.getLogger(EJBLocalidades.class);
      @PersistenceContext(unitName="EJBMelaniPU2")
      private EntityManager em;  
      /**

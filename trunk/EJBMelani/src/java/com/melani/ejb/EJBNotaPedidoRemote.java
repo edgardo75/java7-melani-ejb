@@ -41,7 +41,7 @@ public interface EJBNotaPedidoRemote {
      * @param estado
      * @return
      */
-    long cancelarNotaPedido(long idnota,int idusuariocancelo,int estado);
+    long cancelarNotaPedido(long idnota,long idusuariocancelo,int estado);
 
     /**
      *
@@ -50,7 +50,7 @@ public interface EJBNotaPedidoRemote {
      * @param estado
      * @return
      */
-    long entregarNotaPedido(long idnota, int idusuario,int estado);
+    long entregarNotaPedido(long idnota, long idusuario,int estado);
 
     /**
      *
@@ -59,7 +59,7 @@ public interface EJBNotaPedidoRemote {
      * @param idvendedor
      * @return
      */
-    String selectNotaEntreFechas(String fecha1, String fecha2,int idvendedor);
+    String selectNotaEntreFechas(String fecha1, String fecha2,long idvendedor);
 
     /**
      *
@@ -104,7 +104,7 @@ public interface EJBNotaPedidoRemote {
      * @param idvendedor
      * @return
      */
-    String selecNotaEntreFechasEntrega(String fecha1, String fecha2, int idvendedor);
+    String selecNotaEntreFechasEntrega(String fecha1, String fecha2, long idvendedor);
 
     /**
      *

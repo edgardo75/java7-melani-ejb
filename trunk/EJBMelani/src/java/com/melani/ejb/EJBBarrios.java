@@ -8,8 +8,10 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
+
+
 /**
  *
  * @author Edgardo
@@ -42,7 +44,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             internalDescripcion.append(out);        
             //metodo que agrega un nombre de barrio
            //variable estatica para indicar el nivel de error
-            logger.setLevel(Level.ERROR);
+            
             
             
            
@@ -50,7 +52,7 @@ public class EJBBarrios implements EJBBarriosRemote {
                   
             //------------------------------------------------------------------------------------------------
                     
-                    Query consulta =  em.createNamedQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
+                    Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
                     consulta.setParameter("1",internalDescripcion.append("%").toString().toLowerCase());
                     List<Barrios> lista = consulta.getResultList();
                     
@@ -73,7 +75,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             }
         } catch (UnsupportedEncodingException e) {
             retorno = -1;
-            logger.error("Error en metodo addBarrio");
+            logger.error("Error en metodo addBarrio "+e.getLocalizedMessage());
         } finally {           
             
             return retorno;

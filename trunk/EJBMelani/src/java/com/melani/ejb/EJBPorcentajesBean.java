@@ -10,6 +10,8 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Edgardo

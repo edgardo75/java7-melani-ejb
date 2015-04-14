@@ -11,23 +11,23 @@ package com.melani.utils;
 public class DatosNotaPedido {
     private long idnota;
     private Personas personas;
-    private int vendedor;
+    private long vendedor;
     private double montototal;
     private double anticipoacum;
     private double anticipo;
     private double saldo;
     private char entregado;
-    private int usuario_expidio_nota;
+    private long usuario_expidio_nota;
     private int stockfuturo;
-    private int usuario_entregado;
+    private long usuario_entregado;
     private char anulado;
-    private int usuario_cancelo_nota;
+    private long usuario_cancelo_nota;
     private char cancelado;
     private String observaciones;
     private char pendiente;
     private double montoiva;
     private double recargo;
-    private int id_usuario_anulado;
+    private long id_usuario_anulado;
     private String numerodecupon;
     private char enefectivo;
     private Double montototalapagar;
@@ -65,7 +65,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
-    public int getVendedor() {
+    public long getIdVendedor() {
         return vendedor;
     }
 
@@ -105,7 +105,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
-    public int getUsuario_cancelo_nota() {
+    public long getUsuario_cancelo_nota() {
         return usuario_cancelo_nota;
     }
 
@@ -270,7 +270,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
-    public int getId_usuario_anulado() {
+    public long getId_usuario_anulado() {
         return id_usuario_anulado;
     }
 
@@ -342,7 +342,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
-    public int getUsuario_entregado() {
+    public long getUsuario_entregado() {
         return usuario_entregado;
     }
 
@@ -350,7 +350,7 @@ public class DatosNotaPedido {
      *
      * @return
      */
-    public int getUsuario_expidio_nota() {
+    public long getUsuario_expidio_nota() {
         return usuario_expidio_nota;
     }
     //-----------------------------------------------------------------------------------------------

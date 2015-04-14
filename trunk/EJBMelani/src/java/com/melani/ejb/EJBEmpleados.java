@@ -24,6 +24,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Edgardo
@@ -456,19 +458,19 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             List<Notadepedido>lista = sql.getResultList();
             for(Notadepedido n:lista){
                 if(n.getIdUsuarioExpidioNota()==idEmpleado) {
-                    n.setIdUsuarioExpidioNota(Integer.valueOf(String.valueOf(nuevoEmployee)));
+                    n.setIdUsuarioExpidioNota(Long.valueOf(String.valueOf(nuevoEmployee)));
                 }
 
                      if(n.getIdusuarioAnulado()==idEmpleado) {
-                         n.setIdusuarioAnulado(Integer.valueOf(String.valueOf(nuevoEmployee)));
+                         n.setIdusuarioAnulado(Long.valueOf(String.valueOf(nuevoEmployee)));
                 }
 
                          if(n.getIdusuarioEntregado()==idEmpleado) {
-                             n.setIdusuarioEntregado(Integer.valueOf(String.valueOf(nuevoEmployee)));
+                             n.setIdusuarioEntregado(Long.valueOf(String.valueOf(nuevoEmployee)));
                 }
 
                              if(n.getIdusuariocancelo()==idEmpleado) {
-                                 n.setIdusuariocancelo(Integer.valueOf(String.valueOf(nuevoEmployee)));
+                                 n.setIdusuariocancelo(Long.valueOf(String.valueOf(nuevoEmployee)));
                 }
             }
             em.flush();
@@ -542,7 +544,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                          empfulltime.setObservaciones(empleado.getObservaciones());
                                          empfulltime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
                                          empfulltime.setNrodocumento(empleado.getNumeroDocumento());
-                                         empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf(empleado.getSalario())));
+                                         if(empleado.getSalario().length()>0){
+                                            empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf(empleado.getSalario())));
+                                         }else{
+                                            empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf("0.0"))); 
+                                         }
                                          em.persist(empfulltime);
                                          
                                        retorno = empfulltime.getIdPersona();
@@ -696,9 +702,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     }
 
     @Override
-    public boolean checkPassEmployee(long idEmpleado,String pass) {
-        String passKey = null;
-        Query consulta = em.createNamedQuery("Empleados.chkpass");
+    public String checkPassEmployee(long idEmpleado,String pass) {
+        String passKey = "";
+        String result = "";
+        try {
+            Query consulta = em.createNamedQuery("Empleados.chkpass");
             consulta.setParameter("1", idEmpleado);
             List<Empleados>empleado = consulta.getResultList();
             
@@ -707,9 +715,19 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                      passKey = ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword());
                     
                 }
-                
+                result = String.valueOf(passKey.equals(pass));
+            }else{
+                result = "Empleado no encontrado";
             }
-        return passKey.equals(pass);
+                
+        } catch (Exception e) {
+            logger.error("Error en metodo checkPassEmployee "+e.getLocalizedMessage());
+        }finally{
+            return  result;
+        }
+        
+           
+       
     }
          
        
