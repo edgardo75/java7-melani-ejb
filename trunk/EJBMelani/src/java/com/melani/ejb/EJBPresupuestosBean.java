@@ -93,18 +93,18 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
             for (ItemDetallesPresupuesto itemDetallesPresupuesto : lista) {
                         Productos producto = em.find(Productos.class, Long.valueOf(Integer.valueOf(itemDetallesPresupuesto.getFk_id_producto())));
-                        DetallespresupuestoPK detpresPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), 
+                        DetallespresupuestoPK detallePresupuestoPK = new DetallespresupuestoPK(presupuesto.getIdPresupuesto(), 
                                 itemDetallesPresupuesto.getFk_id_producto());
-                        Detallespresupuesto detpres = new Detallespresupuesto(detpresPK);
-                        detpres.setCantidad(Short.valueOf(itemDetallesPresupuesto.getCantidad()));
-                        detpres.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
-                        detpres.setPrecioDesc(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio_desc()));
-                        detpres.setPrecio(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio()));
-                        detpres.setDetallespresupuestoPK(detpresPK);
-                        detpres.setPresupuestos(em.find(Presupuestos.class, presupuesto.getIdPresupuesto()));
-                        detpres.setProductos(producto);
-                        detpres.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
-                     em.persist(detpres);
+                        Detallespresupuesto detallePresupuesto = new Detallespresupuesto(detallePresupuestoPK);
+                        detallePresupuesto.setCantidad(Short.valueOf(itemDetallesPresupuesto.getCantidad()));
+                        detallePresupuesto.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
+                        detallePresupuesto.setPrecioDesc(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio_desc()));
+                        detallePresupuesto.setPrecio(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio()));
+                        detallePresupuesto.setDetallespresupuestoPK(detallePresupuestoPK);
+                        detallePresupuesto.setPresupuestos(em.find(Presupuestos.class, presupuesto.getIdPresupuesto()));
+                        detallePresupuesto.setProductos(producto);
+                        detallePresupuesto.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
+                     em.persist(detallePresupuesto);
                             Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE "
                                     + "d.detallespresupuestoPK.fkProducto = :fkProducto");
                             consultaListProdPres.setParameter("fkProducto", itemDetallesPresupuesto.getFk_id_producto());

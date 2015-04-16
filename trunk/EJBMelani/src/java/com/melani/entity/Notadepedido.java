@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -119,7 +120,7 @@ public class Notadepedido implements Serializable {
     private Date fechaentrega;
     @Column(name = "DESCUENTO_PESOS",precision=15,scale=3)
     private BigDecimal descuentoPesos;
-    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true)
+    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
     @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true)
     private List<Historiconotapedido> historiconotapedidoList;
@@ -693,21 +694,42 @@ public class Notadepedido implements Serializable {
     public void setPorcrecargo(BigDecimal porcrecargo) {
         this.porcrecargo = porcrecargo;
     }
+
+//    @Override
+//    public int hashCode() {
+//        int hash = 0;
+//        hash += (id != null ? id.hashCode() : 0);
+//        return hash;
+//    }
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.id);
         return hash;
     }
+    
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof Notadepedido)) {
+//            return false;
+//        }
+//        Notadepedido other = (Notadepedido) object;
+//        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+//    }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Notadepedido)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Notadepedido other = (Notadepedido) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Notadepedido other = (Notadepedido) obj;
+        return Objects.equals(this.id, other.id);
     }
+    
+    
 
     public Long getIdUsuarioCancelo() {
         return idUsuarioCancelo;
@@ -744,7 +766,7 @@ public class Notadepedido implements Serializable {
      */
     public String toXML(){
         //---------------------------------------------------------------------
-         StringBuilder item =new StringBuilder();
+         StringBuilder item =new StringBuilder(10);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");
         //---------------------------------------------------------------------
@@ -815,6 +837,7 @@ public class Notadepedido implements Serializable {
                                     .append(this.getRecargo().toPlainString()).append("</recargototal>\n").append("<porcrecargo>")
                                     .append(this.getPorcrecargo().toPlainString()).append("</porcrecargo>\n");
                             item.append("<detallenota>\n");
+                            
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
                                     item.append("</detallenota>\n");
                                 } else{
