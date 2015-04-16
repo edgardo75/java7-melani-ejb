@@ -5,6 +5,7 @@
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -297,21 +298,41 @@ public class Detallesnotadepedido implements Serializable {
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
+
+//    @Override
+//    public int hashCode() {
+//        int hash = 0;
+//        hash += (detallesnotadepedidoPK != null ? detallesnotadepedidoPK.hashCode() : 0);
+//        return hash;
+//    }
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof Detallesnotadepedido)) {
+//            return false;
+//        }
+//        Detallesnotadepedido other = (Detallesnotadepedido) object;
+//        return (this.detallesnotadepedidoPK != null || other.detallesnotadepedidoPK == null) && (this.detallesnotadepedidoPK == null || this.detallesnotadepedidoPK.equals(other.detallesnotadepedidoPK));
+//    }
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (detallesnotadepedidoPK != null ? detallesnotadepedidoPK.hashCode() : 0);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.detallesnotadepedidoPK);
         return hash;
     }
+
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Detallesnotadepedido)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Detallesnotadepedido other = (Detallesnotadepedido) object;
-        return (this.detallesnotadepedidoPK != null || other.detallesnotadepedidoPK == null) && (this.detallesnotadepedidoPK == null || this.detallesnotadepedidoPK.equals(other.detallesnotadepedidoPK));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Detallesnotadepedido other = (Detallesnotadepedido) obj;
+        return Objects.equals(this.detallesnotadepedidoPK, other.detallesnotadepedidoPK);
     }
+    
     @Override
     public String toString() {
         return "entity.Detallesnotadepedido[detallesnotadepedidoPK=" + detallesnotadepedidoPK + "]";
