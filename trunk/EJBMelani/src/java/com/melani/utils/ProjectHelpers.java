@@ -15,13 +15,15 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author win7
  */
 public class ProjectHelpers {
-    
+    public static Logger logger = Logger.getLogger(ProjectHelpers.class);
     private static final SecretKeySpec key = new SecretKeySpec("MyKey".getBytes(), "Blowfish");
     private static  Pattern pattern;
     private static  Matcher matcher;
@@ -186,5 +188,44 @@ public class ProjectHelpers {
           return matcher.matches();
         }
     
+    }
+    public static String parsearCaracteresEspecialesXML(String xmlNota){
+        
+        String xml = "No paso Nada";
+            StringBuilder sb=null;
+            try {
+                sb=new StringBuilder();
+                        sb.append(xmlNota);
+                    xml=StringEscapeUtils.escapeXml10(xmlNota.substring(xmlNota.indexOf("es>")+3,xmlNota.indexOf("</ob")));
+                    sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
+            } catch (Exception e) {
+                xml = "Error";
+                logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getMessage());
+            }finally{
+                return sb.toString();
+            }
+    }
+    public static String parsearCaracteresEspecialesXML1(String xmlaParsear) {
+        String xml = "No paso Nada";
+        StringBuilder sb=null;
+    try {        
+        
+        sb=new StringBuilder(xmlaParsear);
+            if(xmlaParsear.indexOf("<item>")!=-1){
+                xml=StringEscapeUtils.escapeXml10(xmlaParsear.substring(xmlaParsear.indexOf("nes>")+4,xmlaParsear.indexOf("</obse")));                
+                sb.replace(sb.indexOf("nes>")+4, sb.indexOf("</obse"), xml);                
+            }
+           if(xmlaParsear.indexOf("<Domicilio>")!=-1){
+                xml=StringEscapeUtils.escapeXml10(xmlaParsear.substring(xmlaParsear.indexOf("mes>")+4,xmlaParsear.indexOf("</det1")));                
+                sb.replace(sb.indexOf("mes>")+4, sb.indexOf("</det1"), xml);
+           }
+           xml=sb.toString();
+          
+    } catch (Exception e) {
+        xml = "Error";
+        logger.error("Error en metodo parsearCaracteresEspecialesXML1 "+e.getLocalizedMessage());
+    }finally{
+        return xml;
+    }
     }
 }

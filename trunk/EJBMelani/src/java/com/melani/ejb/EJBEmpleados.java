@@ -13,6 +13,7 @@ import com.melani.utils.DatosEmpleado;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -242,15 +243,15 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             int retorno =0;
         try {
             GregorianCalendar gc = new GregorianCalendar();
-            StringBuilder sb =new StringBuilder(32);
+            
                 Empleados empleadoHabilitado = em.find(Empleados.class, idEmpleado);
                 Empleados empleadohabilito = em.find(Empleados.class, idEmpleadohabilito);
                 empleadoHabilitado.setEstado((short)1);
-                    sb.append(empleadohabilito.getNombre());
-                    sb.append(" ");
-                    sb.append(empleadohabilito.getApellido());
+                    
+                    
                     
              retorno=Integer.valueOf(String.valueOf(empleadohabilito.getIdPersona()));
+             logger.warn(new StringBuilder("USUARIO HABILITÓ ").append(empleadoHabilitado.getNombre()).append(" A USUARIO NUEVO ").append(empleadohabilito.getNombre()).append(" EL DÍA ").append(DateFormat.getInstance().format(gc.getTime())));
         } catch (NumberFormatException e) {
             retorno=-1;
             logger.error("Error en metodo deshabilitarEmpleado "+e.getMessage());

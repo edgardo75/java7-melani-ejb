@@ -16,6 +16,7 @@ import com.melani.entity.TarjetasCreditoDebito;
 import com.melani.utils.DatosNotaPedido;
 import com.melani.utils.DetallesNotaPedido;
 import com.melani.utils.Itemdetallesnota;
+import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -33,7 +34,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 /**
  *
@@ -65,7 +65,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             xestream.alias("itemdetallesnota", Itemdetallesnota.class);
             xestream.alias("detallesnotapedido", DetallesNotaPedido.class);
             xestream.addImplicitCollection(DetallesNotaPedido.class, "list");
-            return notadepedido = (DatosNotaPedido) xestream.fromXML(parsearCaracteresEspecialesXML(xmlNotapedido).toString());
+            return notadepedido = (DatosNotaPedido) xestream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML(xmlNotapedido).toString());
     }
 
     /**
@@ -463,26 +463,26 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     }
 //-----------------------------------------------------------------------------------------------
 
-    /**
-     *
-     * @param xmlNota
-     * @return
-     */
-    public StringBuilder parsearCaracteresEspecialesXML(String xmlNota){
-    String xml = "No paso Nada";
-    StringBuilder sb=null;
-    try {
-        sb=new StringBuilder();
-                sb.append(xmlNota);
-            xml=StringEscapeUtils.escapeXml10(xmlNota.substring(xmlNota.indexOf("es>")+3,xmlNota.indexOf("</ob")));
-            sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
-    } catch (Exception e) {
-        xml = "Error";
-        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getMessage());
-    }finally{
-        return sb;
-    }
-}
+//    /**
+//     *
+//     * @param xmlNota
+//     * @return
+//     */
+//    public String parsearCaracteresEspecialesXML(String xmlNota){
+//    String xml = "No paso Nada";
+//    StringBuilder sb=null;
+//    try {
+//        sb=new StringBuilder();
+//                sb.append(xmlNota);
+//            xml=StringEscapeUtils.escapeXml10(xmlNota.substring(xmlNota.indexOf("es>")+3,xmlNota.indexOf("</ob")));
+//            sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
+//    } catch (Exception e) {
+//        xml = "Error";
+//        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getMessage());
+//    }finally{
+//        return sb.toString();
+//    }
+//}
 
     /**
      *
@@ -974,37 +974,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 return  xml.append("</Lista>\n").toString();  
         }
     }
-//    private void backupLogListDetalleNotaAntesdeBorrar(Notadepedido nota) {
-//        
-//        try {
-//           logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//           logger.info("Creando registro de items nota a borrar");
-//           logger.info(" Nota N° "+nota.getId());
-//           List<Detallesnotadepedido>lista=nota.getDetallesnotadepedidoList();
-//            for (Iterator<Detallesnotadepedido> it = lista.iterator(); it.hasNext();) {
-//                logger.info("------------------------------------------------------");
-//                Detallesnotadepedido detallesnotadepedido = it.next();
-//                logger.info("id nota "+detallesnotadepedido.getNotadepedido().getId());
-//                logger.info("anulado "+detallesnotadepedido.getAnulado());
-//                logger.info("cancelado "+detallesnotadepedido.getCancelado());
-//                logger.info("cantidad "+detallesnotadepedido.getCantidad());
-//                logger.info("descuento "+detallesnotadepedido.getDescuento());
-//                logger.info("entregado "+detallesnotadepedido.getEntregado());
-//                logger.info("iva "+detallesnotadepedido.getIva());
-//                logger.info("pendiente "+detallesnotadepedido.getPendiente());
-//                logger.info("precio "+detallesnotadepedido.getPrecio());
-//                logger.info("preciodescuento "+detallesnotadepedido.getPreciocondescuento());
-//                logger.info("idproducto "+detallesnotadepedido.getProductos().getSid());
-//                logger.info("subtotal "+detallesnotadepedido.getSubtotal());
-//                logger.info("------------------------------------------------------");
-//            }
-//            logger.info("fin del registro");
-//           logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//        } catch (Exception e) {
-//            logger.error("Error en metodo backupLogListDetalleNotaAntesdeBorrar "+e.getMessage());
-//        }
-//        
-//    }
+
 
     /**
      *

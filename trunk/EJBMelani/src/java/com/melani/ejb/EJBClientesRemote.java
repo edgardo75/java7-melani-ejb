@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package com.melani.ejb;
-import com.melani.entity.Clientes;
 import javax.ejb.Remote;
 /**
  *
@@ -12,12 +11,7 @@ import javax.ejb.Remote;
 @Remote
 public interface EJBClientesRemote {
 
-    /**
-     *
-     * @param xmlaParsear
-     * @return
-     */
-    String parsearCaracteresEspecialesXML1(String xmlaParsear);
+   
 
     /**
      *

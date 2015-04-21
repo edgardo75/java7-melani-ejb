@@ -10,6 +10,7 @@ import com.melani.entity.Productos;
 import com.melani.utils.DatosPresupuestos;
 import com.melani.utils.DetallesPresupuesto;
 import com.melani.utils.ItemDetallesPresupuesto;
+import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
@@ -20,7 +21,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 
@@ -50,7 +50,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 xstream.alias("detallepresupuesto", DetallesPresupuesto.class);
                 xstream.alias("itemdetallespresupuesto", ItemDetallesPresupuesto.class);
                 xstream.addImplicitCollection(DetallesPresupuesto.class, "lista");
-            DatosPresupuestos datospresupuesto = (DatosPresupuestos) xstream.fromXML(parsearCaracteresEspecialesXML(xmlPresupuesto).toString());
+            DatosPresupuestos datospresupuesto = (DatosPresupuestos) xstream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML(xmlPresupuesto).toString());
             retorno = almacenarPresupuesto(datospresupuesto);
         }catch(NullPointerException npe)    {
             retorno =-4;
@@ -271,29 +271,29 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------
 
-    /**
-     *
-     * @param xmlPresupuesto
-     * @return
-     */
-    protected StringBuilder parsearCaracteresEspecialesXML(String xmlPresupuesto){
-    String xml = "No paso Nada";
-    StringBuilder sb = null;
-    try {
-        sb = new StringBuilder(xmlPresupuesto);
-        
-        
-            xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
-            
-            sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
-        
-    } catch (Exception e) {
-        xml = "Error";
-        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getLocalizedMessage());
-    }finally{
-    return sb;
-    }
-}
+//    /**
+//     *
+//     * @param xmlPresupuesto
+//     * @return
+//     */
+//    protected StringBuilder parsearCaracteresEspecialesXML(String xmlPresupuesto){
+//    String xml = "No paso Nada";
+//    StringBuilder sb = null;
+//    try {
+//        sb = new StringBuilder(xmlPresupuesto);
+//        
+//        
+//            xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
+//            
+//            sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
+//        
+//    } catch (Exception e) {
+//        xml = "Error";
+//        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getLocalizedMessage());
+//    }finally{
+//    return sb;
+//    }
+//}
 
     /**
      *
