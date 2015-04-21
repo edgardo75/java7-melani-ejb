@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -120,9 +121,9 @@ public class Notadepedido implements Serializable {
     private Date fechaentrega;
     @Column(name = "DESCUENTO_PESOS",precision=15,scale=3)
     private BigDecimal descuentoPesos;
-    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
-    @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true)
+    @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true,cascade = CascadeType.REMOVE)
     private List<Historiconotapedido> historiconotapedidoList;
     @JoinColumn(name = "IDTARJETAFK_IDTARJETA", referencedColumnName = "IDTARJETA")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)

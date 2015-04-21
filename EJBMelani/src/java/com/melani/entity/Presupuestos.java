@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -86,7 +87,7 @@ public class Presupuestos implements Serializable {
     private BigDecimal porcentajerecargo;
      @Column(name = "DESCUENTORESTO",precision=15,scale=3)
     private BigDecimal descuentoresto;
-    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos")
+    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     private List<Detallespresupuesto> detallepresupuestosList;
 
     /**
