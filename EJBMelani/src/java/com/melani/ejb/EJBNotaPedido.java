@@ -285,8 +285,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
      */
     @Override
     public String selectUnaNota(long idnta) {
-        StringBuilder xml = new StringBuilder(10);
-                xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").append("<Lista>\n");
+        StringBuilder xml = new StringBuilder();
+                xml.append("<Lista>\n");
         try {
             //Si encuentro la nota de pedido devuelve el resultado si no mensaje de nota no encontrada
             Notadepedido nota = em.find(Notadepedido.class, idnta);
@@ -598,7 +598,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 
                 try {
                     sb=new StringBuilder();
-                    sb.append(nota.toXML().toString());
+                    sb.append(nota.toXML());
                 } catch (Exception e) {
                     logger.error("error al convertir StringBuilder "+e.getMessage());
                 }
