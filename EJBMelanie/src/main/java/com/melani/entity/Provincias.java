@@ -131,10 +131,7 @@ public class Provincias implements Serializable {
             return false;
         }
         Provincias other = (Provincias) object;
-        if ((this.idProvincia == null && other.idProvincia != null) || (this.idProvincia != null && !this.idProvincia.equals(other.idProvincia))) {
-            return false;
-        }
-        return true;
+        return !((this.idProvincia == null && other.idProvincia != null) || (this.idProvincia != null && !this.idProvincia.equals(other.idProvincia)));
     }
     @Override
     public String toString() {

@@ -343,7 +343,9 @@ public class Detallesnotadepedido implements Serializable {
      * @return
      */
     public String toXML(){
-    StringBuilder item = new StringBuilder("<itemdetalle>\n").append("<idnota>").append(this.getNotadepedido().getId()).append("</idnota>\n");
+    StringBuilder item;
+        item = new StringBuilder("<itemdetalle>\n").append("<idnota>")
+                .append(this.getNotadepedido().getId()).append("</idnota>\n");
                                     item.append("<producto>\n").append("<id>").append(this.getProductos().getSid()).append("</id>\n");
                                         item.append("<code>").append(this.getProductos().getCodproducto()).append("</code>\n");
                                     item.append("<descripcion>").append(this.getProductos().getDescripcion()).append("</descripcion>\n");

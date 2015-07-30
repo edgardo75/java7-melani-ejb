@@ -211,14 +211,7 @@ public class ExistenciasProductos implements Serializable {
      */
     public String toXML(){
          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        StringBuilder item = new StringBuilder("<item>\n");
-                item.append("<id_existencias>").append(this.getIdExistencias()).append("</id_existencias>\n").append("<idproducto>").append(this.getProductos().getSid()).append("</idproducto>\n");
-                item.append("<cantidadactual>").append(this.getCantidadactual()).append("</cantidadactual>\n");
-                item.append("<cantidadinicial>").append(this.getCantidadinicial()).append("</cantidadinicial>\n");
-                item.append("<fecha>").append(sdf.format(this.getFechaagregado())).append("</fecha>\n");
-                item.append("<precio>").append(this.getPreciounitario().toString()).append("</precio>\n");
-                item.append("<id_usuario>").append(this.getIdUsuario()).append("</id_usuario>\n");
-                item.append("</item>\n");
-    return item.toString();
+        String item = String.valueOf("<item>\n<id_existencias>" + this.getIdExistencias() + "</id_existencias>\n" + "<idproducto>" + this.getProductos().getSid() + "</idproducto>\n" + "<cantidadactual>" + this.getCantidadactual() + "</cantidadactual>\n" + "<cantidadinicial>" + this.getCantidadinicial() + "</cantidadinicial>\n" + "<fecha>" + sdf.format(this.getFechaagregado()) + "</fecha>\n" + "<precio>" + this.getPreciounitario().toString() + "</precio>\n" + "<id_usuario>") + String.valueOf(this.getIdUsuario()) + "</id_usuario>\n" + "</item>\n";
+    return item;
     }
 }

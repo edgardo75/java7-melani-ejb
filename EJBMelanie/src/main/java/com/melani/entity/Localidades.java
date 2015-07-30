@@ -6,10 +6,8 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -198,16 +196,7 @@ public class Localidades implements Serializable {
      * @return
      */
     public String toXML(){    
-        
-            
-         StringBuilder item  = new StringBuilder("<localidades>\n");    
-                item.append("<id>").append(this.getIdLocalidad()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
-                item.append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n");
-            
-                    item.append("<latitud>").append(this.getLatitud()).append("</latitud>\n");
-            
-                    item.append("<longitud>").append(this.getLongitud()).append("</longitud>\n");
-                item.append("</localidades>\n");       
-        return item.toString();      
+        String item  = "<localidades>\n<id>" + this.getIdLocalidad() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "<codigopostal>" + this.getCodigopostal() + "</codigopostal>\n" + "<latitud>" + this.getLatitud() + "</latitud>\n" + "<longitud>" + this.getLongitud() + "</longitud>\n" + "</localidades>\n";       
+        return item;      
     }
 }

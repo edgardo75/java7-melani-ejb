@@ -4,6 +4,7 @@
  */
 package com.melani.entity;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -84,10 +85,10 @@ public class PersonasdomiciliosPK implements Serializable {
             return false;
         }
         PersonasdomiciliosPK other = (PersonasdomiciliosPK) object;
-        if (this.iddomicilio != other.iddomicilio) {
+        if (!Objects.equals(this.iddomicilio, other.iddomicilio)) {
             return false;
         }
-        if (this.idPersona != other.idPersona) {
+        if (!Objects.equals(this.idPersona, other.idPersona)) {
             return false;
         }
         return true;

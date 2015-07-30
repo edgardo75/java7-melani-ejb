@@ -147,8 +147,7 @@ public class TarjetasCreditoDebito implements Serializable {
      * @return
      */
     public String toXML(){
-        StringBuilder item = new StringBuilder("<item>\n");
-                item.append("<id>").append(this.getIdtarjeta()).append("</id>\n").append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n").append("</item>\n");
-    return item.toString();
+        String item = "<item>\n<id>" + this.getIdtarjeta() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "</item>\n";
+    return item;
     }
 }

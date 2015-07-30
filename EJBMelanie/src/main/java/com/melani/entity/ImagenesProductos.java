@@ -5,6 +5,7 @@
 package com.melani.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -179,7 +180,7 @@ public class ImagenesProductos implements Serializable{
             return false;
         }
         final ImagenesProductos other = (ImagenesProductos) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+        if (!Objects.equals(this.id, other.id) && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         if (this.productos != other.productos && (this.productos == null || !this.productos.equals(other.productos))) {

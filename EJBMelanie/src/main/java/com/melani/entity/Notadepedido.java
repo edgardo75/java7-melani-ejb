@@ -767,7 +767,7 @@ public class Notadepedido implements Serializable {
      */
     public String toXML(){
         //---------------------------------------------------------------------
-         StringBuilder item =new StringBuilder(10);
+         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");
         //---------------------------------------------------------------------
@@ -793,72 +793,30 @@ public class Notadepedido implements Serializable {
             //--------------------------------------------------------------------
          }        
             
-            
-                
-                        item.append("<item>\n").append("<id>").append(this.getId()).append("</id>\n")
-                        .append("<tarjetadecredito>").append(StringEscapeUtils.escapeXml10(this.getIdTarjetaFk().getDescripcion()))
-                                .append("</tarjetadecredito>\n"); 
-                            item.append("<idtarjeta>").append(this.getIdTarjetaFk().getIdtarjeta()).append("</idtarjeta>\n");
-                            item.append("<numerocupon>").append(this.getNumerodecupon().toString()).append("</numerocupon>\n");
-                           item.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
-                            item.append("<anticipo>").append(this.getAnticipo().toPlainString()).append("</anticipo>\n");
-                            item.append("<anulado>").append(this.getAnulado().toString()).append("</anulado>\n");
-                            item.append("<cancelado>").append(this.getCancelado()).append("</cancelado>\n");
-                            item.append("<efectivo>").append(this.getEnefectivo()).append("</efectivo>\n");
-                            item.append("<entregado>").append(this.getEntregado()).append("</entregado>\n");                           
-                            item.append("<descuentonota>").append(this.getDescuentonota().toPlainString()).append("</descuentonota>\n");
-                            item.append("<descuentopesos>").append(this.getDescuentoPesos().toPlainString()).append("</descuentopesos>\n");
-                            item.append("<fechaanulado>").append(fechanulado).append("</fechaanulado>\n"); 
-                            item.append("<fecancel>").append(fecancel).append("</fecancel>\n");
-                             item.append("<fechacompra>").append(fecompra).append("</fechacompra>\n");
-                            item.append("<fechaentrega>").append(feentrega).append("</fechaentrega>\n");
-                            item.append("<horacompra>").append(hocompra).append("</horacompra>\n");    
-                            item.append("<ultimaActualizacion>").append(this.getUltimaActualizacion()).append("</ultimaActualizacion>");
-                            item.append("<stockfuturo>").append(this.getStockfuturo()).append("</stockfuturo>\n");
-                            item.append("<cliente>\n" ).append("<id>").append(this.getFkIdcliente().getIdPersona())
-                                    .append("</id>\n" ).append("<nrodocumento>").append(this.getFkIdcliente().getNrodocumento())
-                                    .append("</nrodocumento>\n").append("<apellidoynombre>")
-                                    .append(StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre()))
-                                    .append("</apellidoynombre>\n").append("</cliente>\n").append("<idporcentajes>")
-                                    .append(this.getFkidporcentajenotaId().getIdPorcentajes())
-                                    .append("</idporcentajes>\n").append("<usuarioexpidionota>").append(this.getIdUsuarioExpidioNota())
-                                    .append("</usuarioexpidionota>\n").append("<usuarioanulonota>").append(this.getIdusuarioAnulado())
-                                    .append("</usuarioanulonota>\n").append("<usuarioentregonota>").append(this.getIdusuarioEntregado())
-                                    .append("</usuarioentregonota>\n").append("<usuariocancelonota>").append(this.getIdusuariocancelo())
-                                    .append("</usuariocancelonota>\n").append("<idusuarioexpidionota>").append(this.getIdUsuarioExpidioNota())
-                                    .append("</idusuarioexpidionota>\n").append("<idusuarioanulonota>").append(this.getIdusuarioAnulado())
-                                    .append("</idusuarioanulonota>\n").append("<idusuarioentregonota>").append(this.getIdusuarioEntregado())
-                                    .append("</idusuarioentregonota>\n").append("<idusuariocancelonota>").append(this.getIdusuariocancelo())
-                                    .append("</idusuariocancelonota>\n").append("<montoiva>").append(this.getMontoiva().toPlainString())
-                                    .append("</montoiva>\n").append("<pendiente>").append(this.getPendiente()).append("</pendiente>\n" + "<recargo>")
-                                    .append(this.getRecargo().toPlainString()).append("</recargo>\n").append("<total>").append(this.getTotal().toPlainString())
-                                    .append("</total>\n" + "<saldo>").append(this.getSaldo().toPlainString()).append("</saldo>\n").append("<montototalapagar>")
-                                    .append(this.getMontototalapagar().toPlainString()).append("</montototalapagar>\n").append("<porcentajedesctotal>")
-                                    .append(this.getPorcdesctotal().toPlainString()).append("</porcentajedesctotal>\n").append("<recargototal>")
-                                    .append(this.getRecargo().toPlainString()).append("</recargototal>\n").append("<porcrecargo>")
-                                    .append(this.getPorcrecargo().toPlainString()).append("</porcrecargo>\n");
-                            item.append("<detallenota>\n");
+            String item =String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf("<item>\n<id>" + this.getId() + "</id>\n" + "<tarjetadecredito>" + StringEscapeUtils.escapeXml10(this.getIdTarjetaFk().getDescripcion()) + "</tarjetadecredito>\n" + "<idtarjeta>" + this.getIdTarjetaFk().getIdtarjeta() + "</idtarjeta>\n" + "<numerocupon>" + this.getNumerodecupon() + "</numerocupon>\n" + "<observaciones>" + StringEscapeUtils.escapeXml10(this.getObservaciones()) + "</observaciones>\n" + "<anticipo>" + this.getAnticipo().toPlainString() + "</anticipo>\n" + "<anulado>" + this.getAnulado().toString() + "</anulado>\n" + "<cancelado>" + this.getCancelado() + "</cancelado>\n" + "<efectivo>" + this.getEnefectivo() + "</efectivo>\n" + "<entregado>" + this.getEntregado() + "</entregado>\n" + "<descuentonota>" + this.getDescuentonota().toPlainString() + "</descuentonota>\n" + "<descuentopesos>" + this.getDescuentoPesos().toPlainString() + "</descuentopesos>\n" + "<fechaanulado>" + fechanulado + "</fechaanulado>\n" + "<fecancel>" + fecancel + "</fecancel>\n" + "<fechacompra>" + fecompra + "</fechacompra>\n" + "<fechaentrega>" + feentrega + "</fechaentrega>\n" + "<horacompra>" + hocompra + "</horacompra>\n" + "<ultimaActualizacion>" + this.getUltimaActualizacion() + "</ultimaActualizacion>" + "<stockfuturo>") + String.valueOf(this.getStockfuturo()) + "</stockfuturo>\n" + "<cliente>\n" + "<id>") + String.valueOf(this.getFkIdcliente().getIdPersona()) + "</id>\n" + "<nrodocumento>") + String.valueOf(this.getFkIdcliente().getNrodocumento()) + "</nrodocumento>\n" + "<apellidoynombre>" + StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "+this.getFkIdcliente().getNombre()) + "</apellidoynombre>\n" + "</cliente>\n" + "<idporcentajes>") + String.valueOf(this.getFkidporcentajenotaId().getIdPorcentajes()) + "</idporcentajes>\n" + "<usuarioexpidionota>") + String.valueOf(this.getIdUsuarioExpidioNota()) + "</usuarioexpidionota>\n" + "<usuarioanulonota>") + String.valueOf(this.getIdusuarioAnulado()) + "</usuarioanulonota>\n" + "<usuarioentregonota>") + String.valueOf(this.getIdusuarioEntregado()) + "</usuarioentregonota>\n" + "<usuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + "</usuariocancelonota>\n" + "<idusuarioexpidionota>") + String.valueOf(this.getIdUsuarioExpidioNota()) + "</idusuarioexpidionota>\n" + "<idusuarioanulonota>") + String.valueOf(this.getIdusuarioAnulado()) + "</idusuarioanulonota>\n" + "<idusuarioentregonota>") + String.valueOf(this.getIdusuarioEntregado()) + "</idusuarioentregonota>\n" + "<idusuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + "</idusuariocancelonota>\n" + "<montoiva>" + this.getMontoiva().toPlainString() + "</montoiva>\n" + "<pendiente>") + String.valueOf(this.getPendiente()) + ("</pendiente>\n" + "<recargo>") + this.getRecargo().toPlainString() + "</recargo>\n" + "<total>" + this.getTotal().toPlainString() + ("</total>\n" + "<saldo>") + this.getSaldo().toPlainString() + "</saldo>\n" + "<montototalapagar>" + this.getMontototalapagar().toPlainString() + "</montototalapagar>\n" + "<porcentajedesctotal>" + this.getPorcdesctotal().toPlainString() + "</porcentajedesctotal>\n" + "<recargototal>" + this.getRecargo().toPlainString() + "</recargototal>\n" + "<porcrecargo>" + this.getPorcrecargo().toPlainString() + "</porcrecargo>\n" + "<detallenota>\n";
                             
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
-                                    item.append("</detallenota>\n");
+                                    item+="</detallenota>\n";
                                 } else{
+                                    StringBuilder detalles = new StringBuilder(10);
                                     for (Detallesnotadepedido detallenota : this.getDetallesnotadepedidoList()) {
-                                        item.append(detallenota.toXML());
+                                        detalles.append(detallenota.toXML());
                                     }
-                                    item.append("</detallenota>\n");
+                                    item+=detalles.append("</detallenota>\n");
                                 }
-                                item.append("<detallehistorico>\n");
+                                item+="<detallehistorico>\n";
                                 if(this.getHistoriconotapedidoList().isEmpty()) {
-                                    item.append("</detallehistorico>\n");
+                                    item+="</detallehistorico>\n";
                                 } else{
+                                    StringBuilder detallesHistorico = new StringBuilder(10);
                                     for (Historiconotapedido historico : this.getHistoriconotapedidoList()) {
-                                        item.append(historico.toXML());
+                                        detallesHistorico.append(historico.toXML());
                                     }
-                                    item.append("</detallehistorico>\n");
+                                    item+=detallesHistorico.append("</detallehistorico>\n");
                                 }
-                             item.append("</item>\n");     
+                             item+="</item>\n";     
               
-                    return item.toString();
+                    return item;
               
         
     }

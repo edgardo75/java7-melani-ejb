@@ -118,10 +118,10 @@ public class EmpresaTelefonia implements Serializable {
      * @return
      */
     public String toXML(){
-        StringBuilder item = new StringBuilder("<item>\n");
-                            item.append("<id>").append(this.getidEmpTelefonia()).append("</id>\n");
-                            item.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
-                       item.append("</item>\n");
-         return item.toString();
+        String item = "<item>\n"+
+                        "<id>"+this.getidEmpTelefonia()+"</id>\n"+
+                        "<nombre>"+this.getNombre()+"</nombre>\n"
+                     +"</item>\n";
+         return item;
     }
 }

@@ -84,10 +84,7 @@ public class DetallesnotadepedidoPK implements Serializable {
         if (this.fkIdnota != other.fkIdnota) {
             return false;
         }
-        if (this.fkIdproducto != other.fkIdproducto) {
-            return false;
-        }
-        return true;
+        return this.fkIdproducto == other.fkIdproducto;
     }
     @Override
     public String toString() {

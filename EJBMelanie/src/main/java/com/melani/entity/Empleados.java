@@ -147,10 +147,10 @@ public class Empleados extends Personas {
      */
     public String toXMLEmpleado(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        StringBuilder item = new StringBuilder("<nameuser>").append(this.getNameuser()).append("</nameuser>");
-                 item.append("<emptype>").append(this.getEmptype()).append("</emptype>\n");
-                item.append("<estado>").append(this.getEstado()).append("</estado>\n");
-                item.append("<fechacarga>").append(sdf.format(this.getFechacarga())).append("</fechacarga>\n");
-        return item.toString();
+        String fechaCarga = (this.getFechacarga()!=null)?sdf.format(this.getFechacarga()):"";
+        String item = "<nameuser>"+this.getNameuser()+"</nameuser>"+"<emptype>"+this.getEmptype()+"</emptype>\n"+
+                "<estado>"+this.getEstado()+"</estado>\n"+
+                "<fechacarga>"+fechaCarga+"</fechacarga>\n";
+        return item;
     }
 }

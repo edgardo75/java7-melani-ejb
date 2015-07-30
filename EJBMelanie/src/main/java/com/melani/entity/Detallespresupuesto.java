@@ -216,10 +216,7 @@ public class Detallespresupuesto implements Serializable {
             return false;
         }
         Detallespresupuesto other = (Detallespresupuesto) object;
-        if ((this.detallespresupuestoPK == null && other.detallespresupuestoPK != null) || (this.detallespresupuestoPK != null && !this.detallespresupuestoPK.equals(other.detallespresupuestoPK))) {
-            return false;
-        }
-        return true;
+        return !((this.detallespresupuestoPK == null && other.detallespresupuestoPK != null) || (this.detallespresupuestoPK != null && !this.detallespresupuestoPK.equals(other.detallespresupuestoPK)));
     }
     @Override
     public String toString() {
@@ -231,17 +228,7 @@ public class Detallespresupuesto implements Serializable {
      * @return
      */
     public String toXML(){
-        StringBuilder xml= new StringBuilder("<itemdetallepresupuesto>\n").append("<idproducto>")
-                .append(this.getProductos().getSid()).append("</idproducto>\n")
-                .append("<descripcion_prod>").append(StringEscapeUtils.escapeXml10(this.getProductos().getDescripcion()))
-                .append("</descripcion_prod>\n").append("<codigo_producto>").append(this.getProductos().getCodproducto()).append("</codigo_producto>\n")
-                .append("<idpresupuesto>").append(this.getPresupuestos().getIdPresupuesto()).append("</idpresupuesto>\n")
-                .append("<precio>").append(this.getPrecio().toString()).append("</precio>\n")
-                .append("<precio_desc>").append(this.getPrecioDesc().toString()).append("</precio_desc>\n")
-                .append("<descuento>").append(this.getDescuento().toString()).append("</descuento>\n")
-                .append("<subtotal>").append(this.getSubtotal().toString()).append("</subtotal>\n")
-                .append("<cantidad>").append(this.getCantidad()).append("</cantidad>\n")
-                .append("</itemdetallepresupuesto>\n");
-        return xml.toString();
+        String xml= "<itemdetallepresupuesto>\n<idproducto>" + this.getProductos().getSid() + "</idproducto>\n" + "<descripcion_prod>" + StringEscapeUtils.escapeXml10(this.getProductos().getDescripcion()) + "</descripcion_prod>\n" + "<codigo_producto>" + this.getProductos().getCodproducto() + "</codigo_producto>\n" + "<idpresupuesto>" + this.getPresupuestos().getIdPresupuesto() + "</idpresupuesto>\n" + "<precio>" + this.getPrecio().toString() + "</precio>\n" + "<precio_desc>" + this.getPrecioDesc().toString() + "</precio_desc>\n" + "<descuento>" + this.getDescuento().toString() + "</descuento>\n" + "<subtotal>" + this.getSubtotal().toString() + "</subtotal>\n" + "<cantidad>" + this.getCantidad() + "</cantidad>\n" + "</itemdetallepresupuesto>\n";
+        return xml;
     }
 }

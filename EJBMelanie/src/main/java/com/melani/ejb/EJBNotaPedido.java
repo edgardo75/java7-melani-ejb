@@ -1235,7 +1235,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             notape.setHoracompra(gc.getTime());
                                             notape.setFechadecompra(gc.getTime());                                               
                                             notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));                                 
-                                            notape.setCancelado(Character.valueOf(notadepedido.getCancelado()));
+                                            notape.setCancelado(notadepedido.getCancelado());
                                             notape.setDescuentonota(BigDecimal.valueOf(notadepedido.getDescuentonota()));
                                             notape.setDescuentoPesos(BigDecimal.valueOf(notadepedido.getDescuentopesos()));
                                             notape.setUltimaActualizacion(FECHA_DEFAULT);

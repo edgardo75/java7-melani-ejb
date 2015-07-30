@@ -172,33 +172,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
         }
     }
 
-    /**
-     *
-     * @return
-     */
-//    @Override
-//    public String selectPresupuestoOfTheDay(){
-//        String presupuesto="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-//                + "<Lista>\n";
-//        try {
-//            Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.fechapresupuesto = CURRENT_DATE");            
-//            List<Presupuestos>lista = consulta.getResultList();
-//            if(lista.isEmpty()) {
-//                presupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
-//            } else{
-//                for (Presupuestos presupuestoss : lista) {
-//                    presupuesto+=presupuestoss.toXML();
-//                }
-//            }
-//            presupuesto+="</Lista>\n";
-//        } catch (Exception e) {
-//            presupuesto="Error";
-//            logger.error("Error en selectPresupuestoPaging en EJBPresupuestosBean");
-//        }finally{
-//            
-//         return presupuesto;
-//        }
-//    }
+ 
 
     /**
      *
@@ -272,29 +246,6 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------
 
-//    /**
-//     *
-//     * @param xmlPresupuesto
-//     * @return
-//     */
-//    protected StringBuilder parsearCaracteresEspecialesXML(String xmlPresupuesto){
-//    String xml = "No paso Nada";
-//    StringBuilder sb = null;
-//    try {
-//        sb = new StringBuilder(xmlPresupuesto);
-//        
-//        
-//            xml=StringEscapeUtils.escapeXml10(xmlPresupuesto.substring(xmlPresupuesto.indexOf("es>")+3,xmlPresupuesto.indexOf("</ob")));
-//            
-//            sb.replace(sb.indexOf("es>")+3, sb.indexOf("</ob"), xml);
-//        
-//    } catch (Exception e) {
-//        xml = "Error";
-//        logger.error("Error en metodo parsearCaracteresEspecialesXML "+e.getLocalizedMessage());
-//    }finally{
-//    return sb;
-//    }
-//}
 
     /**
      *

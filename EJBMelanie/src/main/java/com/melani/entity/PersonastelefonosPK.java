@@ -109,10 +109,7 @@ public class PersonastelefonosPK implements Serializable {
         if (this.numerotel != other.numerotel) {
             return false;
         }
-        if (this.idPersona != other.idPersona) {
-            return false;
-        }
-        return true;
+        return this.idPersona == other.idPersona;
     }
     @Override
     public String toString() {

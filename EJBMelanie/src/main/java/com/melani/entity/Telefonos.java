@@ -156,14 +156,7 @@ import javax.persistence.Table;
      * @return
      */
     public String toXML() {
-        StringBuilder xml = new StringBuilder("<telefono>\n");
-                        xml.append("<idempresatelefonia>").append(this.getIdEmpresatelefonia().getidEmpTelefonia()).append("</idempresatelefonia>\n").append("<descripcion>").append(this.getIdEmpresatelefonia().getNombre()).append(
-                                "</descripcion>\n");
-                            xml.append("<prefijo>").append(this.getTelefonosPK().getIdPrefijo()).append("</prefijo>\n");
-                            xml.append("<nrotelefono>").append(this.getTelefonosPK().getNumero()).append("</nrotelefono>\n");
-                            xml.append("<tipotelefono>").append(this.getIdTipotelefono().getDescripcion()).append("</tipotelefono>\n");
-                            xml.append("<idtipotel>").append(this.getIdTipotelefono().getIdTipotel()).append("</idtipotel>\n");
-                      xml.append("</telefono>\n");
-        return xml.toString();
+        String xml = "<telefono>\n<idempresatelefonia>" + this.getIdEmpresatelefonia().getidEmpTelefonia() + "</idempresatelefonia>\n" + "<descripcion>" + this.getIdEmpresatelefonia().getNombre() + "</descripcion>\n" + "<prefijo>" + this.getTelefonosPK().getIdPrefijo() + "</prefijo>\n" + "<nrotelefono>" + this.getTelefonosPK().getNumero() + "</nrotelefono>\n" + "<tipotelefono>" + this.getIdTipotelefono().getDescripcion() + "</tipotelefono>\n" + "<idtipotel>" + this.getIdTipotelefono().getIdTipotel() + "</idtipotel>\n" + "</telefono>\n";
+        return xml;
     }
 }

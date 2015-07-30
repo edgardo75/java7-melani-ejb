@@ -84,10 +84,7 @@ public class DetallespresupuestoPK implements Serializable {
         if (this.idDpFk != other.idDpFk) {
             return false;
         }
-        if (this.fkProducto != other.fkProducto) {
-            return false;
-        }
-        return true;
+        return this.fkProducto == other.fkProducto;
     }
     @Override
     public String toString() {
