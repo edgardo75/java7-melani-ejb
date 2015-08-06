@@ -54,12 +54,12 @@ public interface EJBNotaPedidoRemote {
 
     /**
      *
-     * @param fecha1
-     * @param fecha2
+     * @param desde
+     * @param hasta
      * @param idvendedor
      * @return
      */
-    String selectNotaEntreFechas(String fecha1, String fecha2,long idvendedor);
+    String selectNotaEntreFechasCompra(String desde, String hasta,long idvendedor);
 
     /**
      *

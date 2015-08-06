@@ -37,11 +37,11 @@ public class EJBCalles implements EJBCallesRemote {
    @Override
     public long addCalles(String descripcion,int idUsuario) {
         long retorno = 0;
-        StringBuilder internalDescripcion = new StringBuilder(5);
+        String internalDescripcion;
         String out;
         try {
-            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
-            internalDescripcion.append(out);
+            internalDescripcion = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            
                         
             //verifico que descripcion no s
             if(internalDescripcion.length()>0){
@@ -49,7 +49,7 @@ public class EJBCalles implements EJBCallesRemote {
 //                //paso a minúsculas las letras de la palabra
                     descripcion = descripcion.toLowerCase();
                     Query consulta = em.createQuery("SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)",Calles.class);
-                    consulta.setParameter("descripcion", internalDescripcion.append("%").toString().toLowerCase());
+                    consulta.setParameter("descripcion", internalDescripcion+"%".toLowerCase());
                     
                     List<Calles> lista = consulta.getResultList();
                     
@@ -80,26 +80,26 @@ public class EJBCalles implements EJBCallesRemote {
  */
    @Override
     public String searchAllCalles() {
-        StringBuilder xml = new StringBuilder(4);
-                xml.append("<?xml version='1.0' encoding='UTF-8'?>\n"
-                + "<Lista>\n");
+        String xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
+                + "<Lista>\n";
         try {
             Query consulta =em.createQuery("SELECT c FROM Calles c Order by c.id");
             List<Calles>lista = consulta.getResultList();
             if(lista.isEmpty()) {
-                xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
+                xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
             } else{
+                StringBuilder xmlLoop = new StringBuilder(10);
                 for (Calles calles : lista) {
-                    xml.append(calles.toXML());
+                    xmlLoop.append(calles.toXML());
                 }
-             
+                xml+=xmlLoop;
             }      
         } catch (Exception e) {            
             logger.error("Error en metodo searchallcalles ");
             logger.error(e.getMessage());
         } finally {           
-               xml.append("</Lista>");               
-            return xml.toString();
+               xml+="</Lista>";               
+            return xml;
         }
     }
 /**

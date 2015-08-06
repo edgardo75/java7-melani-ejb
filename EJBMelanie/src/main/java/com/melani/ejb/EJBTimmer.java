@@ -6,10 +6,12 @@ package com.melani.ejb;
 
 
 
+import com.melani.utils.ProjectHelpers;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -41,12 +43,15 @@ public class EJBTimmer {
     @PersistenceContext(unitName = "EJBMelaniPU2")
     EntityManager em;
     private static final Logger logger = Logger.getLogger(EJBTimmer.class);
-    @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "50",hour = "10",minute = "17")
+    @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "50",hour = "11",minute = "16")
     private void ventasDiarias(){ 
         final String miCorreo = "micorreo@gmail.com"; 
         final String miContrasena = "*****";
-        final String servidorSMTP = "smtp.gmail.com";
-        final String puertoEnvio = "465";
+        //final String servidorSMTP = "smtp.gmail.com";
+        final String servidorSMTP = "smtp.live.com";
+        
+        //final String puertoEnvio = "465";
+        final String puertoEnvio = "587";
         String mailReceptor = null;
         String asunto = null;
         String cuerpo = null;
@@ -54,18 +59,21 @@ public class EJBTimmer {
     
     
                 Properties props = new Properties();
-                    props.put("mail.smtp.user", miCorreo);
+                    //props.put("mail.smtp.user", miCorreo);
                     props.put("mail.smtp.host", servidorSMTP);
                     props.put("mail.smtp.port", puertoEnvio);
                     props.put("mail.smtp.starttls.enable", "true");
+                    props.put("mail.transport.protocol","smtp");
                     props.put("mail.smtp.auth", "true");
-                    props.put("mail.smtp.socketFactory.port", puertoEnvio);
-                    props.put("mail.smtp.socketFactory.class",
-                            "javax.net.ssl.SSLSocketFactory");
-                    props.put("mail.smtp.socketFactory.fallback", "false");
+                    //props.put("mail.smtp.socketFactory.port", puertoEnvio);
+                    //props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+                    //props.put("mail.smtp.socketFactory.fallback", "false");
 
                     //SecurityManager security = System.getSecurityManager();
-
+//                    System.out.println("Correo "+ProjectHelpers.ClaveSeguridad.encriptar("edgardoalvarez@outlook.com"));
+//                        
+//                        System.out.println("Correo "+ProjectHelpers.ClaveSeguridad.decriptar("¸ˆ¤ù„i3$»‡YfînCãûÛõ¦ÿê¦7‚."));
+//                        System.out.println("Password "+ProjectHelpers.ClaveSeguridad.decriptar("ÅMK˜RÉ 3€\"ÌçD‰"));
 
                     try {
                         GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault()); 
@@ -76,51 +84,42 @@ public class EJBTimmer {
                    Session session = Session.getInstance(props, new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication(){
-                         return new PasswordAuthentication("edgardo75@gmail.com", "dunis6648");
+                         return new PasswordAuthentication("edgardoalvarez@outlook.com", ProjectHelpers.ClaveSeguridad.decriptar("ÅMK˜RÉ 3€\"ÌçD‰"));
                         }
                     });
 
 
 
-                    MimeMessage message = new MimeMessage(session);
-                    StringBuilder result = new StringBuilder();
-                    if( consulta.getResultList().toString() == null)
-                        result.append("No se registraron ventas!!!");
-                    else
-                        result.append(consulta.getResultList().toString().replace("[", "").replace("]", ""));
-
-                    message.setFrom(new InternetAddress("edgardo75@gmail.com"));
-                    message.addRecipient(Message.RecipientType.TO,new InternetAddress("edgardo75@gmail.com"));
+                    final MimeMessage message = new MimeMessage(session);
+//                    String result = null;
+//                    if( consulta.getResultList().toString() == null){
+//                        result+="No se registraron ventas!!!";
+//                    }else{
+//                        result+=consulta.getResultList().toString().replace("[", "").replace("]", "");
+//                    }  
+                        
+                    message.setFrom(new InternetAddress("edgardoalvarez@outlook.com"));
+                    message.addRecipient(Message.RecipientType.TO,new InternetAddress("edgardoalvarez@outlook.com"));
                     
-
-
-
-
-
-
-
-
-
-
-                        Multipart multipart = new MimeMultipart("alternative");
+                    Multipart multipart = new MimeMultipart("alternative");
 
                         MimeBodyPart textPart = new MimeBodyPart();
-                        StringBuilder textContext = new StringBuilder(10);
+                        String textContext ;
                         String resultParser = consulta.getResultList().toString().replace("[", "").replace("]","");
                         if(resultParser.equals("null")){
-                             textContext.append("Ventas del Día ").append(sdf.format(gc.getTime())).append(" $ 0");
+                             textContext="Ventas del Día "+sdf.format(gc.getTime())+" $ 0";
                         }else
-                            textContext.append("Ventas del Día ").append(sdf.format(gc.getTime())).append(" $ ").append(resultParser);
+                            textContext="Ventas del Día "+sdf.format(gc.getTime())+" $ "+resultParser;
                         
-                        message.setSubject(textContext.toString());
+                        message.setSubject(textContext);
                         
-                        textPart.setText(textContext.toString());
+                        textPart.setText(textContext);
 
                         MimeBodyPart htmlPart = new MimeBodyPart();
-                        StringBuilder htmlContext = new StringBuilder("<html>").append("<h1>Hi</h1>")
-                                .append("<p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto es por email tambien puede ser via movil decime si no está <strong>cool</strong>!!!, saludos</p>")
-                                .append("<p>").append(textContext).append("</p>")
-                                .append("</html>");
+                        String htmlContext = "<html>"+"<h1>Hi</h1>"+
+                                "<p>Hola viejo te envio este email de notificacion de testeo para saber ventas diarias esto "
+                                + "es por email tambien puede ser via movil decime si no está <strong>cool</strong>!!!, "
+                                + "saludos</p>"+"<p>"+textContext+"</p>"+"</html>";
                         htmlPart.setContent(htmlContext, "text/html");
 
                         multipart.addBodyPart(textPart);
@@ -130,8 +129,21 @@ public class EJBTimmer {
 
 
 
+                        new Thread(new Runnable() {
 
-                        Transport.send(message);
+                            @Override
+                            public void run() {
+                                try {
+                                    
+                                    System.out.println("Enviando......");
+                                    Transport.send(message);
+                                    System.out.println("Mensaje Enviado!");
+                                } catch (MessagingException ex) {
+                                    java.util.logging.Logger.getLogger(EJBTimmer.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }).start();
+                        
 
 
 

@@ -36,12 +36,12 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public long addBarrio(String descripcion,int idUsuario) {
         long retorno = 0;
-        StringBuilder internalDescripcion =new StringBuilder(50);
+        String internalDescripcion;
         String out;
         try {            
             //convierto string a su correspondiente encoding para evitar errores de parseo
-            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
-            internalDescripcion.append(out);        
+            internalDescripcion = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            
             //metodo que agrega un nombre de barrio
            //variable estatica para indicar el nivel de error
             
@@ -53,7 +53,7 @@ public class EJBBarrios implements EJBBarriosRemote {
             //------------------------------------------------------------------------------------------------
                     
                     Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
-                    consulta.setParameter("1",internalDescripcion.append("%").toString().toLowerCase());
+                    consulta.setParameter("1",internalDescripcion+"%".toLowerCase());
                     List<Barrios> lista = consulta.getResultList();
                     
                     //------------------------------------------------------------------------------------------------
@@ -91,28 +91,30 @@ public class EJBBarrios implements EJBBarriosRemote {
    @Override
     public String searchAllBarrios() {
         
-        StringBuilder xml = new StringBuilder(4);
-                xml.append("<?xml version='1.0' encoding='ISO-8859-1'?>\n"
-                + "<Lista>\n");        
+        String xml = "<?xml version='1.0' encoding='ISO-8859-1'?>\n"
+                + "<Lista>\n";        
         try {
         
             //Consulta jpql
             Query consulta = em.createNamedQuery("Barrios.findAll");
             List<Barrios>lista = consulta.getResultList();
                 if(lista.isEmpty()) {
-                    xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
+                    xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
             } else{
+                    StringBuilder xmlLoop = new StringBuilder(10);
                     for (Barrios barrios : lista) {
-                        xml.append(barrios.toXML());
-                    }                    
+                        xmlLoop.append(barrios.toXML());
+                    } 
+                    xml+=xmlLoop;
                 }                         
         //*********************************************************************
-            xml.append("</Lista>");          
+            
            
         } catch (UnsupportedEncodingException e) {                        
             logger.error("Error en metodo searchAllBarrios ");
         } finally {           
-            return xml.toString();
+            xml+="</Lista>";          
+            return xml;
         }
     }
 
@@ -135,71 +137,8 @@ public class EJBBarrios implements EJBBarriosRemote {
               return retorno;
             }
     }
-/**
- *
- * @param indiceInicio indica la pagina en al cual se establece la consulta paginada
- * @param numeroItems indica los numeros de registros que retorna cada consulta paginada
- * @return devuelve una lista de barrios instanciados
- */
 
-//   @Override
-//   public String obtenrItemsPaginados(int indiceInicio, int numeroItems) {
-//        StringBuilder xml = new StringBuilder("<?xml version = '1.0' encoding = 'UTF-8'?>\n" +
-//                "<Lista>\n");
-//        int indice = 0;
-//        int nroItems=0;
-//        try {
-//            indice=indiceInicio;
-//            nroItems=numeroItems;
-//            
-//            Query consulta = em.createQuery("SELECT b FROM Barrios b", Barrios.class);
-//            consulta.setMaxResults(nroItems);
-//             consulta.setFirstResult(indice*nroItems);
-//            
-//            
-//            List<Barrios>lista = consulta.getResultList();
-//            
-//            for (Barrios barrios : lista) {
-//                xml.append(barrios.toXML());
-//            }
-//            xml.append("</Lista>\n");       
-//            
-//        } catch (Exception e) {
-//            logger.error("Error al obtenerItemsPaginados EJBbarrios "+e.getLocalizedMessage());
-//        }finally{
-//            return xml.toString();
-//        }
-//}
-/**
- *
- * @param startindex indice de pagina
- * @param numitems cantidad de registro por pagina
- * @return devuelve la lista de barrios instanciados
- */
-  
-//   @Override
-//   public Barrios[] barrios_Paging(int startindex, int numitems) {
-//         Barrios[]fBarrios=null;       
-//        try {   
-//            
-//            Query consulta = em.createQuery("SELECT b FROM Barrios b");
-//                consulta.setMaxResults(numitems);
-//                consulta.setFirstResult(startindex*numitems);
-//                List<Barrios>lista = consulta.getResultList();
-//            if(lista.size()>0){
-//                try {
-//                    int len = lista.size();
-//                    fBarrios = new Barrios[len];
-//                    lista.toArray(fBarrios);
-//                } catch (Exception ee) {
-//                   ee.getMessage();
-//                }
-//            }          
-//        } catch (Exception e) {
-//            e.getMessage();
-//            logger.warn(e.getLocalizedMessage());
-//        }finally{                
-//             return fBarrios;
-//        }
-//    }   
+
+
+ 
 }

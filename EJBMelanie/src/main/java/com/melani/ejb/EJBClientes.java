@@ -20,6 +20,7 @@ import com.melani.utils.DatosTelefonos;
 import com.melani.utils.ListaTelefonos;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.GregorianCalendar;
@@ -259,23 +260,22 @@ public class EJBClientes implements EJBClientesRemote {
      */
     @Override
     public String obtenerCliente(long idCliente) {
-        StringBuilder cli = new StringBuilder(4);
-                cli.append("<Lista>\n");
+        String cli = "<Lista>\n";
         try {
             Clientes cliente = em.find(Clientes.class, idCliente);
             if(cliente!=null){
-                cli.append("<item>\n");
-                cli.append(cliente.toXML());
-                cli.append(cliente.toXMLCLI());
-                cli.append("</item>\n");
+                cli+="<item>\n";
+                cli+=cliente.toXML();
+                cli+=cliente.toXMLCLI();
+                cli+="</item>\n";
             }else {
-                cli.append("<cliente>NO ENCONTRADO</cliente>");
+                cli+="<cliente>NO ENCONTRADO</cliente>";
             }
         } catch (Exception e) {
             logger.error("Error al obtener un cliente EJBCliente", e);
         }finally{
             
-            return cli.append("</Lista>\n").toString();
+            return cli+="</Lista>\n";
         }
     }
     /**
@@ -360,40 +360,40 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos,
      */
     @Override
     public String obtenerClienteXTipoAndNumeroDocu(short idTipo, int nrodDocu) {
-        StringBuilder result = new StringBuilder("<Lista>\n");
+        String result = "<Lista>\n";
         try {    
             
             long idPersona = existePersona(nrodDocu);    
                     switch((int)idPersona){
                         case 0:{
-                             result.append("<result>NO PASO NADA</result>\n");                        
+                             result+="<result>NO PASO NADA</result>\n";                        
                              break;
                         }
                         case -1:{
 
-                             result.append("<result>ERROR EN METODO EXISTE</result>\n");                        
+                             result+="<result>ERROR EN METODO EXISTEPersona</result>\n";                        
                              break;
                         }
                         default:{
                             Clientes cliente = em.find(Clientes.class, idPersona);           
                                     if(cliente != null){
 
-                                        result.append("<item>\n");
-                                        result.append(cliente.toXML());
-                                        result.append("</item>\n");
+                                        result+="<item>\n";
+                                        result+=cliente.toXML();
+                                        result+="</item>\n";
                                     }else {
-                                        result.append("<cliente>NO ES UN CLIENTE</cliente>\n");
+                                        result+="<cliente>NO ES UN CLIENTE</cliente>\n";
                                     }                                         
                         }
             }
             
                         
         } catch (Exception e) { 
-            result.setLength(0);
-            result.append("<result>ERROR EN METODO obtenerClienteXTipoAndNumeroDocu</result>");
+            
+            result+="<result>ERROR EN METODO obtenerClienteXTipoAndNumeroDocu</result>";
             logger.error("Error en metodo obtenerClienteXTipoAndNumeroDocu en EJBClientes ");
         }finally{               
-            return result.append("</Lista>\n").toString();
+            return result+="</Lista>\n";
         }
     }
 
@@ -528,32 +528,34 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
      */
     @Override
     public String getCustomerDocNumber(Integer docNumber) {
-        StringBuilder xml= new StringBuilder(10);
+        String xml = null;
         try {
             Query jsql=em.createNamedQuery("Personas.searchByNroDocuAndPertype");
             jsql.setParameter("nrodocumento", docNumber);
             jsql.setParameter("pertype", "CLI");
             List<Clientes>lista = jsql.getResultList();
            switch(lista.size()){
-               case 0:xml.append("Cliente no encontrado");
+               case 0:xml+="Cliente no encontrado";
                break;
                case 1:{
+                   StringBuilder xmlLoop = new StringBuilder(10);
                 for (Clientes cliente : lista) {
-                    xml.append("<item>\n").append("<id>").append(cliente.getIdPersona()).append("</id>\n" + "<apellido>")
+                    xmlLoop.append("<item>\n").append("<id>").append(cliente.getIdPersona()).append("</id>\n" + "<apellido>")
                         .append(cliente.getApellido()).append("</apellido>\n").append("<nombre>")
                         .append(cliente.getNombre()).append("</nombre>\n").append("<idtipodocu>")
                         .append(cliente.getTipodocumento().getId()).append("</idtipodocu>\n").append("<nrodocu>")
                             .append(cliente.getNrodocumento()).append("</nrodocu>\n");
-                    xml.append("</item>\n");
+                    xmlLoop.append("</item>\n");
                 }
+                xml+=xmlLoop;
                }
            }
         } catch (Exception e) {
             logger.error("Error en metodo getCustomerDocNumber "+e.getMessage());
-            xml.setLength(0);
-            xml.append("Error");
+            
+            xml+="Error";
         }finally{       
-            return xml.toString();
+            return xml;
         }
     }
     //metodo que chequea el email en base de datos, agregado tambien validador
@@ -602,21 +604,18 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
      */
     @Override
     public String searchClientForNameAndLastName(String name,String lastname) {
-        StringBuilder xml = new StringBuilder("<Lista>\n");
+        String xml = "<Lista>\n";
         try {
-            StringBuilder sbname = new StringBuilder(4);
-                sbname.append(name);
-                sbname.append("%");
-                    StringBuilder sblastname = new StringBuilder();
-                        sblastname.append(lastname);
-                        sblastname.append("%");
+            String sbname = name+"%";
+            String sblastname = lastname+"%";
                     String sql = "SELECT p FROM Personas p WHERE p.nombre LIKE :nombre and p.apellido LIKE :apellido";
                             Query consulta = em.createQuery(sql);
-                            consulta.setParameter("nombre", sbname.toString().toUpperCase());
-                            consulta.setParameter("apellido", sblastname.toString().toUpperCase());
+                            consulta.setParameter("nombre", sbname.toUpperCase());
+                            consulta.setParameter("apellido", sblastname.toUpperCase());
                             List<Personas>lista = consulta.getResultList();
+                                StringBuilder xmlLoop = new StringBuilder(10);
                                 for (Personas personas : lista) {
-                                    xml.append("<item>\n").append("<id>")
+                                    xmlLoop.append("<item>\n").append("<id>")
                                             .append(personas.getIdPersona())
                                             .append("</id>\n").append("<apellido>")
                                             .append(personas.getApellido()).append("</apellido>\n").append("<nombre>")
@@ -624,11 +623,12 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                             .append(personas.getTipodocumento().getId()).append("</idtipodocu>\n").append("<nrodocu>")
                                             .append(personas.getNrodocumento()).append("</nrodocu>\n").append("</item>\n");
                                 }
+                                xml+=xmlLoop;
         } catch (Exception e) {
             logger.error("Error en metodo searchClientForNameAndLastName "+e.getMessage());
         }finally{
             
-            return xml.append("</Lista>\n").toString();
+            return xml+"</Lista>\n";
         }
     }
     /**
@@ -642,7 +642,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
         try {
             
         
-             XStream  xstream = new XStream();
+             XStream  xstream = new XStream(new StaxDriver());
              
         
                xstream.alias("ClienteDomicilioTelefono",ClienteDomicilioTelefono.class);
@@ -662,7 +662,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
         
                     
                    
-                            datoscliente = (ClienteDomicilioTelefono) xstream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML1(xmlClienteDomicilioTelefono));                                 
+                    datoscliente = (ClienteDomicilioTelefono) xstream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML1(xmlClienteDomicilioTelefono));                                 
                    
           
          
@@ -682,7 +682,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
     @Override
     public String addClienteDatosPersonales(String datospersonalescliente) {
         long idcliente =0L;
-        StringBuilder xml = new StringBuilder("<Lista>\n");
+        String xml = "<Lista>\n";
         try {
             // convierto los datos personales a objetos
             ClienteDomicilioTelefono getAllDatos=parsear_a_objetos(datospersonalescliente);
@@ -700,15 +700,15 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                     
                             switch((int)chequear__email_numDoc){
                                      case -7:{logger.error("Error en metodo chequear email");
-                                         xml.append("<error>Error en metodo chequear email</error>\n");
+                                         xml+="<error>Error en metodo chequear email</error>\n";
                                          break;
                                       }
                                      case -8:{logger.error("Email encontrado en metodo chequearEmail");
-                                         xml.append("<info>Email encontrado en metodo chequearEmail<info>\n");
+                                         xml+="<info>Email encontrado en metodo chequearEmail<info>\n";
                                        break;
                                       }
                                       case -11:{logger.error("Email no válido");
-                                                 xml.append("<error>Email no válido<error>\n");
+                                                 xml+="<error>Email no válido<error>\n";
                                           break;
                                       }
                               default:{               
@@ -722,7 +722,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                                      break;                                        
                                                          case -1:{                 
                                                              logger.error("Fallo error al buscar cliente en metodo existe");
-                                                          xml.append("<error>Fallo error al buscar cliente en metodo existe</error>\n");
+                                                          xml+="<error>Fallo error al buscar cliente en metodo existe</error>\n";
                                                          break;
                                                      }
                                                  default:{                 
@@ -735,34 +735,34 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                             }//end switch
                    }else{
                              logger.error("El documento no es válido");
-                         xml.append("<error>El documento no es válido<error>\n");
+                         xml+="<error>El documento no es válido<error>\n";
                    }
                    
                
                }else{
                          logger.error("El apellido no es válido");
-                         xml.append("<error>El apellido no es válido<error>\n");
+                         xml+="<error>El apellido no es válido<error>\n";
                  }
             }else{
                logger.error("El nombre no es válido");
-               xml.append("<error>El nombre no es válido<error>\n");
+               xml+="<error>El nombre no es válido<error>\n";
             }
            
             if(idcliente>0){
                        Clientes cliem = em.find(Clientes.class, idcliente);
-                       xml.append("<item>\n");
-                       xml.append(cliem.toXML());
-                       xml.append(cliem.toXMLCLI());
-                       xml.append("</item>\n");
+                       xml+="<item>\n";
+                       xml+=cliem.toXML();
+                       xml+=cliem.toXMLCLI();
+                       xml+="</item>\n";
              }
                                
         } catch (Exception e) {
-            xml.setLength(0);
-            xml.append("<error>se produjo un error</error>\n");
+            
+            xml+="<error>se produjo un error</error>\n";
             logger.error("Error en metodo addclientepersonales en ejbcliente ");
         }finally{
-            xml.append("</Lista>\n");
-            return xml.toString();
+            xml+="</Lista>\n";
+            return xml;
         }
     }
 

@@ -41,7 +41,7 @@ public interface EJBProductosRemote {
      * @param idproducto
      * @return
      */
-    String selectoneproducto(long idproducto);
+    String selectOneProducto(long idproducto);
 
     /**
      *

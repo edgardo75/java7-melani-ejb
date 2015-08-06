@@ -8,6 +8,7 @@ import com.melani.entity.ImagenesProductos;
 import com.melani.entity.Productos;
 import com.melani.utils.DatosProductos;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -45,9 +47,7 @@ import org.apache.log4j.Logger;
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBProductos implements EJBProductosRemote {
     private static final Logger logger = Logger.getLogger(EJBProductos.class);
-    static final StringBuilder PATH_IMAGENES = new StringBuilder(System.getProperty("user.dir"))
-                                                    .append(File.separator).append("var").append(File.separator).append("webapp")
-                                                    .append(File.separator).append("upload").append(File.separator);
+    static final String PATH_IMAGENES = System.getProperty("user.dir")+File.separator+"var"+File.separator+"webapp"+File.separator+"upload"+File.separator;
     
     @PersistenceContext(unitName="EJBMelaniPU2")    
     private EntityManager em;     
@@ -107,21 +107,21 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String addProducto(String xmlProducto) {
-        StringBuilder retorno = new StringBuilder(10);
+        String retorno = null;
         Productos producto = null;
         long idproduct;
         try {
         idproduct =agregarProducto(producto, xmlProducto);
         if(idproduct>0){
-            retorno.append(searchAllProductos());
+            retorno+=searchAllProductos();
         }else{
-            retorno.append("<Lista>\n").append("<producto>\n").append("<id>").append(idproduct).append("</id>\n");
-                    retorno.append("</producto>\n").append("</Lista>\n");
+            retorno+="<Lista>\n"+"<producto>\n"+"<id>"+idproduct+"</id>\n";
+                    retorno+="</producto>\n"+"</Lista>\n";
         }
         } catch (Exception e) {
             logger.error("Error en metodo addProducto "+e.getMessage());
         }finally{
-            return retorno.toString();
+            return retorno;
         }
     }
     private long agregarProducto(Productos producto, String xmlProducto) {
@@ -130,7 +130,7 @@ public class EJBProductos implements EJBProductosRemote {
         String codigo;
         try {
             //-----------------------------------------------------------------------
-             XStream xstream = new XStream();
+             XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("producto", DatosProductos.class);
                 DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);
             //-----------------------------------------------------------------------
@@ -237,16 +237,16 @@ public class EJBProductos implements EJBProductosRemote {
      * @return
      */
     @Override
-    public String selectoneproducto(long idproducto) {
-        StringBuilder result = new StringBuilder("NADA");
+    public String selectOneProducto(long idproducto) {
+        String result = "NADA";
         try {
             Productos producto = em.find(Productos.class, idproducto);
-            result.append(producto.toXML());
+            result+=producto.toXML();
         } catch (Exception e) {
             
             logger.error("Error en metodo selectoneproducto "+e.getMessage());
         }finally{
-            return result.toString();
+            return result;
         }
     }
 
@@ -283,39 +283,41 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String searchAllProductos() {
-        StringBuilder xml = new StringBuilder("NADA");
+        String xml = "NADA";
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             
             Query query = em.createNamedQuery("Productos.findAll");
             List<Productos> lista = query.getResultList();
                     if(lista.isEmpty()) {
-                        xml.append("LA CONSULTA NO ARROJÓ RESULTADOS");
+                        xml="LA CONSULTA NO ARROJÓ RESULTADOS";
             } else{
                         Iterator iter = lista.iterator();
-                        xml.append("<Lista>\n");
+                        xml="<Lista>\n";
+                        StringBuilder xmlLoop= new StringBuilder(10);
                         while(iter.hasNext()){
                             Productos prod = (Productos) iter.next();
-                            xml.append("<producto>\n");
-                                    xml.append("<id>").append(prod.getSid()).append("</id>\n");
-                                    xml.append("<idproduct>").append(prod.getCodproducto()).append("</idproduct>\n");
-                                    xml.append("<descripcion>").append(prod.getDescripcion()).append("</descripcion>\n");
-                                    xml.append("<cantidadDisponible>").append(prod.getCantidadDisponible()).append("</cantidadDisponible>\n");
-                                    xml.append("<cantidadInicial>").append(prod.getCantidadInicial()).append("</cantidadInicial>\n");
-                                    xml.append("<fecha>").append(sdf.format(prod.getFecha())).append("</fecha>\n");
-                                    xml.append("<precio>").append(prod.getPrecioUnitario()).append("</precio>\n");
-                                    xml.append("<img>").append(prod.getImagenesProductosList().size()).append("</img>\n");
-                                    xml.append("</producto>\n");
+                            xmlLoop.append("<producto>\n");
+                                    xmlLoop.append("<id>").append(prod.getSid()).append("</id>\n");
+                                    xmlLoop.append("<idproduct>").append(prod.getCodproducto()).append("</idproduct>\n");
+                                    xmlLoop.append("<descripcion>").append(prod.getDescripcion()).append("</descripcion>\n");
+                                    xmlLoop.append("<cantidadDisponible>").append(prod.getCantidadDisponible()).append("</cantidadDisponible>\n");
+                                    xmlLoop.append("<cantidadInicial>").append(prod.getCantidadInicial()).append("</cantidadInicial>\n");
+                                    xmlLoop.append("<fecha>").append(sdf.format(prod.getFecha())).append("</fecha>\n");
+                                    xmlLoop.append("<precio>").append(prod.getPrecioUnitario()).append("</precio>\n");
+                                    xmlLoop.append("<img>").append(prod.getImagenesProductosList().size()).append("</img>\n");
+                                    xmlLoop.append("</producto>\n");
                                    
                         
                             
-                        }                        
-                        xml.append("</Lista>\n");
+                        } 
+                        xml+=xmlLoop;
+                        xml+="</Lista>\n";
                     }
         }catch (Exception e) {
             logger.error("Error al buscar todos los producto EJBProducto "+e.getMessage());
         }finally{
-            return xml.toString();
+            return xml;
         }
     }
 
@@ -363,20 +365,20 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public String actualizarProducto(String xmlProducto) {
-          StringBuilder retorno = new StringBuilder(10);
+          String retorno = null;
         Productos producto = null;
-        long idproduct;
+        
         try {
-        idproduct =updateProducto(producto, xmlProducto);
-            retorno.append("<Lista>\n");
-                    retorno.append("<producto>\n");
-                    retorno.append("<id>").append(idproduct).append("</id>\n");
-                    retorno.append("</producto>\n");
-                    retorno.append("</Lista>\n");
+        logger.info("PRODUCTOS ACTUALIZADOS "+updateProducto(producto, xmlProducto));
+            retorno+="<Lista>\n";
+                    retorno+="<producto>\n";
+                    retorno+="<id>"+"</id>\n";
+                    retorno+="</producto>\n";
+                    retorno+="</Lista>\n";
         } catch (Exception e) {
             logger.error("Error en metodo addProducto "+e.getMessage());
         }finally{
-            return retorno.toString();
+            return retorno;
         }
     }
     private long updateProducto(Productos producto, String xmlProducto) {
@@ -410,7 +412,7 @@ public class EJBProductos implements EJBProductosRemote {
                                                 em.persist(existencias);
                                         
                 //---------------------------------------------------------------------------------
-                                    //retorno = existencias(producto);
+                                   
                 //---------------------------------------------------------------------------------
                                 retorno = producto.getSid();
         } catch (Exception e) {
@@ -465,7 +467,7 @@ public class EJBProductos implements EJBProductosRemote {
                         
                         g2.drawImage(image, null, null);
 
-                        File imageFile = new File(new StringBuilder(PATH_IMAGENES).append(nameImage).toString());       
+                        File imageFile = new File(PATH_IMAGENES+nameImage);       
                         
                         //-----------------------------------------------------------Escribir path de la imagen en disco
                         ImageIO.write(bufferedImage, extension, imageFile);
@@ -488,38 +490,28 @@ public class EJBProductos implements EJBProductosRemote {
      */
     @Override
     public byte[] obtenerImagenProducto(long idProducto) {
-        byte[] retorno = null;
-        try {
-            
+        byte[] retorno = new byte[5];
+        try {           
             Query consulta = em.createNamedQuery("ImagenesProductos.findById");
-            
                 consulta.setParameter("sid", idProducto);
             List<ImagenesProductos>lista = consulta.getResultList();
-            
-                    String pathImage = "";
+            String pathImage = "";
+            if(lista.size()>0){  
                     for(ImagenesProductos imagen:lista){
                            pathImage=PATH_IMAGENES+imagen.getNombreImagen()+"."+imagen.getExtension();             
                     }
-            
-                    //Creo objeto file
-                    File file = new File(pathImage);
-
-                    //Objengo los bytes, tamaño del archivo o imagen
-                    FileInputStream fis = new FileInputStream(file);
-
-                    //Obtengo un output stream luego creo el buffer
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-                    byte [] buffer = new byte[1_024];
-                    //itero llenando el buffer para ser transferido o retornado como bytearray
-                    for(int readNum;(readNum=fis.read(buffer))!=-1;){
-                        bos.write(buffer,0,readNum);
-                    }
-                    retorno = bos.toByteArray();
+                                    //Creo objeto file
+                                    File file = new File(pathImage);
+                                    //Objengo los bytes, tamaño del archivo o imagen
+                                    if(file.exists()){
+                                                retorno = procesarImagen(file);
+                                    }else{
+                                        retorno = procesarImagen(new File(PATH_IMAGENES+"android-logo-400x300.jpg"));
+                                    }
+            }     
         } catch (IOException e) {            
             logger.error("Error en metodo obtenerImagenProducto en EJBProductos "+e.getMessage());
         }finally{
-            
             return retorno;
         }
     }
@@ -572,5 +564,28 @@ public class EJBProductos implements EJBProductosRemote {
             
             return retorno;
         }
+    }
+
+    private byte[] procesarImagen(File file) throws FileNotFoundException, IOException {
+        ByteArrayOutputStream bos=null;
+        FileInputStream fis = null;
+
+                                                fis = new FileInputStream(file);
+
+                                                if(fis != null){
+                                                       
+                                                        //Obtengo un output stream luego creo el buffer
+                                                        bos = new ByteArrayOutputStream();
+                                                       
+                                                        byte [] buffer = new byte[1_024];
+                                                        //itero llenando el buffer para ser transferido o retornado como bytearray
+                                                       
+                                                        for(int readNum;(readNum=fis.read(buffer))!=-1;){
+                                                            bos.write(buffer,0,readNum);
+                                                        }
+                                                       
+                                                        
+                                                }
+        return bos.toByteArray();
     }
 }

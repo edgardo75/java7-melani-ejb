@@ -33,21 +33,22 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
       */
     @Override
     public String searchLocXProvincia(short idProvincia) {
-        StringBuilder xml = new StringBuilder(4);
-                xml.append("<Lista>\n");
+        String xml = "<Lista>\n";
         Query jpql = null;
         try {
             
             jpql = em.createNamedQuery("Localidades.findByLatLongNotNull");
             jpql.setParameter("1",idProvincia);
             List<Localidades>localidad = jpql.getResultList();
+            StringBuilder xmlLoop = new StringBuilder(10);
             for (Localidades localidades : localidad) {
-                xml.append(localidades.toXML());
+                xmlLoop.append(localidades.toXML());
             }
+            xml+=xmlLoop;
         } catch (Exception e) {            
             logger.error("error en metodo searchLocXProvincia "+e.getMessage());
         }finally{
-           return xml.append("</Lista>\n").toString();
+           return xml+="</Lista>\n";
         }
     }
 /**
@@ -61,25 +62,25 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     @Override
     public long addLocalidadCompleto(String descripcion, short idProvincia, int codigopostal) {
         long retorno = 0;
-        StringBuilder internalDescripcion = new StringBuilder(32);
+        String internalDescripcion;
         String out = null;
         try {
-            out = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
-            internalDescripcion.append(out);
+            internalDescripcion =new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
+            
             
             
             if(internalDescripcion.length()>0){
                     
-                    internalDescripcion.append("%");
+                    internalDescripcion+="%";
                     Query consulta = em.createQuery("SELECT l FROM Localidades l WHERE l.descripcion LIKE "
                             + ":descripcion and l.codigopostal = :codigopostal and  l.provincias.idProvincia = :idProvincia");
-                    consulta.setParameter("descripcion",descripcion.toLowerCase());
+                    consulta.setParameter("descripcion",internalDescripcion.toLowerCase());
                     consulta.setParameter("codigopostal", codigopostal);
                     consulta.setParameter("idProvincia", idProvincia);
                             List<Localidades> lista = consulta.getResultList();
                             if (lista.isEmpty()) {
                                 Localidades depto = new Localidades();
-                                depto.setDescripcion(descripcion.toUpperCase());
+                                depto.setDescripcion(internalDescripcion.toUpperCase());
                                 depto.setProvincias(em.find(Provincias.class, idProvincia));
                                 depto.setCodigopostal(codigopostal);
                                 depto.setLatitud("0");
@@ -112,25 +113,26 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
      */
     @Override
     public String searchAllLocalidadesByIdProvincia(Short idProvincia) {
-         StringBuilder resultado = new StringBuilder("<Lista>\n");
+         String resultado = "<Lista>\n";
          try {
              Query consulta = em.createNamedQuery("Localidades.findByLatLongNotNull");
                    consulta.setParameter("1", idProvincia);
              List<Localidades>lista = consulta.getResultList();
              if(lista.isEmpty()) {
-                 resultado.append("NO HAY LOCALIDADES CARGADAS en ").append(em.find(Provincias.class, idProvincia).getProvincia());
+                 resultado+="NO HAY LOCALIDADES CARGADAS en "+em.find(Provincias.class, idProvincia).getProvincia();
              } else{
+                 StringBuilder xmlLooop = new StringBuilder(10);
                  for (Localidades localidades : lista) {
-                     resultado.append(localidades.toXML());
+                     xmlLooop.append(localidades.toXML());
                  }
-            
+                 resultado+=xmlLooop;
              }
         } catch (Exception e) {
             logger.error("Error en metodo searchAllLocalidadesByIdProvincia "+e.getMessage());
-            resultado.append("<error>Se produjo un error</error>");
+            resultado+="<error>Se produjo un error</error>";
         }finally{
-              resultado.append("</Lista>\n");              
-            return resultado.toString();
+              resultado+="</Lista>\n";              
+            return resultado;
         }
     }
 

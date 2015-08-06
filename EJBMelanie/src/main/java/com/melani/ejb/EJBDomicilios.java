@@ -10,6 +10,7 @@ import com.melani.entity.Localidades;
 import com.melani.entity.Orientacion;
 import com.melani.utils.DatosDomicilios;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import java.util.List;
 import java.util.Locale;
 import javax.ejb.Stateless;
@@ -202,7 +203,7 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
         try {
             //------------------------------------------------------------------
             //Utiliza libreria para transformar objeto a string y viceversa
-            XStream xstream = new XStream();
+            XStream xstream = new XStream(new StaxDriver());
             xstream.alias("Domicilio",DatosDomicilios.class);
             DatosDomicilios domiciXML = (DatosDomicilios) xstream.fromXML(xmlDomicilio);
             //------------------------------------------------------------------  
