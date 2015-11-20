@@ -29,5 +29,5 @@ public interface EJBCallesRemote {
      *
      * @return cantidad de registro en la base de datos
      */
-    Object recorCountCalles();
+    int recorCountCalles();
 }

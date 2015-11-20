@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -19,11 +15,7 @@ import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- * A Entity Calles
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name="CALLES")
 @NamedQueries({@NamedQuery(name = "Calles.findDescripcion",query = "SELECT c FROM Calles c WHERE LOWER(c.descripcion) LIKE LOWER(:descripcion)")})
@@ -43,55 +35,28 @@ public class Calles implements Serializable {
     @OneToMany(mappedBy = "idcalle")
     private List<Domicilios> domicilioss;
 
-    /**
-     *
-     */
     public Calles(){}
 
-    /**
-     *
-     * @return
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Domicilios> getDomicilioss() {
         return Collections.unmodifiableList(domicilioss);
     }
 
-    /**
-     *
-     * @param domicilioss
-     */
     public void setDomicilioss(List<Domicilios> domicilioss) {
         this.domicilioss = domicilioss;
     }
@@ -115,10 +80,6 @@ public class Calles implements Serializable {
         return "com.melani.entity.Calles[id=" + id + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         StringBuilder item = new StringBuilder("<item>\n");
                         item.append("<id>").append(this.getId()).append("</id>\n");

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.ejb;
 import com.melani.entity.Detallespresupuesto;
 import com.melani.entity.DetallespresupuestoPK;
@@ -23,25 +19,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
-
-
-/**
- *
- * @author Edgardo
- */
 @Stateless(name="ejb/EJBPresupuestosBean")
 @WebService(serviceName="ServicesPresupuestos",name="PresupuestoWs")
 @SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBPresupuestosBean implements EJBPresupuestosRemote {
-    private static final Logger logger = Logger.getLogger(EJBPresupuestosBean.class);
+    private static final Logger LOGGER = Logger.getLogger(EJBPresupuestosBean.class);
     @PersistenceContext
     private EntityManager em;  
-
-    /**
-     *
-     * @param xmlPresupuesto
-     * @return
-     */
     @Override
     @SuppressWarnings("FinallyDiscardsException")
     public long addBudgets(String xmlPresupuesto) {
@@ -56,13 +40,13 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             retorno = almacenarPresupuesto(datospresupuesto);
         }catch(NullPointerException npe)    {
             retorno =-4;
-            logger.error("Error en metodo addBuget en ejbpresupuestos "+npe.getMessage());
+            LOGGER.error("Error en metodo addBuget en ejbpresupuestos "+npe.getMessage());
         }catch(com.thoughtworks.xstream.io.StreamException ex)    {
             retorno =-3;
-            logger.error("Error en el armado del xml en metodo addBudgets "+ex.getMessage());
+            LOGGER.error("Error en el armado del xml en metodo addBudgets "+ex.getMessage());
         } catch (Exception e) {
             retorno =-1;
-            logger.error("Error en metodo addBudgets en EJBPresupuestosBean "+e.getMessage());
+            LOGGER.error("Error en metodo addBudgets en EJBPresupuestosBean "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -120,21 +104,16 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                         result=Long.valueOf(presupuesto.getIdPresupuesto());
         } catch (Exception e) {
             result=-2;
-            logger.error("Error en método almacenarPresupuesto EJBPresupuesto "+e.getMessage());
+            LOGGER.error("Error en método almacenarPresupuesto EJBPresupuesto "+e.getMessage());
         }finally{
             
             return result;
         }
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String selectAllPresupuestosJPA() {
-        String xmlpresupuesto = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<Lista>\n";
-        try {
+        String xmlpresupuesto = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<Lista>\n";        
             Query consulta  = em.createNamedQuery("Presupuesto.findPresupuestoOrderByFechaIdPresupesto");
             List<Presupuestos>lista = consulta.getResultList();
             if(lista.isEmpty()) {
@@ -143,175 +122,88 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                 for (Presupuestos presupuestos : lista) {
                     xmlpresupuesto+=presupuestos.toXML();
                 }
-            }
-        } catch (Exception e) {
-            
-            logger.error("Error en metodo selectAllPresupuestoJPA "+e.getMessage());
-        }finally{
+            }        
             xmlpresupuesto+="</Lista>\n";                    
-            return xmlpresupuesto;
-        }
+     return xmlpresupuesto;
+    
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
-    public Integer getRecordCount() {
-        int retorno =0;
-        try {
-            Query presupuesto = em.createNamedQuery("Presupuestos.findAll");
-            retorno =presupuesto.getResultList().size();
-        } catch (Exception e) {
-            retorno=-1;
-            logger.error("Error en getRecordCount en EJBPresupuestosBean ");
-        }finally{
-            
-            return retorno;
-        }
+    public Integer getRecordCount() {        
+        Query presupuesto = em.createNamedQuery("Presupuestos.findAll");
+        return presupuesto.getResultList().size();            
     }
 
- 
-
-    /**
-     *
-     * @param index
-     * @param record
-     * @return
-     */
     @Override
     public String verPresupuestosPaginados(Integer index, Integer record) {
         String result ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<Lista>\n";
-        try {           
-            Query paging = em.createQuery("Select p From Presupuestos p Order by p.fechapresupuesto desc,p.idPresupuesto desc",Presupuestos.class);
-            paging.setMaxResults(record);
-            paging.setFirstResult(index*record);
-            
-            List<Presupuestos>lista = paging.getResultList();
-            
-            if(lista.isEmpty()) {
-                result+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
-            } else{
-                
-                for (Presupuestos presupuestos : lista) {
-                  
-                    result+=presupuestos.toXML();
-                }
-                
-            }
-            
-        } catch (Exception e) {
-            result="Error";
-            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean ");
-        }finally{
+                    Query paging = em.createQuery("Select p From Presupuestos p Order by p.fechapresupuesto desc,p.idPresupuesto desc",Presupuestos.class);
+                          paging.setMaxResults(record);
+                          paging.setFirstResult(index*record);
+                        List<Presupuestos>lista = paging.getResultList();            
+                            if(lista.isEmpty()) {
+                                result+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                            } else{
+                                for (Presupuestos presupuestos : lista) {
+                                    result+=presupuestos.toXML();
+                                }
+                            }  
             result +="</Lista>\n";
-            
-            return result;
-        }
+        return result;
     }
-
-    /**
-     *
-     * @param idpresupuesto
-     * @return
-     */
+    
     @Override
     public String searchOneBudget(int idpresupuesto) {
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<Lista>\n";
-        try {
-            Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");            
-            paging.setParameter("1", idpresupuesto);
-            List<Presupuestos>lista = paging.getResultList();
-            if(lista.isEmpty()) {
-                result+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
-            } else{
-//                StringBuilder resultPresupuesto = new StringBuilder(10);
-//                for (Presupuestos presupuestos : lista) {
-//                    resultPresupuesto.append(presupuestos.toXML());
-//                }
-                result+=processPresupuesto(lista);
-            }
-        } catch (Exception e) {
-            
-            logger.error("Error en metodo verPresupuestos en EBPresupuestosBean "+e.getLocalizedMessage());
-        }finally{
+           Query paging =em.createNamedQuery("Presupuesto.findIdPresupuestoOrderByFechaIdPresupesto");            
+                paging.setParameter("1", idpresupuesto);
+                    List<Presupuestos>lista = paging.getResultList();
+                        if(lista.isEmpty()) {
+                            result+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                        } else{
+                                result+=processPresupuesto(lista);
+                        }
+    
             result+="</Lista>\n";
-            
-            return result;
-        }
+        return result;    
     }
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-
-
-    /**
-     *
-     * @param idPresupuesto
-     * @return
-     */
+    
     @Override
     public String ShowReportPresupuesto(Integer idPresupuesto) {
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+ "<Lista>\n";      
-        try {
-
+        
             Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.idPresupuesto = :idPresupuesto");
-            consulta.setParameter("idPresupuesto", idPresupuesto);
-            
-            List<Presupuestos>lista = consulta.getResultList();
-            if(!lista.isEmpty()){
-                xml+=processPresupuesto(lista);     
-                
-            }else {
-                xml+="<result>La consulta no arrojó resultados</result>";
-            }
-            
-        } catch (Exception e) {
-            logger.error("Error en metodo ShowReportPresupuesto ");
-        }finally{
-            
-        return xml+="</Lista>\n";
-        }
-    }  
+                consulta.setParameter("idPresupuesto", idPresupuesto);            
+                            List<Presupuestos>lista = consulta.getResultList();
+                            if(!lista.isEmpty()){
+                                xml+=processPresupuesto(lista);     
 
-    /**
-     *
-     * @param first
-     * @param last
-     * @return
-     */
-    public String ShowReportVerPresupuesto(Long first, Long last) {
+                            }else {
+                                xml+="<result>La consulta no arrojó resultados</result>";
+                            }           
+                return xml+="</Lista>\n";
         
-        
+    }  
+    
+    public String ShowReportVerPresupuesto(Long first, Long last) {  
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+ "<Lista>\n";
-        try {
-            long uno=first;
-            long dos=last;
-            String sql =   "Select p FROM Presupuestos p Where p.idPresupuesto BETWEEN :uno and :dos order by p.fechapresupuesto desc ,p.idPresupuesto desc";
-            
-             //----------------------------------------------------------------------------
-            Query consulta = em.createQuery(sql);
-            consulta.setParameter("uno", uno);
-            consulta.setParameter("dos", dos);
-            List<Presupuestos>lista = consulta.getResultList();
-           
-            if(!lista.isEmpty()){
-                
-                    xml+=processPresupuesto(lista);
-                
-                
-            }else {
-                xml+="<result>La consulta no arrojó resultados</result>";
-            }
-           
-        } catch (Exception e) {
-            logger.error("Error en metodo ShowReportVerPresupuesto ");
-            xml+="<result>Error en metodo ShowReportVerPresupuesto \n"+e.getLocalizedMessage()+"</result>";
-        }finally{            
-            return xml+"</Lista>";
-        }
+        long uno=first;
+        long dos=last;        
+                String sql =   "Select p FROM Presupuestos p Where p.idPresupuesto BETWEEN :uno and :dos "
+                    + "order by p.fechapresupuesto desc ,p.idPresupuesto desc";            
+                    Query consulta = em.createQuery(sql);
+                    consulta.setParameter("uno", uno);
+                    consulta.setParameter("dos", dos);
+                        List<Presupuestos>lista = consulta.getResultList();           
+                            if(!lista.isEmpty()){                
+                                    xml+=processPresupuesto(lista);
+                            }else {
+                                xml+="<result>La consulta no arrojó resultados</result>";
+                            }      
+            return xml+"</Lista>";        
     }
+    
     private StringBuilder processPresupuesto(List<Presupuestos>lista){
         StringBuilder xmlLoop = new StringBuilder(10);
                     for (Presupuestos presupuestos : lista) {
