@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.ejb;
 import com.melani.entity.Localidades;
 import com.melani.entity.Provincias;
@@ -9,21 +5,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
-/**
- *
- * @author Edgardo
- */
 @Stateless(name="ejb/EJBLocalidades")
 @WebService(serviceName="ServicesLocalidades",name="LocalidadesWs")
-@SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBLocalidades implements EJBLocalidadesRemote {
-    private static final Logger logger = Logger.getLogger(EJBLocalidades.class);
+    private static final Logger LOGGER = Logger.getLogger(EJBLocalidades.class);
      @PersistenceContext(unitName="EJBMelaniPU2")
      private EntityManager em;  
      /**
@@ -46,7 +36,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             }
             xml+=xmlLoop;
         } catch (Exception e) {            
-            logger.error("error en metodo searchLocXProvincia "+e.getMessage());
+            LOGGER.error("error en metodo searchLocXProvincia "+e.getMessage());
         }finally{
            return xml+="</Lista>\n";
         }
@@ -98,7 +88,7 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
             
         } catch (UnsupportedEncodingException e) {
             retorno =-1;
-            logger.error("Error en metodo addLocalidades "+e.getMessage());
+            LOGGER.error("Error en metodo addLocalidades "+e.getMessage());
        }finally{
             
             return retorno;
@@ -113,33 +103,26 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
      */
     @Override
     public String searchAllLocalidadesByIdProvincia(Short idProvincia) {
-         String resultado = "<Lista>\n";
-         try {
+         String resultado = "<Lista>\n";        
              Query consulta = em.createNamedQuery("Localidades.findByLatLongNotNull");
                    consulta.setParameter("1", idProvincia);
              List<Localidades>lista = consulta.getResultList();
-             if(lista.isEmpty()) {
-                 resultado+="NO HAY LOCALIDADES CARGADAS en "+em.find(Provincias.class, idProvincia).getProvincia();
-             } else{
-                 StringBuilder xmlLooop = new StringBuilder(10);
-                 for (Localidades localidades : lista) {
-                     xmlLooop.append(localidades.toXML());
-                 }
-                 resultado+=xmlLooop;
-             }
-        } catch (Exception e) {
-            logger.error("Error en metodo searchAllLocalidadesByIdProvincia "+e.getMessage());
-            resultado+="<error>Se produjo un error</error>";
-        }finally{
+                        if(lista.isEmpty()) {
+                            resultado+="NO HAY LOCALIDADES CARGADAS en "+em.find(Provincias.class, idProvincia).getProvincia();
+                        } else{
+                            StringBuilder xmlLooop = new StringBuilder(10);
+                            for (Localidades localidades : lista) {
+                                xmlLooop.append(localidades.toXML());
+                            }
+                            resultado+=xmlLooop;
+                        }        
               resultado+="</Lista>\n";              
-            return resultado;
-        }
+            return resultado;        
     }
 
     @Override
     public short addLatitudLongitud(long idProvincia, long idLocalidad, String latitud, String longitud) {
-        Localidades localidad = em.find(Localidades.class, idLocalidad);
-        
+        Localidades localidad = em.find(Localidades.class, idLocalidad);        
         localidad.setLatitud(latitud);
         localidad.setLongitud(longitud);
         em.flush();

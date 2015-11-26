@@ -1,91 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.ejb;
 import com.melani.entity.Productos;
 import javax.ejb.Remote;
-/**
- *
- * @author Edgardo
- */
+
 @Remote
-public interface EJBProductosRemote {
-    
-    /**
-     *
-     * @param idproducto
-     * @param cantidad
-     * @param precio
-     * @param idusuario
-     * @return
-     */
+public interface EJBProductosRemote {   
     long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario);
-
-//    /**
-//     *
-//     * @param idProducto
-//     * @return
-//     */
-//    String leerImagenBaseDatos(long idProducto);
-
-    /**
-     *
-     * @param xmlProducto
-     * @return
-     */
     String addProducto(String xmlProducto);
-
-    /**
-     *
-     * @param idproducto
-     * @return
-     */
     String selectOneProducto(long idproducto);
-
-    /**
-     *
-     * @param producto
-     * @return
-     */
     Productos agregarProductos(Productos producto);
-
-    /**
-     *
-     * @return
-     */
     String searchAllProductos();
-
-    /**
-     *
-     * @param idProducto
-     * @param cantidad
-     * @param idUsuario
-     * @return
-     */
     int controlStockProducto(long idProducto, int cantidad, long idUsuario);
-    
-    /**
-     *
-     * @param xmlProducto
-     * @return
-     */
     String actualizarProducto(String xmlProducto);
-
-    /**
-     *
-     * @param id_producto
-     * @param longitudImagen
-     * @param nameImage
-     * @param magnitud
-     * @return
-     */
     int grabarImagen(long id_producto, byte[] longitudImagen,String nameImage,String magnitud);
-
-    /**
-     *
-     * @param idProducto
-     * @return
-     */
     byte[] obtenerImagenProducto(long idProducto);
 }

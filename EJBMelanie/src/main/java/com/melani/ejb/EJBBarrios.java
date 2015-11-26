@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBBarrios")
 @WebService(serviceName="ServiceBarrios",name="BarriosWs")
-//@SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBBarrios implements EJBBarriosRemote {
    private static final Logger LOGGER = Logger.getLogger(EJBBarrios.class);
    @PersistenceContext

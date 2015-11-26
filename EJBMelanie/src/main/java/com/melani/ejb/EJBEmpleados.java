@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.ejb;
 import com.melani.entity.EmpleadoParttime;
 import com.melani.entity.Empleados;
@@ -27,17 +23,8 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
-
-/**
- *
- * @author Edgardo
- */
 @Stateless(name="ejb/EJBEmpleados")
 @WebService(serviceName="ServicesEmpleados",name="EmpleadosWs")
-@SOAPBinding(style=SOAPBinding.Style.RPC)
-/*
-Esta clase es la encargada de administrar la logica de negocio con todo lo relacionado a los Empleados
-*/
 public class EJBEmpleados implements EJBEmpleadosRemote {
      private static final Logger logger = Logger.getLogger(EJBEmpleados.class);
     @PersistenceContext(unitName="EJBMelaniPU2")

@@ -14,14 +14,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBPresupuestosBean")
 @WebService(serviceName="ServicesPresupuestos",name="PresupuestoWs")
-@SOAPBinding(style=SOAPBinding.Style.RPC)
 public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     private static final Logger LOGGER = Logger.getLogger(EJBPresupuestosBean.class);
     @PersistenceContext
@@ -29,31 +27,18 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     @Override
     @SuppressWarnings("FinallyDiscardsException")
     public long addBudgets(String xmlPresupuesto) {
-        long retorno =0L;
-        try {
+        long retorno;        
             XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("presupuesto", DatosPresupuestos.class);
                 xstream.alias("detallepresupuesto", DetallesPresupuesto.class);
                 xstream.alias("itemdetallespresupuesto", ItemDetallesPresupuesto.class);
                 xstream.addImplicitCollection(DetallesPresupuesto.class, "lista");
             DatosPresupuestos datospresupuesto = (DatosPresupuestos) xstream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML(xmlPresupuesto));
-            retorno = almacenarPresupuesto(datospresupuesto);
-        }catch(NullPointerException npe)    {
-            retorno =-4;
-            LOGGER.error("Error en metodo addBuget en ejbpresupuestos "+npe.getMessage());
-        }catch(com.thoughtworks.xstream.io.StreamException ex)    {
-            retorno =-3;
-            LOGGER.error("Error en el armado del xml en metodo addBudgets "+ex.getMessage());
-        } catch (Exception e) {
-            retorno =-1;
-            LOGGER.error("Error en metodo addBudgets en EJBPresupuestosBean "+e.getMessage());
-        }finally{
-            return retorno;
-        }
+            retorno = almacenarPresupuesto(datospresupuesto);        
+            return retorno;        
     }
     private long almacenarPresupuesto(DatosPresupuestos datospresupuesto) {
-        long result = 0L;
-        try {
+        long result;        
             GregorianCalendar gc = new GregorianCalendar();
             GregorianCalendar fvalidez = new GregorianCalendar();
             fvalidez.add(GregorianCalendar.DATE,20);
@@ -73,9 +58,6 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                             presupuesto.setDescuentoresto(BigDecimal.valueOf(datospresupuesto.getDescuentoresto()));
                             presupuesto.setPorcetajedescuentoTOTAL(BigDecimal.valueOf(datospresupuesto.getPorc_descuento_total()));
                             em.persist(presupuesto);
-                            
-            //++++++++++++++++++++++++++Alamcenar Detalle del Presupuesto+++++++++++++++++++++++++++
-            //**************************************************************************************
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
             for (ItemDetallesPresupuesto itemDetallesPresupuesto : lista) {
                         Productos producto = em.find(Productos.class, Long.valueOf(itemDetallesPresupuesto.getFk_id_producto()));
@@ -101,31 +83,24 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                                 consulta1.setParameter("idDpFk", presupuesto.getIdPresupuesto());
                                 presupuesto.setDetallepresupuestosList(consulta1.getResultList());
                                 em.merge(presupuesto);
-                        result=Long.valueOf(presupuesto.getIdPresupuesto());
-        } catch (Exception e) {
-            result=-2;
-            LOGGER.error("Error en método almacenarPresupuesto EJBPresupuesto "+e.getMessage());
-        }finally{
-            
-            return result;
-        }
+                        result=Long.valueOf(presupuesto.getIdPresupuesto());            
+            return result;        
     }
 
     @Override
     public String selectAllPresupuestosJPA() {
         String xmlpresupuesto = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<Lista>\n";        
             Query consulta  = em.createNamedQuery("Presupuesto.findPresupuestoOrderByFechaIdPresupesto");
-            List<Presupuestos>lista = consulta.getResultList();
-            if(lista.isEmpty()) {
-                xmlpresupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
-            } else{
-                for (Presupuestos presupuestos : lista) {
-                    xmlpresupuesto+=presupuestos.toXML();
-                }
-            }        
-            xmlpresupuesto+="</Lista>\n";                    
-     return xmlpresupuesto;
-    
+                        List<Presupuestos>lista = consulta.getResultList();
+                        if(lista.isEmpty()) {
+                            xmlpresupuesto+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
+                        } else{
+                            for (Presupuestos presupuestos : lista) {
+                                xmlpresupuesto+=presupuestos.toXML();
+                            }
+                        }        
+                        xmlpresupuesto+="</Lista>\n";                    
+     return xmlpresupuesto;    
     }
 
     @Override
@@ -171,8 +146,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     
     @Override
     public String ShowReportPresupuesto(Integer idPresupuesto) {
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+ "<Lista>\n";      
-        
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+ "<Lista>\n";  
             Query consulta = em.createQuery("SELECT p FROM Presupuestos p WHERE p.idPresupuesto = :idPresupuesto");
                 consulta.setParameter("idPresupuesto", idPresupuesto);            
                             List<Presupuestos>lista = consulta.getResultList();
@@ -182,8 +156,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                             }else {
                                 xml+="<result>La consulta no arrojó resultados</result>";
                             }           
-                return xml+="</Lista>\n";
-        
+                return xml+="</Lista>\n";     
     }  
     
     public String ShowReportVerPresupuesto(Long first, Long last) {  

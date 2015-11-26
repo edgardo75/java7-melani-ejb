@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -30,10 +26,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- *
- * @author Edgardo
- */
+
 @Entity
 @Table(name = "NOTADEPEDIDO")
 @XmlRootElement
