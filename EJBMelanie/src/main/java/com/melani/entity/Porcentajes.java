@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -20,10 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-/**
- *
- * @author Edgardo
- */
+
 @Entity
 @Table(name = "PORCENTAJES")
 @XmlRootElement
@@ -51,81 +44,43 @@ public class Porcentajes implements Serializable {
     @OneToMany(mappedBy = "fkidporcentajenotaId")
     private List<Notadepedido> notadepedidoList;
 
-    /**
-     *
-     */
     public Porcentajes() {
     }
 
-    /**
-     *
-     * @param idPorcentajes
-     */
     public Porcentajes(Short idPorcentajes) {
         this.idPorcentajes = idPorcentajes;
     }
 
-    /**
-     *
-     * @return
-     */
     public Short getIdPorcentajes() {
         return idPorcentajes;
     }
 
-    /**
-     *
-     * @param idPorcentajes
-     */
     public void setIdPorcentajes(Short idPorcentajes) {
         this.idPorcentajes = idPorcentajes;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public Double getValor() {
         return valor;
     }
 
-    /**
-     *
-     * @param valor
-     */
+   
     public void setValor(Double valor) {
         this.valor = valor;
     }
 
-    /**
-     *
-     * @return
-     */
     @XmlTransient
     public List<Notadepedido> getNotadepedidoList() {
         return Collections.unmodifiableList(notadepedidoList);
     }
 
-    /**
-     *
-     * @param notadepedidoList
-     */
     public void setNotadepedidoList(List<Notadepedido> notadepedidoList) {
         this.notadepedidoList = notadepedidoList;
     }
@@ -136,8 +91,7 @@ public class Porcentajes implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Porcentajes)) {
             return false;
         }

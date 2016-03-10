@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,10 +21,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- *
- * @author Edgardo
- */
+
 @Entity
 @Table(name="PRESUPUESTOS")
 @NamedQueries({@NamedQuery(name = "Presupuestos.findAll",
@@ -90,266 +83,135 @@ public class Presupuestos implements Serializable {
     @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     private List<Detallespresupuesto> detallepresupuestosList;
 
-    /**
-     *
-     */
     public Presupuestos() {
     }
 
-    /**
-     *
-     * @param idPresupuesto
-     */
     public Presupuestos(Integer idPresupuesto) {
         this.idPresupuesto = idPresupuesto;
     }
 
-    /**
-     *
-     * @param idPresupuesto
-     * @param idUsuarioFk
-     */
     public Presupuestos(Integer idPresupuesto, int idUsuarioFk) {
         this.idPresupuesto = idPresupuesto;
         this.idUsuarioFk = idUsuarioFk;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getIdPresupuesto() {
         return idPresupuesto;
     }
 
-    /**
-     *
-     * @param idPresupuesto
-     */
     public void setIdPresupuesto(Integer idPresupuesto) {
         this.idPresupuesto = idPresupuesto;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFechapresupuesto() {
         return fechapresupuesto;
     }
 
-    /**
-     *
-     * @param fechapresupuesto
-     */
     public void setFechapresupuesto(Date fechapresupuesto) {
         this.fechapresupuesto = fechapresupuesto;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getValidez() {
         return validez;
     }
 
-    /**
-     *
-     * @param validez
-     */
     public void setValidez(Date validez) {
         this.validez = validez;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getTotal() {
         return total;
     }
 
-    /**
-     *
-     * @param total
-     */
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     *
-     * @param observaciones
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getIdUsuarioFk() {
         return idUsuarioFk;
     }
 
-    /**
-     *
-     * @param idUsuarioFk
-     */
     public void setIdUsuarioFk(int idUsuarioFk) {
         this.idUsuarioFk = idUsuarioFk;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Detallespresupuesto> getDetallepresupuestosList() {
         return Collections.unmodifiableList(detallepresupuestosList);
     }
 
-    /**
-     *
-     * @param detallepresupuestosList
-     */
     public void setDetallepresupuestosList(List<Detallespresupuesto> detallepresupuestosList) {
         this.detallepresupuestosList = detallepresupuestosList;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getTotalapagar() {
         return totalapagar;
     }
 
-    /**
-     *
-     * @param totalapagar
-     */
     public void setTotalapagar(BigDecimal totalapagar) {
         this.totalapagar = totalapagar;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getApellido() {
         return apellido;
     }
 
-    /**
-     *
-     * @param apellido
-     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getIva() {
         return iva;
     }
 
-    /**
-     *
-     * @param iva
-     */
     public void setIva(BigDecimal iva) {
         this.iva = iva;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     *
-     * @param nombre
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPorcetajedescuentoTOTAL() {
         return porcetajedescuentoTOTAL;
     }
 
-    /**
-     *
-     * @param porcetajedescuento
-     */
     public void setPorcetajedescuentoTOTAL(BigDecimal porcetajedescuento) {
         this.porcetajedescuentoTOTAL = porcetajedescuento;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getDescuentoresto() {
         return descuentoresto;
     }
 
-    /**
-     *
-     * @param descuentoresto
-     */
     public void setDescuentoresto(BigDecimal descuentoresto) {
         this.descuentoresto = descuentoresto;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPorcentajerecargo() {
         return porcentajerecargo;
     }
 
-    /**
-     *
-     * @param porcentajerecargo
-     */
+
     public void setPorcentajerecargo(BigDecimal porcentajerecargo) {
         this.porcentajerecargo = porcentajerecargo;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getRecargototal() {
         return recargototal;
     }
 
-    /**
-     *
-     * @param recargototal
-     */
     public void setRecargototal(BigDecimal recargototal) {
         this.recargototal = recargototal;
     }
@@ -360,8 +222,7 @@ public class Presupuestos implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Presupuestos)) {
             return false;
         }
@@ -373,10 +234,6 @@ public class Presupuestos implements Serializable {
         return "entidades.Presupuestos[idPresupuesto=" + idPresupuesto + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         StringBuilder xml = new StringBuilder("<Item>\n").append("<id>").append(this.getIdPresupuesto()).append("</id>\n");

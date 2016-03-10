@@ -3,17 +3,9 @@ import com.melani.entity.ExistenciasProductos;
 import com.melani.entity.ImagenesProductos;
 import com.melani.entity.Productos;
 import com.melani.utils.DatosProductos;
+import com.melani.utils.Imagen;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -21,25 +13,21 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
 import javax.ejb.Stateless;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
+
 @Stateless(name="ejb/EJBProductos")
 @WebService(serviceName="ServiceProductos",name="ProductosWs")
 public class EJBProductos implements EJBProductosRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBProductos.class);
-    static final String PATH_IMAGENES = System.getProperty("user.dir")+File.separator+"var"+File.separator+"webapp"+File.separator+"upload"+File.separator;    
+    private static final Logger LOGGER = Logger.getLogger(EJBProductos.class);    
     @PersistenceContext(unitName="EJBMelaniPU2")    
-    private EntityManager em;     
-        
+    private EntityManager em; 
+    private final Imagen imagen = new Imagen();
+   
     @Override
     public long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario) {
         long retorno;        
@@ -58,9 +46,9 @@ public class EJBProductos implements EJBProductosRemote {
                     }else {
                         existencias.setPreciounitario(BigDecimal.valueOf(0));
                 }
-                        Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :sid");
-                            consulta.setParameter("sid", producto.getSid());
-                            List<ExistenciasProductos>lista = consulta.getResultList();
+                        Query obtenerLasExistenciasDelProducto = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :sid");
+                            obtenerLasExistenciasDelProducto.setParameter("sid", producto.getSid());
+                            List<ExistenciasProductos>lista = obtenerLasExistenciasDelProducto.getResultList();
                                 producto.setExistenciasProductoss(lista);
                                 retorno = producto.getSid();
                     em.merge(producto);
@@ -84,24 +72,24 @@ public class EJBProductos implements EJBProductosRemote {
     }
     
     private long agregarProducto(Productos producto, String xmlProducto) {
-        long retorno = 0L;
-        String descripcion;
+        long retorno;
+        String descripcionDeProducto;
         String codigo;       
              XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("producto", DatosProductos.class);
                 DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);            
                 GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());            
-            descripcion=datosprod.getDescripcion();
-                codigo =datosprod.getCodproducto();
-                if(!descripcion.isEmpty()){
+                    descripcionDeProducto=datosprod.getDescripcion();
+                    codigo =datosprod.getCodproducto();
+                if(!descripcionDeProducto.isEmpty()){
                     if(codigo.length()>0){            
                 producto =em.find(Productos.class, datosprod.getIdproducto());
-                Query consulta1 = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.codproducto) LIKE LOWER(:codigoproducto)");
-                consulta1.setParameter("codigoproducto", codigo.concat("%"));
-                Query consulta = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.descripcion) LIKE LOWER(:descripcion)");
-                consulta.setParameter("descripcion", descripcion.concat("%"));
-                    if(consulta1.getResultList().isEmpty()){
-                        if(consulta.getResultList().isEmpty()){
+                Query buscarProductoPorCodigoDeProducto = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.codproducto) LIKE LOWER(:codigoproducto)");
+                buscarProductoPorCodigoDeProducto.setParameter("codigoproducto", codigo.concat("%"));
+                Query obtenerProductoPorDescripcion = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.descripcion) LIKE LOWER(:descripcion)");
+                obtenerProductoPorDescripcion.setParameter("descripcion", descripcionDeProducto.concat("%"));
+                    if(buscarProductoPorCodigoDeProducto.getResultList().isEmpty()){
+                        if(obtenerProductoPorDescripcion.getResultList().isEmpty()){
                             if(producto==null){                            
                                     producto = new Productos();
                                     producto.setCantidadDisponible(BigInteger.valueOf(datosprod.getCantidaddisponible()));
@@ -189,7 +177,7 @@ public class EJBProductos implements EJBProductosRemote {
 
     @Override
     public String searchAllProductos() {
-        String xml = "NADA";        
+        String xml;        
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");            
             Query query = em.createNamedQuery("Productos.findAll");
             List<Productos> lista = query.getResultList();
@@ -210,10 +198,7 @@ public class EJBProductos implements EJBProductosRemote {
                                     xmlLoop.append("<fecha>").append(sdf.format(prod.getFecha())).append("</fecha>\n");
                                     xmlLoop.append("<precio>").append(prod.getPrecioUnitario()).append("</precio>\n");
                                     xmlLoop.append("<img>").append(prod.getImagenesProductosList().size()).append("</img>\n");
-                                    xmlLoop.append("</producto>\n");
-                                   
-                        
-                            
+                                    xmlLoop.append("</producto>\n");                 
                         } 
                         xml+=xmlLoop;
                         xml+="</Lista>\n";
@@ -223,7 +208,7 @@ public class EJBProductos implements EJBProductosRemote {
 
     @Override
     public int controlStockProducto(long idProducto, int cantidad, long idUsuario) {
-        int resultado = 0;        
+        int resultado;        
                         GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
                         Productos producto = em.find(Productos.class, idProducto);
                         producto.setCantidadDisponible(producto.getCantidadDisponible().subtract(BigInteger.valueOf(cantidad)));                       
@@ -235,9 +220,9 @@ public class EJBProductos implements EJBProductosRemote {
                                     existencias.setPreciounitario(producto.getPrecioUnitario());
                                     existencias.setProductos(em.find(Productos.class, idProducto));
                                     em.persist(existencias);
-                                        Query consulta = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :idproducto");
-                                        consulta.setParameter("idproducto", producto.getSid());
-                                            List<ExistenciasProductos>lista = consulta.getResultList();
+                                        Query obtenerExistenciasDeUnProducto = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :idproducto");
+                                        obtenerExistenciasDeUnProducto.setParameter("idproducto", producto.getSid());
+                                            List<ExistenciasProductos>lista = obtenerExistenciasDeUnProducto.getResultList();
                                                 producto.setExistenciasProductoss(lista);
                         em.persist(producto);
                         resultado = producto.getCantidadDisponible().intValue();                
@@ -254,11 +239,11 @@ public class EJBProductos implements EJBProductosRemote {
                     retorno+="<id>"+"</id>\n";
                     retorno+="</producto>\n";
                     retorno+="</Lista>\n";        
-            return retorno;
-    
+            return retorno;    
     }
+    
     private long updateProducto(Productos producto, String xmlProducto) {
-         long retorno = 0L;        
+         long retorno;        
              XStream xstream = new XStream();
                 xstream.alias("producto", DatosProductos.class);
                 DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);
@@ -279,97 +264,49 @@ public class EJBProductos implements EJBProductosRemote {
                                                 existencias.setIdUsuario(datosprod.getIdusuario());
                                                 em.persist(existencias);                                                                        
                                                 retorno = producto.getSid();       
-            return retorno;
-        
+            return retorno;        
     } 
     
     @Override
     public int grabarImagen(long id_producto, byte[] longitudImagen,String nameImage,String magnitud) {
-        int retorno = 0;
-        try {
-            
-            String extension=nameImage.substring(nameImage.indexOf(".")+1, nameImage.length());       
-            String nameImg=nameImage.substring(0, nameImage.indexOf("."));
-            Productos producto = em.find(Productos.class, id_producto);
-            ByteArrayInputStream bis = new ByteArrayInputStream(longitudImagen);
-            Iterator<?> readers = ImageIO.getImageReadersByFormatName(extension);
-            ImageReader reader = (ImageReader) readers.next();
-            Object source = bis;
-            ImageInputStream iis = ImageIO.createImageInputStream(source);
-            reader.setInput(iis, true);
-            ImageReadParam param = reader.getDefaultReadParam();
-            Image image = reader.read(0, param);
-            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2 = bufferedImage.createGraphics();
-            g2.drawImage(image, null, null);
-            File imageFile = new File(PATH_IMAGENES+nameImage);
-            ImageIO.write(bufferedImage, extension, imageFile);
-            retorno= grabarPathImagenEnBaseDeDatos(producto,imageFile.getPath(),extension,magnitud,nameImg);
-                   
-        } catch (IOException ex) {
-            LOGGER.error("ERROR AL PROCESAR LA IMAGEN "+ex.getMessage());
-        }
+        int retorno;
+        Productos producto = em.find(Productos.class, id_producto);
+        retorno= grabarPathImagenEnBaseDeDatos(producto,imagen.procesarImagen(longitudImagen, nameImage, magnitud));
         return retorno; 
     }
 
     @Override
-    public byte[] obtenerImagenProducto(long idProducto) {
-        byte[] retorno = new byte[5];              
-            Query consulta = em.createNamedQuery("ImagenesProductos.findById");
-                consulta.setParameter("sid", idProducto);
-            List<ImagenesProductos>lista = consulta.getResultList();
-            String pathImage = "";
-            if(lista.size()>0){  
-                    for(ImagenesProductos imagen:lista){
-                           pathImage=PATH_IMAGENES+imagen.getNombreImagen()+"."+imagen.getExtension();             
-                    }
-                                    //Creo objeto file
-                                    File file = new File(pathImage);
-                                    //Objengo los bytes, tamaño del archivo o imagen
-                                    if(file.exists()){
-                                        try {
-                                            retorno = procesarImagen(file);
-                                        } catch (IOException ex) {
-                                            LOGGER.error("Error en archivo de imagen");
-                                        }
-                                    }else{
-                                            try {
-                                                  retorno = procesarImagen(new File(PATH_IMAGENES+"android-logo-400x300.jpg"));
-                                            } catch (IOException ex) {
-                                                   LOGGER.error("Error al procesar imagen por defecto");
-                                            }
-                                    }
-            }            
-            return retorno;        
+    public byte[] obtenerImagenProducto(long idProducto) {        
+            Query buscarImagenesDelProducto = em.createNamedQuery("ImagenesProductos.findById");
+                buscarImagenesDelProducto.setParameter("sid", idProducto);
+            List<ImagenesProductos>lista = buscarImagenesDelProducto.getResultList();
+            return imagen.obtenerImagenByteArray(lista);   
     }
-    
-    private int grabarPathImagenEnBaseDeDatos(Productos producto, String path, String extension, String magnitud, String nameImage) {
+
+    private int grabarPathImagenEnBaseDeDatos(Productos producto, String[] procesarImagen) {
         int retorno;        
             ImagenesProductos imgProd =new ImagenesProductos();            
-                    imgProd.setExtension(extension);            
-                    imgProd.setMagnitud(magnitud);            
-                    imgProd.setNombreImagen(nameImage);            
-                    imgProd.setPathImagenEnDisco(path);            
+                    imgProd.setExtension(procesarImagen[1]);            
+                    imgProd.setMagnitud(procesarImagen[2]);            
+                    imgProd.setNombreImagen(procesarImagen[3]);            
+                    imgProd.setPathImagenEnDisco(procesarImagen[0]);            
                     imgProd.setProductos(producto);            
                     em.persist(imgProd);  
-                Query consulta = em.createNamedQuery("ImagenesProductos.findByIdProduct");
-                    consulta.setParameter("idProducto", producto.getSid());
-               List<ImagenesProductos>lista = consulta.getResultList();               
+                Query obtenerImagenPorIdProducto = em.createNamedQuery("ImagenesProductos.findByIdProduct");
+                    obtenerImagenPorIdProducto.setParameter("idProducto", producto.getSid());
+               List<ImagenesProductos>lista = obtenerImagenPorIdProducto.getResultList();               
                producto.setImagenesProductosList(lista);               
                em.merge(producto);            
             retorno=Integer.valueOf(String.valueOf(producto.getSid())); 
-            return retorno;        
+            return retorno;
     }
-
-    private byte[] procesarImagen(File file) throws FileNotFoundException, IOException {
-        ByteArrayOutputStream bos;
-        FileInputStream fis;
-                        fis = new FileInputStream(file); 
-                        bos = new ByteArrayOutputStream();
-                        byte [] buffer = new byte[1_024];
-                        for(int readNum;(readNum=fis.read(buffer))!=-1;){
-                             bos.write(buffer,0,readNum);
-                         }                                                 
-        return bos.toByteArray();
+    public String actualizarPathImagenesEnBaseDeDatos(){       
+            Query listaDeImagenes = em.createQuery("Select i FROM ImagenesProductos i");        
+                List<ImagenesProductos> listado = listaDeImagenes.getResultList();        
+            for(ImagenesProductos imagenesGuardadas:listado){        
+                imagenesGuardadas.setPathImagenEnDisco(imagen.pathImagenes()+imagenesGuardadas.getNombreImagen());
+            }        
+            em.flush();
+        return "Echo";
     }
 }

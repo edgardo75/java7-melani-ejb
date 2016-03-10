@@ -117,7 +117,7 @@ public class Notadepedido implements Serializable {
     @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
     @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true,cascade = CascadeType.REMOVE)
-    private List<Historiconotapedido> historiconotapedidoList;
+    private List<HistoricoNotaPedido> historiconotapedidoList;
     @JoinColumn(name = "IDTARJETAFK_IDTARJETA", referencedColumnName = "IDTARJETA")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private TarjetasCreditoDebito idTarjetaFk;
@@ -533,7 +533,7 @@ public class Notadepedido implements Serializable {
      * @return
      */
     @XmlTransient
-    public List<Historiconotapedido> getHistoriconotapedidoList() {
+    public List<HistoricoNotaPedido> getHistoriconotapedidoList() {
         return Collections.unmodifiableList(historiconotapedidoList);
     }
 
@@ -541,7 +541,7 @@ public class Notadepedido implements Serializable {
      *
      * @param historiconotapedidoList
      */
-    public void setHistoriconotapedidoList(List<Historiconotapedido> historiconotapedidoList) {
+    public void setHistoriconotapedidoList(List<HistoricoNotaPedido> historiconotapedidoList) {
         this.historiconotapedidoList = historiconotapedidoList;
     }
 
@@ -802,7 +802,7 @@ public class Notadepedido implements Serializable {
                                     item+="</detallehistorico>\n";
                                 } else{
                                     StringBuilder detallesHistorico = new StringBuilder(10);
-                                    for (Historiconotapedido historico : this.getHistoriconotapedidoList()) {
+                                    for (HistoricoNotaPedido historico : this.getHistoriconotapedidoList()) {
                                         detallesHistorico.append(historico.toXML());
                                     }
                                     item+=detallesHistorico.append("</detallehistorico>\n");

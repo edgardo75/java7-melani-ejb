@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -14,11 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-/**
- * A Entity EmpresaTelefonia
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "EMPRESATELEFONIA")
 @NamedQueries({
@@ -36,64 +28,33 @@ public class EmpresaTelefonia implements Serializable {
     @OneToMany( mappedBy = "idEmpresatelefonia")
     private List<Telefonos> telefonosList;
 
-    /**
-     *
-     */
     public EmpresaTelefonia() {
     }
 
-    /**
-     *
-     * @param idEmpTelefonia
-     */
     public EmpresaTelefonia(Short idEmpTelefonia) {
         this.idEmpTelefonia = idEmpTelefonia;
     }
 
-    /**
-     *
-     * @return
-     */
     public Short getidEmpTelefonia() {
         return idEmpTelefonia;
     }
 
-    /**
-     *
-     * @param idEmpTelefonia
-     */
     public void setidEmpTelefonia(Short idEmpTelefonia) {
         this.idEmpTelefonia = idEmpTelefonia;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     *
-     * @param nombre
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Telefonos> getTelefonosList() {
         return Collections.unmodifiableList(telefonosList);
     }
 
-    /**
-     *
-     * @param telefonosList
-     */
     public void setTelefonosList(List<Telefonos> telefonosList) {
         this.telefonosList = telefonosList;
     }
@@ -104,8 +65,7 @@ public class EmpresaTelefonia implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof EmpresaTelefonia)) {
             return false;
         }
@@ -113,10 +73,6 @@ public class EmpresaTelefonia implements Serializable {
         return (this.idEmpTelefonia != null || other.idEmpTelefonia == null) && (this.idEmpTelefonia == null || this.idEmpTelefonia.equals(other.idEmpTelefonia));
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         String item = "<item>\n"+
                         "<id>"+this.getidEmpTelefonia()+"</id>\n"+

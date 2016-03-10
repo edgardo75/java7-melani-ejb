@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -21,11 +17,7 @@ import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- * A Entity Localidades
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "LOCALIDADES")
 @NamedQueries({
@@ -62,80 +54,41 @@ public class Localidades implements Serializable {
     @NotNull
     private String longitud;
 
-    /**
-     *
-     */
     public Localidades() {
     }
 
-    /**
-     *
-     * @param idLocalidad
-     */
     public Localidades(Long idLocalidad) {
         this.idLocalidad = idLocalidad;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdLocalidad() {
         return idLocalidad;
     }
 
-    /**
-     *
-     * @param idLocalidad
-     */
     public void setIdLocalidad(Long idLocalidad) {
         this.idLocalidad = idLocalidad;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getCodigopostal() {
         return codigopostal;
     }
 
-    /**
-     *
-     * @param codigopostal
-     */
     public void setCodigopostal(Integer codigopostal) {
         this.codigopostal = codigopostal;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Domicilios> getDomiciliosList() {
         return Collections.unmodifiableList(domiciliosList);
     }
 
-    /**
-     *
-     * @param domiciliosList
-     */
     public void setDomiciliosList(List<Domicilios> domiciliosList) {
         this.domiciliosList = domiciliosList;
     }
@@ -156,18 +109,10 @@ public class Localidades implements Serializable {
         this.longitud = longitud;
     }
 
-    /**
-     *
-     * @return
-     */
     public Provincias getProvincias() {
         return provincias;
     }
 
-    /**
-     *
-     * @param provincias
-     */
     public void setProvincias(Provincias provincias) {
         this.provincias = provincias;
     }
@@ -178,8 +123,7 @@ public class Localidades implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Localidades)) {
             return false;
         }
@@ -191,10 +135,6 @@ public class Localidades implements Serializable {
         return "entity.Localidades[idLocalidad=" + idLocalidad + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){    
         String item  = "<localidades>\n<id>" + this.getIdLocalidad() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "<codigopostal>" + this.getCodigopostal() + "</codigopostal>\n" + "<latitud>" + this.getLatitud() + "</latitud>\n" + "<longitud>" + this.getLongitud() + "</longitud>\n" + "</localidades>\n";       
         return item;      

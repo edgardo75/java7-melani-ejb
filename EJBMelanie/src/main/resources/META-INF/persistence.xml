@@ -18,7 +18,6 @@
     <class>com.melani.entity.HistPersonasDomicilios</class>
     <class>com.melani.entity.HistPersonasTelefonos</class>
     <class>com.melani.entity.HistoricoDatosClientes</class>
-    <class>com.melani.entity.Historiconotapedido</class>
     <class>com.melani.entity.ImagenesProductos</class>
     <class>com.melani.entity.Localidades</class>
     <class>com.melani.entity.Notadepedido</class>
@@ -32,8 +31,9 @@
     <class>com.melani.entity.Provincias</class>
     <class>com.melani.entity.TarjetasCreditoDebito</class>
     <class>com.melani.entity.Telefonos</class>
-    <class>com.melani.entity.Tiposdocumento</class>
-    <class>com.melani.entity.Tipostelefono</class>
+    <class>com.melani.entity.HistoricoNotaPedido</class>
+    <class>com.melani.entity.TiposDocumento</class>
+    <class>com.melani.entity.TiposTelefono</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,11 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-/**
- * A Entity PersonasDomicilios
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "PERSONASDOMICILIOS")
 @NamedQueries({
@@ -33,9 +24,6 @@ import javax.persistence.TemporalType;
 public class PersonasDomicilios implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     *
-     */
     @EmbeddedId
     protected PersonasdomiciliosPK personasdomiciliosPK;
      @Column(name = "ESTADO", length = 20)
@@ -50,115 +38,60 @@ public class PersonasDomicilios implements Serializable {
     @ManyToOne(optional=false,fetch = FetchType.LAZY)
     private Domicilios domicilioss;
 
-    /**
-     *
-     */
     public PersonasDomicilios() {
     }
 
-    /**
-     *
-     * @param personasdomiciliosPK
-     */
     public PersonasDomicilios(PersonasdomiciliosPK personasdomiciliosPK) {
         this.personasdomiciliosPK = personasdomiciliosPK;
     }
 
-    /**
-     *
-     * @param id
-     * @param idPersona
-     */
     public PersonasDomicilios(Long id,Long idPersona){
         this.personasdomiciliosPK = new PersonasdomiciliosPK(id,idPersona);
     }
 
-    /**
-     *
-     * @return
-     */
     public Domicilios getDomicilioss() {
         return domicilioss;
     }
 
-    /**
-     *
-     * @param domicilioss
-     */
     public void setDomicilioss(Domicilios domicilioss) {
         this.domicilioss = domicilioss;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getEstado() {
         return estado;
     }
 
-    /**
-     *
-     * @param estado
-     */
     public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFechaingresovivienda() {
         return fechaingresovivienda;
     }
 
-    /**
-     *
-     * @param fechaingresovivienda
-     */
     public void setFechaingresovivienda(Date fechaingresovivienda) {
         this.fechaingresovivienda = fechaingresovivienda;
     }
 
-    /**
-     *
-     * @return
-     */
     public Personas getPersonas() {
         return personas;
     }
 
-    /**
-     *
-     * @param personas
-     */
     public void setPersonas(Personas personas) {
         this.personas = personas;
     }
 
-    /**
-     *
-     * @return
-     */
     public PersonasdomiciliosPK getPersonasdomiciliosPK() {
         return personasdomiciliosPK;
     }
 
-    /**
-     *
-     * @param personasdomiciliosPK
-     */
     public void setPersonasdomiciliosPK(PersonasdomiciliosPK personasdomiciliosPK) {
         this.personasdomiciliosPK = personasdomiciliosPK;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public String toXML(){
         String item=domicilioss.toXML();
-    return item;
-}
+        return item;
+    }
 }

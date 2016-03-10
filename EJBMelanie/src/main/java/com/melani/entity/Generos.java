@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collection;
@@ -14,11 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-/**
- * A Entity Generos
- *@version
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "GENEROS")
 @NamedQueries({
@@ -36,64 +29,33 @@ public class Generos implements Serializable {
     @OneToMany(mappedBy = "generos")
     private Collection<Personas> personasCollection;
 
-    /**
-     *
-     */
     public Generos() {
     }
 
-    /**
-     *
-     * @param idGenero
-     */
     public Generos(Short idGenero) {
         this.idGenero = idGenero;
     }
 
-    /**
-     *
-     * @return
-     */
     public Short getIdGenero() {
         return idGenero;
     }
 
-    /**
-     *
-     * @param idGenero
-     */
     public void setIdGenero(Short idGenero) {
         this.idGenero = idGenero;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public Collection<Personas> getPersonasCollection() {
         return Collections.unmodifiableCollection(personasCollection);
     }
 
-    /**
-     *
-     * @param personasCollection
-     */
     public void setPersonasCollection(Collection<Personas> personasCollection) {
         this.personasCollection = personasCollection;
     }
@@ -104,8 +66,7 @@ public class Generos implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {       
         if (!(object instanceof Generos)) {
             return false;
         }

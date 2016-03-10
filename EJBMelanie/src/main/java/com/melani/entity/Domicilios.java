@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -21,11 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- * A Entity Domicilios
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name="DOMICILIOS")
 @NamedQueries({
@@ -86,311 +78,156 @@ public class Domicilios implements Serializable {
     @OneToMany(mappedBy = "domicilioss",fetch=FetchType.LAZY)
     private List<PersonasDomicilios> personasDomicilioss;
 
-    /**
-     *
-     */
     public Domicilios(){}
 
-    /**
-     *
-     * @return
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getArea() {
         return area;
     }
 
-    /**
-     *
-     * @param area
-     */
     public void setArea(String area) {
         this.area = area;
     }
 
-    /**
-     *
-     * @return
-     */
     public Barrios getBarrios() {
         return idbarrio;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getTorre() {
         return torre;
     }
 
-    /**
-     *
-     * @param torre
-     */
     public void setTorre(String torre) {
         this.torre = torre;
     }
 
-    /**
-     *
-     * @param idbarrio
-     */
     public void setBarrios(Barrios idbarrio) {
         this.idbarrio = idbarrio;
     }
 
-    /**
-     *
-     * @return
-     */
     public Calles getCalles() {
         return idcalle;
     }
 
-    /**
-     *
-     * @param idcalle
-     */
     public void setCalles(Calles idcalle) {
         this.idcalle = idcalle;
     }
 
-    /**
-     *
-     * @return
-     */
     public Localidades getLocalidades() {
         return localidades;
     }
 
-    /**
-     *
-     * @param localidades
-     */
     public void setLocalidades(Localidades localidades) {
         this.localidades = localidades;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getMonoblock() {
         return monoblock;
     }
 
-    /**
-     *
-     * @param monoblock
-     */
     public void setMonoblock(String monoblock) {
         this.monoblock = monoblock;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getNumero() {
         return numero;
     }
 
-    /**
-     *
-     * @param numero
-     */
     public void setNumero(int numero) {
         this.numero = numero;
     }
 
-    /**
-     *
-     * @return
-     */
     public Orientacion getOrientacion() {
         return idorientacion;
     }
 
-    /**
-     *
-     * @param idorientacion
-     */
     public void setOrientacion(Orientacion idorientacion) {
         this.idorientacion = idorientacion;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getPiso() {
         return piso;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getSector() {
         return sector;
     }
 
-    /**
-     *
-     * @param sector
-     */
     public void setSector(String sector) {
         this.sector = sector;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getEntrecalleycalle() {
         return entrecalleycalle;
     }
 
-    /**
-     *
-     * @param entrecalleycalle
-     */
     public void setEntrecalleycalle(String entrecalleycalle) {
         this.entrecalleycalle = entrecalleycalle;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<PersonasDomicilios> getPersonasDomicilioss() {
         return Collections.unmodifiableList(personasDomicilioss);
     }
 
-    /**
-     *
-     * @param personasDomicilioss
-     */
     public void setPersonasDomicilioss(List<PersonasDomicilios> personasDomicilioss) {
         this.personasDomicilioss = personasDomicilioss;
     }
 
-    /**
-     *
-     * @return
-     */
     public Barrios getIdbarrio() {
         return idbarrio;
     }
 
-    /**
-     *
-     * @param idbarrio
-     */
     public void setIdbarrio(Barrios idbarrio) {
         this.idbarrio = idbarrio;
     }
 
-    /**
-     *
-     * @return
-     */
     public Calles getIdcalle() {
         return idcalle;
     }
 
-    /**
-     *
-     * @param idcalle
-     */
     public void setIdcalle(Calles idcalle) {
         this.idcalle = idcalle;
     }
 
-    /**
-     *
-     * @return
-     */
     public Orientacion getIdorientacion() {
         return idorientacion;
     }
 
-    /**
-     *
-     * @param idorientacion
-     */
     public void setIdorientacion(Orientacion idorientacion) {
         this.idorientacion = idorientacion;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getManzana() {
         return manzana;
     }
-
-    /**
-     *
-     * @param manzana
-     */
+  
     public void setManzana(String manzana) {
         this.manzana = manzana;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getNumdepto() {
         return numdepto;
     }
 
-    /**
-     *
-     * @param numdepto
-     */
     public void setNumdepto(Integer numdepto) {
         this.numdepto = numdepto;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     *
-     * @param observaciones
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     *
-     * @param piso
-     */
     public void setPiso(String piso) {
         this.piso = piso;
     }
@@ -401,8 +238,7 @@ public class Domicilios implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Domicilios)) {
             return false;
         }
@@ -414,10 +250,6 @@ public class Domicilios implements Serializable {
         return "com.melani.entity.Domicilios[id=" + id + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         StringBuilder item = new StringBuilder("<domicilio>\n");
                 item.append("<id>").append(this.getId()).append("</id>\n");

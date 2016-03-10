@@ -14,7 +14,7 @@ long agregarNotaPedido(String xmlNotaPedido);
     String verNotasPedidoPaginadas(int index, int recordCount);
     long anularNotaPedido(long idnota, long idusuario, int estado);
     long actualizarNotaPedido(String xmlnotapedidomodificada);
-    String selecNotaEntreFechasEntrega(String fecha1, String fecha2, long idvendedor);
+    String selecNotaEntreFechasEntrega(String fecha1, String fecha2);
     int eliminarNotaDePedido(long idnota, long idEmpleado);
     String calcularVentasMensualesHastaFechaYAnoActual();
 }

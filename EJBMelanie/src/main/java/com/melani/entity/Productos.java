@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,11 +21,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- * A Entity Productos
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "PRODUCTOS")
 @NamedQueries({
@@ -73,193 +65,97 @@ public class Productos implements Serializable {
     @OneToMany(mappedBy = "productos")
     private List<ImagenesProductos>imagenesProductosList;
 
-    /**
-     *
-     */
     public Productos(){}
 
-    /**
-     *
-     * @param sid
-     */
     public Productos(Long sid) {
         this.sid = sid;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getSid() {
         return sid;
     }
 
-    /**
-     *
-     * @param sid
-     */
     public void setSid(Long sid) {
         this.sid = sid;
     }
-
-    /**
-     *
-     * @return
-     */
+    
     public BigInteger getCantidadDisponible() {
         return cantidadDisponible;
     }
-
-    /**
-     *
-     * @param cantidadDisponible
-     */
+    
     public void setCantidadDisponible(BigInteger cantidadDisponible) {
         this.cantidadDisponible = cantidadDisponible;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public BigInteger getCantidadInicial() {
         return cantidadInicial;
     }
-
-    /**
-     *
-     * @param cantidadInicial
-     */
+    
     public void setCantidadInicial(BigInteger cantidadInicial) {
         this.cantidadInicial = cantidadInicial;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<ExistenciasProductos> getExistenciasProductoss() {
         return Collections.unmodifiableList(existenciasProductoss);
     }
 
-    /**
-     *
-     * @return
-     */
     public String getCodproducto() {
         return codproducto;
     }
 
-    /**
-     *
-     * @param codproducto
-     */
     public void setCodproducto(String codproducto) {
         this.codproducto = codproducto;
     }
 
-    /**
-     *
-     * @param existenciasProductoss
-     */
     public void setExistenciasProductoss(List<ExistenciasProductos> existenciasProductoss) {
         this.existenciasProductoss = existenciasProductoss;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFecha() {
         return fecha;
     }
 
-    /**
-     *
-     * @param fecha
-     */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
 
-    /**
-     *
-     * @param precioUnitario
-     */
     public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
-   
-
-    /**
-     *
-     * @return
-     */
     public List<Detallespresupuesto> getDetallepresupuestosList() {
         return Collections.unmodifiableList(detallepresupuestosList);
     }
 
-    /**
-     *
-     * @param detallepresupuestosList
-     */
     public void setDetallepresupuestosList(List<Detallespresupuesto> detallepresupuestosList) {
         this.detallepresupuestosList = detallepresupuestosList;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Detallesnotadepedido> getDetallesnotadepedidoList() {
         return Collections.unmodifiableList(detallesnotadepedidoList);
     }
 
-    /**
-     *
-     * @param detallesnotadepedidoList
-     */
     public void setDetallesnotadepedidoList(List<Detallesnotadepedido> detallesnotadepedidoList) {
         this.detallesnotadepedidoList = detallesnotadepedidoList;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<ImagenesProductos> getImagenesProductosList() {
         return Collections.unmodifiableList(imagenesProductosList);
     }
 
-    /**
-     *
-     * @param imagenesProductosList
-     */
     public void setImagenesProductosList(List<ImagenesProductos> imagenesProductosList) {
         this.imagenesProductosList = imagenesProductosList;
     }
@@ -271,8 +167,7 @@ public class Productos implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Productos)) {
             return false;
         }
@@ -284,10 +179,6 @@ public class Productos implements Serializable {
         return "com.melani.entity.Productos[id=" + sid + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         StringBuilder item = new StringBuilder("<producto>\n");

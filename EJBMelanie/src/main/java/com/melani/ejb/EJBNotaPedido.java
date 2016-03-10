@@ -3,7 +3,7 @@ import com.melani.entity.Clientes;
 import com.melani.entity.Detallesnotadepedido;
 import com.melani.entity.DetallesnotadepedidoPK;
 import com.melani.entity.Empleados;
-import com.melani.entity.Historiconotapedido;
+import com.melani.entity.HistoricoNotaPedido;
 import com.melani.entity.Notadepedido;
 import com.melani.entity.Personas;
 import com.melani.entity.Porcentajes;
@@ -11,7 +11,7 @@ import com.melani.entity.Productos;
 import com.melani.entity.TarjetasCreditoDebito;
 import com.melani.utils.DatosNotaPedido;
 import com.melani.utils.DetallesNotaPedido;
-import com.melani.utils.Itemdetallesnota;
+import com.melani.utils.ItemDetallesNota;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -54,7 +54,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 xestream.alias("personas", DatosNotaPedido.Personas.class);
                 xestream.alias("tarjetacredito", DatosNotaPedido.TarjetaCredito.class);
                 xestream.alias("porcentajes", DatosNotaPedido.Porcentajes.class);
-                xestream.alias("itemdetallesnota", Itemdetallesnota.class);
+                xestream.alias("itemdetallesnota", ItemDetallesNota.class);
                 xestream.alias("detallesnotapedido", DetallesNotaPedido.class);
                 xestream.addImplicitCollection(DetallesNotaPedido.class, "list");
             return notadepedido = (DatosNotaPedido) xestream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML(xmlNotapedido));
@@ -81,18 +81,17 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                     } catch (ParseException ex) {
                                         LOGGER.error("Error en metodo almacenar nota de pedido");  
                                     }
-                            em.persist(notape);                           
-                                  long historico;
+                                em.persist(notape);                                                             
                                          switch(notadepedido.getStockfuturo()){
                                              case 0:{
-                                                 retorno = almacenarDetalleNotaConControlStock(notadepedido,notape);                                                           
-                                                           historico =  almacenarHistorico(notadepedido,notape);
+                                                 almacenarDetalleNotaConControlStock(notadepedido,notape);                                                           
+                                                 almacenarHistorico(notadepedido,notape);
                                                     }
                                              break;
                                              default :
                                                     {
-                                                        retorno = almacenarDetalleNota(notadepedido,notape);
-                                                       historico =  almacenarHistorico(notadepedido,notape);
+                                                 almacenarDetalleNota(notadepedido,notape);
+                                                 almacenarHistorico(notadepedido,notape);
                                                     }
                                          }
                                          Query queryFindByIdProducto =em.createNamedQuery("Notadepedido.findClientFk");
@@ -104,19 +103,15 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                     cliente.setTotalCompras(BigDecimal.valueOf(totalCompras));
                                                     cliente.setTotalEnPuntos(BigInteger.valueOf(totalPuntos));
                                                     cliente.setFechaCarga(gc.getTime());                                           
-                                                em.persist(cliente);                                        
-                                 if(historico<0) {
-                                     retorno = historico;
-                                 } else{
-                                      retorno = notape.getId();                                             
-                                 }                   
+                                                em.persist(cliente);                       
+                                                retorno = notape.getId();                                          
             return retorno;        
     }
     
     private long almacenarDetalleNota(DatosNotaPedido notadepedido, Notadepedido notape) {
         long retorno;        
-            List<Itemdetallesnota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();            
-                    for (Itemdetallesnota itemdetallesnota : lista) {
+            List<ItemDetallesNota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();            
+                    for (ItemDetallesNota itemdetallesnota : lista) {
                             Productos productos = em.find(Productos.class,itemdetallesnota.getId_producto());
                             DetallesnotadepedidoPK detallespk = new DetallesnotadepedidoPK(notape.getId(), itemdetallesnota.getId_producto());
                             Detallesnotadepedido detalles = new Detallesnotadepedido();                            
@@ -130,8 +125,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     private long almacenarDetalleNotaConControlStock(DatosNotaPedido notadepedido, Notadepedido notape) {
         long retorno;
         int stockDisponible;        
-            List<Itemdetallesnota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();
-                    for (Itemdetallesnota itemdetallesnota : lista) {                        
+            List<ItemDetallesNota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();
+                    for (ItemDetallesNota itemdetallesnota : lista) {                        
                                 Productos productos = em.find(Productos.class,itemdetallesnota.getId_producto());                                
                                 DetallesnotadepedidoPK detallespk = new DetallesnotadepedidoPK(notape.getId(), itemdetallesnota.getId_producto());
                                 Detallesnotadepedido detalles = new Detallesnotadepedido();                                
@@ -150,10 +145,10 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             return retorno;
         
     }
-    private long almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape) {
+    private void almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape) {
         long resultado;
                     GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());                    
-                                    Historiconotapedido historico = new Historiconotapedido();
+                                    HistoricoNotaPedido historico = new HistoricoNotaPedido();
                                     historico.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
                                     historico.setEntregado(notadepedido.getEntregado());
                                     historico.setFecharegistro(gc.getTime());
@@ -187,7 +182,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                         notape.setHistoriconotapedidoList(queryFindByIdProducto.getResultList());                   
                     em.persist(notape);                    
                     resultado = historico.getIdhistorico();
-        return resultado;
+        //return resultado;
     }
 
     @Override
@@ -226,7 +221,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             for (Detallesnotadepedido detallesnotadepedido : lista) {
                 detallesnotadepedido.setCancelado(cancelado);
             }
-                            Historiconotapedido historico = new Historiconotapedido();
+                            HistoricoNotaPedido historico = new HistoricoNotaPedido();
                             if(estado==1){
                                 historico.setAccion("Cancelada por "+empleado.getNameuser());
                                 historico.setCancelado(cancelado);
@@ -282,7 +277,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 detallesnotadepedido.setPendiente(pendiente);
             }
             em.persist(nota);            
-                Historiconotapedido historico = new Historiconotapedido();
+                HistoricoNotaPedido historico = new HistoricoNotaPedido();
                         if(estado==1){
                                 historico.setAccion("Entregado por "+empleado.getNameuser());
                                 historico.setEntregado('1');
@@ -439,7 +434,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             for (Detallesnotadepedido detallesnotadepedido : lista) {
                 detallesnotadepedido.setAnulado(anulada);
             }
-                Historiconotapedido historico = new Historiconotapedido();
+                HistoricoNotaPedido historico = new HistoricoNotaPedido();
                         if(estado==1){
                                 historico.setAccion("Nota anulada "+empleado.getNameuser());
                                 historico.setAnulado(anulada);
@@ -530,15 +525,15 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                         nota.setFechaAnulado(gc.getTime());
                                                                    }                                                
                                                    em.persist(nota);  
-                                                List<Itemdetallesnota>lista = datosnotapedido.getDetallesnotapedido().getDetallesnota();
+                                                List<ItemDetallesNota>lista = datosnotapedido.getDetallesnotapedido().getDetallesnota();
                                                 Query deletsql = em.createNamedQuery("Detallesnotadepedido.deleteById");
                                                 deletsql.setParameter("idNota", nota.getId());
                                                 int retorno = deletsql.executeUpdate();                                                
                                                 Query queryDetailsOrders1 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
                                                 queryDetailsOrders1.setParameter("fkIdnota", nota.getId());                                                
                                                  Productos productos;
-                                                 Itemdetallesnota itemdetallesnota;
-                                                    for (Iterator<Itemdetallesnota> it = lista.iterator(); it.hasNext();) {
+                                                 ItemDetallesNota itemdetallesnota;
+                                                    for (Iterator<ItemDetallesNota> it = lista.iterator(); it.hasNext();) {
                                                          itemdetallesnota= it.next();
                                                          productos =em.find(Productos.class, itemdetallesnota.getId_producto());
                                                             DetallesnotadepedidoPK pkdetalle = new DetallesnotadepedidoPK(itemdetallesnota.getId_nota()
@@ -555,42 +550,49 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                em.merge(nota);
                                 if(datosnotapedido.getAnticipoacum()!=nota.getAnticipo().doubleValue()){
                                     nota.setAnticipo(BigDecimal.valueOf(datosnotapedido.getAnticipoacum()));
-                                    result =  almacenarHistorico(datosnotapedido,nota);
+                                    almacenarHistorico(datosnotapedido,nota);
                                 }   
                   result=nota.getId();               
             return result;        
     }
-
+    
     @Override
-    public String selecNotaEntreFechasEntrega(String fecha1, String fecha2, long idvendedor) {
-        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+"<Lista>\n";
-        List<Notadepedido>lista;     
-            String resultchequearFechas=chequearFechas(fecha1, fecha2);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            if(resultchequearFechas.equals("TODO OK")){
-                Query jpasql = em.createQuery("SELECT n FROM Notadepedido n WHERE n.fechaentrega "
+    public String selecNotaEntreFechasEntrega(String fecha1, String fecha2) {
+        String xml = "<Lista>\n";
+        String pepito;
+        String resultchequearFechas=chequearFechas(fecha1, fecha2);            
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");            
+                if(resultchequearFechas.equals("TODO OK")){
+                    
+                    Query jpasql = em.createQuery("SELECT n FROM Notadepedido n WHERE n.fechaentrega "
                         + "BETWEEN ?1 AND ?2 AND n.entregado = ?3 and n.pendiente = ?4 ORDER BY n.horacompra,n.id desc",Notadepedido.class);
-            try {
-                jpasql.setParameter("1", sdf.parse(fecha1),TemporalType.TIMESTAMP);
-                jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
-            } catch (ParseException ex) {
-                java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                        try {
+                    
+                            jpasql.setParameter("1", sdf.parse(fecha1),TemporalType.TIMESTAMP);
+                            jpasql.setParameter("2", sdf.parse(fecha2),TemporalType.TIMESTAMP);
+                        } catch (ParseException ex) {
+                            LOGGER.error("Error al parsear fechas en selectnotaentrefechasentrega");
+                        }                
+                                 jpasql.setParameter("3", '0');
+                                 jpasql.setParameter("4", '1');
+                        List<Notadepedido>listaDeNotasEntreFechasEntrega;              
+                               listaDeNotasEntreFechasEntrega= jpasql.getResultList();
+                                
+                                    if(listaDeNotasEntreFechasEntrega.size()>0){                                       
+                                        pepito=iterateOverListNote(listaDeNotasEntreFechasEntrega);
+                                        
+                                        return xml+=agregarDatosAlxml(pepito, fecha1, fecha2)+"</Lista>";
+                                        
+                                    }else {
+                                        xml+="<result>lista vacia</result>\n";
+                                    }
+                }else {
+                    
+                    xml+=resultchequearFechas;
+                }
                 
-                jpasql.setParameter("3", '0');
-                jpasql.setParameter("4", '1');
-                        
-                            lista= jpasql.getResultList();
-                            if(lista.size()>0){
-                                 xml+=iterateOverListNote(lista);
-                                 xml+=agregarDatosAlxml(xml, fecha1, fecha2);
-                            }else {
-                                xml+="<result>lista vacia</result>\n";
-                        }
-            }else {
-                xml+=resultchequearFechas;
-            }   
-                return  xml+="</Lista>\n";          
+                
+                return  "";          
     }
     
     @Override
@@ -675,28 +677,28 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
         String xml = null;
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             if(fecha1 == null) {
-                xml+="<error>Error fecha vacia</error>\n";
+                xml="<error>Error fecha vacia</error>\n";
             } else {
                 if(fecha2==null) {
-                    xml+="<error>Error fecha vacia</error>\n";
+                    xml="<error>Error fecha vacia</error>\n";
                 } else{
                     if(fecha1.trim().length()!=sdf.toPattern().length()) {
-                        xml+="<error>Error fecha1 con patron desconocido o incorrecto</error>\n";
+                        xml="<error>Error fecha1 con patron desconocido o incorrecto</error>\n";
                     } else{
                         if(fecha2.trim().length()!=sdf.toPattern().length()) {
-                            xml+="<error>Error fecha2 con patron desconocido o incorrecto</error>\n";
+                            xml="<error>Error fecha2 con patron desconocido o incorrecto</error>\n";
                         } else{
                                 sdf.setLenient(false);
                                     try {
                                         sdf.parse(fecha1.trim());
                                         sdf.parse(fecha2.trim());
                                         if(sdf.parse(fecha1).compareTo(sdf.parse(fecha2))<=0) {
-                                              xml+="TODO OK";
+                                              xml="TODO OK";
                                            } else {                                   
-                                              xml+="<result>rango no correcto de fechas elegido</result>\n";
+                                              xml="<result>rango no correcto de fechas elegido</result>\n";
                                             }
                                     } catch (ParseException e) {
-                                        xml+="<error>Error en parse de fechas</error>\n";                            
+                                        xml="<error>Error en parse de fechas</error>\n";                            
                                         LOGGER.error("Error en parseo de fechas ");
                                     }
                         }
@@ -706,7 +708,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             return xml;        
     }
 
-    private StringBuilder agregarDatosAlxml(String xml,String fecha1,String fecha2) {        
+    private String agregarDatosAlxml(String xml,String fecha1,String fecha2) {        
          fecha1=fecha1.substring(3, 5)+"/"+fecha1.substring(0, 2)+"/"+fecha1.substring(6, 10);         
                                                                 fecha2=fecha2.substring(3, 5)+"/"+fecha2.substring(0, 2)+"/"+fecha2.substring(6, 10);                                                                
                                                                 StringBuilder sb =new StringBuilder(xml);                                                                
@@ -714,11 +716,12 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                         "<fechainicio>" + fecha1 + "</fechainicio>\n" + 
                                                                         "<fechafinal>" + fecha2 + "</fechafinal>\n";                                                                
                                                                  sb.replace(sb.indexOf("</numerocupon>")+14, sb.indexOf("<observaciones>")
-                                                                         , "\n"+periodoqueryFindByIdProductodo);                                                                 
-      return sb;
+                                                                         , "\n"+periodoqueryFindByIdProductodo); 
+                                                                      
+      return sb.toString();
     }
 
-    private void almacenarDetallesNota(Productos productos, Itemdetallesnota itemdetallesnota, Notadepedido notape, DetallesnotadepedidoPK detallespk, Detallesnotadepedido detalles) {
+    private void almacenarDetallesNota(Productos productos, ItemDetallesNota itemdetallesnota, Notadepedido notape, DetallesnotadepedidoPK detallespk, Detallesnotadepedido detalles) {
                                 detalles.setCancelado(itemdetallesnota.getCancelado());
                                 detalles.setCantidad(itemdetallesnota.getCantidad());
                                 detalles.setDescuento(BigDecimal.valueOf(itemdetallesnota.getDescuento()));
@@ -744,7 +747,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                         em.merge(notape);
     }
 
-    private void procesarHistorico(Historiconotapedido historico, GregorianCalendar gc, Notadepedido nota) {
+    private void procesarHistorico(HistoricoNotaPedido historico, GregorianCalendar gc, Notadepedido nota) {
                                         historico.setAnticipo(BigDecimal.ZERO);                                
                                         historico.setFecharegistro(gc.getTime());
                                         historico.setFkidnotapedido(nota);
@@ -817,11 +820,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                     }
     }
 
-    private StringBuilder iterateOverListNote(List<Notadepedido> lista) {
+    private String iterateOverListNote(List<Notadepedido> lista) {
         StringBuilder xmlLoop = new StringBuilder(10);
-                                    for (Notadepedido notadepedido1 : lista) {
-                                        xmlLoop.append(notadepedido1.toXML());
+                for (Notadepedido notadepedido1 : lista) {
+                    xmlLoop.append(notadepedido1.toXML());
                                    }
-                                    return xmlLoop;
+        return xmlLoop.toString();
     }    
 }

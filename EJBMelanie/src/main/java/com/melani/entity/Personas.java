@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -25,11 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- * A Entity Personas
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name="PERSONAS")
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -71,7 +63,7 @@ public class Personas implements Serializable {
     protected Integer nrodocumento;
     @JoinColumn(name="ID",referencedColumnName="ID",nullable=false,updatable=false)
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    private Tiposdocumento tipodocumento;
+    private TiposDocumento tipodocumento;
     @OneToMany(mappedBy = "personas")
     private List<PersonasDomicilios> personasDomicilioss;
     @CollectionTable
@@ -81,184 +73,93 @@ public class Personas implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
     private Generos generos;        
 
-    /**
-     *
-     */
     public Personas(){
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdPersona() {
         return idPersona;
     }
 
-    /**
-     *
-     * @param idPersona
-     */
     public void setIdPersona(Long idPersona) {
         this.idPersona = idPersona;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getNrodocumento() {
         return nrodocumento;
     }
 
-    /**
-     *
-     * @param nrodocumento
-     */
     public void setNrodocumento(Integer nrodocumento) {
         this.nrodocumento = nrodocumento;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getApellido() {
         return apellido;
     }
 
-    /**
-     *
-     * @param apellido
-     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getPertype() {
         return pertype;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Tiposdocumento getTipodocumento() {
+    public TiposDocumento getTipodocumento() {
         return tipodocumento;
     }
 
-    /**
-     *
-     * @param tipodocumento
-     */
-    public void setTipodocumento(Tiposdocumento tipodocumento) {
+    public void setTipodocumento(TiposDocumento tipodocumento) {
         this.tipodocumento = tipodocumento;
     }
 
-    /**
-     *
-     * @param pertype
-     */
     public void setPertype(String pertype) {
         this.pertype = pertype;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     *
-     * @param email
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     *
-     * @param nombre
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<PersonasDomicilios> getPersonasDomicilioss() {
         return Collections.unmodifiableList(personasDomicilioss);
     }
 
-    /**
-     *
-     * @param personasDomicilioss
-     */
     public void setPersonasDomicilioss(List<PersonasDomicilios> personasDomicilioss) {
         this.personasDomicilioss = personasDomicilioss;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     *
-     * @param observaciones
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Personastelefonos> getPersonastelefonoss() {
         return Collections.unmodifiableList(personastelefonoss);
     }
 
-    /**
-     *
-     * @param personastelefonoss
-     */
     public void setPersonastelefonoss(List<Personastelefonos> personastelefonoss) {
         this.personastelefonoss = personastelefonoss;
     }
 
-    /**
-     *
-     * @return
-     */
     public Generos getGeneros() {
         return generos;
     }
 
-    /**
-     *
-     * @param generos
-     */
     public void setGeneros(Generos generos) {
         this.generos = generos;
     }
@@ -269,8 +170,7 @@ public class Personas implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {       
         if (!(object instanceof Personas)) {
             return false;
         }
@@ -282,15 +182,8 @@ public class Personas implements Serializable {
         return "entity.Personas[idPersona=" + idPersona + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
-        StringBuilder item=new StringBuilder();
-       
-            
-        
+        StringBuilder item=new StringBuilder(); 
         item.append("<id>").append(this.getIdPersona()).append("</id>\n");
         item.append("<apellido>").append(this.getApellido()).append("</apellido>\n");
                 item.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
@@ -321,9 +214,7 @@ public class Personas implements Serializable {
                 item.append(personastelefonos.toXML());
             }
                         item.append("</personatelefono>\n");
-                    }
-               
-         
+                    } 
          return item.toString();
     }
 }

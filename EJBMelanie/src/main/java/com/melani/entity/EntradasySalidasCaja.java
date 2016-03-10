@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -21,10 +17,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-/**
- *
- * @author Edgardo
- */
+
 @Entity(name="EntradasySalidasCaja")
 @XmlRootElement
 @NamedQueries({
@@ -76,176 +69,89 @@ public class EntradasySalidasCaja implements Serializable {
     @ManyToOne(optional = false)
     private TarjetasCreditoDebito idTarjetaFk;
 
-    /**
-     *
-     */
     public EntradasySalidasCaja() {
     }
 
-    /**
-     *
-     * @param id
-     */
     public EntradasySalidasCaja(Integer id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDetalles() {
         return detalles;
     }
 
-    /**
-     *
-     * @param detalles
-     */
     public void setDetalles(String detalles) {
         this.detalles = detalles;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFecha() {
         return fecha;
     }
 
-    /**
-     *
-     * @param fecha
-     */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getEntradas() {
         return entradas;
     }
 
-    /**
-     *
-     * @param entradas
-     */
     public void setEntradas(Long entradas) {
         this.entradas = entradas;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getSalidas() {
         return salidas;
     }
 
-    /**
-     *
-     * @param salidas
-     */
     public void setSalidas(Long salidas) {
         this.salidas = salidas;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    /**
-     *
-     * @param idUsuario
-     */
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNumerocupon() {
         return numerocupon;
     }
 
-    /**
-     *
-     * @param numerocupon
-     */
     public void setNumerocupon(String numerocupon) {
         this.numerocupon = numerocupon;
     }
 
-    /**
-     *
-     * @return
-     */
     public Character getEnefectivo() {
         return enefectivo;
     }
 
-    /**
-     *
-     * @param enefectivo
-     */
     public void setEnefectivo(Character enefectivo) {
         this.enefectivo = enefectivo;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getHora() {
         return hora;
     }
 
-    /**
-     *
-     * @param hora
-     */
     public void setHora(Date hora) {
         this.hora = hora;
     }
 
-    /**
-     *
-     * @return
-     */
     public TarjetasCreditoDebito getIdTarjetaFk() {
         return idTarjetaFk;
     }
 
-    /**
-     *
-     * @param idTarjetaFk
-     */
     public void setIdTarjetaFk(TarjetasCreditoDebito idTarjetaFk) {
         this.idTarjetaFk = idTarjetaFk;
     }
@@ -256,8 +162,7 @@ public class EntradasySalidasCaja implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof EntradasySalidasCaja)) {
             return false;
         }
@@ -269,10 +174,6 @@ public class EntradasySalidasCaja implements Serializable {
         return "com.melani.entity.EntradasySalidasCaja[ id=" + id + " ]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
     SimpleDateFormat sdf =new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");

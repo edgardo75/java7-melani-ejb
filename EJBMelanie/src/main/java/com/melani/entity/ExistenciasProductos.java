@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,11 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-/**
- * A Entity ExistenciasProductos
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "EXISTENCIASPRODUCTOS")
 @NamedQueries({
@@ -60,128 +52,65 @@ public class ExistenciasProductos implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
     private Productos productos;
 
-    /**
-     *
-     */
     public ExistenciasProductos() {
     }
 
-    /**
-     *
-     * @param idExistencias
-     */
     public ExistenciasProductos(long idExistencias) {
         this.idExistencias = idExistencias;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getCantidadactual() {
         return cantidadactual;
     }
 
-    /**
-     *
-     * @param cantidadactual
-     */
     public void setCantidadactual(Integer cantidadactual) {
         this.cantidadactual = cantidadactual;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdUsuario() {
         return idUsuario;
     }
 
-    /**
-     *
-     * @param idUsuario
-     */
     public void setIdUsuario(long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFechaagregado() {
         return fechaagregado;
     }
 
-    /**
-     *
-     * @param fechaagregado
-     */
     public void setFechaagregado(Date fechaagregado) {
         this.fechaagregado = fechaagregado;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdExistencias() {
         return idExistencias;
     }
 
-    /**
-     *
-     * @param idExistencias
-     */
     public void setIdExistencias(Long idExistencias) {
         this.idExistencias = idExistencias;
     }
 
-    /**
-     *
-     * @return
-     */
     public Productos getProductos() {
         return productos;
     }
 
-    /**
-     *
-     * @param productos
-     */
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getCantidadinicial() {
         return cantidadinicial;
     }
 
-    /**
-     *
-     * @param cantidadinicial
-     */
     public void setCantidadinicial(Integer cantidadinicial) {
         this.cantidadinicial = cantidadinicial;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPreciounitario() {
         return preciounitario;
     }
 
-    /**
-     *
-     * @param preciounitario
-     */
     public void setPreciounitario(BigDecimal preciounitario) {
         this.preciounitario = preciounitario;
     }
@@ -192,8 +121,7 @@ public class ExistenciasProductos implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof ExistenciasProductos)) {
             return false;
         }
@@ -205,10 +133,6 @@ public class ExistenciasProductos implements Serializable {
         return "entity.ExistenciasProductos[idExistencias=" + idExistencias + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String item = String.valueOf("<item>\n<id_existencias>" + this.getIdExistencias() + "</id_existencias>\n" + "<idproducto>" + this.getProductos().getSid() + "</idproducto>\n" + "<cantidadactual>" + this.getCantidadactual() + "</cantidadactual>\n" + "<cantidadinicial>" + this.getCantidadinicial() + "</cantidadinicial>\n" + "<fecha>" + sdf.format(this.getFechaagregado()) + "</fecha>\n" + "<precio>" + this.getPreciounitario().toString() + "</precio>\n" + "<id_usuario>") + String.valueOf(this.getIdUsuario()) + "</id_usuario>\n" + "</item>\n";

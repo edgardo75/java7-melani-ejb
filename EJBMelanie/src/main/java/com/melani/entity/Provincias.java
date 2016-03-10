@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -16,11 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- *A Entity Provincias
- * @version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name = "PROVINCIAS")
 @NamedQueries({
@@ -41,80 +33,44 @@ public class Provincias implements Serializable {
     @OneToMany(orphanRemoval = true, mappedBy = "provincias")
     private List<Localidades> localidadesList;
 
-    /**
-     *
-     */
     public Provincias() {
     }
 
-    /**
-     *
-     * @param idProvincia
-     */
     public Provincias(Short idProvincia) {
         this.idProvincia = idProvincia;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public Short getIdProvincia() {
         return idProvincia;
     }
 
-    /**
-     *
-     * @param idProvincia
-     */
     public void setIdProvincia(Short idProvincia) {
         this.idProvincia = idProvincia;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getProvincia() {
         return provincia;
     }
 
-    /**
-     *
-     * @param provincia
-     */
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public Character getCodigo() {
         return codigo;
     }
 
-    /**
-     *
-     * @param codigo
-     */
     public void setCodigo(Character codigo) {
         this.codigo = codigo;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Localidades> getLocalidadesList() {
         return Collections.unmodifiableList(localidadesList);
     }
 
-    /**
-     *
-     * @param localidadesList
-     */
+    
     public void setLocalidadesList(List<Localidades> localidadesList) {
         this.localidadesList = localidadesList;
     }
@@ -138,10 +94,6 @@ public class Provincias implements Serializable {
         return "entity.Provincias[idProvincia=" + idProvincia + "]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
     StringBuilder xml = new StringBuilder("<provincia>\n").append("<id>").append(this.getIdProvincia()).append("</id>\n");
             xml.append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getProvincia())).append("</descripcion>\n");

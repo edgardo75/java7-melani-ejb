@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -11,11 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-/**
- * A Entity Orientacion
- *@version 1.0
- * @author Edgardo Alvarez
- */
+
 @Entity
 @Table(name="ORIENTACION")
 public class Orientacion implements Serializable {
@@ -28,55 +21,28 @@ public class Orientacion implements Serializable {
     @OneToMany(mappedBy = "idorientacion")
     private List<Domicilios> domicilioss;
 
-    /**
-     *
-     */
     public Orientacion(){}
 
-    /**
-     *
-     * @return
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Domicilios> getDomicilioss() {
         return Collections.unmodifiableList(domicilioss);
     }
 
-    /**
-     *
-     * @param domicilioss
-     */
     public void setDomicilioss(List<Domicilios> domicilioss) {
         this.domicilioss = domicilioss;
     }
@@ -87,8 +53,7 @@ public class Orientacion implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public boolean equals(Object object) {        
         if (!(object instanceof Orientacion)) {
             return false;
         }

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
@@ -19,10 +16,7 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.StringEscapeUtils;
-/**
- *
- * @author Edgardo
- */
+
 @Entity
 @XmlRootElement
 @NamedQueries({
@@ -43,82 +37,45 @@ public class TarjetasCreditoDebito implements Serializable {
     @OneToMany(orphanRemoval = true,mappedBy="idTarjetaFk")
     private List<EntradasySalidasCaja>entradasysalidascajaList;
 
-    /**
-     *
-     */
     public TarjetasCreditoDebito() {
     }
 
-    /**
-     *
-     * @param idtarjeta
-     */
     public TarjetasCreditoDebito(Integer idtarjeta) {
         this.idtarjeta = idtarjeta;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getIdtarjeta() {
         return idtarjeta;
     }
 
-    /**
-     *
-     * @param idtarjeta
-     */
+    
     public void setIdtarjeta(Integer idtarjeta) {
         this.idtarjeta = idtarjeta;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
-    @XmlTransient
+    
     public List<Notadepedido> getNotadepedidoList() {
         return Collections.unmodifiableList(notadepedidoList);
     }
 
-    /**
-     *
-     * @param notadepedidoList
-     */
     public void setNotadepedidoList(List<Notadepedido> notadepedidoList) {
         this.notadepedidoList = notadepedidoList;
     }
 
-    /**
-     *
-     * @return
-     */
-    @XmlTransient
+    
     public List<EntradasySalidasCaja> getEntradasysalidascajaList() {
         return Collections.unmodifiableList(entradasysalidascajaList);
     }
 
-    /**
-     *
-     * @param entradasysalidascajaList
-     */
     public void setEntradasysalidascajaList(List<EntradasySalidasCaja> entradasysalidascajaList) {
         this.entradasysalidascajaList = entradasysalidascajaList;
     }
@@ -142,10 +99,6 @@ public class TarjetasCreditoDebito implements Serializable {
         return "com.melani.entity.TarjetasCreditoDebito[ idtarjeta=" + idtarjeta + " ]";
     }
 
-    /**
-     *
-     * @return
-     */
     public String toXML(){
         String item = "<item>\n<id>" + this.getIdtarjeta() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "</item>\n";
     return item;

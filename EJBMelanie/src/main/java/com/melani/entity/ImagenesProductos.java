@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 
 import java.io.Serializable;
@@ -16,10 +12,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
- *
- * @author win7
- */
 @Entity
 @Table(name = "IMAGENESPRODUCTOS")
 @NamedQueries({@NamedQuery(name = "ImagenesProductos.findById",query = "SELECT i FROM ImagenesProductos i WHERE i.productos.sid = :sid"),
@@ -41,120 +33,54 @@ public class ImagenesProductos implements Serializable{
     @Column(name = "MAGNITUD")
     private String magnitud;
 
-    /**
-     *
-     */
     public ImagenesProductos() {
     }  
-
-    /**
-     *
-     * @param id
-     * @param productos
-     * @param pathImagenEnDisco
-     * @param extension
-     * @param magnitud
-     */
-    public ImagenesProductos(Long id, Productos productos, String pathImagenEnDisco, String extension, String magnitud) {
-        this.id = id;
-        this.productos = productos;
-        this.pathImagenEnDisco = pathImagenEnDisco;
-        this.extension = extension;
-        this.magnitud = magnitud;
-    }
-    
-    /**
-     *
-     * @return
-     */
+   
     public Long getId_image() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId_image(Long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public Productos getProductos() {
         return productos;
     }
 
-    /**
-     *
-     * @param productos
-     */
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getPathImagenEnDisco() {
         return pathImagenEnDisco;
     }
 
-    /**
-     *
-     * @param pathImagenEnDisco
-     */
     public void setPathImagenEnDisco(String pathImagenEnDisco) {
         this.pathImagenEnDisco = pathImagenEnDisco;
     }
 
-    /**
-     *
-     * @return
-     */
+    
     public String getNombreImagen() {
         return nombreImagen;
     }
 
-    /**
-     *
-     * @param nombreImagen
-     */
     public void setNombreImagen(String nombreImagen) {
         this.nombreImagen = nombreImagen;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getExtension() {
         return extension;
     }
 
-    /**
-     *
-     * @param extension
-     */
     public void setExtension(String extension) {
         this.extension = extension;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getMagnitud() {
         return magnitud;
     }
 
-    /**
-     *
-     * @param magnitud
-     */
     public void setMagnitud(String magnitud) {
         this.magnitud = magnitud;
     }
@@ -197,15 +123,9 @@ public class ImagenesProductos implements Serializable{
         }
         return !((this.magnitud == null) ? (other.magnitud != null) : !this.magnitud.equals(other.magnitud));
     }
-
     
     @Override
     public String toString() {
         return "ImagenesProductos{" + "id=" + id + ", productos=" + productos + ", pathImagenEnDisco=" + pathImagenEnDisco + ", nombreImagen=" + nombreImagen + ", extension=" + extension + ", magnitud=" + magnitud + '}';
-    }
-    
-    
-    
-    
-      
+    } 
 }
