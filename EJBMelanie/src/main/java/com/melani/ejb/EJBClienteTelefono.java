@@ -8,18 +8,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBClienteTelefono")
-public class EJBClienteTelefono implements EJBClienteTelefonoRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBClienteTelefono.class);
+public class EJBClienteTelefono implements EJBClienteTelefonoRemote {    
     @PersistenceContext
-    private EntityManager em;
-    
+    private EntityManager em;    
     @Override
     public String addClienteTelefono(String numero, String prefijo, long idcliente) {
-        String retorno = "NADA";
-       
+        String retorno = "NADA";       
             if(!numero.isEmpty()&&!prefijo.isEmpty()&&idcliente>0){
                     PersonastelefonosPK persotelpk = new PersonastelefonosPK(Long.valueOf(numero), Long.valueOf(prefijo), idcliente);
                     TelefonosPK telepk = new TelefonosPK(Long.valueOf(numero), Long.valueOf(prefijo));

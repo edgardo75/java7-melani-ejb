@@ -12,20 +12,15 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBClienteDomicilio")
-public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
-    private static final Logger LOGGER  = Logger.getLogger(EJBClienteDomicilio.class);
+public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {   
     @PersistenceContext
     private EntityManager em;
     @EJB
     EJBHistoricoPersonaDomicilioRemote ejbhistperdom;
-
     @Override
     public String addRelacionClienteDomicilio(long idCliente, long idDomicilio,int idUsuario) {
-        String retorno = "NADA";
-        
+        String retorno = "NADA";        
             if((idDomicilio>0) && (idCliente>0)&&idUsuario>=0){
                     GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
                     PersonasdomiciliosPK perpk = new PersonasdomiciliosPK(idDomicilio, idCliente);
@@ -40,8 +35,7 @@ public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
                         retorno ="InyectóRelacion";
             }
         return retorno;        
-    }
-  
+    }  
 private PersonasDomicilios renovarDomicilio(long idDomicilio, long idCliente,int idUsuario) {
         PersonasDomicilios perdomi;        
            perdomi = em.find(PersonasDomicilios.class, new PersonasdomiciliosPK(idDomicilio, idCliente));
