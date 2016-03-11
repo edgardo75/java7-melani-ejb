@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 @Stateless(name="ejb/EJBHistoricoPersonaDomicilioBean")
 @WebService(serviceName="ServicesHistPD",name="HistPersoDominWs")
 public class EJBHistoricoPersonaDomicilioBean implements EJBHistoricoPersonaDomicilioRemote {    

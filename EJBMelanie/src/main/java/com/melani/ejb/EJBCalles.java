@@ -8,11 +8,15 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+
 @Stateless(name="ejb/EJBCalles")
 @WebService(serviceName="ServicesCalles",name="CallesWs")
-public class EJBCalles implements EJBCallesRemote {   
+public class EJBCalles implements EJBCallesRemote {
+   private static final Logger LOGGER = Logger.getLogger(EJBCalles.class);
    @PersistenceContext
    private EntityManager em;
+
    @Override
     public long addCalles(String descripcion,int idUsuario) {
         long retorno;
@@ -41,6 +45,7 @@ public class EJBCalles implements EJBCallesRemote {
                         }
         return retorno;        
     }
+
    @Override
     public String searchAllCalles() {
         String xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
@@ -58,7 +63,8 @@ public class EJBCalles implements EJBCallesRemote {
                 }      
          xml+="</Lista>";               
        return xml;
-    } 
+    }
+ 
     @Override
     public int recorCountCalles() { 
         Query consulta = em.createQuery("Select c From Calles c");              

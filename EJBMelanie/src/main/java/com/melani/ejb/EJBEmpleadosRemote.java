@@ -1,5 +1,6 @@
 package com.melani.ejb;
 import javax.ejb.Remote;
+
 @Remote
 public interface EJBEmpleadosRemote {
     public long addEmpleadoFullTime(String xmlEmpleado);

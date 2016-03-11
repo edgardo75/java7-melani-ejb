@@ -21,13 +21,15 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
     private static final Logger LOGGER = Logger.getLogger(EJBDomicilios.class);
     @PersistenceContext
     private EntityManager em; 
-    private long idDomicilio=0;       
+    private long idDomicilio=0;    
+   
     @Override
  public long addDomicilios(DatosDomicilios datosDomici) {
-        long retorno;        
+        long retorno =0;
+        try {
             idDomicilio= existe(datosDomici);
             switch((int)idDomicilio){
-                case 0:{                    
+                    case 0:{                    
                             retorno = procesarAddDomicilio(datosDomici);                            
                         break;
                     }                   
@@ -39,14 +41,21 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                         retorno = actualizarDomicilio(datosDomici,idDomicilio);  
                     break;
                 }
-            }        
-            return retorno;        
-    }    
+            }
+        } catch (Exception e) {
+            retorno =-2;
+            LOGGER.error("Error en Metodo addDomicilios "+e.getMessage());
+        }finally{
+            return retorno;
+        }
+    }
+    
     private long procesarAddDomicilio(DatosDomicilios domiciXML) {
-        long retorno;
+        long retorno = 0;
         Barrios barrios;
         Calles calles;
         Orientacion orientacion;        
+        try {          
                 Domicilios domicilioss = new Domicilios();          
                 domicilioss.setPiso(domiciXML.getPiso());
             if (domiciXML.getEntrecalleycalle().length()>0) {
@@ -75,17 +84,24 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                         domicilioss.setObservaciones("NO INGRESADO");
                     }
             em.persist(domicilioss);
-            retorno = domicilioss.getId();         
-            return retorno;        
+            retorno = domicilioss.getId();
+        } catch (Exception xst) {
+            LOGGER.error("Error en metodo procesarAddDomicilio  "+xst.getMessage());
+            retorno = -2;
+        }  finally {    
+            return retorno;
+        }
     }
+
     private long existe(DatosDomicilios domiciXML) {
-        long retorno = 0;  
+        long retorno =0;  
         String entrecalle;
         String manzana,piso;
         int numeroDomicilio,numdepto;
         long barrioN,calleN;
         String area,torre,sector,monoblock;
-        long orientacion,localidadN;        
+        long orientacion,localidadN;
+        try {
             entrecalle=domiciXML.getEntrecalleycalle();
             manzana=domiciXML.getManzana();
             numeroDomicilio=domiciXML.getNumero();
@@ -123,12 +139,19 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                 for (Domicilios domicilios : lista) {
                     retorno = domicilios.getId();
                 }
-            }
-        return retorno;        
-    }  
+            }  
+        } catch (Exception e) {
+            retorno=-1;
+            LOGGER.error("Error en metodo existe de EJBDomicilio "+e.getMessage());
+        }finally{
+            return retorno;
+        }
+    }
+  
     @Override
     public long addDomicilio(String xmlDomicilio) {
-       long retorno;       
+       long retorno =0;
+        try {
             XStream xstream = new XStream(new StaxDriver());
             xstream.alias("Domicilio",DatosDomicilios.class);
             DatosDomicilios domiciXML = (DatosDomicilios) xstream.fromXML(xmlDomicilio);           
@@ -145,11 +168,18 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                                 default:{
                                     retorno = procesarAddDomicilio(domiciXML);                   
                                 }
-                            }        
-            return retorno;        
-    }   
-    private long actualizarDomicilio(DatosDomicilios domiciXML,long iddomicilio) {
-        long retorno;              
+                            }
+        } catch (Exception e) {
+            retorno =-2;
+            LOGGER.error("Error en Metodo addDomicilio "+e.getMessage());
+        }finally{
+            return retorno;
+        }
+    }
+   
+private long actualizarDomicilio(DatosDomicilios domiciXML,long iddomicilio) {
+        long retorno = 0L;
+        try {          
                 Domicilios domicilio = em.find(Domicilios.class, iddomicilio);
                     domicilio.setArea(domiciXML.getArea());
                     domicilio.setBarrios(em.find(Barrios.class, domiciXML.getBarrio().getBarrioId()));
@@ -168,7 +198,12 @@ public class EJBDomicilios implements EJBDomiciliosRemote {
                         domicilio.setEntrecalleycalle(domiciXML.getEntrecalleycalle());                        
                         domicilio.setTorre(domiciXML.getTorre());
                       em.merge(domicilio);
-                retorno = domicilio.getId();        
-            return retorno;        
+                retorno = domicilio.getId();
+        } catch (Exception e) {
+            retorno = -3;
+            LOGGER.error("Error en metodo actualizarDomicilio, EJBDomicilio "+e.getMessage());
+        }finally{
+            return retorno;
+        }
     }    
 }
