@@ -30,7 +30,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBClientes")
 @WebService(serviceName="ServiceClientes",name="ClientesWs")
 public class EJBClientes implements EJBClientesRemote {
@@ -46,11 +45,9 @@ public class EJBClientes implements EJBClientesRemote {
     @EJB
     EJBClienteTelefonoRemote ejbclitel;
     private volatile long chequear__email_numDoc=0L;
-
         public long addCliente(String xmlClienteDomicilioTelefono) {
         long retorno;
-        Personas persona = null;
-       
+        Personas persona = null;       
             ClienteDomicilioTelefono getAllDatos = parsear_a_objetos(xmlClienteDomicilioTelefono);
              DatosCliente datosClientePersonales = getAllDatos.getCliente();
           
@@ -66,8 +63,7 @@ public class EJBClientes implements EJBClientesRemote {
                          
                                 if(idPersona>0) {
                                     persona = em.find(Personas.class, idPersona);
-                                }
-             
+                                }             
                                     if(!datosClientePersonales.getEmail().isEmpty()){
                                            chequear__email_numDoc = chequearEmail(datosClientePersonales.getEmail(),datosClientePersonales.getNrodocu());
                                            
@@ -118,8 +114,7 @@ public class EJBClientes implements EJBClientesRemote {
                  LOGGER.error("Nombre no válido");
              }        
             return retorno;        
-    }
-       
+    }       
     private long buscarPersonaSiEsCliente(Personas persona,DatosCliente datosClientePersonales,
             ClienteDomicilioTelefono todosDatos,String xmlClienteDomicilioTelefono){
         long retorno;
@@ -130,8 +125,7 @@ public class EJBClientes implements EJBClientesRemote {
                retorno=-9;
            }       
             return retorno;         
-    }
-  
+    }  
     private long existePersona(int nrodocu) {
         long retorno =0;
         
@@ -355,7 +349,6 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                 retorno = cliente.getIdPersona();        
            return retorno;       
     }
-
     @Override
     public String getCustomerDocNumber(Integer docNumber) {
         String xml = null;
@@ -381,8 +374,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                }
            }               
             return xml;        
-    }
-   
+    }   
     public long chequearEmail(String email,Integer nrodocu) {
         long retorno = -6;       
             if(!email.isEmpty()&&nrodocu>0){
@@ -406,7 +398,6 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
             }                
             return retorno;        
     }
-
     @Override
     public String searchClientForNameAndLastName(String name,String lastname) {
         String xml = "<Lista>\n";        
@@ -429,8 +420,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                 }
                                 xml+=xmlLoop;        
             return xml+"</Lista>\n";        
-    }
-    
+    }    
     private ClienteDomicilioTelefono parsear_a_objetos(String xmlClienteDomicilioTelefono){
         ClienteDomicilioTelefono datoscliente;
              XStream  xstream = new XStream(new StaxDriver());
@@ -447,8 +437,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                     datoscliente = (ClienteDomicilioTelefono) 
                             xstream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML1(xmlClienteDomicilioTelefono));                                          
             return datoscliente;        
-    }
-   
+    }   
     @Override
     public String addClienteDatosPersonales(String datospersonalescliente) {
         long idcliente =0L;
