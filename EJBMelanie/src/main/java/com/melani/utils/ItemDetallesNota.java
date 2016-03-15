@@ -1,7 +1,5 @@
-
 package com.melani.utils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 @XStreamAlias("itemdetallesnota")
 public class ItemDetallesNota {
         private int cantidad;
@@ -16,11 +14,9 @@ public class ItemDetallesNota {
         private long id_producto;
         private char anulado;
         private Double preciocondescuento;
-
     public Double getPreciocondescuento() {
         return preciocondescuento;
-    }
-   
+    }   
             public char getCancelado() {
             return cancelado;
         }

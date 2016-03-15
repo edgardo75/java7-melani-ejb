@@ -18,8 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils;
-
+import org.apache.commons.lang3.StringEscapeUtils; 
 @Entity
 @Table(name = "HISTORICONOTAPEDIDO", catalog = "", schema = "")
 @NamedQueries({@NamedQuery(name = "HistoricoNotaPedido.findAll", query = "SELECT h FROM HistoricoNotaPedido h"),
@@ -45,7 +44,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @NamedQuery(name = "HistoricoNotaPedido.findByCancelado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.cancelado = :cancelado"),
 @NamedQuery(name = "HistoricoNotaPedido.findByAnulado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.anulado = :anulado"),
 @NamedQuery(name = "HistoricoNotaPedido.findByPorcdesc", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.porcdesc = :porcdesc"),
-@NamedQuery(name = "HistoricoNotaPedido.findByFkidnotapedido",query = "SELECT h FROM HistoricoNotaPedido h WHERE h.fkidnotapedido.id = :idnota")})
+@NamedQuery(name = "HistoricoNotaPedido.findByFkIdNotaPedido",query = "SELECT h FROM HistoricoNotaPedido h WHERE h.fkidnotapedido.id = :idnota")})
 public class HistoricoNotaPedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

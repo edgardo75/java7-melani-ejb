@@ -10,9 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
 @Entity
-@Table(name = "TIPOSTELEFONO")
+@Table(name = "TIPOSTELEFONO") 
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TiposTelefono.findAll", query = "SELECT t FROM TiposTelefono t"),
@@ -22,8 +21,7 @@ public class TiposTelefono implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id    
     @Column(name = "ID_TIPOTEL")
-    private Short idTipotel;
-    
+    private Short idTipotel;    
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "idTipotelefono")

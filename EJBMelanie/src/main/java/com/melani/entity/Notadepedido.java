@@ -701,16 +701,6 @@ public class Notadepedido implements Serializable {
         hash = 71 * hash + Objects.hashCode(this.id);
         return hash;
     }
-    
-//    @Override
-//    public boolean equals(Object object) {
-//        // TODO: Warning - this method won't work in the case the id fields are not set
-//        if (!(object instanceof Notadepedido)) {
-//            return false;
-//        }
-//        Notadepedido other = (Notadepedido) object;
-//        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
-//    }
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

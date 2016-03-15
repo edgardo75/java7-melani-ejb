@@ -437,14 +437,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      
     private long validateData(DatosEmpleado empleado) {
         long retorno=0;
-        try {
-            
-            String numeroDocumento = String.valueOf(empleado.getNumeroDocumento());
-            System.out.println("4");
+        try {            
+            String numeroDocumento = String.valueOf(empleado.getNumeroDocumento());            
             if(!ProjectHelpers.NumeroDocumentoValidator.validate(numeroDocumento)){
                 retorno =-16;
-            }else {
-                System.out.println("3");
+            }else {            
                 if(!empleado.getNombre().isEmpty()&&ProjectHelpers.NombreyApellidoValidator.validate(empleado.getNombre())){
                     if(!empleado.getApellido().isEmpty()&&ProjectHelpers.NombreyApellidoValidator.validate(empleado.getApellido())){
                         if(empleado.getPassword().equals(empleado.getPasswordre())){

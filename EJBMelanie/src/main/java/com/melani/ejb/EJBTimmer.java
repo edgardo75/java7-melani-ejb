@@ -97,10 +97,8 @@ public class EJBTimmer {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                try {                                    
-                                    System.out.println("Enviando......");
-                                    Transport.send(message);
-                                    System.out.println("Mensaje Enviado!");
+                                try {                                                                        
+                                    Transport.send(message);                                    
                                 } catch (MessagingException ex) {
                                     java.util.logging.Logger.getLogger(EJBTimmer.class.getName()).log(Level.SEVERE, null, ex);
                                 }

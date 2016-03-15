@@ -18,8 +18,7 @@ public class EJBBarrios implements EJBBarriosRemote {
    @SuppressWarnings("FinallyDiscardsException")
     public long addBarrio(String descripcion,int idUsuario) {
         long retorno;
-        String nombreDeBarrio = "";        
-   
+        String nombreDeBarrio = "";
        try {
            //convierto string a su correspondiente encoding para evitar errores de parseo
            nombreDeBarrio = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");

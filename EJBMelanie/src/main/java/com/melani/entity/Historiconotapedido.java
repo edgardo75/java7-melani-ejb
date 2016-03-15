@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,44 +18,40 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils;
-/**
- *
- * @author Edgardo
- */
+import org.apache.commons.lang3.StringEscapeUtils; 
 @Entity
 @Table(name = "HISTORICONOTAPEDIDO", catalog = "", schema = "")
-@NamedQueries({@NamedQuery(name = "Historiconotapedido.findAll", query = "SELECT h FROM Historiconotapedido h"),
-@NamedQuery(name = "Historiconotapedido.findByIdhistorico", query = "SELECT h FROM Historiconotapedido h WHERE h.id = :id"),
-@NamedQuery(name = "Historiconotapedido.findByAnticipo", query = "SELECT h FROM Historiconotapedido h WHERE h.anticipo = :anticipo"),
-@NamedQuery(name = "Historiconotapedido.findByIdusuariocancelo", query = "SELECT h FROM Historiconotapedido h WHERE h.idusuariocancelo = :idusuariocancelo"),
-@NamedQuery(name = "Historiconotapedido.findByPendiente", query = "SELECT h FROM Historiconotapedido h WHERE h.pendiente = :pendiente"),
-@NamedQuery(name = "Historiconotapedido.findByTotal", query = "SELECT h FROM Historiconotapedido h WHERE h.total = :total"),
-@NamedQuery(name = "Historiconotapedido.findByIdusuarioanulo", query = "SELECT h FROM Historiconotapedido h WHERE h.idusuarioanulo = :idusuarioanulo"),
-@NamedQuery(name = "Historiconotapedido.findBySaldo", query = "SELECT h FROM Historiconotapedido h WHERE h.saldo = :saldo"),
-@NamedQuery(name = "Historiconotapedido.findByHoraregistro", query = "SELECT h FROM Historiconotapedido h WHERE h.horaregistro = :horaregistro"),
-@NamedQuery(name = "Historiconotapedido.findByFecharegistro", query = "SELECT h FROM Historiconotapedido h WHERE h.fecharegistro = :fecharegistro"),
-@NamedQuery(name = "Historiconotapedido.findByAccion", query = "SELECT h FROM Historiconotapedido h WHERE h.accion = :accion"),
-@NamedQuery(name = "Historiconotapedido.findByPorcentajeaplicado", query = "SELECT h FROM Historiconotapedido h WHERE h.porcentajeaplicado = :porcentajeaplicado"),
-@NamedQuery(name = "Historiconotapedido.findByDescuento", query = "SELECT h FROM Historiconotapedido h WHERE h.descuento = :descuento"),
-@NamedQuery(name = "Historiconotapedido.findByIdusuarioexpidio", query = "SELECT h FROM Historiconotapedido h WHERE h.idusuarioexpidio = :idusuarioexpidio"),
-@NamedQuery(name = "Historiconotapedido.findByTotalapagar", query = "SELECT h FROM Historiconotapedido h WHERE h.totalapagar = :totalapagar"),
-@NamedQuery(name = "Historiconotapedido.findByObservaciones", query = "SELECT h FROM Historiconotapedido h WHERE h.observaciones = :observaciones"),
-@NamedQuery(name = "Historiconotapedido.findByRecargo", query = "SELECT h FROM Historiconotapedido h WHERE h.recargo = :recargo"),
-@NamedQuery(name = "Historiconotapedido.findByIdusuarioentrega", query = "SELECT h FROM Historiconotapedido h WHERE h.idusuarioentrega = :idusuarioentrega"),
-@NamedQuery(name = "Historiconotapedido.findByPorcrecargo", query = "SELECT h FROM Historiconotapedido h WHERE h.porcrecargo = :porcrecargo"),
-@NamedQuery(name = "Historiconotapedido.findByEntregado", query = "SELECT h FROM Historiconotapedido h WHERE h.entregado = :entregado"),
-@NamedQuery(name = "Historiconotapedido.findByCancelado", query = "SELECT h FROM Historiconotapedido h WHERE h.cancelado = :cancelado"),
-@NamedQuery(name = "Historiconotapedido.findByAnulado", query = "SELECT h FROM Historiconotapedido h WHERE h.anulado = :anulado"),
-@NamedQuery(name = "Historiconotapedido.findByPorcdesc", query = "SELECT h FROM Historiconotapedido h WHERE h.porcdesc = :porcdesc"),
-@NamedQuery(name = "Historiconotapedido.findByFkidnotapedido",query = "SELECT h FROM Historiconotapedido h WHERE h.fkidnotapedido.id = :idnota")})
-public class Historiconotapedido implements Serializable {
+@NamedQueries({@NamedQuery(name = "HistoricoNotaPedido.findAll", query = "SELECT h FROM HistoricoNotaPedido h"),
+@NamedQuery(name = "HistoricoNotaPedido.findByIdhistorico", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.id = :id"),
+@NamedQuery(name = "HistoricoNotaPedido.findByAnticipo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.anticipo = :anticipo"),
+@NamedQuery(name = "HistoricoNotaPedido.findByIdusuariocancelo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.idusuariocancelo = :idusuariocancelo"),
+@NamedQuery(name = "HistoricoNotaPedido.findByPendiente", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.pendiente = :pendiente"),
+@NamedQuery(name = "HistoricoNotaPedido.findByTotal", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.total = :total"),
+@NamedQuery(name = "HistoricoNotaPedido.findByIdusuarioanulo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.idusuarioanulo = :idusuarioanulo"),
+@NamedQuery(name = "HistoricoNotaPedido.findBySaldo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.saldo = :saldo"),
+@NamedQuery(name = "HistoricoNotaPedido.findByHoraregistro", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.horaregistro = :horaregistro"),
+@NamedQuery(name = "HistoricoNotaPedido.findByFecharegistro", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.fecharegistro = :fecharegistro"),
+@NamedQuery(name = "HistoricoNotaPedido.findByAccion", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.accion = :accion"),
+@NamedQuery(name = "HistoricoNotaPedido.findByPorcentajeaplicado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.porcentajeaplicado = :porcentajeaplicado"),
+@NamedQuery(name = "HistoricoNotaPedido.findByDescuento", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.descuento = :descuento"),
+@NamedQuery(name = "HistoricoNotaPedido.findByIdusuarioexpidio", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.idusuarioexpidio = :idusuarioexpidio"),
+@NamedQuery(name = "HistoricoNotaPedido.findByTotalapagar", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.totalapagar = :totalapagar"),
+@NamedQuery(name = "HistoricoNotaPedido.findByObservaciones", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.observaciones = :observaciones"),
+@NamedQuery(name = "HistoricoNotaPedido.findByRecargo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.recargo = :recargo"),
+@NamedQuery(name = "HistoricoNotaPedido.findByIdusuarioentrega", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.idusuarioentrega = :idusuarioentrega"),
+@NamedQuery(name = "HistoricoNotaPedido.findByPorcrecargo", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.porcrecargo = :porcrecargo"),
+@NamedQuery(name = "HistoricoNotaPedido.findByEntregado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.entregado = :entregado"),
+@NamedQuery(name = "HistoricoNotaPedido.findByCancelado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.cancelado = :cancelado"),
+@NamedQuery(name = "HistoricoNotaPedido.findByAnulado", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.anulado = :anulado"),
+@NamedQuery(name = "HistoricoNotaPedido.findByPorcdesc", query = "SELECT h FROM HistoricoNotaPedido h WHERE h.porcdesc = :porcdesc"),
+@NamedQuery(name = "HistoricoNotaPedido.findByFkIdNotaPedido",query = "SELECT h FROM HistoricoNotaPedido h WHERE h.fkidnotapedido.id = :idnota")})
+public class HistoricoNotaPedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false,fetch = FetchType.LAZY)
-    @GeneratedValue(strategy=GenerationType.TABLE,generator="HistoriconotapedidoIdGen")
-    @TableGenerator(name="HistoriconotapedidoIdGen", table="ID_GEN_HIST_NOTAP",
-    pkColumnName="FNAME",pkColumnValue="Historiconotapedido" , valueColumnName="FKEY",
+    @GeneratedValue(strategy=GenerationType.TABLE,generator="HistoricoNotaPedidoIdGen")
+    @TableGenerator(name="HistoricoNotaPedidoIdGen", table="ID_GEN_HIST_NOTAP",
+    pkColumnName="FNAME",pkColumnValue="HistoricoNotaPedido" , valueColumnName="FKEY",
     allocationSize=1)
     @Column(name = "IDHISTORICO")    
     private Long id;
@@ -112,384 +104,194 @@ public class Historiconotapedido implements Serializable {
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Notadepedido fkidnotapedido;
 
-    /**
-     *
-     */
-    public Historiconotapedido() {
+    public HistoricoNotaPedido() {
     }
 
-    /**
-     *
-     * @param id
-     */
-    public Historiconotapedido(long id) {
+    public HistoricoNotaPedido(long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public Notadepedido getFkidnotapedido() {
         return fkidnotapedido;
     }
 
-    /**
-     *
-     * @param fkidnotapedido
-     */
     public void setFkidnotapedido(Notadepedido fkidnotapedido) {
         this.fkidnotapedido = fkidnotapedido;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPorcentajedesc() {
         return porcdesc;
     }
 
-    /**
-     *
-     * @param porcentajedesc
-     */
     public void setPorcentajedesc(BigDecimal porcentajedesc) {
         this.porcdesc = porcentajedesc;
     }
 
-    /**
-     *
-     * @return
-     */
     public Short getPorcentajeaplicado() {
         return porcentajeaplicado;
     }
 
-    /**
-     *
-     * @param porcentajeaplicado
-     */
     public void setPorcentajeaplicado(Short porcentajeaplicado) {
         this.porcentajeaplicado = porcentajeaplicado;
     }
 
-    /**
-     *
-     * @return
-     */
     public Character getPendiente() {
         return pendiente;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getAccion() {
         return accion;
     }
 
-    /**
-     *
-     * @param accion
-     */
     public void setAccion(String accion) {
         this.accion = accion;
     }   
 
-    /**
-     *
-     * @param pendiente
-     */
+    
     public void setPendiente(Character pendiente) {
         this.pendiente = pendiente;
     }
 
-    /**
-     *
-     * @return
-     */
     public Character getEntregado() {
         return entregado;
     }
 
-    /**
-     *
-     * @param entregado
-     */
     public void setEntregado(Character entregado) {
         this.entregado = entregado;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getTotal() {
         return total;
     }
 
-    /**
-     *
-     * @param total
-     */
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdusuarioexpidio() {
         return idusuarioexpidio;
     }
 
-    /**
-     *
-     * @param idusuarioexpidio
-     */
     public void setIdusuarioexpidio(long idusuarioexpidio) {
         this.idusuarioexpidio = idusuarioexpidio;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getSaldo() {
         return saldo;
     }
 
-    /**
-     *
-     * @param saldo
-     */
     public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdusuarioentrega() {
         return idusuarioentrega;
     }
 
-    /**
-     *
-     * @param idusuarioentrega
-     */
     public void setIdusuarioentrega(long idusuarioentrega) {
         this.idusuarioentrega = idusuarioentrega;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getFecharegistro() {
         return fecharegistro;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdusuariocancelo() {
         return idusuariocancelo;
     }
 
-    /**
-     *
-     * @param idusuariocancelo
-     */
     public void setIdusuariocancelo(long idusuariocancelo) {
         this.idusuariocancelo = idusuariocancelo;
     }    
 
-    /**
-     *
-     * @param fecharegistro
-     */
     public void setFecharegistro(Date fecharegistro) {
         this.fecharegistro = fecharegistro;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     *
-     * @param observaciones
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getAnticipo() {
         return anticipo;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getHoraregistro() {
         return horaregistro;
     }
 
-    /**
-     *
-     * @param horaregistro
-     */
     public void setHoraregistro(Date horaregistro) {
         this.horaregistro = horaregistro;
     }
 
-    /**
-     *
-     * @param anticipo
-     */
     public void setAnticipo(BigDecimal anticipo) {
         this.anticipo = anticipo;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdhistorico() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setIdhistorico(long id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getIdusuarioanulo() {
         return idusuarioanulo;
     }
 
-    /**
-     *
-     * @param idusuarioanulo
-     */
     public void setIdusuarioanulo(Long idusuarioanulo) {
         this.idusuarioanulo = idusuarioanulo;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getDescuento() {
         return descuento;
     }
 
-    /**
-     *
-     * @param descuento
-     */
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getPorcrecargo() {
         return porcrecargo;
     }
 
-    /**
-     *
-     * @param porcrecargo
-     */
     public void setPorcrecargo(BigDecimal porcrecargo) {
         this.porcrecargo = porcrecargo;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getRecargo() {
         return recargo;
     }
 
-    /**
-     *
-     * @param recargo
-     */
     public void setRecargo(BigDecimal recargo) {
         this.recargo = recargo;
     }
 
-    /**
-     *
-     * @return
-     */
     public BigDecimal getTotalapagar() {
         return totalapagar;
     }
 
-    /**
-     *
-     * @param totalapagar
-     */
     public void setTotalapagar(BigDecimal totalapagar) {
         this.totalapagar = totalapagar;
     }
 
-    /**
-     *
-     * @return
-     */
     public Character getCancelado() {
         return cancelado;
     }
 
-    /**
-     *
-     * @param cancelado
-     */
     public void setCancelado(Character cancelado) {
         this.cancelado = cancelado;
     }
 
-    /**
-     *
-     * @return
-     */
     public Character getAnulado() {
         return anulado;
     }
 
-    /**
-     *
-     * @param anulado
-     */
     public void setAnulado(Character anulado) {
         this.anulado = anulado;
     }
@@ -500,25 +302,19 @@ public class Historiconotapedido implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Historiconotapedido)) {
+    public boolean equals(Object object) {      
+        if (!(object instanceof HistoricoNotaPedido)) {
             return false;
         }
-        Historiconotapedido other = (Historiconotapedido) object;
+        HistoricoNotaPedido other = (HistoricoNotaPedido) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
     @Override
     public String toString() {
-        return "com.melani.entidades.Historiconotapedido[id=" + id + "]";
+        return "com.melani.entidades.HistoricoNotaPedido[id=" + id + "]";
     }
 
-    /**
-     *
-     * @return
-     */
-    public String toXML(){
-        //-------------------------------------------------------------------------------------
+    public String toXML(){        
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fereg = "";
         if(this.getFecharegistro()!=null) {
@@ -527,9 +323,8 @@ public class Historiconotapedido implements Serializable {
         String hourreg = "";
         if(this.getHoraregistro()!=null) {
             hourreg=sdf.format(this.getHoraregistro());
-        }
-        //-------------------------------------------------------------------------------------
-            StringBuilder item = new StringBuilder();
+        }       
+            StringBuilder item = new StringBuilder(10);
         try {
               item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo().toString()).append("</anticipo>\n");
                            item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
@@ -555,8 +350,7 @@ public class Historiconotapedido implements Serializable {
                    item.append("</item>\n");
         } catch (Exception e) {
             e.getMessage();
-        }finally{
-                    return item.toString();
         }
+        return item.toString();        
     }
 }

@@ -35,6 +35,7 @@
     <class>com.melani.entity.TiposDocumento</class>
     <class>com.melani.entity.TiposTelefono</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+    </properties>
   </persistence-unit>
 </persistence>

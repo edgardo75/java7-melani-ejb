@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
-@Table(name="TIPOSDOCUMENTO")
+@Table(name="TIPOSDOCUMENTO") 
 @NamedQueries({
     @NamedQuery(name = "TiposDocumento.findAll", query = "SELECT t FROM TiposDocumento t"),
     @NamedQuery(name = "TiposDocumento.findById", query = "SELECT t FROM TiposDocumento t WHERE t.id = :id"),

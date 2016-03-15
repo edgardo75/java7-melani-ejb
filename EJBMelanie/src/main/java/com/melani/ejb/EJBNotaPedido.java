@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,12 +34,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBNotaPedido")
 @WebService(serviceName="ServiceNotaPedido",name="NotaPedidoWs")
 public class EJBNotaPedido implements EJBNotaPedidoRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBNotaPedido.class);
-    private static final String FECHA_DEFAULT = "01/01/1900";
+    private static final Logger LOGGER = Logger.getLogger(EJBNotaPedido.class);   
     @PersistenceContext()    
     private EntityManager em;
     @EJB
@@ -46,8 +45,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     @EJB
     EJBPresupuestosRemote ejbpresupuesto;    
     DatosNotaPedido notadepedido;    
-    volatile Double totalCompras;
-    
+    volatile Double totalCompras;    
     private DatosNotaPedido xestreaNotapedido(String xmlNotapedido){
             XStream xestream = new XStream(new StaxDriver());
                 xestream.alias("notapedido", DatosNotaPedido.class);
@@ -64,34 +62,34 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     public long agregarNotaPedido(String xmlNotaPedido) {
         long retorno;                    
             if(!xmlNotaPedido.isEmpty()){
+            
                 retorno = almacenarNotaPedido(xestreaNotapedido(xmlNotaPedido));
+            
             }else{
                 retorno = -5;
             }       
             return retorno;        
     }
-    private long almacenarNotaPedido(DatosNotaPedido notadepedido) {
+    private long almacenarNotaPedido(DatosNotaPedido notadepedido){
         long retorno;       
             GregorianCalendar gc = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Clientes cliente = em.find(Clientes.class, notadepedido.getPersonas().getId());
                             Notadepedido notape = new Notadepedido();                            
-                                    try {
+                                    
                                         almacenarNotaVoid(notape,notadepedido,sdf,gc);
-                                    } catch (ParseException ex) {
-                                        LOGGER.error("Error en metodo almacenar nota de pedido");  
-                                    }
+                                    
                                 em.persist(notape);                                                             
                                          switch(notadepedido.getStockfuturo()){
-                                             case 0:{
-                                                 almacenarDetalleNotaConControlStock(notadepedido,notape);                                                           
-                                                 almacenarHistorico(notadepedido,notape);
+                                             case 0:{            
+                                                    almacenarDetalleNotaConControlStock(notadepedido,notape);
+                                                    almacenarHistorico(notadepedido,notape);            
                                                     }
                                              break;
                                              default :
-                                                    {
-                                                 almacenarDetalleNota(notadepedido,notape);
-                                                 almacenarHistorico(notadepedido,notape);
+                                             {            
+                                                almacenarDetalleNota(notadepedido,notape);
+                                                almacenarHistorico(notadepedido,notape);            
                                                     }
                                          }
                                          Query queryFindByIdProducto =em.createNamedQuery("Notadepedido.findClientFk");
@@ -145,7 +143,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             return retorno;
         
     }
-    private void almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape) {
+    private void almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape){
         long resultado;
                     GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());                    
                                     HistoricoNotaPedido historico = new HistoricoNotaPedido();
@@ -175,12 +173,11 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                     historico.setCancelado(notadepedido.getCancelado());                                
                                     historico.setAnulado(notadepedido.getAnulado());
                                     historico.setAccion("Historico Almacenado con exito nota de pedido N "+notape.getId());
-                    em.persist(historico);
-                    
-                        Query queryFindByIdProducto = em.createNamedQuery("Historiconotapedido.findByFkidnotapedido");
-                        queryFindByIdProducto.setParameter("idnota", notape.getId());
-                        notape.setHistoriconotapedidoList(queryFindByIdProducto.getResultList());                   
-                    em.persist(notape);                    
+                    em.persist(historico);                    
+                        Query queryFindByIdProducto = em.createNamedQuery("HistoricoNotaPedido.findByFkIdNotaPedido");
+                                queryFindByIdProducto.setParameter("idnota", notape.getId());
+                                notape.setHistoriconotapedidoList(queryFindByIdProducto.getResultList());                   
+                                em.persist(notape);                    
                     resultado = historico.getIdhistorico();
         //return resultado;
     }
@@ -549,8 +546,12 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                nota.setDetallesnotadepedidoList(queryDetailsOrdersFindIdOrder);
                                                em.merge(nota);
                                 if(datosnotapedido.getAnticipoacum()!=nota.getAnticipo().doubleValue()){
-                                    nota.setAnticipo(BigDecimal.valueOf(datosnotapedido.getAnticipoacum()));
-                                    almacenarHistorico(datosnotapedido,nota);
+            try {
+                nota.setAnticipo(BigDecimal.valueOf(datosnotapedido.getAnticipoacum()));
+                almacenarHistorico(datosnotapedido,nota);
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, ex);
+            }
                                 }   
                   result=nota.getId();               
             return result;        
@@ -769,57 +770,58 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                         historico.setAnulado('0');
     }
 
-    private void almacenarNotaVoid(Notadepedido notape, DatosNotaPedido notadepedido, SimpleDateFormat sdf, GregorianCalendar gc) throws ParseException {
-                                            notape.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
-                                            notape.setAnulado(notadepedido.getAnulado());
-                                            notape.setEnefectivo(notadepedido.getEnefectivo());
-                                            notape.setPendiente(notadepedido.getPendiente());
-                                            notape.setEntregado(notadepedido.getEntregado());
-                                            notape.setFkIdcliente(em.find(Personas.class, notadepedido.getPersonas().getId()));
-                                            notape.setFkidporcentajenotaId(em.find(Porcentajes.class, notadepedido.getPorcentajes().getId_porcentaje()));                
-                                            notape.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, notadepedido.getTarjetacredito().getId_tarjeta()));
-                                            notape.setIdUsuarioExpidioNota(notadepedido.getUsuario_expidio_nota());
-                                            notape.setIdusuarioAnulado(notadepedido.getId_usuario_anulado());
-                                            notape.setIdusuarioEntregado(notadepedido.getUsuario_entregado());
-                                            notape.setMontoiva(BigDecimal.valueOf(notadepedido.getMontoiva()));
-                                            notape.setNumerodecupon(notadepedido.getNumerodecupon());
-                                            if(notadepedido.getObservaciones().length()>0){
-                                                notape.setObservaciones(notadepedido.getObservaciones());
-                                            }else{
-                                                notape.setObservaciones("");
-                                            }
-                                            notape.setRecargo(BigDecimal.valueOf(notadepedido.getRecargo()));
-                                            notape.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
-                                            notape.setStockfuturo(notadepedido.getStockfuturo());
-                                            notape.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));
-                                            notape.setHoracompra(gc.getTime());
-                                            notape.setFechadecompra(gc.getTime());                                               
-                                            notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));                                 
-                                            notape.setCancelado(notadepedido.getCancelado());
-                                            notape.setDescuentonota(BigDecimal.valueOf(notadepedido.getDescuentonota()));
-                                            notape.setDescuentoPesos(BigDecimal.valueOf(notadepedido.getDescuentopesos()));
-                                            notape.setUltimaActualizacion(FECHA_DEFAULT);
-                                            notape.setIdusuariocancelo(notadepedido.getUsuario_cancelo_nota());
-                                                    try {
-                                                        notape.setMontototalapagar(BigDecimal.valueOf(notadepedido.getMontototalapagar()));
-                                                    } catch (Exception e) {
-                                                        LOGGER.error("Error en metodo almacenar nota, monto total a pagar "+e.getMessage());
-                                                    }
-                                            notape.setPorcdesctotal(BigDecimal.valueOf(notadepedido.getPorc_descuento_total()));
-                                            notape.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));
-                                                    if(notadepedido.getCancelado()=='1') {
-                                                        notape.setFecancelado(gc.getTime());
-                                                    }else{
-                                                        notape.setFecancelado(sdf.parse(FECHA_DEFAULT));
-                                                        
-                                                    }
-                                                    if(notadepedido.getAnulado()=='1') {
-                                                        notape.setFechaAnulado(gc.getTime());
-                                                    }else{
-                                                        notape.setFechaAnulado(sdf.parse(FECHA_DEFAULT));                                            
-                                                    }
-    }
+    private void almacenarNotaVoid(Notadepedido notape, DatosNotaPedido notadepedido, SimpleDateFormat sdf, GregorianCalendar gc) {
+        try {
+            notape.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
+            notape.setAnulado(notadepedido.getAnulado());
+            notape.setEnefectivo(notadepedido.getEnefectivo());
+            notape.setPendiente(notadepedido.getPendiente());
+            notape.setEntregado(notadepedido.getEntregado());
+            notape.setFkIdcliente(em.find(Personas.class, notadepedido.getPersonas().getId()));
+            notape.setFkidporcentajenotaId(em.find(Porcentajes.class, notadepedido.getPorcentajes().getId_porcentaje()));
+            notape.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, notadepedido.getTarjetacredito().getId_tarjeta()));
+            notape.setIdUsuarioExpidioNota(notadepedido.getUsuario_expidio_nota());
+            notape.setIdusuarioAnulado(notadepedido.getId_usuario_anulado());
+            notape.setIdusuarioEntregado(notadepedido.getUsuario_entregado());
+            notape.setMontoiva(BigDecimal.valueOf(notadepedido.getMontoiva()));
+            notape.setNumerodecupon(notadepedido.getNumerodecupon());
+            if(notadepedido.getObservaciones().length()>0){
+                notape.setObservaciones(notadepedido.getObservaciones());
+            }else{
+                notape.setObservaciones("");
+            }
+            notape.setRecargo(BigDecimal.valueOf(notadepedido.getRecargo()));
+            notape.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
+            notape.setStockfuturo(notadepedido.getStockfuturo());
+            notape.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));
+            notape.setHoracompra(gc.getTime());
+            notape.setFechadecompra(gc.getTime());
+            notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));
+            notape.setCancelado(notadepedido.getCancelado());
+            notape.setDescuentonota(BigDecimal.valueOf(notadepedido.getDescuentonota()));
+            notape.setDescuentoPesos(BigDecimal.valueOf(notadepedido.getDescuentopesos()));
+            notape.setUltimaActualizacion(ResourceBundle.getBundle("config").getString("FECHA_DEFAULT"));
+            notape.setIdusuariocancelo(notadepedido.getUsuario_cancelo_nota());
+            
+            notape.setMontototalapagar(BigDecimal.valueOf(notadepedido.getMontototalapagar()));
+            
+            notape.setPorcdesctotal(BigDecimal.valueOf(notadepedido.getPorc_descuento_total()));
+            notape.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));
+                        if(notadepedido.getCancelado()=='1') {
+                            notape.setFecancelado(gc.getTime());
+                        }else{
+                            notape.setFecancelado(sdf.parse(ResourceBundle.getBundle("config").getString("FECHA_DEFAULT")));
 
+                        }
+            if(notadepedido.getAnulado()=='1') {
+                notape.setFechaAnulado(gc.getTime());
+            }else{
+                notape.setFechaAnulado(sdf.parse(ResourceBundle.getBundle("config").getString("FECHA_DEFAULT")));
+            }
+        } catch (ParseException ex) {
+            LOGGER.error("eRROR con la fecha");
+        }
+    }
     private String iterateOverListNote(List<Notadepedido> lista) {
         StringBuilder xmlLoop = new StringBuilder(10);
                 for (Notadepedido notadepedido1 : lista) {

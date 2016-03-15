@@ -1,94 +1,53 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.melani.entity;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-/**
- * A Entity TiposDocumentos
- *@version 1.0
- * @author Edgardo Alvarez
- */
 @Entity
-@Table(name="TIPOSDOCUMENTO")
+@Table(name="TIPOSDOCUMENTO") 
 @NamedQueries({
-    @NamedQuery(name = "Tiposdocumento.findAll", query = "SELECT t FROM Tiposdocumento t"),
-    @NamedQuery(name = "Tiposdocumento.findById", query = "SELECT t FROM Tiposdocumento t WHERE t.id = :id"),
-    @NamedQuery(name = "Tiposdocumento.findByDescripcion", query = "SELECT t FROM Tiposdocumento t WHERE t.descripcion = :descripcion")})
-public class Tiposdocumento implements Serializable {
+    @NamedQuery(name = "TiposDocumento.findAll", query = "SELECT t FROM TiposDocumento t"),
+    @NamedQuery(name = "TiposDocumento.findById", query = "SELECT t FROM TiposDocumento t WHERE t.id = :id"),
+    @NamedQuery(name = "TiposDocumento.findByDescripcion", query = "SELECT t FROM TiposDocumento t WHERE t.descripcion = :descripcion")})
+public class TiposDocumento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id    
     @Column(name="ID",nullable=false,updatable=false)
     private Short id;
-
-    /**
-     *
-     */    
+   
     @Column(length=20,name="DESCRIPCION")
     protected String descripcion;
     @OneToMany( mappedBy = "tipodocumento")
     private List<Personas> personasList;
 
-    /**
-     *
-     */
-    public Tiposdocumento(){}
+    public TiposDocumento(){}
 
-    /**
-     *
-     * @return
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     *
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     *
-     * @return
-     */
     public Short getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Short id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Personas> getPersonasList() {
         return Collections.unmodifiableList(personasList);
     }
 
-    /**
-     *
-     * @param personasList
-     */
     public void setPersonasList(List<Personas> personasList) {
         this.personasList = personasList;
     }
@@ -99,12 +58,11 @@ public class Tiposdocumento implements Serializable {
         return hash;
     }
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tiposdocumento)) {
+    public boolean equals(Object object) {       
+        if (!(object instanceof TiposDocumento)) {
             return false;
         }
-        Tiposdocumento other = (Tiposdocumento) object;
+        TiposDocumento other = (TiposDocumento) object;
         return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     @Override
