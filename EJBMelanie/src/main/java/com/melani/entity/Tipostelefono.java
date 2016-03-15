@@ -14,10 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TIPOSTELEFONO") 
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposTelefono.findAll", query = "SELECT t FROM TiposTelefono t"),
-    @NamedQuery(name = "TiposTelefono.findByIdTipotel", query = "SELECT t FROM TiposTelefono t WHERE t.idTipotel = :idTipotel"),
-    @NamedQuery(name = "TiposTelefono.findByDescripcion", query = "SELECT t FROM TiposTelefono t WHERE t.descripcion = :descripcion")})
-public class TiposTelefono implements Serializable {
+    @NamedQuery(name = "Tipostelefono.findAll", query = "SELECT t FROM Tipostelefono t"),
+    @NamedQuery(name = "Tipostelefono.findByIdTipotel", query = "SELECT t FROM Tipostelefono t WHERE t.idTipotel = :idTipotel"),
+    @NamedQuery(name = "Tipostelefono.findByDescripcion", query = "SELECT t FROM Tipostelefono t WHERE t.descripcion = :descripcion")})
+public class Tipostelefono implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id    
     @Column(name = "ID_TIPOTEL")
@@ -27,10 +27,10 @@ public class TiposTelefono implements Serializable {
     @OneToMany(mappedBy = "idTipotelefono")
     private List<Telefonos> telefonosList;
 
-    public TiposTelefono() {
+    public Tipostelefono() {
     }
 
-    public TiposTelefono(Short idTipotel) {
+    public Tipostelefono(Short idTipotel) {
         this.idTipotel = idTipotel;
     }
 
@@ -65,15 +65,15 @@ public class TiposTelefono implements Serializable {
     }
     @Override
     public boolean equals(Object object) {       
-        if (!(object instanceof TiposTelefono)) {
+        if (!(object instanceof Tipostelefono)) {
             return false;
         }
-        TiposTelefono other = (TiposTelefono) object;
+        Tipostelefono other = (Tipostelefono) object;
         return (this.idTipotel != null || other.idTipotel == null) && (this.idTipotel == null || this.idTipotel.equals(other.idTipotel));
     }
     @Override
     public String toString() {
-        return "com.melani.entity.TiposTelefono[ idTipotel=" + idTipotel + " ]";
+        return "com.melani.entity.Tipostelefono[ idTipotel=" + idTipotel + " ]";
     }
 
     public String toXML(){

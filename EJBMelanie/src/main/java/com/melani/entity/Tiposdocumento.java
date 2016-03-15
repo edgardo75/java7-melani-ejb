@@ -12,10 +12,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name="TIPOSDOCUMENTO") 
 @NamedQueries({
-    @NamedQuery(name = "TiposDocumento.findAll", query = "SELECT t FROM TiposDocumento t"),
-    @NamedQuery(name = "TiposDocumento.findById", query = "SELECT t FROM TiposDocumento t WHERE t.id = :id"),
-    @NamedQuery(name = "TiposDocumento.findByDescripcion", query = "SELECT t FROM TiposDocumento t WHERE t.descripcion = :descripcion")})
-public class TiposDocumento implements Serializable {
+    @NamedQuery(name = "Tiposdocumento.findAll", query = "SELECT t FROM Tiposdocumento t"),
+    @NamedQuery(name = "Tiposdocumento.findById", query = "SELECT t FROM Tiposdocumento t WHERE t.id = :id"),
+    @NamedQuery(name = "Tiposdocumento.findByDescripcion", query = "SELECT t FROM Tiposdocumento t WHERE t.descripcion = :descripcion")})
+public class Tiposdocumento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id    
     @Column(name="ID",nullable=false,updatable=false)
@@ -26,7 +26,7 @@ public class TiposDocumento implements Serializable {
     @OneToMany( mappedBy = "tipodocumento")
     private List<Personas> personasList;
 
-    public TiposDocumento(){}
+    public Tiposdocumento(){}
 
     public String getDescripcion() {
         return descripcion;
@@ -59,14 +59,14 @@ public class TiposDocumento implements Serializable {
     }
     @Override
     public boolean equals(Object object) {       
-        if (!(object instanceof TiposDocumento)) {
+        if (!(object instanceof Tiposdocumento)) {
             return false;
         }
-        TiposDocumento other = (TiposDocumento) object;
+        Tiposdocumento other = (Tiposdocumento) object;
         return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     @Override
     public String toString() {
-        return "com.melani.entity.TiposDocumento[id=" + id + "]";
+        return "com.melani.entity.Tiposdocumento[id=" + id + "]";
     }
 }

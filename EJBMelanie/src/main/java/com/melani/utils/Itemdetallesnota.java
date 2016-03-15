@@ -1,7 +1,7 @@
 package com.melani.utils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-@XStreamAlias("itemdetallesnota")
-public class ItemDetallesNota {
+@XStreamAlias("itemdetallesnota") 
+public class Itemdetallesnota {
         private int cantidad;
         private Double precio;
         private Double subtotal;
