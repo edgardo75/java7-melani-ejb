@@ -8,7 +8,7 @@ import com.melani.entity.PersonasDomicilios;
 import com.melani.entity.Personastelefonos;
 import com.melani.entity.Telefonos;
 import com.melani.entity.TelefonosPK;
-import com.melani.entity.TiposDocumento;
+import com.melani.entity.Tiposdocumento;
 import com.melani.utils.ClienteDomicilioTelefono;
 import com.melani.utils.DatosCliente;
 import com.melani.utils.DatosDomicilios;
@@ -160,7 +160,7 @@ public class EJBClientes implements EJBClientesRemote {
                                 }else{
                                         cliente.setObservaciones("");                
                                 }
-                                cliente.setTipodocumento(em.find(TiposDocumento.class, datosClientePersonales.getIdtipodocu()));                
+                                cliente.setTipodocumento(em.find(Tiposdocumento.class, datosClientePersonales.getIdtipodocu()));                
                                 cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
                                 cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
                                 em.persist(cliente);                                

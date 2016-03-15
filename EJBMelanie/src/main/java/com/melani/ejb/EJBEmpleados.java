@@ -4,7 +4,7 @@ import com.melani.entity.Empleados;
 import com.melani.entity.FullTimeEmpleado;
 import com.melani.entity.Generos;
 import com.melani.entity.Notadepedido;
-import com.melani.entity.TiposDocumento;
+import com.melani.entity.Tiposdocumento;
 import com.melani.utils.DatosEmpleado;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
@@ -376,7 +376,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                          empfulltime.setFechacarga(gc.getTime());
                                          empfulltime.setEmptype("FULLTIME");
                                          empfulltime.setObservaciones(empleado.getObservaciones());
-                                         empfulltime.setTipodocumento(em.find(TiposDocumento.class, empleado.getIdTipoDocumento()));
+                                         empfulltime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
                                          empfulltime.setNrodocumento(empleado.getNumeroDocumento());
                                          if(empleado.getSalario().length()>0){
                                             empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf(empleado.getSalario())));
@@ -416,7 +416,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                     }
 
                                                     empparttime.setEmptype("PARTTIME");
-                                                    empparttime.setTipodocumento(em.find(TiposDocumento.class, empleado.getIdTipoDocumento()));
+                                                    empparttime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
                                                     empparttime.setNrodocumento(empleado.getNumeroDocumento());
                                                     empparttime.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
                                                     empparttime.setEstado((short)1);
@@ -674,7 +674,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
                                                                                                        fulltimeEmploy.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml11(empleado.getPassword())));                                                               
 
-                                                                                                       fulltimeEmploy.setTipodocumento(em.find(TiposDocumento.class, empleado.getIdTipoDocumento()));
+                                                                                                       fulltimeEmploy.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
 
                                                                                                        em.persist(fulltimeEmploy);
                                                                                                      
@@ -717,7 +717,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                                                        empleadoPartime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));                                                           
 
                                                                                                        
-                                                                                                       empleadoPartime.setTipodocumento(em.find(TiposDocumento.class, empleado.getIdTipoDocumento()));
+                                                                                                       empleadoPartime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
 
                                                                                                        em.persist(empleadoPartime);
                                                                                                        

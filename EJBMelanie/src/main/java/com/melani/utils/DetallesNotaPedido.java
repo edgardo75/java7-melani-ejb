@@ -8,13 +8,13 @@ import java.util.List;
 @XStreamAlias("detallesnotapedido")
     public class DetallesNotaPedido{
     @XStreamImplicit
-    private List<ItemDetallesNota> list;
+    private List<Itemdetallesnota> list;
 
-    public List<ItemDetallesNota> getDetallesnota() {
+    public List<Itemdetallesnota> getDetallesnota() {
         return Collections.unmodifiableList(list);
     }
 
-    public void setDetallesnota(List<ItemDetallesNota> list) {
+    public void setDetallesnota(List<Itemdetallesnota> list) {
         this.list = list;
     }
     }

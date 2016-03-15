@@ -31,9 +31,9 @@
     <class>com.melani.entity.Provincias</class>
     <class>com.melani.entity.TarjetasCreditoDebito</class>
     <class>com.melani.entity.Telefonos</class>
-    <class>com.melani.entity.HistoricoNotaPedido</class>
-    <class>com.melani.entity.TiposDocumento</class>
-    <class>com.melani.entity.TiposTelefono</class>
+    <class>com.melani.entity.Historiconotapedido</class>
+    <class>com.melani.entity.Tiposdocumento</class>
+    <class>com.melani.entity.Tipostelefono</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
     </properties>

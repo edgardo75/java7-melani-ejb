@@ -3,7 +3,7 @@ import com.melani.entity.Clientes;
 import com.melani.entity.Detallesnotadepedido;
 import com.melani.entity.DetallesnotadepedidoPK;
 import com.melani.entity.Empleados;
-import com.melani.entity.HistoricoNotaPedido;
+import com.melani.entity.Historiconotapedido;
 import com.melani.entity.Notadepedido;
 import com.melani.entity.Personas;
 import com.melani.entity.Porcentajes;
@@ -11,7 +11,7 @@ import com.melani.entity.Productos;
 import com.melani.entity.TarjetasCreditoDebito;
 import com.melani.utils.DatosNotaPedido;
 import com.melani.utils.DetallesNotaPedido;
-import com.melani.utils.ItemDetallesNota;
+import com.melani.utils.Itemdetallesnota;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -52,7 +52,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 xestream.alias("personas", DatosNotaPedido.Personas.class);
                 xestream.alias("tarjetacredito", DatosNotaPedido.TarjetaCredito.class);
                 xestream.alias("porcentajes", DatosNotaPedido.Porcentajes.class);
-                xestream.alias("itemdetallesnota", ItemDetallesNota.class);
+                xestream.alias("itemdetallesnota", Itemdetallesnota.class);
                 xestream.alias("detallesnotapedido", DetallesNotaPedido.class);
                 xestream.addImplicitCollection(DetallesNotaPedido.class, "list");
             return notadepedido = (DatosNotaPedido) xestream.fromXML(ProjectHelpers.parsearCaracteresEspecialesXML(xmlNotapedido));
@@ -108,8 +108,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     
     private long almacenarDetalleNota(DatosNotaPedido notadepedido, Notadepedido notape) {
         long retorno;        
-            List<ItemDetallesNota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();            
-                    for (ItemDetallesNota itemdetallesnota : lista) {
+            List<Itemdetallesnota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();            
+                    for (Itemdetallesnota itemdetallesnota : lista) {
                             Productos productos = em.find(Productos.class,itemdetallesnota.getId_producto());
                             DetallesnotadepedidoPK detallespk = new DetallesnotadepedidoPK(notape.getId(), itemdetallesnota.getId_producto());
                             Detallesnotadepedido detalles = new Detallesnotadepedido();                            
@@ -123,8 +123,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     private long almacenarDetalleNotaConControlStock(DatosNotaPedido notadepedido, Notadepedido notape) {
         long retorno;
         int stockDisponible;        
-            List<ItemDetallesNota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();
-                    for (ItemDetallesNota itemdetallesnota : lista) {                        
+            List<Itemdetallesnota>lista = notadepedido.getDetallesnotapedido().getDetallesnota();
+                    for (Itemdetallesnota itemdetallesnota : lista) {                        
                                 Productos productos = em.find(Productos.class,itemdetallesnota.getId_producto());                                
                                 DetallesnotadepedidoPK detallespk = new DetallesnotadepedidoPK(notape.getId(), itemdetallesnota.getId_producto());
                                 Detallesnotadepedido detalles = new Detallesnotadepedido();                                
@@ -146,7 +146,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     private void almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape){
         long resultado;
                     GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());                    
-                                    HistoricoNotaPedido historico = new HistoricoNotaPedido();
+                                    Historiconotapedido historico = new Historiconotapedido();
                                     historico.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
                                     historico.setEntregado(notadepedido.getEntregado());
                                     historico.setFecharegistro(gc.getTime());
@@ -218,7 +218,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             for (Detallesnotadepedido detallesnotadepedido : lista) {
                 detallesnotadepedido.setCancelado(cancelado);
             }
-                            HistoricoNotaPedido historico = new HistoricoNotaPedido();
+                            Historiconotapedido historico = new Historiconotapedido();
                             if(estado==1){
                                 historico.setAccion("Cancelada por "+empleado.getNameuser());
                                 historico.setCancelado(cancelado);
@@ -274,7 +274,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 detallesnotadepedido.setPendiente(pendiente);
             }
             em.persist(nota);            
-                HistoricoNotaPedido historico = new HistoricoNotaPedido();
+                Historiconotapedido historico = new Historiconotapedido();
                         if(estado==1){
                                 historico.setAccion("Entregado por "+empleado.getNameuser());
                                 historico.setEntregado('1');
@@ -431,7 +431,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
             for (Detallesnotadepedido detallesnotadepedido : lista) {
                 detallesnotadepedido.setAnulado(anulada);
             }
-                HistoricoNotaPedido historico = new HistoricoNotaPedido();
+                Historiconotapedido historico = new Historiconotapedido();
                         if(estado==1){
                                 historico.setAccion("Nota anulada "+empleado.getNameuser());
                                 historico.setAnulado(anulada);
@@ -522,15 +522,15 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                                         nota.setFechaAnulado(gc.getTime());
                                                                    }                                                
                                                    em.persist(nota);  
-                                                List<ItemDetallesNota>lista = datosnotapedido.getDetallesnotapedido().getDetallesnota();
+                                                List<Itemdetallesnota>lista = datosnotapedido.getDetallesnotapedido().getDetallesnota();
                                                 Query deletsql = em.createNamedQuery("Detallesnotadepedido.deleteById");
                                                 deletsql.setParameter("idNota", nota.getId());
                                                 int retorno = deletsql.executeUpdate();                                                
                                                 Query queryDetailsOrders1 = em.createNamedQuery("Detallesnotadepedido.findByFkIdnota");
                                                 queryDetailsOrders1.setParameter("fkIdnota", nota.getId());                                                
                                                  Productos productos;
-                                                 ItemDetallesNota itemdetallesnota;
-                                                    for (Iterator<ItemDetallesNota> it = lista.iterator(); it.hasNext();) {
+                                                 Itemdetallesnota itemdetallesnota;
+                                                    for (Iterator<Itemdetallesnota> it = lista.iterator(); it.hasNext();) {
                                                          itemdetallesnota= it.next();
                                                          productos =em.find(Productos.class, itemdetallesnota.getId_producto());
                                                             DetallesnotadepedidoPK pkdetalle = new DetallesnotadepedidoPK(itemdetallesnota.getId_nota()
@@ -722,7 +722,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
       return sb.toString();
     }
 
-    private void almacenarDetallesNota(Productos productos, ItemDetallesNota itemdetallesnota, Notadepedido notape, DetallesnotadepedidoPK detallespk, Detallesnotadepedido detalles) {
+    private void almacenarDetallesNota(Productos productos, Itemdetallesnota itemdetallesnota, Notadepedido notape, DetallesnotadepedidoPK detallespk, Detallesnotadepedido detalles) {
                                 detalles.setCancelado(itemdetallesnota.getCancelado());
                                 detalles.setCantidad(itemdetallesnota.getCantidad());
                                 detalles.setDescuento(BigDecimal.valueOf(itemdetallesnota.getDescuento()));
@@ -748,7 +748,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                         em.merge(notape);
     }
 
-    private void procesarHistorico(HistoricoNotaPedido historico, GregorianCalendar gc, Notadepedido nota) {
+    private void procesarHistorico(Historiconotapedido historico, GregorianCalendar gc, Notadepedido nota) {
                                         historico.setAnticipo(BigDecimal.ZERO);                                
                                         historico.setFecharegistro(gc.getTime());
                                         historico.setFkidnotapedido(nota);

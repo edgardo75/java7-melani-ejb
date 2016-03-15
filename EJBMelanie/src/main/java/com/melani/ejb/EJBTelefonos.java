@@ -2,7 +2,7 @@ package com.melani.ejb;
 import com.melani.entity.EmpresaTelefonia;
 import com.melani.entity.Telefonos;
 import com.melani.entity.TelefonosPK;
-import com.melani.entity.TiposTelefono;
+import com.melani.entity.Tipostelefono;
 import com.melani.utils.DatosTelefonos;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,7 +28,7 @@ public class EJBTelefonos implements EJBTelefonosRemote {
                                                     Telefonos telefono = new Telefonos();
                                                     telefono.setIdEmpresatelefonia(em.find(EmpresaTelefonia.class, 
                                                             datosTel.getIdEmpresaTelefonia().getIdempresatelefonia()));
-                                                    telefono.setIdTipotelefono(em.find(TiposTelefono.class, 
+                                                    telefono.setIdTipotelefono(em.find(Tipostelefono.class, 
                                                             datosTel.getTipoTelefono().getTipoTelefono()));
                                                     telefono.setTelefonosPK(telepk);
                                                     em.persist(telefono);                                                

@@ -63,7 +63,7 @@ public class Personas implements Serializable {
     protected Integer nrodocumento;
     @JoinColumn(name="ID",referencedColumnName="ID",nullable=false,updatable=false)
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    private TiposDocumento tipodocumento;
+    private Tiposdocumento tipodocumento;
     @OneToMany(mappedBy = "personas")
     private List<PersonasDomicilios> personasDomicilioss;
     @CollectionTable
@@ -104,11 +104,11 @@ public class Personas implements Serializable {
         return pertype;
     }
 
-    public TiposDocumento getTipodocumento() {
+    public Tiposdocumento getTipodocumento() {
         return tipodocumento;
     }
 
-    public void setTipodocumento(TiposDocumento tipodocumento) {
+    public void setTipodocumento(Tiposdocumento tipodocumento) {
         this.tipodocumento = tipodocumento;
     }
 

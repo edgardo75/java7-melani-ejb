@@ -30,7 +30,7 @@ import javax.persistence.Table;
     private EmpresaTelefonia idEmpresatelefonia;
     @JoinColumn(name = "ID_TIPOTELEFONO", referencedColumnName = "ID_TIPOTEL")
     @ManyToOne(fetch=FetchType.LAZY)
-    private TiposTelefono idTipotelefono;
+    private Tipostelefono idTipotelefono;
      @OneToMany(mappedBy = "telefonos")
     private List<Personastelefonos> personastelefonosCollection;
 
@@ -62,12 +62,12 @@ import javax.persistence.Table;
         this.idEmpresatelefonia = idEmpresatelefonia;
     }
 
-    public TiposTelefono getIdTipotelefono() {
+    public Tipostelefono getIdTipotelefono() {
         return idTipotelefono;
     }
 
     
-    public void setIdTipotelefono(TiposTelefono idTipotelefono) {
+    public void setIdTipotelefono(Tipostelefono idTipotelefono) {
         this.idTipotelefono = idTipotelefono;
     }
 
