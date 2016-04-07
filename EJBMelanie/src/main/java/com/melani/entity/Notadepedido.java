@@ -1,4 +1,4 @@
-package com.melani.entity;
+    package com.melani.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
