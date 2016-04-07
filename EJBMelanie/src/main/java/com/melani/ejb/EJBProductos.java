@@ -173,7 +173,7 @@ public class EJBProductos implements EJBProductosRemote {
     }    
     private long updateProducto(Productos producto, String xmlProducto) {
          long retorno;        
-             XStream xstream = new XStream();
+             XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("producto", DatosProductos.class);
                 DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);
                 GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());

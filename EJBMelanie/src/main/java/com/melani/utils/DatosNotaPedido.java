@@ -9,11 +9,11 @@ public class DatosNotaPedido {
     private double anticipo;
     private double saldo;
     private char entregado;
-    private long usuario_expidio_nota;
+    private long id_usuario_expidio_nota;
     private int stockfuturo;
-    private long usuario_entregado;
+    private long id_usuario_entregado;
     private char anulado;
-    private long usuario_cancelo_nota;
+    private long id_usuario_cancelo_nota;
     private char cancelado;
     private String observaciones;
     private char pendiente;
@@ -66,11 +66,11 @@ public class DatosNotaPedido {
     }
 
     public long getUsuario_cancelo_nota() {
-        return usuario_cancelo_nota;
+        return id_usuario_cancelo_nota;
     }
 
-    public void setUsuario_cancelo_nota(int usuario_cancelo_nota) {
-        this.usuario_cancelo_nota = usuario_cancelo_nota;
+    public void setUsuario_cancelo_nota(int id_usuario_cancelo_nota) {
+        this.id_usuario_cancelo_nota = id_usuario_cancelo_nota;
     }
 
     public Double getDescuentonota() {
@@ -182,11 +182,11 @@ public class DatosNotaPedido {
     }
 
     public long getUsuario_entregado() {
-        return usuario_entregado;
+        return id_usuario_entregado;
     }
 
     public long getUsuario_expidio_nota() {
-        return usuario_expidio_nota;
+        return id_usuario_expidio_nota;
     }
     
         public Personas getPersonas() {

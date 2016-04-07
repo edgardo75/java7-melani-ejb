@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EntradasySalidasCaja.findByIdUsuario", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.idUsuario = :idUsuario"),
     @NamedQuery(name = "EntradasySalidasCaja.findByNumerocupon", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.numerocupon = :numerocupon"),
     @NamedQuery(name = "EntradasySalidasCaja.findByEnefectivo", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.enefectivo = :enefectivo"),
-    @NamedQuery(name = "EntradasySalidasCaja.findByHora", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.hora = :hora")})
+    @NamedQuery(name = "EntradasySalidasCaja.findByHora", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.hora = :hora"),
+    @NamedQuery(name = "EntradasySalidasCaja.findByCurrentDate", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.fecha = CURRENT_DATE")})
 public class EntradasySalidasCaja implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,27 +42,36 @@ public class EntradasySalidasCaja implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     private Integer id;
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "DETALLES")
+    @Column(name = "DETALLES",columnDefinition = "VARCHAR(255) default'-'")
     private String detalles;
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "ENTRADAS")
-    private Long entradas;
+    @Column(name = "ENTRADAS",columnDefinition = "DECIMAL(15, 2) default'0.00'")    
+    private Double entradas;
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "SALIDAS")
-    private Long salidas;
+    @Column(name = "SALIDAS",columnDefinition = "DECIMAL(15, 2) default'0.00'")
+    private Double salidas;
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "ANTICIPO", columnDefinition = "DECIMAL(15, 2) default'0.00'")
+    private double Anticipo;    
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "ENTRADATARJETA", columnDefinition = "DECIMAL(15, 2) default'0.00'")
+    private double entradaTarjeta;    
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "VENTASEFECTIVO", columnDefinition = "DECIMAL(15, 2) default'0.00'")
+    private double ventasEfectivo; 
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "ID_USUARIO")    
     private Integer idUsuario;
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "NUMEROCUPON")
+    @Column(name = "NUMEROCUPON",columnDefinition = "VARCHAR(20) default '0'")
     private String numerocupon;
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "ENEFECTIVO")
+    @Column(name = "ENEFECTIVO",columnDefinition = "CHAR(1) default '0'")
     private Character enefectivo;
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.LAZY)        
     @Column(name = "HORA")
     @Temporal(TemporalType.TIME)
     private Date hora;
@@ -100,19 +110,19 @@ public class EntradasySalidasCaja implements Serializable {
         this.fecha = fecha;
     }
 
-    public Long getEntradas() {
+    public Double getEntradas() {
         return entradas;
     }
 
-    public void setEntradas(Long entradas) {
+    public void setEntradas(Double entradas) {
         this.entradas = entradas;
     }
 
-    public Long getSalidas() {
+    public Double getSalidas() {
         return salidas;
     }
 
-    public void setSalidas(Long salidas) {
+    public void setSalidas(Double salidas) {
         this.salidas = salidas;
     }
 
@@ -146,6 +156,30 @@ public class EntradasySalidasCaja implements Serializable {
 
     public void setHora(Date hora) {
         this.hora = hora;
+    }
+
+    public Double getAnticipo() {
+        return Anticipo;
+    }
+
+    public void setAnticipo(Double Anticipo) {
+        this.Anticipo = Anticipo;
+    }
+
+    public Double getEntradaTarjeta() {
+        return entradaTarjeta;
+    }
+
+    public double getVentasEfectivo() {
+        return ventasEfectivo;
+    }
+
+    public void setVentasEfectivo(double ventasEfectivo) {
+        this.ventasEfectivo = ventasEfectivo;
+    }
+
+    public void setEntradaTarjeta(Double entradaTarjeta) {
+        this.entradaTarjeta = entradaTarjeta;
     }
 
     public TarjetasCreditoDebito getIdTarjetaFk() {
@@ -188,6 +222,8 @@ public class EntradasySalidasCaja implements Serializable {
             item.append("<idtarjeta>").append(this.getIdTarjetaFk().getIdtarjeta()).append( "</idtarjeta>\n");
             item.append("<idusuario>").append(this.getIdUsuario()).append( "</idusuario>\n");
             item.append("<salidas>").append(this.getSalidas()).append( "</salidas>\n");
+            item.append("<anticipo>").append(this.getAnticipo()).append( "</anticipo>\n");
+            item.append("<entradatarjeta>").append(this.getEntradaTarjeta()).append( "</entradatarjeta>\n");
             item.append( "</item>\n");
 return item.toString();
 }    

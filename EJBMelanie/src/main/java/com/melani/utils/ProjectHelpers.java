@@ -2,7 +2,6 @@ package com.melani.utils;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.BadPaddingException;
@@ -41,20 +40,20 @@ public class ProjectHelpers {
         public static String decriptar(String fraseEncriptada){
                                 String decriptedRet="No decrypted";
                                 try {
+                                    
                                     Cipher cipher = Cipher.getInstance("Blowfish");                                    
                                     cipher.init(Cipher.DECRYPT_MODE, KEY); 
                                     byte[] encryptedData=fraseEncriptada.getBytes();       
                                     byte[] decrypted = cipher.doFinal(encryptedData);
                                     String afterEncryption = new String(decrypted);
                                     decriptedRet=afterEncryption;
+                                     
                                 } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                                    e.getLocalizedMessage();
+                                   
                                 }
                     return decriptedRet;                                
         }   
-
-        private ClaveSeguridad() {
-        }
+        
             }
 
     public static class NombreUsuarioValidator{

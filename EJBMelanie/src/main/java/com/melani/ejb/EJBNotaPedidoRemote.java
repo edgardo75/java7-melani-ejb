@@ -4,9 +4,9 @@ import javax.ejb.Remote;
 @Remote
 public interface EJBNotaPedidoRemote {
 
-long agregarNotaPedido(String xmlNotaPedido);
+    long agregarNotaPedido(String xmlNotaPedido);
     String selectUnaNota(long idnta);
-    long cancelarNotaPedido(long idnota,long idusuariocancelo,int estado);
+    long cancelarNotaPedido(String datosXML,int estado);
     long entregarNotaPedido(long idnota, long idusuario,int estado);
     String selectNotaEntreFechasCompra(String desde, String hasta,long idvendedor);
     int getRecorCountNotas();

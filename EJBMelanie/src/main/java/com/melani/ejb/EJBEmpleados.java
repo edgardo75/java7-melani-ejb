@@ -16,28 +16,17 @@ import java.util.List;
 import java.util.Locale;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBEmpleados")
 @WebService(serviceName="ServicesEmpleados",name="EmpleadosWs")
 public class EJBEmpleados implements EJBEmpleadosRemote {
-     private static final Logger logger = Logger.getLogger(EJBEmpleados.class);
+     private static final Logger LOGGER = Logger.getLogger(EJBEmpleados.class);
     @PersistenceContext(unitName="EJBMelaniPU2")
-    private EntityManager em;
-    
-    
-    /**
-     * 
-     * @param xmlEmpleado datos del empleado recibidos con estructura xml
-     * @return retorna un numero, si todo va bien retorna el id del empleado almacenado en la base de datos, caso contrario un error o por que no se completó la operacion
-     */
-    
-    
+    private EntityManager em;   
      @Override
     public long addEmpleadoFullTime(String xmlEmpleado){
         long retorno = 0;
@@ -50,10 +39,10 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             
                    } catch (NumberFormatException e) {
                     retorno = -1;
-                    logger.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
+                    LOGGER.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
                 }  catch (Exception e) {
                     retorno = -1;
-                        logger.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
+                        LOGGER.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
                 }
             finally{
                 return retorno;
@@ -88,7 +77,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                 retorno = procesarDatosEmpleadoAdd(datosEmpleado);
             } catch (Exception e) {
             retorno = -1;
-            logger.error("Error en metodo addEmpleadoParttime "+e.getMessage());
+            LOGGER.error("Error en metodo addEmpleadoParttime "+e.getMessage());
         }finally{
            return retorno;
         }
@@ -100,39 +89,56 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      */
     @Override
     public String selectAllEmpleados() {
-       String xml="<?xml version='1.0' encoding='utf-8'?>\n"+"<Lista>\n";
-        try {
+       String xml="<?xml version='1.0' encoding='utf-8'?>\n"+"<Lista>\n";        
             Query consulta = em.createQuery("SELECT e FROM Empleados e order by e.idPersona desc");            
             List<Empleados>lista = consulta.getResultList();
             if(lista.size()>0){
                     StringBuilder xmlLoop = new StringBuilder(10);
-                for (Empleados empleados : lista) {                    
-                            xmlLoop.append("<item>\n");
-                            xmlLoop.append("<id>").append(empleados.getIdPersona()).append("</id>\n")
-                               .append("<nombre>").append(StringEscapeUtils.escapeXml10(empleados.getNombre())).append("</nombre>\n");
-                            xmlLoop.append("<apellido>").append(StringEscapeUtils.escapeXml10(empleados.getApellido())).append("</apellido>\n");
-                            xmlLoop.append("<genero>").append(empleados.getGeneros().getIdGenero()).append("</genero>\n");
-                            xmlLoop.append("<tipodocu>").append(empleados.getTipodocumento().getId()).append("</tipodocu>\n");
-                            xmlLoop.append("<documento>").append(empleados.getNrodocumento()).append("</documento>\n");
-                            xmlLoop.append("<observaciones>").append(StringEscapeUtils.escapeXml10(empleados.getObservaciones()))
-                               .append("</observaciones>\n");
-                            xmlLoop.append("<email>").append(empleados.getEmail()).append("</email>\n");
-                            xmlLoop.append(obtenerEmpleado(empleados));
-                            xmlLoop.append(empleados.toXMLEmpleado());
-                            xmlLoop.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
-                            xmlLoop.append("</item>\n");
-                            
-                }
+                    lista.stream().map((empleados) -> {
+                        xmlLoop.append("<item>\n");
+                        xmlLoop.append("<id>").append(empleados.getIdPersona()).append("</id>\n")
+                                .append("<nombre>").append(StringEscapeUtils.escapeXml10(empleados.getNombre())).append("</nombre>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<apellido>").append(StringEscapeUtils.escapeXml10(empleados.getApellido())).append("</apellido>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<genero>").append(empleados.getGeneros().getIdGenero()).append("</genero>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<tipodocu>").append(empleados.getTipodocumento().getId()).append("</tipodocu>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<documento>").append(empleados.getNrodocumento()).append("</documento>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<observaciones>").append(StringEscapeUtils.escapeXml10(empleados.getObservaciones()))
+                       .append("</observaciones>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<email>").append(empleados.getEmail()).append("</email>\n");
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append(obtenerEmpleado(empleados));
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append(empleados.toXMLEmpleado());
+               return empleados;
+           }).map((empleados) -> {
+               xmlLoop.append("<clave>").append(ProjectHelpers.ClaveSeguridad.decriptar(empleados.getPassword())).append("</clave>");
+               return empleados;
+           }).forEach((_item) -> {
+               xmlLoop.append("</item>\n");
+           });
                 xml+=xmlLoop;
             }else {
                 xml+="<result>Lista Vacia</result>\n";
             }
-        } catch (Exception e) {
-            logger.error("error al obtener lista de empleados "+e.getMessage());
-            xml+="<error>"+e.getLocalizedMessage()+"</error>\n";
-        }finally{
-            return xml+"</Lista>\n";
-        }
+        
+            xml+="</Lista>\n";
+            
+            return xml;
+        
     }
 
     /**
@@ -183,7 +189,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
              retorno=Integer.valueOf(String.valueOf(empleadoDesabilitado.getIdPersona()));
         } catch (NumberFormatException e) {
             retorno=-1;
-            logger.error("Error en metodo deshabilitarEmpleado "+e.getMessage());
+            LOGGER.error("Error en metodo deshabilitarEmpleado "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -215,7 +221,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             }
           } catch (Exception e) {
             retorno =-3;
-            logger.error("Error en metodo buscar persona and email ");
+            LOGGER.error("Error en metodo buscar persona and email ");
         }finally{
            return retorno;
         }
@@ -240,10 +246,10 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                     
                     
              retorno=Integer.valueOf(String.valueOf(empleadohabilito.getIdPersona()));
-             logger.warn(new StringBuilder("USUARIO HABILITÓ ").append(empleadoHabilitado.getNombre()).append(" A USUARIO NUEVO ").append(empleadohabilito.getNombre()).append(" EL DÍA ").append(DateFormat.getInstance().format(gc.getTime())));
+             LOGGER.warn(new StringBuilder("USUARIO HABILITÓ ").append(empleadoHabilitado.getNombre()).append(" A USUARIO NUEVO ").append(empleadohabilito.getNombre()).append(" EL DÍA ").append(DateFormat.getInstance().format(gc.getTime())));
         } catch (NumberFormatException e) {
             retorno=-1;
-            logger.error("Error en metodo deshabilitarEmpleado "+e.getMessage());
+            LOGGER.error("Error en metodo deshabilitarEmpleado "+e.getMessage());
         }finally{
             
             return retorno;
@@ -279,7 +285,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                   
         } catch (NumberFormatException e) {
             retorno = -1;
-            logger.error("Error en metodo actualizarEmpleado en EJBEmpleados "+e.getMessage());
+            LOGGER.error("Error en metodo actualizarEmpleado en EJBEmpleados "+e.getMessage());
        
         }finally{
             return retorno;
@@ -310,7 +316,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             em.flush();
             
         } catch (NumberFormatException e) {
-            logger.error("error al actulizar referencias de nota de pedidos de empleado "+e.getMessage());
+            LOGGER.error("error al actulizar referencias de nota de pedidos de empleado "+e.getMessage());
         }
     }
    
@@ -348,7 +354,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
         } catch (Exception e) {
             retorno =-1;
-            logger.error("Error en metodo procesarDatosEmpleadoAdd "+e.getMessage());
+            LOGGER.error("Error en metodo procesarDatosEmpleadoAdd "+e.getMessage());
         }finally{
          return retorno;
         }
@@ -365,10 +371,15 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                          empfulltime.setNombre(empleado.getNombre().toUpperCase());
                                          empfulltime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));
                                        try {
-                                            empfulltime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
+                                           String fraseEncriptada = ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword()));
+                                           if(!fraseEncriptada.equals("No Encrypted")){
+                                                empfulltime.setPassword(fraseEncriptada);
+                                           }else{
+                                               return -11;
+                                           }
                                         } catch (Exception e) {
                                            retorno=-10;
-                                           logger.error(e.getLocalizedMessage());
+                                           LOGGER.error(e.getLocalizedMessage());
                                        }
 
                                          empfulltime.setGeneros(em.find(Generos.class, empleado.getIdGenero()));
@@ -388,7 +399,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                        retorno = empfulltime.getIdPersona();
             
         } catch (NumberFormatException e) {
-            logger.error("Error en metodo addFullTimeEmpleado "+e.getMessage());
+            LOGGER.error("Error en metodo addFullTimeEmpleado "+e.getMessage());
         }finally{
              return retorno;
         }
@@ -400,19 +411,20 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
               EmpleadoParttime empparttime = new EmpleadoParttime();
                                                     empparttime.setApellido(empleado.getApellido().toUpperCase());
-                                                    empparttime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));
-                                                    
-                                                    
+                                                    empparttime.setNameuser(StringEscapeUtils.escapeXml10(empleado.getNombreUsuario()));                                      
                                                     empparttime.setNombre(empleado.getNombre().toUpperCase());
                                                     empparttime.setFechacarga(gc.getTime());
                                                     try {
-
-
+                                                        
+                                                        if(!ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())).equals("No Encrypted"))  {  
                                                             empparttime.setPassword(ProjectHelpers.ClaveSeguridad.encriptar(StringEscapeUtils.escapeXml10(empleado.getPassword())));
+                                                        }else{
+                                                            return -11;
+                                                        }
 
                                                     } catch (Exception e) {
                                                         retorno=-10;
-                                                        logger.error(e.getLocalizedMessage());
+                                                        LOGGER.error(e.getLocalizedMessage());
                                                     }
 
                                                     empparttime.setEmptype("PARTTIME");
@@ -428,7 +440,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                     retorno = empparttime.getIdPersona();
             
         } catch (NumberFormatException e) {
-            logger.error("error en metodo addPartTimeEmpleado "+e.getMessage());
+            LOGGER.error("error en metodo addPartTimeEmpleado "+e.getMessage());
         }finally{
            return retorno;
         }
@@ -481,7 +493,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
         } catch (Exception e) {
             retorno =-1;
             
-            logger.error("Error en metodo validateData "+e.getMessage());
+            LOGGER.error("Error en metodo validateData "+e.getMessage());
         }finally{
         return retorno;
         }
@@ -506,7 +518,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                 
             
         } catch (Exception e) {
-            logger.error("error en metodo datosEmpleadosObject "+e.getMessage());
+            LOGGER.error("error en metodo datosEmpleadosObject "+e.getMessage());
         }finally{
             
              return datosEmpleado;            
@@ -533,7 +545,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             
         } catch (Exception e) {
             retorno =-1;
-            logger.error("error en metodo valorRetornadoAlBuscarEmailyNombreUsuario "+e.getMessage());
+            LOGGER.error("error en metodo valorRetornadoAlBuscarEmailyNombreUsuario "+e.getMessage());
         }finally{
             return retorno;
         }
@@ -559,7 +571,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
             }
                 
         } catch (Exception e) {
-            logger.error("Error en metodo checkPassEmployee "+e.getLocalizedMessage());
+            LOGGER.error("Error en metodo checkPassEmployee "+e.getLocalizedMessage());
         }finally{
             return  result;
         }
@@ -687,7 +699,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                                  try {
                                                                                         empleadoPartime=em.find(EmpleadoParttime.class,(long) empleado.getId());
                                                                                } catch (Exception e) {
-                                                                                       logger.error("Error al buscar empleado partime "+e.getMessage());
+                                                                                       LOGGER.error("Error al buscar empleado partime "+e.getMessage());
                                                                                }
                                                                                    
                                                                                        

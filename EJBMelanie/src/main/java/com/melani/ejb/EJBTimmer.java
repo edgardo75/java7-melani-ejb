@@ -48,15 +48,7 @@ public class EJBTimmer {
                     props.put("mail.smtp.port", puertoEnvio);
                     props.put("mail.smtp.starttls.enable", "true");
                     props.put("mail.transport.protocol","smtp");
-                    props.put("mail.smtp.auth", "true");
-                    //props.put("mail.smtp.socketFactory.port", puertoEnvio);
-                    //props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-                    //props.put("mail.smtp.socketFactory.fallback", "false");
-                    //SecurityManager security = System.getSecurityManager();
-//                    System.out.println("Correo "+ProjectHelpers.ClaveSeguridad.encriptar("edgardoalvarez@outlook.com"));
-//                        
-//                        System.out.println("Correo "+ProjectHelpers.ClaveSeguridad.decriptar("¸ˆ¤ù„i3$»‡YfînCãûÛõ¦ÿê¦7‚."));
-//                        System.out.println("Password "+ProjectHelpers.ClaveSeguridad.decriptar("ÅMK˜RÉ 3€\"ÌçD‰"));
+                    props.put("mail.smtp.auth", "true");                  
                     try {
                         GregorianCalendar gc = new GregorianCalendar(TimeZone.getDefault()); 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

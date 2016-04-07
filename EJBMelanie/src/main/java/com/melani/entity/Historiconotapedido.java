@@ -326,27 +326,27 @@ public class Historiconotapedido implements Serializable {
         }       
             StringBuilder item = new StringBuilder(10);
         try {
-              item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo().toString()).append("</anticipo>\n");
+              item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo()).append("</anticipo>\n");
                            item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
                            item.append("<fecharegistro>").append(fereg).append("</fecharegistro>\n");
                            item.append("<horaregistro>").append(hourreg).append("</horaregistro>\n");
-                          item.append("<cancelado>").append(this.getCancelado().toString()).append("</cancelado>\n");
-                          item.append("<anulado>").append(this.getAnulado().toString()).append("</anulado>\n");
+                          item.append("<cancelado>").append(this.getCancelado()).append("</cancelado>\n");
+                          item.append("<anulado>").append(this.getAnulado()).append("</anulado>\n");
                            item.append("<idnota>").append(this.getFkidnotapedido().getId()).append("</idnota>\n");
-                           item.append("<iduseranulo>").append(this.getIdusuarioanulo().toString()).append("</iduseranulo>\n");
-                           item.append("<iduserentrega>").append(this.getIdusuarioentrega().toString()).append("</iduserentrega>\n");
-                           item.append("<iduserexpidio>").append(this.getIdusuarioexpidio().toString()).append("</iduserexpidio>\n");
-                           item.append("<idusuariocancelo>").append(this.getIdusuariocancelo().toString())
-                           .append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo().toString())
-                           .append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar().toString())
+                           item.append("<iduseranulo>").append(this.getIdusuarioanulo()).append("</iduseranulo>\n");
+                           item.append("<iduserentrega>").append(this.getIdusuarioentrega()).append("</iduserentrega>\n");
+                           item.append("<iduserexpidio>").append(this.getIdusuarioexpidio()).append("</iduserexpidio>\n");
+                           item.append("<idusuariocancelo>").append(this.getIdusuariocancelo())
+                           .append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo())
+                           .append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar())
                                    .append("</totalapagar>\n").append("<porcrecargo>")
                                    .append(this.getPorcrecargo().toString()).append("</porcrecargo>\n")
-                                   .append("<porcentajedescuento>").append(this.getPorcentajedesc().toString())
+                                   .append("<porcentajedescuento>").append(this.getPorcentajedesc())
                                    .append("</porcentajedescuento>\n" ).append("<descuento>")
                                    .append(this.getDescuento().toString()).append("</descuento>\n" )
                                    .append("<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion()))
-                                   .append("</accion>\n" ).append("<saldo>").append(this.getSaldo().toString())
-                                   .append("</saldo>\n" ).append("<total>").append(this.getTotal().toString()).append("</total>\n");
+                                   .append("</accion>\n" ).append("<saldo>").append(this.getSaldo())
+                                   .append("</saldo>\n" ).append("<total>").append(this.getTotal()).append("</total>\n");
                    item.append("</item>\n");
         } catch (Exception e) {
             e.getMessage();
