@@ -62,7 +62,7 @@ public class Productos implements Serializable {
     private List<Detallesnotadepedido> detallesnotadepedidoList;
     @OneToMany( mappedBy = "productos")
     private List<Detallespresupuesto> detallepresupuestosList;
-    @OneToMany(mappedBy = "productos")
+    @OneToMany(mappedBy = "productos",fetch = FetchType.LAZY)
     private List<ImagenesProductos>imagenesProductosList;
 
     public Productos(){}

@@ -4,13 +4,14 @@ public class DatosNotaPedido {
     private long idnota;
     private Personas personas;
     private long vendedor;
+    private byte enefectivoAnticipo;
     private double montototal;
     private double anticipoacum;
     private double anticipo;
     private double saldo;
     private char entregado;
     private long id_usuario_expidio_nota;
-    private int stockfuturo;
+    private int stockFuturo;
     private long id_usuario_entregado;
     private char anulado;
     private long id_usuario_cancelo_nota;
@@ -104,6 +105,53 @@ public class DatosNotaPedido {
     public Porcentajes getPorcentaje() {
         return porcentaje;
     }
+    public long getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(long vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public byte getEnefectivoAnticipo() {
+        return enefectivoAnticipo;
+    }
+
+    public void setEnefectivoAnticipo(byte enefectivoAnticipo) {
+        this.enefectivoAnticipo = enefectivoAnticipo;
+    }
+
+    public long getId_usuario_expidio_nota() {
+        return id_usuario_expidio_nota;
+    }
+
+    public void setId_usuario_expidio_nota(long id_usuario_expidio_nota) {
+        this.id_usuario_expidio_nota = id_usuario_expidio_nota;
+    }
+
+    public int getStockFuturo() {
+        return stockFuturo;
+    }
+
+    public void setStockFuturo(int stockFuturo) {
+        this.stockFuturo = stockFuturo;
+    }
+
+    public long getId_usuario_entregado() {
+        return id_usuario_entregado;
+    }
+
+    public void setId_usuario_entregado(long id_usuario_entregado) {
+        this.id_usuario_entregado = id_usuario_entregado;
+    }
+
+    public long getId_usuario_cancelo_nota() {
+        return id_usuario_cancelo_nota;
+    }
+
+    public void setId_usuario_cancelo_nota(long id_usuario_cancelo_nota) {
+        this.id_usuario_cancelo_nota = id_usuario_cancelo_nota;
+    }
 
     public DetallesNotaPedido getDetallesnotapedido() {
         return detallesnotapedido;
@@ -166,7 +214,7 @@ public class DatosNotaPedido {
     }
 
     public int getControlastock() {
-        return stockfuturo;
+        return stockFuturo;
     }
 
     public char getPendiente() {
@@ -202,11 +250,11 @@ public class DatosNotaPedido {
     }
     
         public int getStockfuturo() {
-        return stockfuturo;
+        return stockFuturo;
     }
 
-    public void setStockfuturo(int stockfuturo) {
-        this.stockfuturo = stockfuturo;
+    public void setStockfuturo(int stockFuturo) {
+        this.stockFuturo = stockFuturo;
     }
     
 

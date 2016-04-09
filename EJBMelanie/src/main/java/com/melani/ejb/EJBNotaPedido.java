@@ -71,15 +71,18 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     }
     private long almacenarNotaPedido(DatosNotaPedido datosNota){
         long retorno;    
+            
                     Clientes cliente = em.find(Clientes.class, datosNota.getPersonas().getId());
                             Notadepedido notape = new Notadepedido();
                             almacenarNotaVoid(notape,datosNota);
-                                //em.persist(notape); 
-                                if(datosNota.getEnefectivo()==1){
+                                
+                                if(datosNota.getEnefectivoAnticipo()==1&&datosNota.getAnticipo()>0){
+                                    System.out.println("SE A VERIFICAR ENTRADA CAJA EFE "+datosNota.getEnefectivo()+" "+datosNota.getAnticipo());
                                     verificarAnticipoParaInsertarComoEntradaCaja(datosNota,notape);
                                     
                                 }else{
                                     if(datosNota.getNumerodecupon().length()>0){
+                                        System.out.println("SE A VERIFICAR ENTRADA CAJA TARJETA "+datosNota.getEnefectivo()+" "+datosNota.getAnticipo());
                                         verificarNumeroDeCuponParaInsertarComoEntradaCaja(datosNota,notape);
                                     }
                                 }
@@ -104,20 +107,24 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                     cliente.setTotalCompras(BigDecimal.valueOf(totalCompras));
                                                     cliente.setTotalEnPuntos(BigInteger.valueOf(totalPuntos));
                                                     cliente.setFechaCarga(GregorianCalendar.getInstance().getTime());                                           
-                                                em.persist(cliente);                       
+                                                em.persist(cliente);        
+                                                
                                                 retorno = notape.getId();                                          
             return retorno;        
     }
     
     private long almacenarDetalleNota(DatosNotaPedido datosNota, Notadepedido notape) {
         long retorno;        
-            List<Itemdetallesnota>lista = datosNota.getDetallesnotapedido().getDetallesnota();            
+            List<Itemdetallesnota>lista = datosNota.getDetallesnotapedido().getDetallesnota();    
+            System.out.println("TAMAÑO DEL ARRAY "+lista.size()+" "+notape.getId()+" ");
+            
             lista.stream().forEach((itemdetallesnota) -> {
                 Productos productos = em.find(Productos.class,itemdetallesnota.getId_producto());
                 DetallesnotadepedidoPK detallespk = new DetallesnotadepedidoPK(notape.getId(), itemdetallesnota.getId_producto());
                 Detallesnotadepedido detalles = new Detallesnotadepedido();
                 almacenarDetallesNota(productos,itemdetallesnota,notape,detallespk,detalles);
-        });                    
+        });
+                
                     unirRelacion(notape);
                             retorno = notape.getId();        
             return retorno;        
@@ -149,7 +156,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     private void almacenarHistorico(DatosNotaPedido notadepedido,Notadepedido notape){
         
                     GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());                    
-                                    Historiconotapedido historico = new Historiconotapedido();
+                                    Historiconotapedido historico = new Historiconotapedido();                                    
                                     historico.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));
                                     historico.setEntregado(notadepedido.getEntregado());
                                     historico.setFecharegistro(gc.getTime());
@@ -212,7 +219,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                 if(getDatosXML.getSaldo()==0){
                         Empleados empleado = em.find(Empleados.class, getDatosXML.getUsuario_cancelo_nota());
                                     if(estado==1){   
-                                            if(getDatosXML.getEnefectivo()==1&&getDatosXML.getAnticipo()>0){
+                                            if(getDatosXML.getEnefectivo()=='1'&&getDatosXML.getAnticipo()>0){
                                                 verificarAnticipoParaInsertarComoEntradaCaja(getDatosXML, nota);
                                             }else{
                                                 if(getDatosXML.getNumerodecupon().length()>0&&getDatosXML.getEnefectivo()==0){
@@ -574,8 +581,8 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                                             } catch (Exception ex) {
                                                                 LOGGER.error("Error al seteal el montotoal a pagar ");
                                                             }
-                                                            nota.setPorcdesctotal(BigDecimal.valueOf(datosnotapedido.getPorc_descuento_total()));
-                                                            nota.setPorcrecargo(BigDecimal.valueOf(datosnotapedido.getPorcentajerecargo()));
+                                                        nota.setPorcdesctotal(BigDecimal.valueOf(datosnotapedido.getPorc_descuento_total()));
+                                                        nota.setPorcrecargo(BigDecimal.valueOf(datosnotapedido.getPorcentajerecargo()));
                                                                     if(datosnotapedido.getCancelado()=='1') {
                                                                         nota.setFecancelado(gc.getTime());
                                                                     }
@@ -787,6 +794,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
     }
 
     private void almacenarDetallesNota(Productos productos, Itemdetallesnota itemdetallesnota, Notadepedido notape, DetallesnotadepedidoPK detallespk, Detallesnotadepedido detalles) {
+                                detalles.setAnulado(itemdetallesnota.getAnulado());
                                 detalles.setCancelado(itemdetallesnota.getCancelado());
                                 detalles.setCantidad(itemdetallesnota.getCantidad());
                                 detalles.setDescuento(BigDecimal.valueOf(itemdetallesnota.getDescuento()));
@@ -839,48 +847,48 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                         historico.setAnulado(nota.getAnulado());
     }
 
-    private void almacenarNotaVoid(Notadepedido notape, DatosNotaPedido notadepedido) {
+    private void almacenarNotaVoid(Notadepedido notape, DatosNotaPedido datosNotaPedido) {
         GregorianCalendar gc = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                                notape.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipo()));                                
-                                notape.setAnulado(notadepedido.getAnulado());                                
-                                notape.setEnefectivo(notadepedido.getEnefectivo());
-                                notape.setPendiente(notadepedido.getPendiente());
-                                notape.setEntregado(notadepedido.getEntregado());
-                                notape.setFkIdcliente(em.find(Personas.class, notadepedido.getPersonas().getId()));
-                                notape.setFkidporcentajenotaId(em.find(Porcentajes.class, notadepedido.getPorcentajes().getId_porcentaje()));
-                                notape.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, notadepedido.getTarjetacredito().getId_tarjeta()));
-                                notape.setIdUsuarioExpidioNota(notadepedido.getUsuario_expidio_nota());
-                                notape.setIdusuarioAnulado(notadepedido.getId_usuario_anulado());
-                                notape.setIdusuarioEntregado(notadepedido.getUsuario_entregado());
-                                notape.setMontoiva(BigDecimal.valueOf(notadepedido.getMontoiva()));
-                                notape.setNumerodecupon(notadepedido.getNumerodecupon());
-                                notape.setAnticipo(BigDecimal.valueOf(notadepedido.getAnticipoacum()));
-                                if(notadepedido.getObservaciones().length()>0){
-                                    notape.setObservaciones(notadepedido.getObservaciones());
+                               
+                                notape.setAnulado(datosNotaPedido.getAnulado());                                
+                                notape.setEnefectivo(datosNotaPedido.getEnefectivo());
+                                notape.setPendiente(datosNotaPedido.getPendiente());
+                                notape.setEntregado(datosNotaPedido.getEntregado());
+                                notape.setFkIdcliente(em.find(Personas.class, datosNotaPedido.getPersonas().getId()));
+                                notape.setFkidporcentajenotaId(em.find(Porcentajes.class, datosNotaPedido.getPorcentajes().getId_porcentaje()));
+                                notape.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, datosNotaPedido.getTarjetacredito().getId_tarjeta()));
+                                notape.setIdUsuarioExpidioNota(datosNotaPedido.getUsuario_expidio_nota());
+                                notape.setIdusuarioAnulado(datosNotaPedido.getId_usuario_anulado());
+                                notape.setIdusuarioEntregado(datosNotaPedido.getUsuario_entregado());
+                                notape.setMontoiva(BigDecimal.valueOf(datosNotaPedido.getMontoiva()));
+                                notape.setNumerodecupon(datosNotaPedido.getNumerodecupon());
+                                notape.setAnticipo(BigDecimal.valueOf(datosNotaPedido.getAnticipo()));
+                                if(datosNotaPedido.getObservaciones().length()>0){
+                                    notape.setObservaciones(datosNotaPedido.getObservaciones());
                                 }else{
                                     notape.setObservaciones("");
                                 }
-                                notape.setRecargo(BigDecimal.valueOf(notadepedido.getRecargo()));
-                                notape.setSaldo(BigDecimal.valueOf(notadepedido.getSaldo()));
-                                notape.setStockfuturo(notadepedido.getStockfuturo());
-                                notape.setTotal(BigDecimal.valueOf(notadepedido.getMontototal()));                              
+                                notape.setRecargo(BigDecimal.valueOf(datosNotaPedido.getRecargo()));
+                                notape.setSaldo(BigDecimal.valueOf(datosNotaPedido.getSaldo()));
+                                notape.setStockfuturo(datosNotaPedido.getStockfuturo());
+                                notape.setTotal(BigDecimal.valueOf(datosNotaPedido.getMontototal()));                              
                                 notape.setHoracompra(gc.getTime());                              
                                 notape.setFechadecompra(gc.getTime());                              
                                     try {
-                                        notape.setFechaentrega(sdf.parse(notadepedido.getFechaentrega()));
+                                        notape.setFechaentrega(sdf.parse(datosNotaPedido.getFechaentrega()));
                                     } catch (ParseException e1) {
                                         java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, e1);
                                     }                              
-                                notape.setCancelado(notadepedido.getCancelado());
-                                notape.setDescuentonota(BigDecimal.valueOf(notadepedido.getDescuentonota()));                                
-                                notape.setDescuentoPesos(BigDecimal.valueOf(notadepedido.getDescuentopesos()));                              
+                                notape.setCancelado(datosNotaPedido.getCancelado());
+                                notape.setDescuentonota(BigDecimal.valueOf(datosNotaPedido.getDescuentonota()));                                
+                                notape.setDescuentoPesos(BigDecimal.valueOf(datosNotaPedido.getDescuentopesos()));                              
                                 notape.setUltimaActualizacion(ResourceBundle.getBundle("config").getString("FECHA_DEFAULT"));
-                                notape.setIdusuariocancelo(notadepedido.getUsuario_cancelo_nota());
-                                notape.setMontototalapagar(BigDecimal.valueOf(notadepedido.getMontototalapagar()));
-                                notape.setPorcdesctotal(BigDecimal.valueOf(notadepedido.getPorc_descuento_total()));
-                                notape.setPorcrecargo(BigDecimal.valueOf(notadepedido.getPorcentajerecargo()));                                
-                                if(notadepedido.getCancelado()=='1') {
+                                notape.setIdusuariocancelo(datosNotaPedido.getUsuario_cancelo_nota());
+                                notape.setMontototalapagar(BigDecimal.valueOf(datosNotaPedido.getMontototalapagar()));
+                                notape.setPorcdesctotal(BigDecimal.valueOf(datosNotaPedido.getPorc_descuento_total()));
+                                notape.setPorcrecargo(BigDecimal.valueOf(datosNotaPedido.getPorcentajerecargo()));                                
+                                if(datosNotaPedido.getCancelado()=='1') {
                                     notape.setFecancelado(gc.getTime());
                                 }else{
                                         try {
@@ -889,7 +897,7 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, e);
                                         }
                                 }
-                                if(notadepedido.getAnulado()=='1') {
+                                if(datosNotaPedido.getAnulado()=='1') {
                                     notape.setFechaAnulado(gc.getTime());
                                 }else{
                                         try {
@@ -898,15 +906,16 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
                                             java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, e2);
                                         }
                                 }
-                                if(notadepedido.getEntregado()==1){
+                                if(datosNotaPedido.getEntregado()==1){
                                     notape.setFechaentrega(gc.getTime());
                                 }else{
                                         try {
-                                            notape.setFechaentrega(sdf.parse(ResourceBundle.getBundle("config").getString("FECHA_DEFAULT")));
+                                            notape.setFechaentrega(sdf.parse(datosNotaPedido.getFechaentrega()));
                                         } catch (ParseException e3) {
                                             java.util.logging.Logger.getLogger(EJBNotaPedido.class.getName()).log(Level.SEVERE, null, e3);
                                         }
                                 }
+                                em.persist(notape);
     }
     private String iterateOverListNote(List<Notadepedido> lista) {
         StringBuilder xmlLoop = new StringBuilder(10);
@@ -920,12 +929,18 @@ public class EJBNotaPedido implements EJBNotaPedidoRemote {
          if(notape.getEntregado()=='1'||notape.getCancelado()=='1'){
                    ejbentradasSalidas.calculosPorNumerodeCupon(datosnotapedido.getMontototal(),notape);
          }else{
-                ejbentradasSalidas.calculosPorNumerodeCupon(datosnotapedido.getAnticipo(),notape);
+                if(datosnotapedido.getAnticipo()>0&&datosnotapedido.getEnefectivo()=='1'){
+                    ejbentradasSalidas.calculosPorAnticipoNotaPedido(datosnotapedido.getAnticipo(), notape);
+                }else{
+                    if(datosnotapedido.getAnticipo()>0&&datosnotapedido.getEnefectivo()=='0'){
+                        ejbentradasSalidas.calculosPorNumerodeCupon(datosnotapedido.getAnticipo(), notape);
+                    }
+                }
          }
     }
 
     private void verificarAnticipoParaInsertarComoEntradaCaja(DatosNotaPedido datos,Notadepedido notape) {
-        
+            System.out.println("verifico la entrada");
                 ejbentradasSalidas.calculosPorAnticipoNotaPedido(datos.getAnticipo(),notape);
         
     }

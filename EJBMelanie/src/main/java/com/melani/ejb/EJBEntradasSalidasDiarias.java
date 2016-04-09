@@ -2,7 +2,6 @@ package com.melani.ejb;
 import com.melani.entity.EntradasySalidasCaja;
 import com.melani.entity.Notadepedido;
 import com.melani.entity.TarjetasCreditoDebito;
-import com.melani.utils.DatosNotaPedido;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -171,16 +170,17 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
     @Override
     public long calculosPorAnticipoNotaPedido(double anticipo,Notadepedido notadePedido) {
         long retorno;
-        EntradasySalidasCaja entradasySalidasCaja = procesarEntradaSalida();
-        entradasySalidasCaja.setAnticipo(anticipo);
-        entradasySalidasCaja.setEnefectivo('1');
-        entradasySalidasCaja.setNumerocupon("0");
-        entradasySalidasCaja.setSalidas(0.0);
-        entradasySalidasCaja.setEntradaTarjeta(0.0);
-        entradasySalidasCaja.setEntradas(0.0);
-        entradasySalidasCaja.setDetalles("Entrada por Anticipo "+anticipo+" Nota Pedido "+notadePedido.getId());
-            em.persist(entradasySalidasCaja);
-        retorno = entradasySalidasCaja.getId();
+        System.out.println("esto calculando el anticipo de la nota como entrada");
+                            EntradasySalidasCaja entradasySalidasCaja = procesarEntradaSalida();
+                            entradasySalidasCaja.setAnticipo(anticipo);
+                            entradasySalidasCaja.setEnefectivo('1');
+                            entradasySalidasCaja.setNumerocupon("0");
+                            entradasySalidasCaja.setSalidas(0.0);
+                            entradasySalidasCaja.setEntradaTarjeta(0.0);
+                            entradasySalidasCaja.setEntradas(0.0);
+                            entradasySalidasCaja.setDetalles("Entrada por Anticipo "+anticipo+" Nota Pedido "+notadePedido.getId());
+                                em.persist(entradasySalidasCaja);
+                            retorno = entradasySalidasCaja.getId();
         return retorno;
     }
 
@@ -192,6 +192,7 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
         double acumTotalAnticipoManualTarjeta = 0;
         double acumSalidaManual = 0;
         double arqueoGral;
+        double caja;
         StringBuilder xmlCalculosES = new StringBuilder(10);
         String xml = "";
         Date fecha = null;
@@ -207,10 +208,12 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                       acumEntradasEfectivo+=acumEntradaManual+acumEntradasAnticipo;  
                       acumTotalAnticipoManualTarjeta+=acumEntradasEfectivo+acumEntradasTarjeta;
                       arqueoGral = acumTotalAnticipoManualTarjeta - acumSalidaManual;
+                      caja = acumEntradasEfectivo-acumSalidaManual;
                       xmlCalculosES.append("<totalanticipo>").append(acumEntradasAnticipo).append("</totalanticipo>\n").append("<totaltarjetas>").append(acumEntradasTarjeta).append("</totaltarjetas>\n").
                               append("<totalenefectivo>").append(acumEntradasEfectivo).append("</totalenefectivo>\n").append("<totalentradamanual>").append(acumEntradaManual).append("</totalentradamanual>\n").
                               append("<totalanticipoymanual>").append(acumEntradasEfectivo).append("</totalanticipoymanual>\n").append("<totalsalidas>").append(acumSalidaManual).append("</totalsalidas>\n")
                               .append("<arqueo>").append(arqueoGral).append("</arqueo>\n")
+                              .append("<caja>").append(caja).append("</caja>")
                               .append("<fecha>").append(new SimpleDateFormat("dd/MM/yyyy").format(fecha)).append("</fecha>\n")
                               .append("</totales>\n")
                               .append(xml);
