@@ -8,13 +8,13 @@ public interface EJBNotaPedidoRemote {
     String selectUnaNota(long idnta);
     long cancelarNotaPedido(String datosXML,int estado);
     long entregarNotaPedido(String datosXML,int estado);
-    String selectNotaEntreFechasCompra(String desde, String hasta,long idvendedor);
+    String selectNotaEntreFechasCompra(String desde, String hasta);
     int getRecorCountNotas();
     String selectAllNotas();
     String verNotasPedidoPaginadas(int index, int recordCount);
     long anularNotaPedido(String datosXML, int estado);
     long actualizarNotaPedido(String xmlnotapedidomodificada);
-    String selecNotaEntreFechasEntrega(String fecha1, String fecha2);
+    String selectNotaEntreFechasEntrega(String fecha1, String fecha2);
     int eliminarNotaDePedido(long idnota, long idEmpleado);
     String calcularVentasMensualesHastaFechaYAnoActual();
 }

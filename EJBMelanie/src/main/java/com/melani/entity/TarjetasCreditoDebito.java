@@ -34,7 +34,7 @@ public class TarjetasCreditoDebito implements Serializable {
     private String descripcion;
     @OneToMany(mappedBy = "idTarjetaFk")
     private List<Notadepedido> notadepedidoList;
-    @OneToMany(orphanRemoval = true,mappedBy="idTarjetaFk")
+    @OneToMany(orphanRemoval = true,mappedBy="idTarjetaCreditoDebitoFk")
     private List<EntradasySalidasCaja>entradasysalidascajaList;
 
     public TarjetasCreditoDebito() {

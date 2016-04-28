@@ -9,7 +9,6 @@ import com.melani.utils.DatosEmpleado;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -29,24 +28,11 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     private EntityManager em;   
      @Override
     public long addEmpleadoFullTime(String xmlEmpleado){
-        long retorno = 0;
-                try { 
-            
+        long retorno;
                     //llamo a metodo interno para convertir a objeto los datos del empleado
-                    DatosEmpleado datosEmpleado = datosEmpleadosObject(xmlEmpleado);
-            
+                    DatosEmpleado datosEmpleado = datosEmpleadosObject(xmlEmpleado);            
                       retorno = procesarDatosEmpleadoAdd(datosEmpleado);
-            
-                   } catch (NumberFormatException e) {
-                    retorno = -1;
-                    LOGGER.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
-                }  catch (Exception e) {
-                    retorno = -1;
-                        LOGGER.error("Error en metodo addEmpleadoFullTime "+e.getMessage());
-                }
-            finally{
                 return retorno;
-            }
     }
 /**
  * 
@@ -175,9 +161,8 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
      */
      @Override
     public int deshabilitarEmpleado(int idEmpleado, int idEmpleadoDesabilito) {
-        int retorno =0;
-        try {
-            GregorianCalendar gc = new GregorianCalendar();
+        long retorno =0;
+                    
             StringBuilder sb =new StringBuilder(32);
                 Empleados empleadoDesabilitado = em.find(Empleados.class, idEmpleado);
                 Empleados empleadoDesabilito = em.find(Empleados.class, idEmpleadoDesabilito);
@@ -186,13 +171,10 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                     sb.append(" ");
                     sb.append(empleadoDesabilito.getApellido());
                     
-             retorno=Integer.valueOf(String.valueOf(empleadoDesabilitado.getIdPersona()));
-        } catch (NumberFormatException e) {
-            retorno=-1;
-            LOGGER.error("Error en metodo deshabilitarEmpleado "+e.getMessage());
-        }finally{
-            return retorno;
-        }
+             retorno=empleadoDesabilitado.getIdPersona();
+        
+            return (int) retorno;
+        
     }
     private long buscarEmpleadoEmailAndNameUser(int numerodocu,String email,String nameuser) {
         long retorno =0;
@@ -390,9 +372,9 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                          empfulltime.setTipodocumento(em.find(Tiposdocumento.class, empleado.getIdTipoDocumento()));
                                          empfulltime.setNrodocumento(empleado.getNumeroDocumento());
                                          if(empleado.getSalario().length()>0){
-                                            empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf(empleado.getSalario())));
+                                            empfulltime.setSalario(Double.valueOf(empleado.getSalario()));
                                          }else{
-                                            empfulltime.setSalario(BigDecimal.valueOf(Float.valueOf("0.0"))); 
+                                            empfulltime.setSalario(0); 
                                          }
                                          em.persist(empfulltime);
                                          
@@ -406,8 +388,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
     }
 
     private long addPartTimeEmpleado(DatosEmpleado empleado) {
-        long retorno =0;
-        try {
+        long retorno;       
             GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
               EmpleadoParttime empparttime = new EmpleadoParttime();
                                                     empparttime.setApellido(empleado.getApellido().toUpperCase());
@@ -434,16 +415,14 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                     empparttime.setEstado((short)1);
                                                     if(!empleado.getEmail().isEmpty())
                                                          empparttime.setEmail(empleado.getEmail());
-                                                    empparttime.setSalarioporhora(BigDecimal.valueOf(Float.valueOf(empleado.getSalarioxhora())));
+                                                    empparttime.setSalarioporhora(Double.valueOf(empleado.getSalarioxhora()));
                                                     em.persist(empparttime);
                                                     
                                                     retorno = empparttime.getIdPersona();
             
-        } catch (NumberFormatException e) {
-            LOGGER.error("error en metodo addPartTimeEmpleado "+e.getMessage());
-        }finally{
+        
            return retorno;
-        }
+        
     }
 
      
@@ -678,7 +657,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
 
                                                                                                        fulltimeEmploy.setNombre(empleado.getNombre());
 
-                                                                                                       fulltimeEmploy.setSalario(BigDecimal.valueOf(Long.valueOf(empleado.getSalario())));
+                                                                                                       fulltimeEmploy.setSalario(Double.valueOf(empleado.getSalario()));
 
                                                                                                        fulltimeEmploy.setObservaciones(empleado.getObservaciones());
 
@@ -720,7 +699,7 @@ public class EJBEmpleados implements EJBEmpleadosRemote {
                                                                                                        
                                                                                                        empleadoPartime.setNombre(empleado.getNombre());
                                                                                                        
-                                                                                                       empleadoPartime.setSalarioporhora(BigDecimal.valueOf(Long.valueOf(empleado.getSalarioxhora())));
+                                                                                                       empleadoPartime.setSalarioporhora(Double.valueOf(empleado.getSalarioxhora()));
                                                                                                        
                                                                                                        empleadoPartime.setObservaciones(empleado.getObservaciones());
                                                                                                        

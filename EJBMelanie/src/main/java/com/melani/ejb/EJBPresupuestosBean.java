@@ -9,7 +9,6 @@ import com.melani.utils.ItemDetallesPresupuesto;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -17,11 +16,9 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBPresupuestosBean")
 @WebService(serviceName="ServicesPresupuestos",name="PresupuestoWs")
-public class EJBPresupuestosBean implements EJBPresupuestosRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBPresupuestosBean.class);
+public class EJBPresupuestosBean implements EJBPresupuestosRemote {    
     @PersistenceContext
     private EntityManager em;  
     @Override
@@ -43,20 +40,20 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
             GregorianCalendar fvalidez = new GregorianCalendar();
             fvalidez.add(GregorianCalendar.DATE,20);
                     Presupuestos presupuesto = new Presupuestos();
-                            presupuesto.setTotalapagar(BigDecimal.valueOf(datospresupuesto.getTotalapagar()));
+                            presupuesto.setTotalapagar(datospresupuesto.getTotalapagar());
                             presupuesto.setFechapresupuesto(gc.getTime());
                             presupuesto.setApellido(datospresupuesto.getApellido().toUpperCase());
                             presupuesto.setNombre(datospresupuesto.getNombre().toUpperCase());
-                            presupuesto.setIva(BigDecimal.valueOf(datospresupuesto.getIva()));
+                            presupuesto.setIva(datospresupuesto.getIva());
                             presupuesto.setValidez(fvalidez.getTime());
-                            presupuesto.setPorcetajedescuentoTOTAL(BigDecimal.valueOf(datospresupuesto.getPorc_descuento_total()));
+                            presupuesto.setPorcetajedescuentoTOTAL(datospresupuesto.getPorc_descuento_total());
                             presupuesto.setIdUsuarioFk(datospresupuesto.getId_usuario_expidio());
                             presupuesto.setObservaciones(datospresupuesto.getObservaciones());
-                            presupuesto.setTotal(BigDecimal.valueOf(datospresupuesto.getTotal()));
-                            presupuesto.setRecargototal(BigDecimal.valueOf(datospresupuesto.getRecargototal()));
-                            presupuesto.setPorcentajerecargo(BigDecimal.valueOf(datospresupuesto.getPorcentajerecargo()));
-                            presupuesto.setDescuentoresto(BigDecimal.valueOf(datospresupuesto.getDescuentoresto()));
-                            presupuesto.setPorcetajedescuentoTOTAL(BigDecimal.valueOf(datospresupuesto.getPorc_descuento_total()));
+                            presupuesto.setTotal(datospresupuesto.getTotal());
+                            presupuesto.setRecargototal(datospresupuesto.getRecargototal());
+                            presupuesto.setPorcentajerecargo(datospresupuesto.getPorcentajerecargo());
+                            presupuesto.setDescuentoresto(datospresupuesto.getDescuentoresto());
+                            presupuesto.setPorcetajedescuentoTOTAL(datospresupuesto.getPorc_descuento_total());
                             em.persist(presupuesto);
                 List<ItemDetallesPresupuesto>lista = datospresupuesto.getDetallesPresupuesto().getLista();
             for (ItemDetallesPresupuesto itemDetallesPresupuesto : lista) {
@@ -65,13 +62,13 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                                 itemDetallesPresupuesto.getFk_id_producto());
                         Detallespresupuesto detallePresupuesto = new Detallespresupuesto(detallePresupuestoPK);
                         detallePresupuesto.setCantidad(itemDetallesPresupuesto.getCantidad());
-                        detallePresupuesto.setDescuento(BigDecimal.valueOf(itemDetallesPresupuesto.getDescuento()));
-                        detallePresupuesto.setPrecioDesc(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio_desc()));
-                        detallePresupuesto.setPrecio(BigDecimal.valueOf(itemDetallesPresupuesto.getPrecio()));
+                        detallePresupuesto.setDescuento(itemDetallesPresupuesto.getDescuento());
+                        detallePresupuesto.setPrecioDesc(itemDetallesPresupuesto.getPrecio_desc());
+                        detallePresupuesto.setPrecio(itemDetallesPresupuesto.getPrecio());
                         detallePresupuesto.setDetallespresupuestoPK(detallePresupuestoPK);
                         detallePresupuesto.setPresupuestos(em.find(Presupuestos.class, presupuesto.getIdPresupuesto()));
                         detallePresupuesto.setProductos(producto);
-                        detallePresupuesto.setSubtotal(BigDecimal.valueOf(itemDetallesPresupuesto.getSubtotal()));
+                        detallePresupuesto.setSubtotal(itemDetallesPresupuesto.getSubtotal());
                      em.persist(detallePresupuesto);
                             Query consultaListProdPres = em.createQuery("SELECT d FROM Detallespresupuesto d WHERE "
                                     + "d.detallespresupuestoPK.fkProducto = :fkProducto");
@@ -179,9 +176,9 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
     
     private StringBuilder processPresupuesto(List<Presupuestos>lista){
         StringBuilder xmlLoop = new StringBuilder(10);
-                    for (Presupuestos presupuestos : lista) {
-                        xmlLoop.append(presupuestos.toXML());
-                    }   
+        lista.stream().forEach((presupuestos) -> {
+            xmlLoop.append(presupuestos.toXML());
+        });   
                     return xmlLoop;
     }
 }

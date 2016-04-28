@@ -1,8 +1,6 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -17,9 +15,9 @@ import javax.persistence.Temporal;
 public class Clientes extends Personas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(precision = 15,scale=3,name="TOTALCOMPRAS")
-    private BigDecimal totalCompras;
+    private double totalCompras;
     @Column(precision = 15,name = "TOTALPUNTOS")
-    private BigInteger totalEnPuntos;
+    private int totalEnPuntos;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaCarga;
     @OneToMany(mappedBy = "fkIdcliente",orphanRemoval = true)
@@ -35,19 +33,19 @@ public class Clientes extends Personas implements Serializable {
         this.fechaCarga = fechaCarga;
     }
 
-    public BigDecimal getTotalCompras() {
+    public double getTotalCompras() {
         return totalCompras;
     }
 
-    public void setTotalCompras(BigDecimal totalCompras) {
+    public void setTotalCompras(double totalCompras) {
         this.totalCompras = totalCompras;
     }
 
-    public BigInteger getTotalEnPuntos() {
+    public int getTotalEnPuntos() {
         return totalEnPuntos;
     }
 
-    public void setTotalEnPuntos(BigInteger totalEnPuntos) {
+    public void setTotalEnPuntos(int totalEnPuntos) {
         this.totalEnPuntos = totalEnPuntos;
     }
 
@@ -58,18 +56,17 @@ public class Clientes extends Personas implements Serializable {
     public void setNotadepedidoList(List<Notadepedido> notadepedidoList) {
         this.notadepedidoList = notadepedidoList;
     }
-    public String toXMLCLI(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    public String toXMLCLI(){        
         StringBuilder xml = new StringBuilder("<totalcompras>").append(this.getTotalCompras()).append("</totalcompras>\n").append("<totalpuntos>").append(this.getTotalEnPuntos()).append("</totalpuntos>\n");
-                xml.append("<fechacarga>").append(sdf.format(this.getFechaCarga())).append("</fechacarga>\n");
+                xml.append("<fechacarga>").append(DateFormat.getDateInstance().format(this.getFechaCarga())).append("</fechacarga>\n");
                 xml.append("<notapedidolist>\n");
                 if(this.getNotadepedidoList().isEmpty()) {
                     xml.append("</notapedidolist>\n");
                 } else{
                          List<Notadepedido>lista = this.getNotadepedidoList();
-                            for (Notadepedido notadepedido : lista) {
-                                xml.append(notadepedido.toXML());
-                            }
+                         lista.stream().forEach((notadepedido) -> {
+                             xml.append(notadepedido.toXML());
+            });
                                     xml.append("</notapedidolist>\n");
                        }
         return xml.toString();

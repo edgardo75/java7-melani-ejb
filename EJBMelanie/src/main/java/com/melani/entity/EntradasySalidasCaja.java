@@ -2,6 +2,7 @@ package com.melani.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,12 +23,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EntradasySalidasCaja.findAll", query = "SELECT e FROM EntradasySalidasCaja e"),
-    @NamedQuery(name = "EntradasySalidasCaja.findById", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.id = :id"),
+    @NamedQuery(name = "EntradasySalidasCaja.findById", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.id_EntradasySalidas = :id_EntradasySalidas"),
     @NamedQuery(name = "EntradasySalidasCaja.findByDetalles", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.detalles = :detalles"),
     @NamedQuery(name = "EntradasySalidasCaja.findByFecha", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.fecha = :fecha"),
     @NamedQuery(name = "EntradasySalidasCaja.findByEntradas", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.entradas = :entradas"),
     @NamedQuery(name = "EntradasySalidasCaja.findBySalidas", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.salidas = :salidas"),
-    @NamedQuery(name = "EntradasySalidasCaja.findByIdUsuario", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.idUsuario = :idUsuario"),
+    @NamedQuery(name = "EntradasySalidasCaja.findByIdUsuario", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.ID_USUARIO = :ID_USUARIO"),
     @NamedQuery(name = "EntradasySalidasCaja.findByNumerocupon", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.numerocupon = :numerocupon"),
     @NamedQuery(name = "EntradasySalidasCaja.findByEnefectivo", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.enefectivo = :enefectivo"),
     @NamedQuery(name = "EntradasySalidasCaja.findByHora", query = "SELECT e FROM EntradasySalidasCaja e WHERE e.hora = :hora"),
@@ -40,7 +41,7 @@ public class EntradasySalidasCaja implements Serializable {
     pkColumnName="FNAME",pkColumnValue="EntradasySalidasCaja", valueColumnName="FKEY",
     allocationSize=1)
     @Basic(fetch = FetchType.LAZY)
-    private Integer id;
+    private Integer id_EntradasySalidas;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "DETALLES",columnDefinition = "VARCHAR(255) default'-'")
     private String detalles;
@@ -55,7 +56,7 @@ public class EntradasySalidasCaja implements Serializable {
     private Double salidas;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "ANTICIPO", columnDefinition = "DECIMAL(15, 2) default'0.00'")
-    private double Anticipo;    
+    private double anticipo;    
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "ENTRADATARJETA", columnDefinition = "DECIMAL(15, 2) default'0.00'")
     private double entradaTarjeta;    
@@ -64,7 +65,7 @@ public class EntradasySalidasCaja implements Serializable {
     private double ventasEfectivo; 
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "ID_USUARIO")    
-    private Integer idUsuario;
+    private Integer ID_USUARIO;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "NUMEROCUPON",columnDefinition = "VARCHAR(20) default '0'")
     private String numerocupon;
@@ -77,21 +78,21 @@ public class EntradasySalidasCaja implements Serializable {
     private Date hora;
     @JoinColumn(name = "ID_TARJETA_FK", referencedColumnName = "IDTARJETA")
     @ManyToOne(optional = false)
-    private TarjetasCreditoDebito idTarjetaFk;
+    private TarjetasCreditoDebito idTarjetaCreditoDebitoFk;
 
     public EntradasySalidasCaja() {
     }
 
-    public EntradasySalidasCaja(Integer id) {
-        this.id = id;
+    public EntradasySalidasCaja(Integer id_EntradasySalidas) {
+        this.id_EntradasySalidas = id_EntradasySalidas;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getId_EntradasySalidas() {
+        return id_EntradasySalidas;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId_EntradasySalidas(Integer id_EntradasySalidas) {
+        this.id_EntradasySalidas = id_EntradasySalidas;
     }
 
     public String getDetalles() {
@@ -126,12 +127,36 @@ public class EntradasySalidasCaja implements Serializable {
         this.salidas = salidas;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public double getAnticipo() {
+        return anticipo;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setAnticipo(double anticipo) {
+        this.anticipo = anticipo;
+    }
+
+    public double getEntradaTarjeta() {
+        return entradaTarjeta;
+    }
+
+    public void setEntradaTarjeta(double entradaTarjeta) {
+        this.entradaTarjeta = entradaTarjeta;
+    }
+
+    public double getVentasEfectivo() {
+        return ventasEfectivo;
+    }
+
+    public void setVentasEfectivo(double ventasEfectivo) {
+        this.ventasEfectivo = ventasEfectivo;
+    }
+
+    public Integer getID_USUARIO() {
+        return ID_USUARIO;
+    }
+
+    public void setID_USUARIO(Integer ID_USUARIO) {
+        this.ID_USUARIO = ID_USUARIO;
     }
 
     public String getNumerocupon() {
@@ -158,72 +183,51 @@ public class EntradasySalidasCaja implements Serializable {
         this.hora = hora;
     }
 
-    public Double getAnticipo() {
-        return Anticipo;
+    public TarjetasCreditoDebito getIdTarjetaCreditoDebitoFk() {
+        return idTarjetaCreditoDebitoFk;
     }
 
-    public void setAnticipo(Double Anticipo) {
-        this.Anticipo = Anticipo;
+    public void setIdTarjetaCreditoDebitoFk(TarjetasCreditoDebito idTarjetaCreditoDebitoFk) {
+        this.idTarjetaCreditoDebitoFk = idTarjetaCreditoDebitoFk;
     }
 
-    public Double getEntradaTarjeta() {
-        return entradaTarjeta;
-    }
-
-    public double getVentasEfectivo() {
-        return ventasEfectivo;
-    }
-
-    public void setVentasEfectivo(double ventasEfectivo) {
-        this.ventasEfectivo = ventasEfectivo;
-    }
-
-    public void setEntradaTarjeta(Double entradaTarjeta) {
-        this.entradaTarjeta = entradaTarjeta;
-    }
-
-    public TarjetasCreditoDebito getIdTarjetaFk() {
-        return idTarjetaFk;
-    }
-
-    public void setIdTarjetaFk(TarjetasCreditoDebito idTarjetaFk) {
-        this.idTarjetaFk = idTarjetaFk;
-    }
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.id_EntradasySalidas);
         return hash;
     }
+
     @Override
-    public boolean equals(Object object) {        
-        if (!(object instanceof EntradasySalidasCaja)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        EntradasySalidasCaja other = (EntradasySalidasCaja) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EntradasySalidasCaja other = (EntradasySalidasCaja) obj;
+        return Objects.equals(this.id_EntradasySalidas, other.id_EntradasySalidas);
     }
-    @Override
-    public String toString() {
-        return "com.melani.entity.EntradasySalidasCaja[ id=" + id + " ]";
-    }
-
     public String toXML(){
     SimpleDateFormat sdf =new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");
     StringBuilder item = new StringBuilder("<item>\n");
-            item.append("<id>").append(this.getId()).append("</id>\n");
+            item.append("<id_EntradasySalidas>").append(this.getId_EntradasySalidas()).append("</id_EntradasySalidas>\n");
             item.append("<detalles>").append(this.getDetalles()).append("</detalles>\n");
             item.append("<numerocupon>").append(this.getNumerocupon()).append( "</numerocupon>\n");
             item.append("<enefectivo>").append(this.getEnefectivo()).append( "</enefectivo>\n");
             item.append("<entradas>").append(this.getEntradas()).append( "</entradas>\n");
             item.append("<fecha>").append(sdf.format(this.getFecha())).append( "</fecha>\n");
             item.append("<hora>").append(sdfh.format(this.getHora())).append( "</hora>\n");
-            item.append("<idtarjeta>").append(this.getIdTarjetaFk().getIdtarjeta()).append( "</idtarjeta>\n");
-            item.append("<idusuario>").append(this.getIdUsuario()).append( "</idusuario>\n");
+            item.append("<idtarjeta>").append(this.getIdTarjetaCreditoDebitoFk().getIdtarjeta()).append( "</idtarjeta>\n");
+            item.append("<usuario>").append(this.getID_USUARIO()).append( "</usuario>\n");
             item.append("<salidas>").append(this.getSalidas()).append( "</salidas>\n");
             item.append("<anticipo>").append(this.getAnticipo()).append( "</anticipo>\n");
-            item.append("<entradatarjeta>").append(this.getEntradaTarjeta()).append( "</entradatarjeta>\n");
+            item.append("<anticipoTarjeta>").append(this.getEntradaTarjeta()).append( "</anticipoTarjeta>\n");
             item.append( "</item>\n");
 return item.toString();
 }    

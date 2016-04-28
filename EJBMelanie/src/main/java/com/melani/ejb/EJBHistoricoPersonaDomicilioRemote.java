@@ -3,5 +3,5 @@ import javax.ejb.Remote;
 
 @Remote
 public interface EJBHistoricoPersonaDomicilioRemote {
-    long addHistoricoPersonaDomicilio(Integer idDomicilio, Integer idPersona,Integer idUsuario);   
+    long addHistoricoPersonaDomicilio(int idDomicilio,int idPersona,int idUsuario);   
 }

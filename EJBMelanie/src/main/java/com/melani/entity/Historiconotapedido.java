@@ -1,6 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -56,17 +55,17 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "IDHISTORICO")    
     private Long id;
     @Column(name = "ANTICIPO",precision=15,scale=3)
-    private BigDecimal anticipo;
+    private double anticipo;
     @Column(name = "IDUSUARIOCANCELO")
     private Long idusuariocancelo;
     @Column(name = "PENDIENTE",length=1)
     private Character pendiente;
     @Column(name = "TOTAL",precision=15,scale=3)
-    private BigDecimal total;
+    private double total;
     @Column(name = "IDUSUARIOANULO")
     private Long idusuarioanulo;
     @Column(name = "SALDO",precision=15,scale=3)
-    private BigDecimal saldo;
+    private double saldo;
     @Column(name = "HORAREGISTRO")
     @Temporal(TemporalType.TIME)
     private Date horaregistro;
@@ -78,20 +77,20 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "PORCENTAJEAPLICADO")
     private Short porcentajeaplicado;
     @Column(name = "DESCUENTO",precision=15,scale=3)
-    private BigDecimal descuento;
+    private double descuento;
     @Column(name = "IDUSUARIOEXPIDIO")
     private Long idusuarioexpidio;
     @Column(name = "TOTALAPAGAR",precision=15,scale=3)
-    private BigDecimal totalapagar;
+    private double totalapagar;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "OBSERVACIONES",length=32_000)
     private String observaciones;
     @Column(name = "RECARGO",precision=15,scale=3)
-    private BigDecimal recargo;
+    private double recargo;
     @Column(name = "IDUSUARIOENTREGA")
     private Long idusuarioentrega;
     @Column(name = "PORCRECARGO",precision=15,scale=3)
-    private BigDecimal porcrecargo;
+    private double porcrecargo;
     @Column(name = "ENTREGADO",length=1)
     private Character entregado;
     @Column(name = "CANCELADO",length=1)
@@ -99,7 +98,7 @@ public class Historiconotapedido implements Serializable {
     @Column(name = "ANULADO",length=1)
     private Character anulado;
     @Column(name = "PORCDESC",precision=15,scale=3)
-    private BigDecimal porcdesc;
+    private double porcdesc;
     @JoinColumn(name="FKIDNOTAPEDIDO_ID",referencedColumnName="ID")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Notadepedido fkidnotapedido;
@@ -119,11 +118,11 @@ public class Historiconotapedido implements Serializable {
         this.fkidnotapedido = fkidnotapedido;
     }
 
-    public BigDecimal getPorcentajedesc() {
+    public double getPorcentajedesc() {
         return porcdesc;
     }
 
-    public void setPorcentajedesc(BigDecimal porcentajedesc) {
+    public void setPorcentajedesc(double porcentajedesc) {
         this.porcdesc = porcentajedesc;
     }
 
@@ -160,11 +159,11 @@ public class Historiconotapedido implements Serializable {
         this.entregado = entregado;
     }
 
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -176,11 +175,11 @@ public class Historiconotapedido implements Serializable {
         this.idusuarioexpidio = idusuarioexpidio;
     }
 
-    public BigDecimal getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(BigDecimal saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
@@ -216,7 +215,7 @@ public class Historiconotapedido implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public BigDecimal getAnticipo() {
+    public double getAnticipo() {
         return anticipo;
     }
 
@@ -228,7 +227,7 @@ public class Historiconotapedido implements Serializable {
         this.horaregistro = horaregistro;
     }
 
-    public void setAnticipo(BigDecimal anticipo) {
+    public void setAnticipo(double anticipo) {
         this.anticipo = anticipo;
     }
 
@@ -248,35 +247,35 @@ public class Historiconotapedido implements Serializable {
         this.idusuarioanulo = idusuarioanulo;
     }
 
-    public BigDecimal getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(BigDecimal descuento) {
+    public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
 
-    public BigDecimal getPorcrecargo() {
+    public double getPorcrecargo() {
         return porcrecargo;
     }
 
-    public void setPorcrecargo(BigDecimal porcrecargo) {
+    public void setPorcrecargo(double porcrecargo) {
         this.porcrecargo = porcrecargo;
     }
 
-    public BigDecimal getRecargo() {
+    public double getRecargo() {
         return recargo;
     }
 
-    public void setRecargo(BigDecimal recargo) {
+    public void setRecargo(double recargo) {
         this.recargo = recargo;
     }
 
-    public BigDecimal getTotalapagar() {
+    public double getTotalapagar() {
         return totalapagar;
     }
 
-    public void setTotalapagar(BigDecimal totalapagar) {
+    public void setTotalapagar(double totalapagar) {
         this.totalapagar = totalapagar;
     }
 
@@ -325,7 +324,7 @@ public class Historiconotapedido implements Serializable {
             hourreg=sdf.format(this.getHoraregistro());
         }       
             StringBuilder item = new StringBuilder(10);
-        try {
+        
               item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo()).append("</anticipo>\n");
                            item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
                            item.append("<fecharegistro>").append(fereg).append("</fecharegistro>\n");
@@ -340,17 +339,15 @@ public class Historiconotapedido implements Serializable {
                            .append("</idusuariocancelo>\n" + "<recargo>").append(this.getRecargo())
                            .append("</recargo>\n" + "<totalapagar>").append(this.getTotalapagar())
                                    .append("</totalapagar>\n").append("<porcrecargo>")
-                                   .append(this.getPorcrecargo().toString()).append("</porcrecargo>\n")
+                                   .append(this.getPorcrecargo()).append("</porcrecargo>\n")
                                    .append("<porcentajedescuento>").append(this.getPorcentajedesc())
                                    .append("</porcentajedescuento>\n" ).append("<descuento>")
-                                   .append(this.getDescuento().toString()).append("</descuento>\n" )
+                                   .append(this.getDescuento()).append("</descuento>\n" )
                                    .append("<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion()))
                                    .append("</accion>\n" ).append("<saldo>").append(this.getSaldo())
                                    .append("</saldo>\n" ).append("<total>").append(this.getTotal()).append("</total>\n");
                    item.append("</item>\n");
-        } catch (Exception e) {
-            e.getMessage();
-        }
+        
         return item.toString();        
     }
 }

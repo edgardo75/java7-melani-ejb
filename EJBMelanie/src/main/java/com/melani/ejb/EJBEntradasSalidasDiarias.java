@@ -34,9 +34,19 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
     @Override
     public byte insertarEntradaSalidaManual(String monto, byte valorEntradaSalidaBit) {
         byte retorno; 
-        EntradasySalidasCaja entradaSalida = procesarEntradaSalida();
-        entradaSalida.setNumerocupon("0");        
-        
+        EntradasySalidasCaja entradaSalida = new EntradasySalidasCaja();
+        SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm:ss");    
+                entradaSalida.setNumerocupon("0");        
+                entradaSalida.setFecha(new Date());
+                entradaSalida.setHora(sdfHora.getCalendar().getTime());        
+                entradaSalida.setID_USUARIO(0);
+                entradaSalida.setAnticipo(0.0);
+                entradaSalida.setEnefectivo('1');
+                entradaSalida.setEntradaTarjeta(0.0);
+                entradaSalida.setIdTarjetaCreditoDebitoFk(em.find(TarjetasCreditoDebito.class, 0));
+                entradaSalida.setID_USUARIO(0);
+                entradaSalida.setNumerocupon("0");
+                entradaSalida.setVentasEfectivo(0.0);                
             switch(valorEntradaSalidaBit){
                 case 0:{
                     entradaSalida.setEntradas(0.00);
@@ -48,10 +58,7 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                     entradaSalida.setSalidas(0.00);
                     entradaSalida.setDetalles("Entrada Manual");
                 }
-            }
-            
-        
-        entradaSalida.setEnefectivo('1');
+            }     
         em.persist(entradaSalida);
         retorno = 1;
         return (byte) retorno;
@@ -126,8 +133,7 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                 
                                 List<EntradasySalidasCaja> lista = consulta.getResultList();
                                     
-                                if(consulta.getResultList().size()>0){
-                                        //xml = lista.stream().map((next) -> next.toXML()).reduce(xml, String::concat);
+                                if(consulta.getResultList().size()>0){                                        
                                          xml = hacerCalculosDeEntradaSalida(lista);
 
                                         xmlES = new StringBuilder(xml);
@@ -139,48 +145,53 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
     @Override
     public long calculosPorNumerodeCupon(double anticipo,Notadepedido nota){
        long retorno;
-        EntradasySalidasCaja entradaSalidaCaja = procesarEntradaSalida();
-            if(nota.getEntregado()=='1'||nota.getCancelado()=='1'){
-                entradaSalidaCaja.setEntradaTarjeta(nota.getMontototalapagar().doubleValue());
-                entradaSalidaCaja.setDetalles("Entrada por Tarjeta entregada o cancelada "+nota.getNumerodecupon()+" Nota Pedido "+nota.getId());
-            }else{
-                entradaSalidaCaja.setEntradaTarjeta(anticipo);
-                entradaSalidaCaja.setDetalles("Entrada por Tarjeta "+nota.getNumerodecupon()+" Nota Pedido "+nota.getId()+" $"+anticipo);
-            }
-            entradaSalidaCaja.setNumerocupon(nota.getNumerodecupon());
-            entradaSalidaCaja.setEnefectivo('0');
-            entradaSalidaCaja.setSalidas(0.0);
-            entradaSalidaCaja.setEntradas(0.0);
-            entradaSalidaCaja.setAnticipo(0.0);            
+        EntradasySalidasCaja entradaSalidaCaja = new EntradasySalidasCaja();
+            SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm:ss");        
+                EntradasySalidasCaja entradaSalida = new EntradasySalidasCaja();
+                entradaSalida.setFecha(new Date());
+                entradaSalida.setHora(sdfHora.getCalendar().getTime());        
+                entradaSalida.setID_USUARIO(0);
+                        if(nota.getEntregado()=='1'||nota.getCancelado()=='1'){
+                            entradaSalidaCaja.setEntradaTarjeta(nota.getMontototalapagar());
+                            entradaSalidaCaja.setDetalles("Anticipo por Tarjeta entregada o cancelada "+nota.getNumerodecupon()+" Nota Pedido "+nota.getId());
+                        }else{
+                            entradaSalidaCaja.setEntradaTarjeta(anticipo);
+                            entradaSalidaCaja.setDetalles("Anticipo por Tarjeta "+nota.getNumerodecupon()+" Nota Pedido "+nota.getId()+" $"+anticipo);
+                        }
+                entradaSalidaCaja.setNumerocupon(nota.getNumerodecupon());
+                entradaSalidaCaja.setEnefectivo('0');
+                entradaSalidaCaja.setSalidas(0.0);
+                entradaSalidaCaja.setEntradas(0.0);
+                entradaSalidaCaja.setAnticipo(0.0);  
+                entradaSalidaCaja.setIdTarjetaCreditoDebitoFk(em.find(TarjetasCreditoDebito.class, nota.getIdTarjetaFk().getIdtarjeta()));
+                entradaSalidaCaja.setID_USUARIO(0);                
+                entradaSalidaCaja.setVentasEfectivo(0.0);
+                
             em.persist(entradaSalidaCaja);
-        retorno = entradaSalidaCaja.getId();
+        retorno = entradaSalidaCaja.getId_EntradasySalidas();
         return retorno;
     }
-
-    private EntradasySalidasCaja procesarEntradaSalida() {
-        SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm:ss");        
-        EntradasySalidasCaja entradaSalida = new EntradasySalidasCaja();
-        entradaSalida.setFecha(new Date());
-        entradaSalida.setHora(sdfHora.getCalendar().getTime());
-        entradaSalida.setIdTarjetaFk(em.find(TarjetasCreditoDebito.class, 0));
-        entradaSalida.setIdUsuario(0);
-        return entradaSalida;
-    }
-
     @Override
     public long calculosPorAnticipoNotaPedido(double anticipo,Notadepedido notadePedido) {
         long retorno;
-        System.out.println("esto calculando el anticipo de la nota como entrada");
-                            EntradasySalidasCaja entradasySalidasCaja = procesarEntradaSalida();
+        
+                            EntradasySalidasCaja entradasySalidasCaja = new EntradasySalidasCaja();
+                            SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm:ss");                                        
+                            entradasySalidasCaja.setFecha(new Date());
+                            entradasySalidasCaja.setHora(sdfHora.getCalendar().getTime());        
+                            entradasySalidasCaja.setID_USUARIO(0);
                             entradasySalidasCaja.setAnticipo(anticipo);
                             entradasySalidasCaja.setEnefectivo('1');
                             entradasySalidasCaja.setNumerocupon("0");
                             entradasySalidasCaja.setSalidas(0.0);
                             entradasySalidasCaja.setEntradaTarjeta(0.0);
                             entradasySalidasCaja.setEntradas(0.0);
-                            entradasySalidasCaja.setDetalles("Entrada por Anticipo "+anticipo+" Nota Pedido "+notadePedido.getId());
+                            entradasySalidasCaja.setDetalles("Entrada por Anticipo "+anticipo+" Nota Pedido "+notadePedido.getId());                            
+                            entradasySalidasCaja.setSalidas(0.0);
+                            entradasySalidasCaja.setVentasEfectivo(notadePedido.getEnefectivo());
+                            entradasySalidasCaja.setIdTarjetaCreditoDebitoFk(em.find(TarjetasCreditoDebito.class, notadePedido.getIdTarjetaFk().getIdtarjeta()));
                                 em.persist(entradasySalidasCaja);
-                            retorno = entradasySalidasCaja.getId();
+                            retorno = entradasySalidasCaja.getId_EntradasySalidas();
         return retorno;
     }
 
@@ -222,25 +233,4 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                 
                 return xmlCalculosES.toString();
     }
-
-//    @Override
-//    public long calculosVentasEfectivo(double totalAnticipo, double numeroNotaPEdido) {
-//        long retorno;
-//        EntradasySalidasCaja entradasySalidas = procesarEntradaSalida();
-//                entradasySalidas.setAnticipo(totalAnticipo);
-//                entradasySalidas.setVentasEfectivo(0);
-//                    entradasySalidas.setEnefectivo('1');
-//                    entradasySalidas.setNumerocupon("0");
-//                    entradasySalidas.setSalidas(0.0);
-//                    entradasySalidas.setEntradaTarjeta(0.0);
-//                    entradasySalidas.setDetalles("Entradas por Ventas en Efectivo anticipo"+totalAnticipo+" N° nota "+numeroNotaPEdido);
-//            em.persist(entradasySalidas);
-//        retorno = entradasySalidas.getId();
-//        
-//        return retorno;
-//    }
-    
-    
-    
-
 }

@@ -47,10 +47,10 @@ public class Localidades implements Serializable {
     @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA")
     @ManyToOne(optional = false)
     private Provincias provincias;
-    @Column(name = "LATITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'")
+    @Column(name = "LATITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'",nullable = false)
     @NotNull()
     private String latitud;
-    @Column(name = "LONGITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'")
+    @Column(name = "LONGITUD",columnDefinition = "VARCHAR(15) DEFAULT '0'",nullable = false)
     @NotNull
     private String longitud;
 
@@ -135,8 +135,16 @@ public class Localidades implements Serializable {
         return "entity.Localidades[idLocalidad=" + idLocalidad + "]";
     }
 
-    public String toXML(){    
-        String item  = "<localidades>\n<id>" + this.getIdLocalidad() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "<codigopostal>" + this.getCodigopostal() + "</codigopostal>\n" + "<latitud>" + this.getLatitud() + "</latitud>\n" + "<longitud>" + this.getLongitud() + "</longitud>\n" + "</localidades>\n";       
-        return item;      
+    public String toXML(){ 
+        StringBuilder localidades = new StringBuilder(10);
+        return localidades.append("<localidades>\n<id>").append(this.getIdLocalidad())
+                .append("</id>\n" + "<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion()))
+                .append("</descripcion>\n")
+                .append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n")
+                .append("<latitud>").append(this.getLatitud())
+                .append("</latitud>\n")
+                .append("<longitud>").append(this.getLongitud())
+                .append("</longitud>\n").append("</localidades>\n").toString();       
+        
     }
 }

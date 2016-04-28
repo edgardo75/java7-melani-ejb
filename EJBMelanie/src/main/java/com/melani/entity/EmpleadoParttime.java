@@ -1,6 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,13 +12,13 @@ import javax.persistence.NamedQuery;
         query = "DELETE FROM EmpleadoParttime e WHERE e.idPersona = :idPersona")})
 public class EmpleadoParttime extends Empleados implements Serializable{
     @Column(name="SALARIO_POR_HORA",precision=10,scale=2)
-    private BigDecimal salarioporhora;
+    private double salarioporhora;
 
-    public BigDecimal getSalarioporhora() {
+    public double getSalarioporhora() {
         return salarioporhora;
     }
 
-    public void setSalarioporhora(BigDecimal salarioporhora) {
+    public void setSalarioporhora(double salarioporhora) {
         this.salarioporhora = salarioporhora;
     }
 

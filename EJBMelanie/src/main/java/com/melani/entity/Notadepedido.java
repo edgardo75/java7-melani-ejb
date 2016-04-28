@@ -1,6 +1,5 @@
     package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -26,7 +25,6 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @Table(name = "NOTADEPEDIDO")
 @XmlRootElement
@@ -59,7 +57,7 @@ query = "SELECT n FROM Notadepedido n"), @NamedQuery(name = "Notadepedido.findBy
         query = "SELECT n FROM Notadepedido n WHERE n.montototalapagar = :montototalapagar"), @NamedQuery(name = "Notadepedido.findByPorcdesctotal",
         query = "SELECT n FROM Notadepedido n WHERE n.porcdesctotal = :porcdesctotal"), @NamedQuery(name = "Notadepedido.findByPorcrecargo",
         query = "SELECT n FROM Notadepedido n WHERE n.porcrecargo = :porcrecargo"),@NamedQuery(name ="Notadepedido.deleteById",
-        query = "DELETE FROM Notadepedido n WHERE n.id = :id"),@NamedQuery(name = "Notadepedido.searchAllOrderDesc",query = "SELECT n FROM Notadepedido n ORDER BY n.id DESC, n.fechadecompra DESC"),
+        query = "DELETE FROM Notadepedido n WHERE n.id = :id"),@NamedQuery(name = "Notadepedido.searchAllOrderDesc",query = "SELECT n FROM Notadepedido n ORDER BY n.id DESC"),
 @NamedQuery(name = "Notadepedido.findClientFk",query = "SELECT n FROM Notadepedido n WHERE n.fkIdcliente.idPersona = :id")})
 public class Notadepedido implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -68,20 +66,20 @@ public class Notadepedido implements Serializable {
     pkColumnName="FNAME",pkColumnValue="Notadepedido" , valueColumnName="FKEY",
     allocationSize=1) 
     @GeneratedValue(strategy=GenerationType.TABLE,generator="NoPeIdGen")
-    private Long id;
+    private long id;
     @Column(name = "ANTICIPO",precision=15,scale=3)
-    private BigDecimal anticipo;
+    private double anticipo;
     @Column(name = "SALDO",precision=15,scale=3)
-    private BigDecimal saldo;
+    private double saldo;
     @Column(name = "HORACOMPRA")
     @Temporal(TemporalType.TIME)
     private Date horacompra;
     @Column(name = "ENTREGADO")
     private Character entregado;
     @Column(name = "ID_USUARIO_EXPIDIO_NOTA")
-    private Long idUsuarioExpidioNota;
+    private long idUsuarioExpidioNota;
     @Column(name = "STOCKFUTURO")
-    private Integer stockfuturo;
+    private int stockfuturo;
     @Column(name = "FECHA_ANULADO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAnulado;
@@ -98,13 +96,13 @@ public class Notadepedido implements Serializable {
     @Column(name = "PENDIENTE")
     private Character pendiente;
     @Column(name = "MONTOIVA",precision=12,scale=2)
-    private BigDecimal montoiva;
+    private double montoiva;
     @Column(name = "RECARGO",precision=15,scale=3)
-    private BigDecimal recargo;
+    private double recargo;
     @Column(name = "IDUSUARIO_ANULADO")
     private Long idusuarioAnulado;
     @Column(name = "TOTAL",precision=15,scale=3)
-    private BigDecimal total;    
+    private double total;    
     @Column(name = "NUMERODECUPON",length=20)
     private String numerodecupon;
     @Column(name = "ENEFECTIVO")
@@ -113,10 +111,10 @@ public class Notadepedido implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaentrega;
     @Column(name = "DESCUENTO_PESOS",precision=15,scale=3)
-    private BigDecimal descuentoPesos;
-    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    private double descuentoPesos;
+    @OneToMany(mappedBy = "notadepedido",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private List<Detallesnotadepedido> detallesnotadepedidoList;
-    @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "fkidnotapedido",orphanRemoval = true,cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private List<Historiconotapedido> historiconotapedidoList;
     @JoinColumn(name = "IDTARJETAFK_IDTARJETA", referencedColumnName = "IDTARJETA")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
@@ -133,15 +131,15 @@ public class Notadepedido implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecancelado;
     @Column(name="ID_USUARIO_CANCELO")
-    private Long idUsuarioCancelo;
+    private long idUsuarioCancelo;
     @Column(name="DESCUENTO_NOTA",precision=15,scale=3)
-    private BigDecimal descuentoNota;
+    private double descuentoNota;
     @Column(name = "MONTOTOTALAPAGAR",precision=15,scale=3)
-    private BigDecimal montototalapagar;
+    private double montototalapagar;
     @Column(name = "PORCDESCTOTAL",precision=12,scale=2)
-    private BigDecimal porcdesctotal;
+    private double porcdesctotal;
     @Column(name = "PORCRECARGO",precision=12,scale=2)
-    private BigDecimal porcrecargo;
+    private double porcrecargo;
     @Column(name = "ULTIMA_ACTUALIZACION",length = 255)
     private String ultimaActualizacion;
 
@@ -163,7 +161,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getAnticipo() {
+    public double getAnticipo() {
         return anticipo;
     }
 
@@ -171,7 +169,7 @@ public class Notadepedido implements Serializable {
      *
      * @param anticipo
      */
-    public void setAnticipo(BigDecimal anticipo) {
+    public void setAnticipo(double anticipo) {
         this.anticipo = anticipo;
     }
 
@@ -179,7 +177,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
@@ -187,7 +185,7 @@ public class Notadepedido implements Serializable {
      *
      * @param saldo
      */
-    public void setSaldo(BigDecimal saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
@@ -267,7 +265,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getDescuentonota() {
+    public double getDescuentonota() {
         return descuentoNota;
     }
 
@@ -275,7 +273,7 @@ public class Notadepedido implements Serializable {
      *
      * @param descuentonota
      */
-    public void setDescuentonota(BigDecimal descuentonota) {
+    public void setDescuentonota(double descuentonota) {
         this.descuentoNota = descuentonota;
     }
 
@@ -283,7 +281,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getDescuentoPesos() {
+    public double getDescuentoPesos() {
         return descuentoPesos;
     }
 
@@ -291,7 +289,7 @@ public class Notadepedido implements Serializable {
      *
      * @param descuentoPesos
      */
-    public void setDescuentoPesos(BigDecimal descuentoPesos) {
+    public void setDescuentoPesos(double descuentoPesos) {
         this.descuentoPesos = descuentoPesos;
     }
 
@@ -371,7 +369,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getMontoiva() {
+    public double getMontoiva() {
         return montoiva;
     }
 
@@ -379,7 +377,7 @@ public class Notadepedido implements Serializable {
      *
      * @param montoiva
      */
-    public void setMontoiva(BigDecimal montoiva) {
+    public void setMontoiva(double montoiva) {
         this.montoiva = montoiva;
     }
 
@@ -387,7 +385,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getRecargo() {
+    public double getRecargo() {
         return recargo;
     }
 
@@ -395,7 +393,7 @@ public class Notadepedido implements Serializable {
      *
      * @param recargo
      */
-    public void setRecargo(BigDecimal recargo) {
+    public void setRecargo(double recargo) {
         this.recargo = recargo;
     }
 
@@ -419,7 +417,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return total;
     }
 
@@ -427,7 +425,7 @@ public class Notadepedido implements Serializable {
      *
      * @param total
      */
-    public void setTotal(BigDecimal total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -645,7 +643,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getMontototalapagar() {
+    public double getMontototalapagar() {
         return montototalapagar;
     }
 
@@ -653,7 +651,7 @@ public class Notadepedido implements Serializable {
      *
      * @param montototalapagar
      */
-    public void setMontototalapagar(BigDecimal montototalapagar) {
+    public void setMontototalapagar(double montototalapagar) {
         this.montototalapagar = montototalapagar;
     }
 
@@ -661,7 +659,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getPorcdesctotal() {
+    public double getPorcdesctotal() {
         return porcdesctotal;
     }
 
@@ -669,7 +667,7 @@ public class Notadepedido implements Serializable {
      *
      * @param porcdesctotal
      */
-    public void setPorcdesctotal(BigDecimal porcdesctotal) {
+    public void setPorcdesctotal(double porcdesctotal) {
         this.porcdesctotal = porcdesctotal;
     }
 
@@ -677,7 +675,7 @@ public class Notadepedido implements Serializable {
      *
      * @return
      */
-    public BigDecimal getPorcrecargo() {
+    public double getPorcrecargo() {
         return porcrecargo;
     }
 
@@ -685,7 +683,7 @@ public class Notadepedido implements Serializable {
      *
      * @param porcrecargo
      */
-    public void setPorcrecargo(BigDecimal porcrecargo) {
+    public void setPorcrecargo(double porcrecargo) {
         this.porcrecargo = porcrecargo;
     }
 
@@ -723,11 +721,11 @@ public class Notadepedido implements Serializable {
         this.idUsuarioCancelo = idUsuarioCancelo;
     }
 
-    public BigDecimal getDescuentoNota() {
+    public double getDescuentoNota() {
         return descuentoNota;
     }
 
-    public void setDescuentoNota(BigDecimal descuentoNota) {
+    public void setDescuentoNota(double descuentoNota) {
         this.descuentoNota = descuentoNota;
     }
 
@@ -781,9 +779,9 @@ public class Notadepedido implements Serializable {
                 (String.valueOf("<item>\n<id>" + this.getId() + "</id>\n" + "<tarjetadecredito>" + StringEscapeUtils.escapeXml10(this.getIdTarjetaFk().getDescripcion()) 
                         + "</tarjetadecredito>\n" + "<idtarjeta>" + this.getIdTarjetaFk().getIdtarjeta() + "</idtarjeta>\n" + "<numerocupon>" + this.getNumerodecupon() + 
                         "</numerocupon>\n" + "<observaciones>" + StringEscapeUtils.escapeXml10(this.getObservaciones()) + "</observaciones>\n" + "<anticipo>"
-                        + this.getAnticipo().toPlainString() + "</anticipo>\n" + "<anulado>" + this.getAnulado().toString() + "</anulado>\n" + "<cancelado>" 
+                        + this.getAnticipo() + "</anticipo>\n" + "<anulado>" + this.getAnulado().toString() + "</anulado>\n" + "<cancelado>" 
                         + this.getCancelado() + "</cancelado>\n" + "<efectivo>" + this.getEnefectivo() + "</efectivo>\n" + "<entregado>" + this.getEntregado() +
-                        "</entregado>\n" + "<descuentonota>" + this.getDescuentonota().toPlainString() + "</descuentonota>\n" + "<descuentopesos>" + this.getDescuentoPesos().toPlainString() +
+                        "</entregado>\n" + "<descuentonota>" + this.getDescuentonota() + "</descuentonota>\n" + "<descuentopesos>" + this.getDescuentoPesos() +
                         "</descuentopesos>\n" + "<fechaanulado>" + fechanulado + "</fechaanulado>\n" + "<fecancel>" + fecancel + "</fecancel>\n" + "<fechacompra>" + fecompra + "</fechacompra>\n" + 
                         "<fechaentrega>" + feentrega + "</fechaentrega>\n" + "<horacompra>" + hocompra + "</horacompra>\n" + "<ultimaActualizacion>" + this.getUltimaActualizacion() + "</ultimaActualizacion>" + 
                         "<stockfuturo>") + String.valueOf(this.getStockfuturo()) + "</stockfuturo>\n" + "<cliente>\n" + "<id>") + String.valueOf(this.getFkIdcliente().getIdPersona()) + "</id>\n" + "<nrodocumento>") + 
@@ -794,11 +792,11 @@ public class Notadepedido implements Serializable {
                                 + "<usuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + "</usuariocancelonota>\n" + "<idusuarioexpidionota>") + String.valueOf(this.getIdUsuarioExpidioNota()) + 
                     "</idusuarioexpidionota>\n" + "<idusuarioanulonota>") + String.valueOf(this.getIdusuarioAnulado()) + "</idusuarioanulonota>\n" + "<idusuarioentregonota>") + 
                     String.valueOf(this.getIdusuarioEntregado()) + "</idusuarioentregonota>\n" + "<idusuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + 
-                    "</idusuariocancelonota>\n" + "<montoiva>" + this.getMontoiva().toPlainString() + "</montoiva>\n" + "<pendiente>") + String.valueOf(this.getPendiente()) + 
-                    ("</pendiente>\n" + "<recargo>") + this.getRecargo().toPlainString() + "</recargo>\n" + "<total>" + this.getTotal().toPlainString() + ("</total>\n" + "<saldo>") + 
-                    this.getSaldo().toPlainString() + "</saldo>\n" + "<montototalapagar>" + this.getMontototalapagar().toPlainString() + "</montototalapagar>\n" + "<porcentajedesctotal>" + 
-                    this.getPorcdesctotal().toPlainString() + "</porcentajedesctotal>\n" + "<recargototal>" + this.getRecargo().toPlainString() + "</recargototal>\n" + "<porcrecargo>" + 
-                    this.getPorcrecargo().toPlainString() + "</porcrecargo>\n" + "<detallenota>\n";
+                    "</idusuariocancelonota>\n" + "<montoiva>" + this.getMontoiva() + "</montoiva>\n" + "<pendiente>") + String.valueOf(this.getPendiente()) + 
+                    ("</pendiente>\n" + "<recargo>") + this.getRecargo() + "</recargo>\n" + "<total>" + this.getTotal()+ ("</total>\n" + "<saldo>") + 
+                    this.getSaldo() + "</saldo>\n" + "<montototalapagar>" + this.getMontototalapagar() + "</montototalapagar>\n" + "<porcentajedesctotal>" + 
+                    this.getPorcdesctotal() + "</porcentajedesctotal>\n" + "<recargototal>" + this.getRecargo()+ "</recargototal>\n" + "<porcrecargo>" + 
+                    this.getPorcrecargo() + "</porcrecargo>\n" + "<detallenota>\n";
                             
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
                                     item+="</detallenota>\n";

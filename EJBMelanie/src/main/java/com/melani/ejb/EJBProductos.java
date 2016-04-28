@@ -6,8 +6,6 @@ import com.melani.utils.DatosProductos;
 import com.melani.utils.Imagen;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -27,39 +25,13 @@ public class EJBProductos implements EJBProductosRemote {
     @PersistenceContext(unitName="EJBMelaniPU2")    
     private EntityManager em; 
     private final Imagen imagen = new Imagen();   
-//    @Override
-//    public long addExistenciasProducto(long idproducto, int cantidad,float precio,int idusuario) {
-//        long retorno;        
-//                GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
-//                    Productos producto =em.find(Productos.class, idproducto);
-//                    producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible().intValue()+cantidad));
-//                        ExistenciasProductos existencias = new ExistenciasProductos();
-//                            existencias.setCantidadactual(cantidad);
-//                            existencias.setCantidadinicial(0);
-//                            existencias.setIdUsuario(idusuario);
-//                            existencias.setFechaagregado(gc.getTime());
-//                            existencias.setProductos(em.find(Productos.class, producto.getSid()));
-//                    if(precio!=0){
-//                        producto.setPrecioUnitario(BigDecimal.valueOf(precio));
-//                        existencias.setPreciounitario(BigDecimal.valueOf(precio));
-//                    }else {
-//                        existencias.setPreciounitario(BigDecimal.valueOf(0));
-//                }
-//                        Query obtenerLasExistenciasDelProducto = em.createQuery("SELECT e FROM ExistenciasProductos e WHERE e.productos.sid = :sid");
-//                            obtenerLasExistenciasDelProducto.setParameter("sid", producto.getSid());
-//                            List<ExistenciasProductos>lista = obtenerLasExistenciasDelProducto.getResultList();
-//                                producto.setExistenciasProductoss(lista);
-//                                retorno = producto.getSid();
-//                    em.merge(producto);
-//                    em.persist(existencias);        
-//            return retorno;
-//    }
-    
+
     @Override
     public String addProducto(String xmlProducto) {
         String retorno = null;
         Productos producto = null;
         long idproduct;        
+        
         idproduct =agregarProductoyProcesar(producto, xmlProducto);
         if(idproduct>0){
             retorno+=searchAllProductos();
@@ -71,10 +43,12 @@ public class EJBProductos implements EJBProductosRemote {
     }    
     private long agregarProductoyProcesar(Productos producto, String xmlProducto) {
         long retorno;
+        
                 XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("producto", DatosProductos.class);
-                DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);                
-                retorno = procesarProducto(producto,datosprod);                
+        
+                DatosProductos datosProducto = (DatosProductos) xstream.fromXML(xmlProducto);                
+                retorno = procesarProducto(producto,datosProducto);                
        return retorno;        
     }    
     private long existencias(Productos producto) {
@@ -142,7 +116,7 @@ public class EJBProductos implements EJBProductosRemote {
         int resultado;        
                         GregorianCalendar gc = new GregorianCalendar(Locale.getDefault());
                         Productos producto = em.find(Productos.class, idProducto);
-                        producto.setCantidadDisponible(producto.getCantidadDisponible().subtract(BigInteger.valueOf(cantidad)));                       
+                        producto.setCantidadDisponible(producto.getCantidadDisponible()-cantidad);                       
                             ExistenciasProductos existencias = new ExistenciasProductos();
                                     existencias.setCantidadactual(-cantidad);
                                     existencias.setCantidadinicial(0);
@@ -156,7 +130,7 @@ public class EJBProductos implements EJBProductosRemote {
                                             List<ExistenciasProductos>lista = obtenerExistenciasDeUnProducto.getResultList();
                                                 producto.setExistenciasProductoss(lista);
                         em.persist(producto);
-                        resultado = producto.getCantidadDisponible().intValue();                
+                        resultado = producto.getCantidadDisponible();                
             return resultado;
     }
     @Override
@@ -175,22 +149,21 @@ public class EJBProductos implements EJBProductosRemote {
          long retorno;        
              XStream xstream = new XStream(new StaxDriver());
                 xstream.alias("producto", DatosProductos.class);
-                DatosProductos datosprod = (DatosProductos) xstream.fromXML(xmlProducto);
+                DatosProductos datosProducto = (DatosProductos) xstream.fromXML(xmlProducto);
                 GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
-                if(datosprod.getIdproducto()>0) {
-                    producto =em.find(Productos.class, datosprod.getIdproducto());
-             }
-                                        producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible()
-                                                .intValue()+datosprod.getCantidaddisponible()));
-                                        producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
+                if(datosProducto.getIdproducto()>0) {
+                    producto =em.find(Productos.class, datosProducto.getIdproducto());
+                }
+                                        producto.setCantidadDisponible(producto.getCantidadDisponible()+datosProducto.getCantidaddisponible());
+                                        producto.setPrecioUnitario(datosProducto.getPreciounitario());
                                         em.persist(producto);
                                                 ExistenciasProductos existencias = new ExistenciasProductos();
-                                                existencias.setCantidadactual(datosprod.getCantidaddisponible());
+                                                existencias.setCantidadactual(datosProducto.getCantidaddisponible());
                                                 existencias.setCantidadinicial(0);
                                                 existencias.setFechaagregado(calendario.getTime());
-                                                existencias.setPreciounitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
+                                                existencias.setPreciounitario(datosProducto.getPreciounitario());
                                                 existencias.setProductos(em.find(Productos.class, producto.getSid()));
-                                                existencias.setIdUsuario(datosprod.getIdusuario());
+                                                existencias.setIdUsuario(datosProducto.getIdusuario());
                                                 em.persist(existencias);                                                                        
                                                 retorno = producto.getSid();       
             return retorno;        
@@ -210,7 +183,7 @@ public class EJBProductos implements EJBProductosRemote {
             return imagen.obtenerImagenByteArray(lista);   
     }
     private int grabarPathImagenEnBaseDeDatos(Productos producto, String[] procesarImagen) {
-        int retorno;        
+        long retorno;        
             ImagenesProductos imgProd =new ImagenesProductos();            
                     imgProd.setExtension(procesarImagen[1]);            
                     imgProd.setMagnitud(procesarImagen[2]);            
@@ -223,26 +196,26 @@ public class EJBProductos implements EJBProductosRemote {
                List<ImagenesProductos>lista = obtenerImagenPorIdProducto.getResultList();               
                producto.setImagenesProductosList(lista);               
                em.merge(producto);            
-            retorno=Integer.valueOf(String.valueOf(producto.getSid())); 
-            return retorno;
+            retorno=producto.getSid(); 
+            return (int) retorno;
     }
     public String actualizarPathImagenesEnBaseDeDatos(){       
             Query listaDeImagenes = em.createQuery("Select i FROM ImagenesProductos i");        
                 List<ImagenesProductos> listado = listaDeImagenes.getResultList();        
-            for(ImagenesProductos imagenesGuardadas:listado){        
-                imagenesGuardadas.setPathImagenEnDisco(ResourceBundle.getBundle("config").getString("PATH_IMAGE")+imagenesGuardadas.getNombreImagen());
-            }        
+                listado.stream().forEach((imagenesGuardadas) -> {
+                    imagenesGuardadas.setPathImagenEnDisco(ResourceBundle.getBundle("config").getString("PATH_IMAGE")+imagenesGuardadas.getNombreImagen());
+        });        
             em.flush();
         return "Echo";
     }
-    private long procesarProducto(Productos producto,DatosProductos datosprod) {
+    private long procesarProducto(Productos producto,DatosProductos datosProducto) {
         GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());        
-        String descripcionDeProducto=datosprod.getDescripcion();
-        String codigo =datosprod.getCodproducto();
+        String descripcionDeProducto=datosProducto.getDescripcion();
+        String codigo =datosProducto.getCodproducto();
         long retorno;
                 if(!descripcionDeProducto.isEmpty()){
                     if(codigo.length()>0){            
-                             producto =em.find(Productos.class, datosprod.getIdproducto());
+                             producto =em.find(Productos.class, datosProducto.getIdproducto());
                                         Query buscarProductoPorCodigoDeProducto = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.codproducto) LIKE LOWER(:codigoproducto)");
                                         buscarProductoPorCodigoDeProducto.setParameter("codigoproducto", codigo.concat("%"));
                                         Query obtenerProductoPorDescripcion = em.createQuery("SELECT p FROM Productos p WHERE LOWER(p.descripcion) LIKE LOWER(:descripcion)");
@@ -251,34 +224,35 @@ public class EJBProductos implements EJBProductosRemote {
                                                 if(obtenerProductoPorDescripcion.getResultList().isEmpty()){
                                                     if(producto==null){                            
                                                             producto = new Productos();
-                                                            producto.setCantidadDisponible(BigInteger.valueOf(datosprod.getCantidaddisponible()));
-                                                            producto.setCantidadInicial(BigInteger.valueOf(datosprod.getCantidadinicial()));
-                                                            producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
-                                                            producto.setDescripcion(datosprod.getDescripcion().toUpperCase());
+                                                            producto.setCantidadDisponible(datosProducto.getCantidaddisponible());
+                                                            producto.setCantidadInicial(datosProducto.getCantidadinicial());
+                                                            producto.setPrecioUnitario(datosProducto.getPreciounitario());
+                                                            producto.setDescripcion(datosProducto.getDescripcion().toUpperCase());
                                                             producto.setFecha(calendario.getTime());                                    
-                                                            producto.setCodproducto(datosprod.getCodproducto().toUpperCase());
-                                                            em.persist(producto);
+                                                            producto.setCodproducto(datosProducto.getCodproducto().toUpperCase());
+                                                            em.persist(producto);                                                            
                                                                 ExistenciasProductos existencias = new ExistenciasProductos();
-                                                                existencias.setCantidadactual(datosprod.getCantidaddisponible());
-                                                                existencias.setCantidadinicial(datosprod.getCantidadinicial());
+                                                                existencias.setCantidadactual(datosProducto.getCantidaddisponible());
+                                                                existencias.setCantidadinicial(datosProducto.getCantidadinicial());
                                                                 existencias.setFechaagregado(calendario.getTime());
-                                                                existencias.setPreciounitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
-                                                                existencias.setIdUsuario(datosprod.getIdusuario());
+                                                                existencias.setPreciounitario(datosProducto.getPreciounitario());
+                                                                existencias.setIdUsuario(datosProducto.getIdusuario());
                                                                 existencias.setProductos(em.find(Productos.class, producto.getSid()));
                                                                 em.persist(existencias);
                                                             retorno = existencias(producto);                        
                                                      }else{
-                                                                 if(producto.getCantidadDisponible().intValue()!=datosprod.getCantidaddisponible()&&producto.getPrecioUnitario()!=BigDecimal.valueOf(datosprod.getPreciounitario())){                                            
-                                                                                            producto.setCantidadDisponible(BigInteger.valueOf(producto.getCantidadDisponible().intValue()+datosprod.getCantidaddisponible()));
-                                                                                            producto.setPrecioUnitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
-                                                                                            producto.setDescripcion(datosprod.getDescripcion().toUpperCase());
-                                                                                            producto.setCodproducto(datosprod.getCodproducto());
+                                                                 if(producto.getCantidadDisponible()!=datosProducto.getCantidaddisponible() && 
+                                                                         producto.getPrecioUnitario()!= datosProducto.getPreciounitario()){                                            
+                                                                                            producto.setCantidadDisponible(producto.getCantidadDisponible()+datosProducto.getCantidaddisponible());
+                                                                                            producto.setPrecioUnitario(datosProducto.getPreciounitario());
+                                                                                            producto.setDescripcion(datosProducto.getDescripcion().toUpperCase());
+                                                                                            producto.setCodproducto(datosProducto.getCodproducto());
                                                                                             em.merge(producto);
                                                                                             ExistenciasProductos existencias = new ExistenciasProductos();
-                                                                                            existencias.setCantidadactual(datosprod.getCantidaddisponible());
+                                                                                            existencias.setCantidadactual(datosProducto.getCantidaddisponible());
                                                                                             existencias.setCantidadinicial(0);
                                                                                             existencias.setFechaagregado(calendario.getTime());
-                                                                                            existencias.setPreciounitario(BigDecimal.valueOf(datosprod.getPreciounitario()));
+                                                                                            existencias.setPreciounitario(datosProducto.getPreciounitario());
                                                                                             existencias.setProductos(em.find(Productos.class, producto.getSid()));
                                                                                             em.persist(existencias);                                    
                                                                                         retorno = existencias(producto);
@@ -300,4 +274,6 @@ public class EJBProductos implements EJBProductosRemote {
                 }
                     return retorno;
     }
+
+    
 }

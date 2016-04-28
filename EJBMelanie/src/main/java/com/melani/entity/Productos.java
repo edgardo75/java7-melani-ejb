@@ -1,7 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -21,7 +19,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @Table(name = "PRODUCTOS")
 @NamedQueries({
@@ -41,22 +38,22 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @GeneratedValue(generator="ProductoIdGen",strategy=GenerationType.TABLE)
     @Column(name = "SID")
-    private Long sid;
+    private long sid;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "DESCRIPCION",length=100,nullable=false,unique=true)
     private String descripcion;
     @Column(name="CODPRODUCTO",length=100,unique=true,nullable=true)
     private String codproducto;
     @Column(name = "PRECIOUNITARIO",scale=2,precision=12)
-    private BigDecimal precioUnitario;
+    private double precioUnitario;
     @Column(name = "CANTIDADINICIAL",precision=10)
-    private BigInteger cantidadInicial;
+    private int cantidadInicial;
     @Column(name = "CANTIDADDISPONIBLE",precision=10)
-    private BigInteger cantidadDisponible;
+    private int cantidadDisponible;
     @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;    
-    @OneToMany(mappedBy = "productos",orphanRemoval = true)
+    @OneToMany(mappedBy = "productos",orphanRemoval = true,fetch = FetchType.LAZY)
     private List<ExistenciasProductos> existenciasProductoss;
     @OneToMany(mappedBy = "productos")
     private List<Detallesnotadepedido> detallesnotadepedidoList;
@@ -67,32 +64,32 @@ public class Productos implements Serializable {
 
     public Productos(){}
 
-    public Productos(Long sid) {
+    public Productos(long sid) {
         this.sid = sid;
     }
 
-    public Long getSid() {
+    public long getSid() {
         return sid;
     }
 
-    public void setSid(Long sid) {
+    public void setSid(long sid) {
         this.sid = sid;
     }
     
-    public BigInteger getCantidadDisponible() {
+    public int getCantidadDisponible() {
         return cantidadDisponible;
     }
     
-    public void setCantidadDisponible(BigInteger cantidadDisponible) {
+    public void setCantidadDisponible(int cantidadDisponible) {
         this.cantidadDisponible = cantidadDisponible;
     }
 
     
-    public BigInteger getCantidadInicial() {
+    public int getCantidadInicial() {
         return cantidadInicial;
     }
     
-    public void setCantidadInicial(BigInteger cantidadInicial) {
+    public void setCantidadInicial(int cantidadInicial) {
         this.cantidadInicial = cantidadInicial;
     }
 
@@ -128,11 +125,11 @@ public class Productos implements Serializable {
         this.fecha = fecha;
     }
 
-    public BigDecimal getPrecioUnitario() {
+    public double getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(BigDecimal precioUnitario) {
+    public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
@@ -159,21 +156,33 @@ public class Productos implements Serializable {
     public void setImagenesProductosList(List<ImagenesProductos> imagenesProductosList) {
         this.imagenesProductosList = imagenesProductosList;
     }
-    
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (sid != null ? sid.hashCode() : 0);
+        int hash = 7;
+        hash = 71 * hash + (int) (this.sid ^ (this.sid >>> 32));
         return hash;
     }
+
     @Override
-    public boolean equals(Object object) {        
-        if (!(object instanceof Productos)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Productos other = (Productos) object;
-        return (this.sid != null || other.sid == null) && (this.sid == null || this.sid.equals(other.sid));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Productos other = (Productos) obj;
+        if (this.sid != other.sid) {
+            return false;
+        }
+        return true;
     }
+    
+   
     @Override
     public String toString() {
         return "com.melani.entity.Productos[id=" + sid + "]";
@@ -187,7 +196,7 @@ public class Productos implements Serializable {
                 item.append("<cantidadinicial>").append(this.getCantidadInicial()).append("</cantidadinicial>\n");
                 item.append("<cantidaddisponible>").append(this.getCantidadDisponible()).append("</cantidaddisponible>\n");
                 item.append("<fechacarga>").append(sdf.format(this.getFecha())).append("</fechacarga>\n");
-                item.append("<preciovigente>").append(this.getPrecioUnitario().toString()).append("</preciovigente>");
+                item.append("<preciovigente>").append(this.getPrecioUnitario()).append("</preciovigente>");
                 item.append("<img>").append(this.getImagenesProductosList().size()).append("</img>\n");
                 item.append("<existencias>\n");
                     if(this.getExistenciasProductoss().isEmpty()) {

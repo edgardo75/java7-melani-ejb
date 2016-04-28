@@ -1,6 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -49,7 +48,7 @@ public class Presupuestos implements Serializable {
     @GeneratedValue(generator="PresupuestosIdGen",strategy=GenerationType.TABLE)
     @Basic(optional = false)
     @Column(name = "ID_PRESUPUESTO")
-    private Integer idPresupuesto;
+    private int idPresupuesto;
     @Column(name = "FECHAPRESUPUESTO")
     @Temporal(TemporalType.DATE)
     private Date fechapresupuesto;
@@ -57,49 +56,49 @@ public class Presupuestos implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date validez;
     @Column(name = "TOTAL",precision=15,scale=3)
-    private BigDecimal total;
+    private double total;
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "OBSERVACIONES",length=5_000)
     private String observaciones;
-    @Basic(optional = false,fetch = FetchType.LAZY)
+    @Basic(optional = false)
     @Column(name = "ID_USUARIO_EXPIDIO_PRESUPUESTO")
     private int idUsuarioFk;    
     @Column(name="TOTALAPAGAR",precision=15,scale=3)
-    private BigDecimal totalapagar;
+    private double totalapagar;
     @Column(name = "IVA",precision=15,scale=3)
-    private BigDecimal iva;
+    private double iva;
     @Column(name = "NOMBRE",length=40)
     private String nombre;
     @Column(name = "APELLIDO",length=20)
     private String apellido;
     @Column(name="PORC_DESC_TOTAL",precision=15,scale=2)
-    private BigDecimal porcetajedescuentoTOTAL;
+    private double porcetajedescuentoTOTAL;
     @Column(name = "RECARGOTOTAL",precision=15,scale=2)
-    private BigDecimal recargototal;
+    private double recargototal;
     @Column(name = "PORCENTAJERECARGO",precision=15,scale=2)
-    private BigDecimal porcentajerecargo;
+    private double porcentajerecargo;
      @Column(name = "DESCUENTORESTO",precision=15,scale=3)
-    private BigDecimal descuentoresto;
-    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
+    private double descuentoresto;
+    @OneToMany(orphanRemoval = true, mappedBy = "presupuestos",cascade = CascadeType.REMOVE)
     private List<Detallespresupuesto> detallepresupuestosList;
 
     public Presupuestos() {
     }
 
-    public Presupuestos(Integer idPresupuesto) {
+    public Presupuestos(int idPresupuesto) {
         this.idPresupuesto = idPresupuesto;
     }
 
-    public Presupuestos(Integer idPresupuesto, int idUsuarioFk) {
+    public Presupuestos(int idPresupuesto, int idUsuarioFk) {
         this.idPresupuesto = idPresupuesto;
         this.idUsuarioFk = idUsuarioFk;
     }
 
-    public Integer getIdPresupuesto() {
+    public int getIdPresupuesto() {
         return idPresupuesto;
     }
 
-    public void setIdPresupuesto(Integer idPresupuesto) {
+    public void setIdPresupuesto(int idPresupuesto) {
         this.idPresupuesto = idPresupuesto;
     }
 
@@ -119,11 +118,11 @@ public class Presupuestos implements Serializable {
         this.validez = validez;
     }
 
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -151,11 +150,11 @@ public class Presupuestos implements Serializable {
         this.detallepresupuestosList = detallepresupuestosList;
     }
 
-    public BigDecimal getTotalapagar() {
+    public double getTotalapagar() {
         return totalapagar;
     }
 
-    public void setTotalapagar(BigDecimal totalapagar) {
+    public void setTotalapagar(double totalapagar) {
         this.totalapagar = totalapagar;
     }
 
@@ -167,11 +166,11 @@ public class Presupuestos implements Serializable {
         this.apellido = apellido;
     }
 
-    public BigDecimal getIva() {
+    public double getIva() {
         return iva;
     }
 
-    public void setIva(BigDecimal iva) {
+    public void setIva(double iva) {
         this.iva = iva;
     }
 
@@ -183,52 +182,64 @@ public class Presupuestos implements Serializable {
         this.nombre = nombre;
     }
 
-    public BigDecimal getPorcetajedescuentoTOTAL() {
+    public double getPorcetajedescuentoTOTAL() {
         return porcetajedescuentoTOTAL;
     }
 
-    public void setPorcetajedescuentoTOTAL(BigDecimal porcetajedescuento) {
+    public void setPorcetajedescuentoTOTAL(double porcetajedescuento) {
         this.porcetajedescuentoTOTAL = porcetajedescuento;
     }
 
-    public BigDecimal getDescuentoresto() {
+    public double getDescuentoresto() {
         return descuentoresto;
     }
 
-    public void setDescuentoresto(BigDecimal descuentoresto) {
+    public void setDescuentoresto(double descuentoresto) {
         this.descuentoresto = descuentoresto;
     }
 
-    public BigDecimal getPorcentajerecargo() {
+    public double getPorcentajerecargo() {
         return porcentajerecargo;
     }
 
 
-    public void setPorcentajerecargo(BigDecimal porcentajerecargo) {
+    public void setPorcentajerecargo(double porcentajerecargo) {
         this.porcentajerecargo = porcentajerecargo;
     }
 
-    public BigDecimal getRecargototal() {
+    public double getRecargototal() {
         return recargototal;
     }
 
-    public void setRecargototal(BigDecimal recargototal) {
+    public void setRecargototal(double recargototal) {
         this.recargototal = recargototal;
     }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idPresupuesto != null ? idPresupuesto.hashCode() : 0);
+        int hash = 5;
+        hash = 79 * hash + this.idPresupuesto;
         return hash;
     }
+
     @Override
-    public boolean equals(Object object) {        
-        if (!(object instanceof Presupuestos)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Presupuestos other = (Presupuestos) object;
-        return (this.idPresupuesto != null || other.idPresupuesto == null) && (this.idPresupuesto == null || this.idPresupuesto.equals(other.idPresupuesto));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Presupuestos other = (Presupuestos) obj;
+        if (this.idPresupuesto != other.idPresupuesto) {
+            return false;
+        }
+        return true;
     }
+    
     @Override
     public String toString() {
         return "entidades.Presupuestos[idPresupuesto=" + idPresupuesto + "]";
@@ -240,16 +251,16 @@ public class Presupuestos implements Serializable {
                 xml.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
                 xml.append("<apellido>").append(this.getApellido()).append("</apellido>\n");                
                 xml.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
-                xml.append("<totalapagar>").append(this.getTotalapagar().toString()).append("</totalapagar>\n");
+                xml.append("<totalapagar>").append(this.getTotalapagar()).append("</totalapagar>\n");
                 xml.append("<usuarioexpidio>").append(this.getIdUsuarioFk()).append("</usuarioexpidio>\n");
-                xml.append("<iva>").append(this.getIva().toString()).append("</iva>\n");
-                xml.append("<total>").append(this.getTotal().toString()).append("</total>\n");
+                xml.append("<iva>").append(this.getIva()).append("</iva>\n");
+                xml.append("<total>").append(this.getTotal()).append("</total>\n");
                 xml.append("<fechapresupuesto>").append(sdf.format(this.getFechapresupuesto())).append("</fechapresupuesto>\n");
                 xml.append("<fechavalidez>").append(sdf.format(this.getValidez())).append("</fechavalidez>\n" );
-                xml.append("<porcentajedescuentototal>").append(this.getPorcetajedescuentoTOTAL().toString()).append("</porcentajedescuentototal>\n");
-                xml.append("<descuentoresto>").append(this.getDescuentoresto().toString()).append("</descuentoresto>\n");
-                xml.append("<recargototal>").append(this.getRecargototal().toString()).append("</recargototal>\n");
-                xml.append("<porcentajerecargo>").append(this.getPorcentajerecargo().toString()).append("</porcentajerecargo>\n");
+                xml.append("<porcentajedescuentototal>").append(this.getPorcetajedescuentoTOTAL()).append("</porcentajedescuentototal>\n");
+                xml.append("<descuentoresto>").append(this.getDescuentoresto()).append("</descuentoresto>\n");
+                xml.append("<recargototal>").append(this.getRecargototal()).append("</recargototal>\n");
+                xml.append("<porcentajerecargo>").append(this.getPorcentajerecargo()).append("</porcentajerecargo>\n");
                 xml.append("<Detallepresupuesto>\n" );
                 if(this.getDetallepresupuestosList().isEmpty()) {
                     xml.append("</Detallepresupuesto>\n");

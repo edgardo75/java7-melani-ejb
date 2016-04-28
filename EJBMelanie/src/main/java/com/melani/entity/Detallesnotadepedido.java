@@ -1,6 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -33,9 +32,9 @@ public class Detallesnotadepedido implements Serializable {
     @Column(name = "CANTIDAD")
     private Integer cantidad;
     @Column(name = "PRECIO",precision=15,scale=2)
-    private BigDecimal precio;
+    private double precio;
     @Column(name = "SUBTOTAL",precision=15,scale=3)
-    private BigDecimal subtotal;
+    private double subtotal;
     @Column(name = "ENTREGADO")
     private Character entregado;
     @Column(name = "CANCELADO")
@@ -43,9 +42,9 @@ public class Detallesnotadepedido implements Serializable {
     @Column(name = "PENDIENTE")
     private Character pendiente;
     @Column(name = "DESCUENTO",precision=15,scale=2)
-    private BigDecimal descuento;
+    private double descuento;
     @Column(name = "IVA")
-    private BigDecimal iva;
+    private double iva;
     @JoinColumn(name = "FK_IDNOTA", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Notadepedido notadepedido;
@@ -55,7 +54,7 @@ public class Detallesnotadepedido implements Serializable {
     @Column(name = "ANULADO")
     private Character anulado;
     @Column(name="PRECIO_DESC",precision=15,scale=2)
-    private BigDecimal preciocondescuento;
+    private double preciocondescuento;
 
     public Detallesnotadepedido() {
     }
@@ -85,23 +84,23 @@ public class Detallesnotadepedido implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public BigDecimal getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(BigDecimal precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public BigDecimal getSubtotal() {
+    public double getSubtotal() {
         return subtotal;
     }
 
-    public BigDecimal getPreciocondescuento() {
+    public double getPreciocondescuento() {
         return preciocondescuento;
     }
 
-    public void setPreciocondescuento(BigDecimal preciocondescuento) {
+    public void setPreciocondescuento(double preciocondescuento) {
         this.preciocondescuento = preciocondescuento;
     }
 
@@ -113,7 +112,7 @@ public class Detallesnotadepedido implements Serializable {
         this.anulado = anulado;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
 
@@ -141,19 +140,19 @@ public class Detallesnotadepedido implements Serializable {
         this.pendiente = pendiente;
     }
 
-    public BigDecimal getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(BigDecimal descuento) {
+    public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
 
-    public BigDecimal getIva() {
+    public double getIva() {
         return iva;
     }
 
-    public void setIva(BigDecimal iva) {
+    public void setIva(double iva) {
         this.iva = iva;
     }
 
@@ -207,11 +206,11 @@ public class Detallesnotadepedido implements Serializable {
                                     item.append("</producto>\n");
                                     item.append("<cantidad>").append(this.getCantidad()).append("</cantidad>\n");
                                     item.append("<precio>").append(this.getPrecio()).append("</precio>\n");
-                                    item.append("<preciocondescuento>").append(this.getPreciocondescuento().toPlainString()).append("</preciocondescuento>\n");
-                                    item.append("<descuento>").append(this.getDescuento().toPlainString()).append("</descuento>\n");
-                                    item.append("<subtotal>").append(this.getSubtotal().toPlainString()).append("</subtotal>\n");
+                                    item.append("<preciocondescuento>").append(this.getPreciocondescuento()).append("</preciocondescuento>\n");
+                                    item.append("<descuento>").append(this.getDescuento()).append("</descuento>\n");
+                                    item.append("<subtotal>").append(this.getSubtotal()).append("</subtotal>\n");
                                     item.append("<entregado>").append(this.getEntregado()).append("</entregado>\n");
-                                    item.append("<iva>").append(this.getIva().toPlainString()).append("</iva>\n");
+                                    item.append("<iva>").append(this.getIva()).append("</iva>\n");
                                     item.append("<cancelado>").append(this.getCancelado()).append("</cancelado>\n");
                                     item.append("<anulado>").append(this.getAnulado()).append("</anulado>\n");
                                     item.append("</itemdetalle>\n");

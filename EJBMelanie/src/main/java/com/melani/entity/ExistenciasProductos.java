@@ -1,12 +1,10 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,14 +28,14 @@ import javax.persistence.TemporalType;
 public class ExistenciasProductos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "CANTIDADACTUAL")
-    private Integer cantidadactual;
+    private int cantidadactual;
     @Column(name = "FECHAAGREGADO")
     @Temporal(TemporalType.DATE)
     private Date fechaagregado;
     @Column(name = "CANTIDADINICIAL")
-    private Integer cantidadinicial;
+    private int cantidadinicial;
     @Column(name = "PRECIOUNITARIO",precision=12,scale=2)
-    private BigDecimal preciounitario;
+    private double preciounitario;
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy=GenerationType.TABLE,generator="ExistenciasIdGen")
@@ -49,7 +47,7 @@ public class ExistenciasProductos implements Serializable {
     @Column(name="ID_USUARIO")
     private Long idUsuario;
     @JoinColumn(name = "PRODUCTOS_SID", referencedColumnName = "SID")
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @ManyToOne(optional = false)
     private Productos productos;
 
     public ExistenciasProductos() {
@@ -59,11 +57,11 @@ public class ExistenciasProductos implements Serializable {
         this.idExistencias = idExistencias;
     }
 
-    public Integer getCantidadactual() {
+    public int getCantidadactual() {
         return cantidadactual;
     }
 
-    public void setCantidadactual(Integer cantidadactual) {
+    public void setCantidadactual(int cantidadactual) {
         this.cantidadactual = cantidadactual;
     }
 
@@ -99,19 +97,19 @@ public class ExistenciasProductos implements Serializable {
         this.productos = productos;
     }
 
-    public Integer getCantidadinicial() {
+    public int getCantidadinicial() {
         return cantidadinicial;
     }
 
-    public void setCantidadinicial(Integer cantidadinicial) {
+    public void setCantidadinicial(int cantidadinicial) {
         this.cantidadinicial = cantidadinicial;
     }
 
-    public BigDecimal getPreciounitario() {
+    public double getPreciounitario() {
         return preciounitario;
     }
 
-    public void setPreciounitario(BigDecimal preciounitario) {
+    public void setPreciounitario(double preciounitario) {
         this.preciounitario = preciounitario;
     }
     @Override
@@ -134,8 +132,16 @@ public class ExistenciasProductos implements Serializable {
     }
 
     public String toXML(){
-         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String item = String.valueOf("<item>\n<id_existencias>" + this.getIdExistencias() + "</id_existencias>\n" + "<idproducto>" + this.getProductos().getSid() + "</idproducto>\n" + "<cantidadactual>" + this.getCantidadactual() + "</cantidadactual>\n" + "<cantidadinicial>" + this.getCantidadinicial() + "</cantidadinicial>\n" + "<fecha>" + sdf.format(this.getFechaagregado()) + "</fecha>\n" + "<precio>" + this.getPreciounitario().toString() + "</precio>\n" + "<id_usuario>") + String.valueOf(this.getIdUsuario()) + "</id_usuario>\n" + "</item>\n";
-    return item;
+        StringBuilder item = new StringBuilder(10);
+        item.append("<item>\n<id_existencias>").append(this.getIdExistencias())
+                .append("</id_existencias>\n").append("<idproducto>").append(this.getProductos().getSid())
+                .append("</idproducto>\n").append("<cantidadactual>").append(this.getCantidadactual())
+                .append("</cantidadactual>\n").append("<cantidadinicial>").append(this.getCantidadinicial())
+                .append("</cantidadinicial>\n").append("<fecha>")
+                .append(DateFormat.getDateInstance().format(this.getFechaagregado()))
+                .append("</fecha>\n").append("<precio>").append(this.getPreciounitario())
+                .append("</precio>\n").append("<id_usuario>")
+                .append(this.getIdUsuario()).append("</id_usuario>\n").append("</item>\n");
+    return item.toString();
     }
 }

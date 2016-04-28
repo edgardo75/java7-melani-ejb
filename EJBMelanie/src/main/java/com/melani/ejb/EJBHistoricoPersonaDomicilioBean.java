@@ -12,7 +12,7 @@ public class EJBHistoricoPersonaDomicilioBean implements EJBHistoricoPersonaDomi
     @PersistenceContext
     private EntityManager em;
     @Override
-    public long addHistoricoPersonaDomicilio(Integer idDomicilio, Integer idPersona,Integer idUsuario) {
+    public long addHistoricoPersonaDomicilio(int idDomicilio,int idPersona,int idUsuario) {
         long retorno;              
                     GregorianCalendar gc = new GregorianCalendar();
                     HistPersonasDomicilios histpd = new HistPersonasDomicilios();

@@ -1,7 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,9 +19,9 @@ public class HistoricoDatosClientes implements Serializable {
     pkColumnName="FNAME",pkColumnValue="HistoricoDatosClientes", valueColumnName="FKEY",
     allocationSize=1,initialValue=1)
     @GeneratedValue(generator="HistCliIdGen",strategy=GenerationType.TABLE)
-    private Long id;
+    private long id;
     @Column(name="ID_CLI",nullable=false)
-    private Long idCliente;
+    private long idCliente;
     @Column(name="EMAIL",columnDefinition="VARCHAR(50)")
     private String email;
     @Basic(fetch = FetchType.LAZY)
@@ -36,15 +34,15 @@ public class HistoricoDatosClientes implements Serializable {
     @Column(name="APELLIDO",columnDefinition="VARCHAR(30)")
     private String apellido;
     @Column(precision = 15,scale=3,name="TOTALCOMPRAS")
-    private BigDecimal totalCompras;
+    private double totalCompras;
     @Column(precision = 15,name = "TOTALPUNTOS")
-    private BigInteger totalEnPuntos;
+    private int totalEnPuntos;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -72,11 +70,11 @@ public class HistoricoDatosClientes implements Serializable {
         this.email = email;
     }
 
-    public Long getIdCliente() {
+    public long getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -96,35 +94,47 @@ public class HistoricoDatosClientes implements Serializable {
         this.nombre = nombre;
     }
 
-    public BigDecimal getTotalCompras() {
+    public double getTotalCompras() {
         return totalCompras;
     }
 
-    public void setTotalCompras(BigDecimal totalCompras) {
+    public void setTotalCompras(double totalCompras) {
         this.totalCompras = totalCompras;
     }
 
-    public BigInteger getTotalEnPuntos() {
+    public int getTotalEnPuntos() {
         return totalEnPuntos;
     }
 
-    public void setTotalEnPuntos(BigInteger totalEnPuntos) {
+    public void setTotalEnPuntos(int totalEnPuntos) {
         this.totalEnPuntos = totalEnPuntos;
     }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
+
     @Override
-    public boolean equals(Object object) {        
-        if (!(object instanceof HistoricoDatosClientes)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        HistoricoDatosClientes other = (HistoricoDatosClientes) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HistoricoDatosClientes other = (HistoricoDatosClientes) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
     }
+    
     @Override
     public String toString() {
         return "com.melani.entity.HistoricoDatosClientes[id=" + id + "]";

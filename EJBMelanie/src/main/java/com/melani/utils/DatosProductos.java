@@ -9,6 +9,7 @@ public class DatosProductos {
     private int cantidaddisponible;
     private String fechaCarga;
     private int idusuario;
+    
     private byte[] img;
 
     public long getIdproducto() {
@@ -82,4 +83,7 @@ public class DatosProductos {
     public void setPreciounitario(double preciounitario) {
         this.preciounitario = preciounitario;
     }
+
+   
+    
 }

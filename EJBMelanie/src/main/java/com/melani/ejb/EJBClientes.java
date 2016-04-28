@@ -17,8 +17,6 @@ import com.melani.utils.ListaTelefonos;
 import com.melani.utils.ProjectHelpers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -161,8 +159,8 @@ public class EJBClientes implements EJBClientesRemote {
                                         cliente.setObservaciones("");                
                                 }
                                 cliente.setTipodocumento(em.find(Tiposdocumento.class, datosClientePersonales.getIdtipodocu()));                
-                                cliente.setTotalCompras(BigDecimal.valueOf(datosClientePersonales.getTotalcompras()));                
-                                cliente.setTotalEnPuntos(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()));                
+                                cliente.setTotalCompras(datosClientePersonales.getTotalcompras());                
+                                cliente.setTotalEnPuntos(datosClientePersonales.getTotalpuntos());                
                                 em.persist(cliente);                                
                                 retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono, cliente, todosDatos);                 
             return retorno;        
@@ -208,21 +206,20 @@ private long actualizarDatos(ClienteDomicilioTelefono todosDatos,
                                             cliente.setEmail(datosClientePersonales.getEmail());
                                  }                                        
                                  double acumTotalCompras = 0;
-                              if(cliente.getTotalCompras().compareTo(BigDecimal.valueOf(
-                                      Double.valueOf(String.valueOf(datosClientePersonales.getTotalcompras()))))!=0){   
+                              if(cliente.getTotalCompras()!=0 &&datosClientePersonales.getTotalcompras()!=0){   
                                     double totalCompras = Double.valueOf(String.valueOf(cliente.getTotalCompras()));
                                     acumTotalCompras = totalCompras+Double.parseDouble(String.valueOf(datosClientePersonales.getTotalcompras()));
-                                    cliente.setTotalCompras(BigDecimal.valueOf(Double.valueOf(String.valueOf(acumTotalCompras)))); 
+                                    cliente.setTotalCompras(acumTotalCompras); 
                               }                                  
                               int acumTotalPuntos = 0;
-                              if(cliente.getTotalEnPuntos().compareTo(BigInteger.valueOf(datosClientePersonales.getTotalpuntos()))!=0){
-                                int totalPuntos = Integer.valueOf(String.valueOf(cliente.getTotalEnPuntos()));
+                              if(cliente.getTotalEnPuntos()!=0&&datosClientePersonales.getTotalpuntos()!=0){
+                                int totalPuntos = cliente.getTotalEnPuntos();
                                 acumTotalPuntos = totalPuntos+datosClientePersonales.getTotalpuntos();
-                                cliente.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
+                                cliente.setTotalEnPuntos(acumTotalPuntos);
                               }                                
                                 cliente.setFechaCarga(new GregorianCalendar().getTime());
-                            historicoClient.setTotalCompras(BigDecimal.valueOf(acumTotalCompras));
-                            historicoClient.setTotalEnPuntos(BigInteger.valueOf(acumTotalPuntos));
+                            historicoClient.setTotalCompras(acumTotalCompras);
+                            historicoClient.setTotalEnPuntos(acumTotalPuntos);
                             retorno = guardarDomicilioyTelefonoCliente(xmlClienteDomicilioTelefono,cliente,todosDatos); 
                                 em.merge(cliente);
                                 em.persist(historicoClient);        

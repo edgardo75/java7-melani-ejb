@@ -1,6 +1,5 @@
 package com.melani.entity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -27,13 +26,13 @@ public class Detallespresupuesto implements Serializable {
     @EmbeddedId
     protected DetallespresupuestoPK detallespresupuestoPK;
     @Column(name = "SUBTOTAL",precision=15,scale=3)
-    private BigDecimal subtotal;
+    private double subtotal;
     @Column(name = "DESCUENTO",precision=15,scale=2)
-    private BigDecimal descuento;
+    private double descuento;
     @Column(name = "PRECIO",precision=12,scale=2)
-    private BigDecimal precio;
+    private double precio;
     @Column(name = "PRECIO_DESC",precision=12,scale=2)
-    private BigDecimal precioDesc;
+    private double precioDesc;
     @Column(name = "CANTIDAD")
     private Short cantidad;
     @JoinColumn(name = "ID_DP_FK", referencedColumnName = "ID_PRESUPUESTO", insertable = false, updatable = false)
@@ -62,35 +61,35 @@ public class Detallespresupuesto implements Serializable {
         this.detallespresupuestoPK = detallespresupuestoPK;
     }
 
-    public BigDecimal getSubtotal() {
+    public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
 
-    public BigDecimal getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(BigDecimal descuento) {
+    public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
 
-    public BigDecimal getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(BigDecimal precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public BigDecimal getPrecioDesc() {
+    public double getPrecioDesc() {
         return precioDesc;
     }
 
-    public void setPrecioDesc(BigDecimal precioDesc) {
+    public void setPrecioDesc(double precioDesc) {
         this.precioDesc = precioDesc;
     }
 
@@ -137,7 +136,21 @@ public class Detallespresupuesto implements Serializable {
     }
 
     public String toXML(){
-        String xml= "<itemdetallepresupuesto>\n<idproducto>" + this.getProductos().getSid() + "</idproducto>\n" + "<descripcion_prod>" + StringEscapeUtils.escapeXml10(this.getProductos().getDescripcion()) + "</descripcion_prod>\n" + "<codigo_producto>" + this.getProductos().getCodproducto() + "</codigo_producto>\n" + "<idpresupuesto>" + this.getPresupuestos().getIdPresupuesto() + "</idpresupuesto>\n" + "<precio>" + this.getPrecio().toString() + "</precio>\n" + "<precio_desc>" + this.getPrecioDesc().toString() + "</precio_desc>\n" + "<descuento>" + this.getDescuento().toString() + "</descuento>\n" + "<subtotal>" + this.getSubtotal().toString() + "</subtotal>\n" + "<cantidad>" + this.getCantidad() + "</cantidad>\n" + "</itemdetallepresupuesto>\n";
-        return xml;
+        StringBuilder xml= new StringBuilder(10);
+                xml.append("<itemdetallepresupuesto>\n<idproducto>").append(this.getProductos().getSid()).append("</idproducto>\n")
+                        .append("<descripcion_prod>")
+                        .append(StringEscapeUtils.escapeXml10(this.getProductos().getDescripcion()))
+                        .append("</descripcion_prod>\n").append("<codigo_producto>")
+                        .append(this.getProductos().getCodproducto()).append("</codigo_producto>\n")
+                        .append("<idpresupuesto>").append(this.getPresupuestos().getIdPresupuesto())
+                        .append("</idpresupuesto>\n")
+                        .append("<precio>")
+                        .append(this.getPrecio()).append("</precio>\n")
+                        .append("<precio_desc>").append(this.getPrecioDesc())
+                        .append("</precio_desc>\n").append("<descuento>")
+                        .append(this.getDescuento()).append("</descuento>\n")
+                        .append("<subtotal>").append(this.getSubtotal()).append("</subtotal>\n")
+                        .append("<cantidad>").append(this.getCantidad()).append("</cantidad>\n").append("</itemdetallepresupuesto>\n");
+        return xml.toString();
     }
 }
