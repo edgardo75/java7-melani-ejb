@@ -12,7 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 @Entity
 @Table(name = "PERSONASDOMICILIOS")
 @NamedQueries({
@@ -23,7 +22,6 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "PersonasDomicilios.findByIdPersona", query = "SELECT p FROM PersonasDomicilios p WHERE p.personasdomiciliosPK.idPersona = :idPersona")})
 public class PersonasDomicilios implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected PersonasdomiciliosPK personasdomiciliosPK;
      @Column(name = "ESTADO", length = 20)

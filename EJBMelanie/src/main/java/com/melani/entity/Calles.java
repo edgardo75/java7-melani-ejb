@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 @Entity
 @Table(name="CALLES")
@@ -83,7 +82,7 @@ public class Calles implements Serializable {
     public String toXML(){
         StringBuilder item = new StringBuilder("<item>\n");
                         item.append("<id>").append(this.getId()).append("</id>\n");
-                        item.append("<nombre>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</nombre>\n");
+                        item.append("<nombre>").append(this.getDescripcion()).append("</nombre>\n");
                       item.append("</item>\n");
         return item.toString();
     }

@@ -6,7 +6,6 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 @Stateless(name="ejb/EJBProvinciasBean")
 @WebService(serviceName="ServiceProvincias",name="ProvinciasWs")
 public class EJBProvinciasBean implements EJBProvinciasRemote {
@@ -21,7 +20,7 @@ private EntityManager em;
                         if(lista.isEmpty()) {
                             xml+="NO HAY PROVINCIAS CARGADAS";
                         } else{
-                            StringBuilder xmlProvincias = new StringBuilder(10);
+                            StringBuilder xmlProvincias = new StringBuilder(32);
                             for (Provincias provincias : lista) {
                                 xmlProvincias.append(provincias.toXML());
                             }

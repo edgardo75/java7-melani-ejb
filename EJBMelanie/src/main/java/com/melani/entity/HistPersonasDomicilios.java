@@ -8,10 +8,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
-
 @Entity
 @Table(name="HISTPERSONASDOMICILIOS")
 public class HistPersonasDomicilios implements Serializable {
@@ -21,16 +23,19 @@ public class HistPersonasDomicilios implements Serializable {
     allocationSize=1)
     @GeneratedValue(generator="HistPerDomIdGen",strategy=GenerationType.TABLE)
     @Basic(fetch = FetchType.LAZY)
-    private Long idhistperdom; 
-    @Column(name="IDDOMICILIO",nullable=false,precision=16)
-    private Long idDomicilio;
+    private long idhistperdom; 
+    @Column(name="IDDOMICILIO",precision=16)
+    private long idDomicilio;
     @Column(name="IDPERSONA",precision=16)
-    private Long idPersona;
+    private long idPersona;
     @Column(name="FECHADECAMBIO")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechadecambio;
     @Column(name="IDUSUARIO")
     private Integer idusuario;
+    @ManyToOne()
+    @PrimaryKeyJoinColumns(value = @PrimaryKeyJoinColumn)    
+    private PersonasDomicilios personaDomicilio;
 
     public HistPersonasDomicilios(){}
 
@@ -77,6 +82,16 @@ public class HistPersonasDomicilios implements Serializable {
     public void setIdhistperdom(Long idhistperdom) {
         this.idhistperdom = idhistperdom;
     }
+
+    public PersonasDomicilios getPersonaDomicilio() {
+        return personaDomicilio;
+    }
+
+    public void setPersonaDomicilio(PersonasDomicilios personaDomicilio) {
+        this.personaDomicilio = personaDomicilio;
+    }
+
+
 
     public String toXML(){
         StringBuilder item = new StringBuilder("<item>\n");

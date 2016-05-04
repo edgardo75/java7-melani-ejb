@@ -7,6 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -27,6 +30,9 @@ public class HistPersonasTelefonos implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechacambio;
     private Integer idusuario;
+    @ManyToOne
+    @PrimaryKeyJoinColumns(value = @PrimaryKeyJoinColumn)
+    private Personastelefonos personaTelefono;
 
     public Long getIdhistperdom() {
         return idhistperdom;
@@ -75,6 +81,14 @@ public class HistPersonasTelefonos implements Serializable {
 
     public void setPrefijo(Long prefijo) {
         this.prefijo = prefijo;
+    }
+
+    public Personastelefonos getPersonaTelefono() {
+        return personaTelefono;
+    }
+
+    public void setPersonaTelefono(Personastelefonos personaTelefono) {
+        this.personaTelefono = personaTelefono;
     }
 
     public String toXML(){

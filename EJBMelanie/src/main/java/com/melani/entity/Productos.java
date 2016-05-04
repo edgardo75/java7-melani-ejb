@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils;
 @Entity
 @Table(name = "PRODUCTOS")
 @NamedQueries({
@@ -192,7 +191,7 @@ public class Productos implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         StringBuilder item = new StringBuilder("<producto>\n");
                 item.append("<id>").append(this.getSid()).append("</id>\n");
-                item.append("<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion())).append("</descripcion>\n");
+                item.append("<descripcion>").append(this.getDescripcion()).append("</descripcion>\n");
                 item.append("<cantidadinicial>").append(this.getCantidadInicial()).append("</cantidadinicial>\n");
                 item.append("<cantidaddisponible>").append(this.getCantidadDisponible()).append("</cantidaddisponible>\n");
                 item.append("<fechacarga>").append(sdf.format(this.getFecha())).append("</fechacarga>\n");

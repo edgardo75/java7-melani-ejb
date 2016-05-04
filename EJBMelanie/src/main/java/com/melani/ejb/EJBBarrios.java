@@ -2,16 +2,16 @@ package com.melani.ejb;
 import com.melani.entity.Barrios;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBBarrios")
 @WebService(serviceName="ServiceBarrios",name="BarriosWs")
-public class EJBBarrios implements EJBBarriosRemote {
-   private static final Logger LOGGER = Logger.getLogger(EJBBarrios.class);
+public class EJBBarrios implements EJBBarriosRemote {   
    @PersistenceContext
    private EntityManager em;
    @Override
@@ -19,12 +19,14 @@ public class EJBBarrios implements EJBBarriosRemote {
     public long addBarrio(String descripcion,int idUsuario) {
         long retorno;
         String nombreDeBarrio = "";
+      
        try {
            //convierto string a su correspondiente encoding para evitar errores de parseo
            nombreDeBarrio = new String(descripcion.getBytes("ISO-8859-1"), "UTF-8");
        } catch (UnsupportedEncodingException ex) {
-           LOGGER.error("Error en metodo addBarrio "+ex.getMessage());
-       }            
+           Logger.getLogger(EJBBarrios.class.getName()).log(Level.SEVERE, null, ex);
+       }
+      
             if(nombreDeBarrio.length()>0){
                       Query consulta =  em.createQuery("SELECT b FROM Barrios b WHERE LOWER(b.descripcion) LIKE LOWER(?1)",Barrios.class);
                             consulta.setParameter("1",nombreDeBarrio+"%".toLowerCase());
@@ -52,14 +54,14 @@ public class EJBBarrios implements EJBBarriosRemote {
                             if(lista.isEmpty()) {
                                 xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
                                 }else{
-                                    StringBuilder xmlLoop = new StringBuilder(10);
-                                        for (Barrios barrios : lista) {
-                                                try {
-                                                    xmlLoop.append(barrios.toXML());
-                                                } catch (UnsupportedEncodingException ex) {
-                                                    LOGGER.error("Error en metodo SearchAllBarrios");
-                                                }
-                                        } 
+                                    StringBuilder xmlLoop = new StringBuilder(32);
+                                    for (Barrios barrios : lista) {
+                                        try {
+                                            xmlLoop.append(barrios.toXML());
+                                        } catch (UnsupportedEncodingException ex) {
+                                            Logger.getLogger(ex.getMessage());
+                                        }
+                                }                                
                                     xml+=xmlLoop;
                                 }                         
                 xml+="</Lista>";          

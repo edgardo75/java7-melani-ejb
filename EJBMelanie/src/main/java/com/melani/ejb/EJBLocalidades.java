@@ -17,17 +17,16 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
     @Override
     public String searchLocXProvincia(short idProvincia) {
         String xml = "<Lista>\n";
-        Query jpql = null;
+        Query jpql;
             jpql = em.createNamedQuery("Localidades.findByLatLongNotNull");
             jpql.setParameter("1",idProvincia);
             List<Localidades>localidad = jpql.getResultList();
-            StringBuilder xmlLoop = new StringBuilder(10);
-            localidad.stream().forEach((localidades) -> {
-                xmlLoop.append(localidades.toXML());
-        });
+            StringBuilder xmlLoop = new StringBuilder(32);
+            for (Localidades localidades : localidad) {
+               xmlLoop.append(localidades.toXML());
+            }           
             xml+=xmlLoop;        
-           return xml+="</Lista>\n";
-        
+           return xml+="</Lista>\n";        
     }
     @Override
     public long addLocalidadCompleto(String descripcion, short idProvincia, int codigopostal) {
@@ -71,10 +70,10 @@ public class EJBLocalidades implements EJBLocalidadesRemote {
                         if(lista.isEmpty()) {
                             resultado+="NO HAY LOCALIDADES CARGADAS en "+em.find(Provincias.class, idProvincia).getProvincia();
                         } else{
-                            StringBuilder xmlLooop = new StringBuilder(10);
-                            lista.stream().forEach((localidades) -> {
+                            StringBuilder xmlLooop = new StringBuilder(32);
+                            for (Localidades localidades : lista) {
                                 xmlLooop.append(localidades.toXML());
-             });
+                            }                            
                             resultado+=xmlLooop;
                         }        
               resultado+="</Lista>\n";              

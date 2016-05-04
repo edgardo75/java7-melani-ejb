@@ -14,9 +14,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @XmlRootElement
 @NamedQueries({
@@ -100,7 +97,9 @@ public class TarjetasCreditoDebito implements Serializable {
     }
 
     public String toXML(){
-        String item = "<item>\n<id>" + this.getIdtarjeta() + "</id>\n" + "<descripcion>" + StringEscapeUtils.escapeXml10(this.getDescripcion()) + "</descripcion>\n" + "</item>\n";
-    return item;
+        StringBuilder item = new StringBuilder(32);
+        item.append("<item>\n<id>").append(this.getIdtarjeta()).append("</id>\n")
+                .append("<descripcion>").append(this.getDescripcion()).append("</descripcion>\n").append("</item>\n");
+    return item.toString();
     }
 }

@@ -48,11 +48,9 @@ public class Clientes extends Personas implements Serializable {
     public void setTotalEnPuntos(int totalEnPuntos) {
         this.totalEnPuntos = totalEnPuntos;
     }
-
     public List<Notadepedido> getNotadepedidoList() {
         return Collections.unmodifiableList(notadepedidoList);
     }
-
     public void setNotadepedidoList(List<Notadepedido> notadepedidoList) {
         this.notadepedidoList = notadepedidoList;
     }
@@ -64,11 +62,11 @@ public class Clientes extends Personas implements Serializable {
                     xml.append("</notapedidolist>\n");
                 } else{
                          List<Notadepedido>lista = this.getNotadepedidoList();
-                         lista.stream().forEach((notadepedido) -> {
-                             xml.append(notadepedido.toXML());
-            });
-                                    xml.append("</notapedidolist>\n");
-                       }
+                         for (Notadepedido notadepedido : lista) {
+                            xml.append(notadepedido.toXML());
+                         }
+                      xml.append("</notapedidolist>\n");
+               }
         return xml.toString();
     }
 }

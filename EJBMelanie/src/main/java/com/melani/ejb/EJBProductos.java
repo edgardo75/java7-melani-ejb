@@ -12,20 +12,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBProductos")
 @WebService(serviceName="ServiceProductos",name="ProductosWs")
-public class EJBProductos implements EJBProductosRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBProductos.class);    
+public class EJBProductos implements EJBProductosRemote {    
     @PersistenceContext(unitName="EJBMelaniPU2")    
     private EntityManager em; 
     private final Imagen imagen = new Imagen();   
-
     @Override
     public String addProducto(String xmlProducto) {
         String retorno = null;
@@ -42,11 +40,9 @@ public class EJBProductos implements EJBProductosRemote {
             return retorno;        
     }    
     private long agregarProductoyProcesar(Productos producto, String xmlProducto) {
-        long retorno;
-        
+        long retorno;        
                 XStream xstream = new XStream(new StaxDriver());
-                xstream.alias("producto", DatosProductos.class);
-        
+                xstream.alias("producto", DatosProductos.class);        
                 DatosProductos datosProducto = (DatosProductos) xstream.fromXML(xmlProducto);                
                 retorno = procesarProducto(producto,datosProducto);                
        return retorno;        
@@ -67,8 +63,7 @@ public class EJBProductos implements EJBProductosRemote {
             result+=producto.toXML();        
             return result;        
     }    
-    @Override
-    @SuppressWarnings("null")
+    @Override    
     public Productos agregarProductos(Productos producto) {        
             GregorianCalendar calendario = new GregorianCalendar(Locale.getDefault());
                 Productos produ = em.find(Productos.class, producto.getSid());
@@ -89,10 +84,10 @@ public class EJBProductos implements EJBProductosRemote {
             List<Productos> lista = query.getResultList();
                     if(lista.isEmpty()) {
                         xml="LA CONSULTA NO ARROJÓ RESULTADOS";
-            } else{
+                    } else{
                         Iterator iter = lista.iterator();
                         xml="<Lista>\n";
-                        StringBuilder xmlLoop= new StringBuilder(10);
+                        StringBuilder xmlLoop= new StringBuilder(32);
                         while(iter.hasNext()){
                             Productos prod = (Productos) iter.next();
                             xmlLoop.append("<producto>\n");
@@ -137,7 +132,7 @@ public class EJBProductos implements EJBProductosRemote {
     public String actualizarProducto(String xmlProducto) {
           String retorno = null;
         Productos producto = null;
-        LOGGER.info("PRODUCTOS ACTUALIZADOS "+updateProducto(producto, xmlProducto));
+        Logger.getLogger("PRODUCTOS ACTUALIZADOS "+updateProducto(producto, xmlProducto));
             retorno+="<Lista>\n";
                     retorno+="<producto>\n";
                     retorno+="<id>"+"</id>\n";
@@ -274,6 +269,4 @@ public class EJBProductos implements EJBProductosRemote {
                 }
                     return retorno;
     }
-
-    
 }

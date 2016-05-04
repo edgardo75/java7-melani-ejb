@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils; 
 @Entity
 @Table(name = "HISTORICONOTAPEDIDO", catalog = "", schema = "")
 @NamedQueries({@NamedQuery(name = "Historiconotapedido.findAll", query = "SELECT h FROM Historiconotapedido h"),
@@ -323,7 +322,7 @@ public class Historiconotapedido implements Serializable {
         if(this.getHoraregistro()!=null) {
             hourreg=sdf.format(this.getHoraregistro());
         }       
-            StringBuilder item = new StringBuilder(10);
+            StringBuilder item = new StringBuilder(32);
         
               item.append("<item>\n").append("<id>").append(this.getIdhistorico()).append("</id>\n").append("<anticipo>").append(this.getAnticipo()).append("</anticipo>\n");
                            item.append("<entregado>").append(this.getEntregado().toString()).append("</entregado>\n");
@@ -343,7 +342,7 @@ public class Historiconotapedido implements Serializable {
                                    .append("<porcentajedescuento>").append(this.getPorcentajedesc())
                                    .append("</porcentajedescuento>\n" ).append("<descuento>")
                                    .append(this.getDescuento()).append("</descuento>\n" )
-                                   .append("<accion>").append(StringEscapeUtils.escapeXml10(this.getAccion()))
+                                   .append("<accion>").append(this.getAccion())
                                    .append("</accion>\n" ).append("<saldo>").append(this.getSaldo())
                                    .append("</saldo>\n" ).append("<total>").append(this.getTotal()).append("</total>\n");
                    item.append("</item>\n");

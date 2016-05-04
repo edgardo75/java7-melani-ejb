@@ -132,7 +132,7 @@ public class ExistenciasProductos implements Serializable {
     }
 
     public String toXML(){
-        StringBuilder item = new StringBuilder(10);
+        StringBuilder item = new StringBuilder(32);
         item.append("<item>\n<id_existencias>").append(this.getIdExistencias())
                 .append("</id_existencias>\n").append("<idproducto>").append(this.getProductos().getSid())
                 .append("</idproducto>\n").append("<cantidadactual>").append(this.getCantidadactual())

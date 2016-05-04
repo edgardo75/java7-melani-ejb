@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name = "IMAGENESPRODUCTOS")
+@Table(name = "IMAGEN_PRODUCTO")
 @NamedQueries({@NamedQuery(name = "ImagenesProductos.findById",query = "SELECT i FROM ImagenesProductos i WHERE i.productos.sid = :sid"),
 @NamedQuery(name = "ImagenesProductos.findByIdProduct", query = "Select i From ImagenesProductos i Where i.productos.sid = :idProducto")})
 public class ImagenesProductos implements Serializable{
@@ -25,7 +25,7 @@ public class ImagenesProductos implements Serializable{
     pkColumnName="FNAME",pkColumnValue="IMAGE_ID", valueColumnName="FKEY",
     allocationSize=1)
     @Column(name = "ID_IMAGE")    
-    private Long idImagenProducto;
+    private int idImagenProducto;
     @ManyToOne(optional = false)
     private Productos productos;
     @Column(name = "PATHIMAGEN")
@@ -40,11 +40,11 @@ public class ImagenesProductos implements Serializable{
     public ImagenesProductos() {
     }  
    
-    public Long getId_image() {
+    public int getId_image() {
         return idImagenProducto;
     }
 
-    public void setId_image(Long id) {
+    public void setId_image(int id) {
         this.idImagenProducto = id;
     }
 

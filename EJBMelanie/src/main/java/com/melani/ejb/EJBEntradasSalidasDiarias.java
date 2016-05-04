@@ -26,8 +26,9 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
         String xmlEntradasySalidas = "<Lista>\n";
         Query query = em.createNamedQuery("EntradasySalidasCaja.findByCurrentDate");
         List<EntradasySalidasCaja>lista = query.getResultList();
-        xmlEntradasySalidas = lista.stream().map((next) -> next.toXML()).reduce(xmlEntradasySalidas, String::concat);
-        
+        for (EntradasySalidasCaja entradasySalidasCaja : lista) {
+            xmlEntradasySalidas+=entradasySalidasCaja.toXML();
+        }  
         return xmlEntradasySalidas+="</Lista>\n";
     }
 
@@ -67,75 +68,54 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
     @Override
     public String selectAllEntradasYSalidasPorTurno() {
         String retorno = "<Lista>\n";
-        LocalDateTime timePoint = LocalDateTime.now(ZoneId.systemDefault());
-                        
-                            if(timePoint.getHour()>7 && timePoint.getHour()<15){
-        
+        LocalDateTime timePoint = LocalDateTime.now(ZoneId.systemDefault());                        
+                            if(timePoint.getHour()>7 && timePoint.getHour()<15){        
                                 ///consulto las entradas y salidas de este horario y la fecha
-                                    retorno += obtenerEntradasYSalidasDeMañana();
-                                
+                                    retorno += obtenerEntradasYSalidasDeMañana();                                
                             } else {
                                 if(timePoint.getHour()>15&&timePoint.getHour()<22){                                    
-                                        retorno += obtenerEntradasYSalidasDeTarde();
-                                    
+                                        retorno += obtenerEntradasYSalidasDeTarde();                                    
                                 }
-
-                            }
-        
-            retorno+="</Lista>"; 
-            
+                            }        
+            retorno+="</Lista>";             
       return retorno;  
     }
-
     private String obtenerEntradasYSalidasDeMañana() {
         String horaManana1 = ResourceBundle.getBundle("config").getString("HORA_MANANA1");
         String horaManana2 = ResourceBundle.getBundle("config").getString("HORA_MANANA2");
         StringBuilder xmlES;        
         String xml ="";
-        
-        
                    Query consulta = em.createQuery("SELECT e FROM EntradasySalidasCaja e WHERE CURRENT_DATE = e.fecha AND e.hora  BETWEEN ?1 AND ?2 ORDER BY e.hora desc");
                             try {
                                 consulta.setParameter("1", new SimpleDateFormat("hh").parse(horaManana1));
                                 consulta.setParameter("2", new SimpleDateFormat("hh").parse(horaManana2));
                             } catch (ParseException ex) {
                                 Logger.getLogger(EJBEntradasSalidasDiarias.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                   
-                   List<EntradasySalidasCaja>lista = consulta.getResultList();
-                   
-                        if(consulta.getResultList().size()>0){
-                                    //xml = lista.stream().map((next) -> next.toXML()).reduce(xml, String::concat);
-
-                                    xml = hacerCalculosDeEntradaSalida(lista);
-                                    
+                            }                   
+                   List<EntradasySalidasCaja>lista = consulta.getResultList();                   
+                        if(consulta.getResultList().size()>0){ 
+                            xml = hacerCalculosDeEntradaSalida(lista);                                    
                                              xmlES = new StringBuilder(xml);
                                              xmlES.replace(0, 0, "<totales>\n<turno>mañana</turno>\n");
                                     xml = xmlES.toString();
-                        }
-                        
+                        }                        
        return xml;
     }
-
     private String obtenerEntradasYSalidasDeTarde() {
         String horaTarde1 = ResourceBundle.getBundle("config").getString("HORA_TARDE1");
         String horaTarde2 = ResourceBundle.getBundle("config").getString("HORA_TARDE2");
         StringBuilder xmlES;
-        String xml ="";
-                
+        String xml ="";                
                 Query consulta = em.createQuery("SELECT e FROM EntradasySalidasCaja e WHERE CURRENT_DATE = e.fecha AND e.hora BETWEEN ?1 AND ?2 ORDER BY e.hora desc");
                                 try {
                                     consulta.setParameter("1", new SimpleDateFormat("hh").parse(horaTarde1));
                                     consulta.setParameter("2", new SimpleDateFormat("hh").parse(horaTarde2));
                                 } catch (ParseException ex) {
                                     Logger.getLogger(EJBEntradasSalidasDiarias.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                
-                                List<EntradasySalidasCaja> lista = consulta.getResultList();
-                                    
+                                }                
+                                List<EntradasySalidasCaja> lista = consulta.getResultList();                                    
                                 if(consulta.getResultList().size()>0){                                        
                                          xml = hacerCalculosDeEntradaSalida(lista);
-
                                         xmlES = new StringBuilder(xml);
                                         xmlES.replace(0, 0, "<totales>\n<turno>tarde</turno>\n");
                                         xml = xmlES.toString();
@@ -165,16 +145,14 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                 entradaSalidaCaja.setAnticipo(0.0);  
                 entradaSalidaCaja.setIdTarjetaCreditoDebitoFk(em.find(TarjetasCreditoDebito.class, nota.getIdTarjetaFk().getIdtarjeta()));
                 entradaSalidaCaja.setID_USUARIO(0);                
-                entradaSalidaCaja.setVentasEfectivo(0.0);
-                
+                entradaSalidaCaja.setVentasEfectivo(0.0);                
             em.persist(entradaSalidaCaja);
         retorno = entradaSalidaCaja.getId_EntradasySalidas();
         return retorno;
     }
     @Override
     public long calculosPorAnticipoNotaPedido(double anticipo,Notadepedido notadePedido) {
-        long retorno;
-        
+        long retorno;        
                             EntradasySalidasCaja entradasySalidasCaja = new EntradasySalidasCaja();
                             SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm:ss");                                        
                             entradasySalidasCaja.setFecha(new Date());
@@ -204,10 +182,9 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
         double acumSalidaManual = 0;
         double arqueoGral;
         double caja;
-        StringBuilder xmlCalculosES = new StringBuilder(10);
+        StringBuilder xmlCalculosES = new StringBuilder(32);
         String xml = "";
-        Date fecha = null;
-        
+        Date fecha = null;        
         for (EntradasySalidasCaja entradasySalidasCaja : lista) {            
                         acumEntradaManual +=entradasySalidasCaja.getEntradas();
                         acumEntradasAnticipo +=entradasySalidasCaja.getAnticipo();              
@@ -227,10 +204,7 @@ public class EJBEntradasSalidasDiarias implements EJBEntradasSalidaDiariasRemote
                               .append("<caja>").append(caja).append("</caja>")
                               .append("<fecha>").append(new SimpleDateFormat("dd/MM/yyyy").format(fecha)).append("</fecha>\n")
                               .append("</totales>\n")
-                              .append(xml);
-                      
-                      
-                
+                              .append(xml);           
                 return xmlCalculosES.toString();
     }
 }

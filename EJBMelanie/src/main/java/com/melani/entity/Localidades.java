@@ -16,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @Table(name = "LOCALIDADES")
 @NamedQueries({
@@ -136,9 +134,9 @@ public class Localidades implements Serializable {
     }
 
     public String toXML(){ 
-        StringBuilder localidades = new StringBuilder(10);
+        StringBuilder localidades = new StringBuilder(32);
         return localidades.append("<localidades>\n<id>").append(this.getIdLocalidad())
-                .append("</id>\n" + "<descripcion>").append(StringEscapeUtils.escapeXml10(this.getDescripcion()))
+                .append("</id>\n" + "<descripcion>").append(this.getDescripcion())
                 .append("</descripcion>\n")
                 .append("<codigopostal>").append(this.getCodigopostal()).append("</codigopostal>\n")
                 .append("<latitud>").append(this.getLatitud())

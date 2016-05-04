@@ -1,4 +1,4 @@
-    package com.melani.entity;
+package com.melani.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -23,8 +23,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.apache.commons.lang3.StringEscapeUtils;
 @Entity
 @Table(name = "NOTADEPEDIDO")
 @XmlRootElement
@@ -142,557 +140,211 @@ public class Notadepedido implements Serializable {
     private double porcrecargo;
     @Column(name = "ULTIMA_ACTUALIZACION",length = 255)
     private String ultimaActualizacion;
-
-    /**
-     *
-     */
     public Notadepedido() {
     }
 
-    /**
-     *
-     * @param id
-     */
     public Notadepedido(Long id) {
         this.id = id;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getAnticipo() {
         return anticipo;
     }
-
-    /**
-     *
-     * @param anticipo
-     */
     public void setAnticipo(double anticipo) {
         this.anticipo = anticipo;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getSaldo() {
         return saldo;
     }
-
-    /**
-     *
-     * @param saldo
-     */
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
-
-    /**
-     *
-     * @return
-     */
     public Date getHoracompra() {
         return horacompra;
     }
-
-    /**
-     *
-     * @param horacompra
-     */
     public void setHoracompra(Date horacompra) {
         this.horacompra = horacompra;
     }
-
-    /**
-     *
-     * @return
-     */
     public Character getEntregado() {
         return entregado;
     }
-
-    /**
-     *
-     * @param entregado
-     */
     public void setEntregado(Character entregado) {
         this.entregado = entregado;
     }
-
-    /**
-     *
-     * @return
-     */
     public Long getIdUsuarioExpidioNota() {
         return idUsuarioExpidioNota;
     }
-
-    /**
-     *
-     * @param idUsuarioExpidioNota
-     */
     public void setIdUsuarioExpidioNota(Long idUsuarioExpidioNota) {
         this.idUsuarioExpidioNota = idUsuarioExpidioNota;
     }
-
-    /**
-     *
-     * @return
-     */
     public Integer getStockfuturo() {
         return stockfuturo;
     }
-
-    /**
-     *
-     * @param stockfuturo
-     */
     public void setStockfuturo(Integer stockfuturo) {
         this.stockfuturo = stockfuturo;
     }
-
-    /**
-     *
-     * @return
-     */
     public Date getFechaAnulado() {
         return fechaAnulado;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getDescuentonota() {
         return descuentoNota;
     }
-
-    /**
-     *
-     * @param descuentonota
-     */
     public void setDescuentonota(double descuentonota) {
         this.descuentoNota = descuentonota;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getDescuentoPesos() {
         return descuentoPesos;
     }
-
-    /**
-     *
-     * @param descuentoPesos
-     */
     public void setDescuentoPesos(double descuentoPesos) {
         this.descuentoPesos = descuentoPesos;
     }
-
-    /**
-     *
-     * @param fechaAnulado
-     */
     public void setFechaAnulado(Date fechaAnulado) {
         this.fechaAnulado = fechaAnulado;
     }
-
-    /**
-     *
-     * @return
-     */
     public Long getIdusuarioEntregado() {
         return idusuarioEntregado;
     }
-
-    /**
-     *
-     * @param idusuarioEntregado
-     */
     public void setIdusuarioEntregado(Long idusuarioEntregado) {
         this.idusuarioEntregado = idusuarioEntregado;
     }
-
-    /**
-     *
-     * @return
-     */
     public Character getAnulado() {
         return anulado;
     }
-
-    /**
-     *
-     * @param anulado
-     */
     public void setAnulado(Character anulado) {
         this.anulado = anulado;
     }
-
-    /**
-     *
-     * @return
-     */
     public String getObservaciones() {
         return observaciones;
     }
-
-    /**
-     *
-     * @param observaciones
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-
-    /**
-     *
-     * @return
-     */
     public Character getPendiente() {
         return pendiente;
     }
-
-    /**
-     *
-     * @param pendiente
-     */
     public void setPendiente(Character pendiente) {
         this.pendiente = pendiente;
     }
 
-    /**
-     *
-     * @return
-     */
     public double getMontoiva() {
         return montoiva;
     }
-
-    /**
-     *
-     * @param montoiva
-     */
     public void setMontoiva(double montoiva) {
         this.montoiva = montoiva;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getRecargo() {
         return recargo;
     }
-
-    /**
-     *
-     * @param recargo
-     */
     public void setRecargo(double recargo) {
         this.recargo = recargo;
     }
-
-    /**
-     *
-     * @return
-     */
     public Long getIdusuarioAnulado() {
         return idusuarioAnulado;
     }
-
-    /**
-     *
-     * @param idusuarioAnulado
-     */
     public void setIdusuarioAnulado(Long idusuarioAnulado) {
         this.idusuarioAnulado = idusuarioAnulado;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getTotal() {
         return total;
     }
-
-    /**
-     *
-     * @param total
-     */
     public void setTotal(double total) {
         this.total = total;
     }
-
-    /**
-     *
-     * @return
-     */
     public Porcentajes getFkidporcentajenotaId() {
         return fkidporcentajenotaId;
     }
-
-    /**
-     *
-     * @param fkidporcentajenotaId
-     */
     public void setFkidporcentajenotaId(Porcentajes fkidporcentajenotaId) {
         this.fkidporcentajenotaId = fkidporcentajenotaId;
     }
-
-    /**
-     *
-     * @return
-     */
     public String getNumerodecupon() {
         return numerodecupon;
     }
-
-    /**
-     *
-     * @param numerodecupon
-     */
     public void setNumerodecupon(String numerodecupon) {
         this.numerodecupon = numerodecupon;
     }
-
-    /**
-     *
-     * @return
-     */
     public Character getEnefectivo() {
         return enefectivo;
     }
-
-    /**
-     *
-     * @param enefectivo
-     */
     public void setEnefectivo(Character enefectivo) {
         this.enefectivo = enefectivo;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @XmlTransient
+    }    
     public List<Detallesnotadepedido> getDetallesnotadepedidoList() {
         return Collections.unmodifiableList(detallesnotadepedidoList);
     }
-
-    /**
-     *
-     * @param detallesnotadepedidoList
-     */
     public void setDetallesnotadepedidoList(List<Detallesnotadepedido> detallesnotadepedidoList) {
         this.detallesnotadepedidoList = detallesnotadepedidoList;
     }
-
-    /**
-     *
-     * @return
-     */
     public Date getFechaentrega() {
         return fechaentrega;
     }
-
-    /**
-     *
-     * @param fechaentrega
-     */
     public void setFechaentrega(Date fechaentrega) {
         this.fechaentrega = fechaentrega;
     }
-
-    /**
-     *
-     * @return
-     */
     public Long getId() {
         return id;
     }
-
-    /**
-     *
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @XmlTransient
+    }   
     public List<Historiconotapedido> getHistoriconotapedidoList() {
         return Collections.unmodifiableList(historiconotapedidoList);
     }
-
-    /**
-     *
-     * @param historiconotapedidoList
-     */
     public void setHistoriconotapedidoList(List<Historiconotapedido> historiconotapedidoList) {
         this.historiconotapedidoList = historiconotapedidoList;
     }
-
-    /**
-     *
-     * @return
-     */
     public TarjetasCreditoDebito getIdTarjetaFk() {
         return idTarjetaFk;
     }
-
-    /**
-     *
-     * @param idTarjetaFk
-     */
     public void setIdTarjetaFk(TarjetasCreditoDebito idTarjetaFk) {
         this.idTarjetaFk = idTarjetaFk;
     }
-
-    /**
-     *
-     * @return
-     */
     public Personas getFkIdcliente() {
         return fkIdcliente;
     }
-
-    /**
-     *
-     * @param fkIdcliente
-     */
     public void setFkIdcliente(Personas fkIdcliente) {
         this.fkIdcliente = fkIdcliente;
     }
-
-    /**
-     *
-     * @return
-     */
     public Date getFechadecompra() {
         return fechadecompra;
     }
-
-    /**
-     *
-     * @param fechadecompra
-     */
     public void setFechadecompra(Date fechadecompra) {
         this.fechadecompra = fechadecompra;
     }
-
-    /**
-     *
-     * @return
-     */
     public Character getCancelado() {
         return cancelado;
     }
-
-    /**
-     *
-     * @param cancelado
-     */
     public void setCancelado(Character cancelado) {
         this.cancelado = cancelado;
     }
-
-    /**
-     *
-     * @return
-     */
     public Date getFecancelado() {
         return fecancelado;
     }
-
-    /**
-     *
-     * @param fecancelado
-     */
     public void setFecancelado(Date fecancelado) {
         this.fecancelado = fecancelado;
     }
-
-    /**
-     *
-     * @return
-     */
     public Long getIdusuariocancelo() {
         return idUsuarioCancelo;
     }
-
-    /**
-     *
-     * @param idusuariocancelo
-     */
     public void setIdusuariocancelo(Long idusuariocancelo) {
         this.idUsuarioCancelo = idusuariocancelo;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getMontototalapagar() {
         return montototalapagar;
     }
-
-    /**
-     *
-     * @param montototalapagar
-     */
     public void setMontototalapagar(double montototalapagar) {
         this.montototalapagar = montototalapagar;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getPorcdesctotal() {
         return porcdesctotal;
     }
-
-    /**
-     *
-     * @param porcdesctotal
-     */
     public void setPorcdesctotal(double porcdesctotal) {
         this.porcdesctotal = porcdesctotal;
     }
-
-    /**
-     *
-     * @return
-     */
     public double getPorcrecargo() {
         return porcrecargo;
     }
-
-    /**
-     *
-     * @param porcrecargo
-     */
     public void setPorcrecargo(double porcrecargo) {
         this.porcrecargo = porcrecargo;
     }
-
-//    @Override
-//    public int hashCode() {
-//        int hash = 0;
-//        hash += (id != null ? id.hashCode() : 0);
-//        return hash;
-//    }
     @Override
     public int hashCode() {
         int hash = 5;
@@ -709,8 +361,7 @@ public class Notadepedido implements Serializable {
         }
         final Notadepedido other = (Notadepedido) obj;
         return Objects.equals(this.id, other.id);
-    }
-    
+    }    
     
 
     public Long getIdUsuarioCancelo() {
@@ -741,17 +392,9 @@ public class Notadepedido implements Serializable {
     public String toString() {
         return "com.melani.entity.Notadepedido[ id=" + id + " ]";
     }
-
-    /**
-     *
-     * @return
-     */
-    public String toXML(){
-        //---------------------------------------------------------------------
-         
+    public String toXML(){    
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");
-        //---------------------------------------------------------------------
+        SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm:ss");        
         String fechanulado="";
         if (this.getFechaAnulado()!=null) {
             fechanulado=sdf.format(this.getFechaAnulado());
@@ -770,57 +413,55 @@ public class Notadepedido implements Serializable {
          }
         String fecancel="";
         if(this.getFecancelado()!=null) {
-            fecancel=sdf.format(this.getFecancelado());
-            //--------------------------------------------------------------------
-         }        
-            
-            String item =String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf
-                        (String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf(String.valueOf
-                (String.valueOf("<item>\n<id>" + this.getId() + "</id>\n" + "<tarjetadecredito>" + StringEscapeUtils.escapeXml10(this.getIdTarjetaFk().getDescripcion()) 
-                        + "</tarjetadecredito>\n" + "<idtarjeta>" + this.getIdTarjetaFk().getIdtarjeta() + "</idtarjeta>\n" + "<numerocupon>" + this.getNumerodecupon() + 
-                        "</numerocupon>\n" + "<observaciones>" + StringEscapeUtils.escapeXml10(this.getObservaciones()) + "</observaciones>\n" + "<anticipo>"
-                        + this.getAnticipo() + "</anticipo>\n" + "<anulado>" + this.getAnulado().toString() + "</anulado>\n" + "<cancelado>" 
-                        + this.getCancelado() + "</cancelado>\n" + "<efectivo>" + this.getEnefectivo() + "</efectivo>\n" + "<entregado>" + this.getEntregado() +
-                        "</entregado>\n" + "<descuentonota>" + this.getDescuentonota() + "</descuentonota>\n" + "<descuentopesos>" + this.getDescuentoPesos() +
-                        "</descuentopesos>\n" + "<fechaanulado>" + fechanulado + "</fechaanulado>\n" + "<fecancel>" + fecancel + "</fecancel>\n" + "<fechacompra>" + fecompra + "</fechacompra>\n" + 
-                        "<fechaentrega>" + feentrega + "</fechaentrega>\n" + "<horacompra>" + hocompra + "</horacompra>\n" + "<ultimaActualizacion>" + this.getUltimaActualizacion() + "</ultimaActualizacion>" + 
-                        "<stockfuturo>") + String.valueOf(this.getStockfuturo()) + "</stockfuturo>\n" + "<cliente>\n" + "<id>") + String.valueOf(this.getFkIdcliente().getIdPersona()) + "</id>\n" + "<nrodocumento>") + 
-                                String.valueOf(this.getFkIdcliente().getNrodocumento()) + "</nrodocumento>\n" + "<apellidoynombre>" + StringEscapeUtils.escapeXml10(this.getFkIdcliente().getApellido()+" "
-                                        + ""+this.getFkIdcliente().getNombre()) + "</apellidoynombre>\n" + "</cliente>\n" + "<idporcentajes>") + String.valueOf(this.getFkidporcentajenotaId().getIdPorcentajes()) + 
-                                "</idporcentajes>\n" + "<usuarioexpidionota>") + String.valueOf(this.getIdUsuarioExpidioNota()) + "</usuarioexpidionota>\n" + "<usuarioanulonota>") + 
-                                String.valueOf(this.getIdusuarioAnulado()) + "</usuarioanulonota>\n" + "<usuarioentregonota>") + String.valueOf(this.getIdusuarioEntregado()) + "</usuarioentregonota>\n"
-                                + "<usuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + "</usuariocancelonota>\n" + "<idusuarioexpidionota>") + String.valueOf(this.getIdUsuarioExpidioNota()) + 
-                    "</idusuarioexpidionota>\n" + "<idusuarioanulonota>") + String.valueOf(this.getIdusuarioAnulado()) + "</idusuarioanulonota>\n" + "<idusuarioentregonota>") + 
-                    String.valueOf(this.getIdusuarioEntregado()) + "</idusuarioentregonota>\n" + "<idusuariocancelonota>") + String.valueOf(this.getIdusuariocancelo()) + 
-                    "</idusuariocancelonota>\n" + "<montoiva>" + this.getMontoiva() + "</montoiva>\n" + "<pendiente>") + String.valueOf(this.getPendiente()) + 
-                    ("</pendiente>\n" + "<recargo>") + this.getRecargo() + "</recargo>\n" + "<total>" + this.getTotal()+ ("</total>\n" + "<saldo>") + 
-                    this.getSaldo() + "</saldo>\n" + "<montototalapagar>" + this.getMontototalapagar() + "</montototalapagar>\n" + "<porcentajedesctotal>" + 
-                    this.getPorcdesctotal() + "</porcentajedesctotal>\n" + "<recargototal>" + this.getRecargo()+ "</recargototal>\n" + "<porcrecargo>" + 
-                    this.getPorcrecargo() + "</porcrecargo>\n" + "<detallenota>\n";
+            fecancel=sdf.format(this.getFecancelado());          
+         }                    
+            StringBuilder item = new StringBuilder(32);
+            item.append("<item>\n<id>").append(this.getId()).append("</id>\n" ).append("<tarjetadecredito>").append(this.getIdTarjetaFk().getDescripcion()).append("</tarjetadecredito>\n")
+                    .append("<idtarjeta>").append(this.getIdTarjetaFk().getIdtarjeta()).append("</idtarjeta>\n").append("<numerocupon>").append(this.getNumerodecupon()).append("</numerocupon>\n")
+                    .append("<observaciones>").append(this.getObservaciones()).append("</observaciones>\n").append("<anticipo>").append(this.getAnticipo()).append("</anticipo>\n").append("<anulado>").append(this.getAnulado()).append("</anulado>\n").append("<cancelado>" ).append(this.getCancelado()).append("</cancelado>\n")
+                                    .append("<efectivo>").append(this.getEnefectivo()).append("</efectivo>\n").append("<entregado>").append(this.getEntregado()).append("</entregado>\n")
+                                    .append("<descuentonota>").append(this.getDescuentonota()).append("</descuentonota>\n").append(
+                                            "<descuentopesos>").append(this.getDescuentoPesos()).append("</descuentopesos>\n").append("<fechaanulado>").append(fechanulado).append("</fechaanulado>\n")
+                                    .append("<fecancel>").append(fecancel).append("</fecancel>\n").append("<fechacompra>").append(fecompra).append("</fechacompra>\n").append("<fechaentrega>")
+                                    .append(feentrega).append("</fechaentrega>\n").append("<horacompra>").append(hocompra ).append( "</horacompra>\n" ).append( "<ultimaActualizacion>" ).append( this.getUltimaActualizacion() ).append( "</ultimaActualizacion>")
+                                    .append("<stockfuturo>").append( this.getStockfuturo()).append("</stockfuturo>\n" ).append( "<cliente>\n").append( "<id>").append(this.getFkIdcliente().getIdPersona()).append(
+                                            "</id>\n").append("<nrodocumento>").append(this.getFkIdcliente().getNrodocumento()).append( "</nrodocumento>\n" ).append( "<apellidoynombre>" ).append( this.getFkIdcliente().getApellido())
+                                                    .append(" ").append(this.getFkIdcliente().getNombre()).append("</apellidoynombre>\n").append("</cliente>\n" ).append( "<idporcentajes>").append(this.getFkidporcentajenotaId().getIdPorcentajes())
+                                                            .append("</idporcentajes>\n" ).append("<usuarioexpidionota>" ).append( this.getIdUsuarioExpidioNota() ).append("</usuarioexpidionota>\n" ).append( "<usuarioanulonota>" ).append(
+                                                                    this.getIdusuarioAnulado()).append("</usuarioanulonota>\n").append( "<usuarioentregonota>" ).append(this.getIdusuarioEntregado()).append("</usuarioentregonota>\n")
+                                                                            .append("<usuariocancelonota>").append(this.getIdusuariocancelo() ).append("</usuariocancelonota>\n" )
+                                                                                    .append("<idusuarioexpidionota>" ).append(this.getIdUsuarioExpidioNota() )
+                                                                                            .append("</idusuarioexpidionota>\n" ).append("<idusuarioanulonota>").append(
+                                                                                                    this.getIdusuarioAnulado()).append( "</idusuarioanulonota>\n" ).append("<idusuarioentregonota>" )
+                                                                                            .append(this.getIdusuarioEntregado() ).append( "</idusuarioentregonota>\n" ).append( "<idusuariocancelonota>" ).append(
+                                                                                                    this.getIdusuariocancelo()).append("</idusuariocancelonota>\n" ).append("<montoiva>")
+                                                                                                    .append(this.getMontoiva() ).append("</montoiva>\n" ).append("<pendiente>").append(this.getPendiente() )
+                                                                                                    .append("</pendiente>\n" ).append("<recargo>" ).append(this.getRecargo() ).append("</recargo>\n" ).append( "<total>" ).append(this.getTotal()).append(
+                                                                                                            "</total>\n" ).append("<saldo>" ).append(this.getSaldo() ).append("</saldo>\n" ).append("<montototalapagar>" ).append(this.getMontototalapagar() ).append(
+                                                                                                                    "</montototalapagar>\n" ).append( "<porcentajedesctotal>" ).append(this.getPorcdesctotal() )
+                                                                                                                    .append("</porcentajedesctotal>\n" ).append( "<recargototal>" ).append(this.getRecargo()).append("</recargototal>\n" ).append( "<porcrecargo>" )
+                                                                                                                    .append(this.getPorcrecargo() ).append( "</porcrecargo>\n" ).append( "<detallenota>\n");
                             
                                 if(this.getDetallesnotadepedidoList().isEmpty()) {
-                                    item+="</detallenota>\n";
+                                    item.append("</detallenota>\n");
                                 } else{
-                                    StringBuilder detalles = new StringBuilder(10);
-                                    for (Detallesnotadepedido detallenota : this.getDetallesnotadepedidoList()) {
-                                        detalles.append(detallenota.toXML());
-                                    }
-                                    item+=detalles.append("</detallenota>\n");
+                                    StringBuilder detalles = new StringBuilder(32);
+                                    for (Detallesnotadepedido detallesnotadepedido : detallesnotadepedidoList) {
+                                        detalles.append(detallesnotadepedido.toXML());
+                                    }                                    
+                                    item.append(detalles.append("</detallenota>\n"));
                                 }
-                                item+="<detallehistorico>\n";
+                                item.append("<detallehistorico>\n");
                                 if(this.getHistoriconotapedidoList().isEmpty()) {
-                                    item+="</detallehistorico>\n";
+                                    item.append("</detallehistorico>\n");
                                 } else{
-                                    StringBuilder detallesHistorico = new StringBuilder(10);
-                                    for (Historiconotapedido historico : this.getHistoriconotapedidoList()) {
+                                    StringBuilder detallesHistorico = new StringBuilder(32);
+                                    for(Historiconotapedido historico: historiconotapedidoList){
                                         detallesHistorico.append(historico.toXML());
-                                    }
-                                    item+=detallesHistorico.append("</detallehistorico>\n");
+                                    }                                    
+                                    item.append(detallesHistorico.append("</detallehistorico>\n"));
                                 }
-                             item+="</item>\n";     
-              
-                    return item;
-              
-        
+                             item.append("</item>\n");                   
+                    return item.toString();
     }
 }

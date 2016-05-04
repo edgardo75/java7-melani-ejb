@@ -21,17 +21,16 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
 @Stateless(name="ejb/EJBClientes")
 @WebService(serviceName="ServiceClientes",name="ClientesWs")
-public class EJBClientes implements EJBClientesRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBClientes.class);
+public class EJBClientes implements EJBClientesRemote {    
     @PersistenceContext(unitName="EJBMelaniPU2")
     private EntityManager em;
     @EJB
@@ -67,15 +66,15 @@ public class EJBClientes implements EJBClientesRemote {
                                            
                                            switch((int)chequear__email_numDoc){              
                                                
-                                               case -7:{LOGGER.error("Error en metodo chequear email");
+                                               case -7:{Logger.getLogger("Error en metodo chequear email");
                                                retorno = chequear__email_numDoc;
                                                break;
                                                }
-                                               case -8:{LOGGER.error("Email encontrado en metodo chequearEmail");
+                                               case -8:{Logger.getLogger("Email encontrado en metodo chequearEmail");
                                                retorno = chequear__email_numDoc;
                                                 break;
                                                }
-                                               case -11:{LOGGER.error("Email no válido");
+                                               case -11:{Logger.getLogger("Email no válido");
                                                retorno = chequear__email_numDoc;
                                                 break;
                                                }
@@ -101,15 +100,15 @@ public class EJBClientes implements EJBClientesRemote {
                                     }
                      }else{
                           retorno = -14;
-                        LOGGER.error("Numero de documento no válido");
+                        Logger.getLogger("Numero de documento no válido");
                      }
                  }else{
                      retorno = -13;
-                    LOGGER.error("Apellido no válido");
+                    Logger.getLogger("Apellido no válido");
                  }
              }else{
                  retorno = -12;
-                 LOGGER.error("Nombre no válido");
+                 Logger.getLogger("Nombre no válido");
              }        
             return retorno;        
     }       
@@ -261,16 +260,16 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                         idDomicilio = ejbdomici.addDomicilios(todosDatos.getDomicilio());                 
                                 String result=null;                            
                                switch((int)idDomicilio){
-                                   case -1:{LOGGER.error("Error No se pudo agregar domicilio Verifique!!!");
+                                   case -1:{Logger.getLogger("Error No se pudo agregar domicilio Verifique!!!");
                                    retorno = -1;
                                    break;}
-                                   case -2:{LOGGER.error("Error No se pudo agregar domicilio Verifique!!!");
+                                   case -2:{Logger.getLogger("Error No se pudo agregar domicilio Verifique!!!");
                                    retorno = -2;
                                    break;}
-                                   case 0:{LOGGER.error("Error no se pudo agregar domicilio Verifique!!!");
+                                   case 0:{Logger.getLogger("Error no se pudo agregar domicilio Verifique!!!");
                                    retorno = 0;
                                    break;}
-                                   case -3:{LOGGER.error("Error en metodo actualizar domicilio Verifique!!!");
+                                   case -3:{Logger.getLogger("Error en metodo actualizar domicilio Verifique!!!");
                                    retorno = -3;
                                    break;}
                                    default:{
@@ -325,7 +324,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                                     }
                                                 }
                                     }else{
-                                        LOGGER.error("NUMERO DE TELEFONO O PREFIJO NO VÁLIDO NO ALMACENADO ");
+                                        Logger.getLogger("NUMERO DE TELEFONO O PREFIJO NO VÁLIDO NO ALMACENADO ");
                                         return retorno =-15;
                                     }
                                }
@@ -358,15 +357,16 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                case 0:xml+="Cliente no encontrado";
                break;
                case 1:{
-                   StringBuilder xmlLoop = new StringBuilder(10);
-                for (Clientes cliente : lista) {
-                    xmlLoop.append("<item>\n").append("<id>").append(cliente.getIdPersona()).append("</id>\n" + "<apellido>")
-                        .append(cliente.getApellido()).append("</apellido>\n").append("<nombre>")
-                        .append(cliente.getNombre()).append("</nombre>\n").append("<idtipodocu>")
-                        .append(cliente.getTipodocumento().getId()).append("</idtipodocu>\n").append("<nrodocu>")
-                            .append(cliente.getNrodocumento()).append("</nrodocu>\n");
-                    xmlLoop.append("</item>\n");
-                }
+                   StringBuilder xmlLoop = new StringBuilder(32);
+                   for (Clientes clientes : lista) {
+                       xmlLoop.append("<item>\n").append("<id>").append(clientes.getIdPersona()).append("</id>\n" + "<apellido>")
+                               .append(clientes.getApellido()).append("</apellido>\n").append("<nombre>")
+                               .append(clientes.getNombre()).append("</nombre>\n").append("<idtipodocu>")
+                               .append(clientes.getTipodocumento().getId()).append("</idtipodocu>\n").append("<nrodocu>")
+                               .append(clientes.getNrodocumento()).append("</nrodocu>\n");
+                       xmlLoop.append("</item>\n");                       
+                   }
+                   
                 xml+=xmlLoop;
                }
            }               
@@ -389,7 +389,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                         }
                         }
                 }else{
-                    LOGGER.error("Email no válido");
+                    Logger.getLogger("Email no válido");
                     retorno =-11;
                 }
             }                
@@ -405,7 +405,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                             consulta.setParameter("nombre", sbname.toUpperCase());
                             consulta.setParameter("apellido", sblastname.toUpperCase());
                             List<Personas>lista = consulta.getResultList();
-                                StringBuilder xmlLoop = new StringBuilder(10);
+                                StringBuilder xmlLoop = new StringBuilder(32);
                                 for (Personas personas : lista) {
                                     xmlLoop.append("<item>\n").append("<id>")
                                             .append(personas.getIdPersona())
@@ -446,15 +446,15 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                   if(ProjectHelpers.NumeroDocumentoValidator.validate(String.valueOf(getcliente.getNrodocu()))){              
                        chequear__email_numDoc = chequearEmail(getcliente.getEmail(),getcliente.getNrodocu());
                             switch((int)chequear__email_numDoc){
-                                     case -7:{LOGGER.error("Error en metodo chequear email");
+                                     case -7:{Logger.getLogger("Error en metodo chequear email");
                                          xml+="<error>Error en metodo chequear email</error>\n";
                                          break;
                                       }
-                                     case -8:{LOGGER.error("Email encontrado en metodo chequearEmail");
+                                     case -8:{Logger.getLogger("Email encontrado en metodo chequearEmail");
                                          xml+="<info>Email encontrado en metodo chequearEmail<info>\n";
                                        break;
                                       }
-                                      case -11:{LOGGER.error("Email no válido");
+                                      case -11:{Logger.getLogger("Email no válido");
                                                  xml+="<error>Email no válido<error>\n";
                                           break;
                                       }
@@ -466,7 +466,7 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                                                      }
                                                      break;                                        
                                                          case -1:{                 
-                                                             LOGGER.error("Fallo error al buscar cliente en metodo existe");
+                                                             Logger.getLogger("Fallo error al buscar cliente en metodo existe");
                                                           xml+="<error>Fallo error al buscar cliente en metodo existe</error>\n";
                                                          break;
                                                      }
@@ -478,16 +478,16 @@ private long guardarDomicilioyTelefonoCliente(String xmlClienteDomicilioTelefono
                               }
                             }//end switch
                    }else{
-                             LOGGER.error("El documento no es válido");
+                             Logger.getLogger("El documento no es válido");
                          xml+="<error>El documento no es válido<error>\n";
                    }
                    
                }else{
-                         LOGGER.error("El apellido no es válido");
+                         Logger.getLogger("El apellido no es válido");
                          xml+="<error>El apellido no es válido<error>\n";
                  }
             }else{
-               LOGGER.error("El nombre no es válido");
+               Logger.getLogger("El nombre no es válido");
                xml+="<error>El nombre no es válido<error>\n";
             }
             if(idcliente>0){

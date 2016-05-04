@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 @Entity
 @Table(name = "DETALLESPRESUPUESTO")
@@ -136,10 +135,10 @@ public class Detallespresupuesto implements Serializable {
     }
 
     public String toXML(){
-        StringBuilder xml= new StringBuilder(10);
+        StringBuilder xml= new StringBuilder(32);
                 xml.append("<itemdetallepresupuesto>\n<idproducto>").append(this.getProductos().getSid()).append("</idproducto>\n")
                         .append("<descripcion_prod>")
-                        .append(StringEscapeUtils.escapeXml10(this.getProductos().getDescripcion()))
+                        .append(this.getProductos().getDescripcion())
                         .append("</descripcion_prod>\n").append("<codigo_producto>")
                         .append(this.getProductos().getCodproducto()).append("</codigo_producto>\n")
                         .append("<idpresupuesto>").append(this.getPresupuestos().getIdPresupuesto())

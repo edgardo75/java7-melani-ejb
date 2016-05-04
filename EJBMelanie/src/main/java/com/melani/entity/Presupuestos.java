@@ -19,8 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @Table(name="PRESUPUESTOS")
 @NamedQueries({@NamedQuery(name = "Presupuestos.findAll",
@@ -250,7 +248,7 @@ public class Presupuestos implements Serializable {
         StringBuilder xml = new StringBuilder("<Item>\n").append("<id>").append(this.getIdPresupuesto()).append("</id>\n");
                 xml.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
                 xml.append("<apellido>").append(this.getApellido()).append("</apellido>\n");                
-                xml.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
+                xml.append("<observaciones>").append(this.getObservaciones()).append("</observaciones>\n");
                 xml.append("<totalapagar>").append(this.getTotalapagar()).append("</totalapagar>\n");
                 xml.append("<usuarioexpidio>").append(this.getIdUsuarioFk()).append("</usuarioexpidio>\n");
                 xml.append("<iva>").append(this.getIva()).append("</iva>\n");

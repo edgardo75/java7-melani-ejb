@@ -7,6 +7,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -37,6 +39,9 @@ public class HistoricoDatosClientes implements Serializable {
     private double totalCompras;
     @Column(precision = 15,name = "TOTALPUNTOS")
     private int totalEnPuntos;
+    @ManyToOne()
+    @PrimaryKeyJoinColumn
+    private Clientes cliente;
 
     public long getId() {
         return id;
@@ -117,6 +122,14 @@ public class HistoricoDatosClientes implements Serializable {
         return hash;
     }
 
+    public Clientes getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Clientes cliente) {
+        this.cliente = cliente;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -129,10 +142,7 @@ public class HistoricoDatosClientes implements Serializable {
             return false;
         }
         final HistoricoDatosClientes other = (HistoricoDatosClientes) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
     }
     
     @Override

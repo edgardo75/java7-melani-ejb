@@ -8,12 +8,9 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBCalles")
 @WebService(serviceName="ServicesCalles",name="CallesWs")
-public class EJBCalles implements EJBCallesRemote {
-   private static final Logger LOGGER = Logger.getLogger(EJBCalles.class);
+public class EJBCalles implements EJBCallesRemote {  
    @PersistenceContext
    private EntityManager em;
 
@@ -55,10 +52,11 @@ public class EJBCalles implements EJBCallesRemote {
                 if(lista.isEmpty()) {
                     xml+="LA CONSULTA NO ARROJÓ RESULTADOS";
                 } else{
-                        StringBuilder xmlLoop = new StringBuilder(10);
-                            for (Calles calles : lista) {
-                                xmlLoop.append(calles.toXML());
-                            }
+                        StringBuilder xmlLoop = new StringBuilder(32);
+                        for (Calles calles : lista) {
+                            xmlLoop.append(calles.toXML());
+                    }
+                   
                         xml+=xmlLoop;
                 }      
          xml+="</Lista>";               

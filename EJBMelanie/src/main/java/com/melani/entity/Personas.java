@@ -20,8 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 @Entity
 @Table(name="PERSONAS")
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -183,14 +181,14 @@ public class Personas implements Serializable {
     }
 
     public String toXML(){
-        StringBuilder item=new StringBuilder(); 
+        StringBuilder item=new StringBuilder(32); 
         item.append("<id>").append(this.getIdPersona()).append("</id>\n");
         item.append("<apellido>").append(this.getApellido()).append("</apellido>\n");
                 item.append("<nombre>").append(this.getNombre()).append("</nombre>\n");
                 item.append("<idtipodocu>").append(this.getTipodocumento().getId())
                         .append("</idtipodocu>\n" ).append( "<nrodocu>").append(this.getNrodocumento())
                         .append("</nrodocu>\n").append("<observaciones>")
-                        .append(StringEscapeUtils.escapeXml10(this.getObservaciones()))
+                        .append(this.getObservaciones())
                         .append("</observaciones>\n").append("<Genero>\n").append("<generoId>")
                         .append(this.getGeneros().getIdGenero()).append("</generoId>\n").append("<generoDescripcion>")
                         .append(this.getGeneros().getDescripcion()).append("</generoDescripcion>\n")

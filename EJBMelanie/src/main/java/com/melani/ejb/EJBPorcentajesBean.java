@@ -4,12 +4,10 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBPorcentajesBean")
 @WebService(serviceName="ServicePorcentajes",name="PorcentajesWs")
 public class EJBPorcentajesBean implements EJBPorcentajesRemote {
-    private static final Logger LOGGER = Logger.getLogger(EJBPorcentajesBean.class);
+    
     @PersistenceContext
     private EntityManager em;   
     @Override

@@ -16,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 @Entity
 @Table(name="DOMICILIOS")
@@ -255,11 +254,11 @@ public class Domicilios implements Serializable {
                 item.append("<id>").append(this.getId()).append("</id>\n");
                     item.append("<Barrio>\n");
                         item.append("<idbarrio>").append(this.getBarrios().getId()).append("</idbarrio>\n");
-                        item.append("<descbarrio>").append(StringEscapeUtils.escapeXml10(this.getBarrios().getDescripcion())).append("</descbarrio>\n");
+                        item.append("<descbarrio>").append(this.getBarrios().getDescripcion()).append("</descbarrio>\n");
                     item.append("</Barrio>\n");
                 item.append("<Calle>\n");
                     item.append("<idcalle>").append(this.getCalles().getId()).append("</idcalle>\n");
-                    item.append("<desccalle>").append(StringEscapeUtils.escapeXml10(this.getCalles().getDescripcion())).append("</desccalle>\n");
+                    item.append("<desccalle>").append(this.getCalles().getDescripcion()).append("</desccalle>\n");
                 item.append("</Calle>\n");
                 item.append("<Orientacion>\n");
                     item.append("<idorientacion>").append(this.getOrientacion().getId()).append("</idorientacion>\n");
@@ -269,18 +268,18 @@ public class Domicilios implements Serializable {
                     item.append("<idlocalidad>").append(this.getLocalidades().getIdLocalidad()).append("</idlocalidad>\n");
                     item.append("<codigopostal>").append(this.getLocalidades().getCodigopostal()).append("</codigopostal>\n");
                     item.append("<idprovincia>").append(this.getLocalidades().getProvincias().getIdProvincia()).append("</idprovincia>\n");
-                item.append("<desclocalidad>").append(StringEscapeUtils.escapeXml10(this.getLocalidades().getDescripcion())).append("</desclocalidad>\n");
+                item.append("<desclocalidad>").append(this.getLocalidades().getDescripcion()).append("</desclocalidad>\n");
                 item.append("</Localidad>\n");
-                item.append("<area>").append(StringEscapeUtils.escapeXml10(this.getArea())).append("</area>\n");
-                item.append("<entrecalleycalle>").append(StringEscapeUtils.escapeXml10(this.getEntrecalleycalle())).append("</entrecalleycalle>\n");
-                item.append("<manzana>").append(StringEscapeUtils.escapeXml10(this.getManzana())).append("</manzana>\n");
-                item.append("<monoblock>").append(StringEscapeUtils.escapeXml10(this.getMonoblock())).append("</monoblock>\n");
+                item.append("<area>").append(this.getArea()).append("</area>\n");
+                item.append("<entrecalleycalle>").append(this.getEntrecalleycalle()).append("</entrecalleycalle>\n");
+                item.append("<manzana>").append(this.getManzana()).append("</manzana>\n");
+                item.append("<monoblock>").append(this.getMonoblock()).append("</monoblock>\n");
                 item.append("<numdepto>").append(this.getNumdepto()).append("</numdepto>\n");
                 item.append("<numero>").append(this.getNumero()).append("</numero>\n");
-                item.append("<piso>").append(StringEscapeUtils.escapeXml10(this.getPiso())).append("</piso>\n");
-                item.append("<sector>").append(StringEscapeUtils.escapeXml10(this.getSector())).append("</sector>\n");
-                item.append("<torre>").append(StringEscapeUtils.escapeXml10(this.getTorre())).append("</torre>\n");
-                item.append("<observaciones>").append(StringEscapeUtils.escapeXml10(this.getObservaciones())).append("</observaciones>\n");
+                item.append("<piso>").append(this.getPiso()).append("</piso>\n");
+                item.append("<sector>").append(this.getSector()).append("</sector>\n");
+                item.append("<torre>").append(this.getTorre()).append("</torre>\n");
+                item.append("<observaciones>").append(this.getObservaciones()).append("</observaciones>\n");
                 item.append("</domicilio>\n");
     return item.toString();
     }

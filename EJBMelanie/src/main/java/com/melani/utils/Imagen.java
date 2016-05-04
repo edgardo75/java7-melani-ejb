@@ -12,13 +12,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import org.apache.log4j.Logger;
-public class Imagen {
-    private static final Logger LOGGER = Logger.getLogger(Imagen.class);
+public class Imagen {    
   public Imagen(){}
   public String[] procesarImagen(byte[] longitudImagen,String nameImage,String magnitud) {
         String arrayImageProperties[] = null;
@@ -41,7 +40,7 @@ public class Imagen {
                 arrayImageProperties = new String[]{imageFile.getPath(),extension,magnitud,nameImg};
                    
         } catch (IOException ex) {
-            LOGGER.error("ERROR AL PROCESAR LA IMAGEN "+ex.getMessage());
+            Logger.getLogger("ERROR AL PROCESAR LA IMAGEN "+ex.getMessage());
         }       
         return arrayImageProperties;
     }
@@ -72,9 +71,9 @@ public class Imagen {
                     bos.write(buffer,0,readNum);
                 }   
         } catch (FileNotFoundException ex) {
-            LOGGER.error("Error al Procesar Imagen archivo no encontrado");
+            Logger.getLogger("Error al Procesar Imagen archivo no encontrado");
         } catch (IOException ex) {
-            LOGGER.error("Error al Procesar Imagen entrada salida");
+            Logger.getLogger("Error al Procesar Imagen entrada salida");
         }
         return bos.toByteArray();        
     }    

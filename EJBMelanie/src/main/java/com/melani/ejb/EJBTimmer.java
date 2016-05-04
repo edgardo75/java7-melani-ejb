@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -22,14 +23,11 @@ import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
-
 @Stateless
 @WebService
 public class EJBTimmer {
     @PersistenceContext(unitName = "EJBMelaniPU2")
-    EntityManager em;
-    private static final Logger LOGGER = Logger.getLogger(EJBTimmer.class);
+    EntityManager em;    
     @Schedule(persistent = false,timezone = "America/Argentina/San_Juan",second = "50",hour = "11",minute = "16")
     private void ventasDiarias(){ 
         final String miCorreo = "micorreo@gmail.com"; 
@@ -97,7 +95,7 @@ public class EJBTimmer {
                             }
                         }).start();
                     } catch (MessagingException ex) {
-                        LOGGER.error("Error en EJBTimmer");
+                       Logger.getLogger("Error en EJBTimmer");
                     }
     }    
     public String obtenerIPAddress() {       

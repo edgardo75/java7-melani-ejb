@@ -15,15 +15,14 @@ public class EJBTarjetasBean implements EJBTarjetasRemote {
    
     @Override
     public String searchAllTarjetasCreditoDebito() {
-        String xml = "<Lista>\n";
-      
+        String xml = "<Lista>\n";      
             Query consulta = em.createQuery("SELECT t FROM TarjetasCreditoDebito t Order by t.idtarjeta");
             List<TarjetasCreditoDebito>lista = consulta.getResultList();
             if(lista.size()>0){
-                StringBuilder xmlTarjetas = new StringBuilder(10);
+                StringBuilder xmlTarjetas = new StringBuilder(32);
                 for (TarjetasCreditoDebito tarjetasCreditoDebito : lista) {
                     xmlTarjetas.append(tarjetasCreditoDebito.toXML());
-                }
+                }                
                 xml+=xmlTarjetas;
             }else {
                 xml+="no hay tarjetas";

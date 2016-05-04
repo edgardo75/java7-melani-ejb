@@ -123,8 +123,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                             }  
             result +="</Lista>\n";
         return result;
-    }
-    
+    }    
     @Override
     public String searchOneBudget(int idpresupuesto) {
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+"<Lista>\n";
@@ -135,8 +134,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                             result+="LA CONSULTA NO ARROJÓ RESULTADOS!!!";
                         } else{
                                 result+=processPresupuesto(lista);
-                        }
-    
+                        }    
             result+="</Lista>\n";
         return result;    
     }
@@ -154,8 +152,7 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                                 xml+="<result>La consulta no arrojó resultados</result>";
                             }           
                 return xml+="</Lista>\n";     
-    }  
-    
+    }
     public String ShowReportVerPresupuesto(Long first, Long last) {  
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+ "<Lista>\n";
         long uno=first;
@@ -172,13 +169,12 @@ public class EJBPresupuestosBean implements EJBPresupuestosRemote {
                                 xml+="<result>La consulta no arrojó resultados</result>";
                             }      
             return xml+"</Lista>";        
-    }
-    
+    }    
     private StringBuilder processPresupuesto(List<Presupuestos>lista){
-        StringBuilder xmlLoop = new StringBuilder(10);
-        lista.stream().forEach((presupuestos) -> {
-            xmlLoop.append(presupuestos.toXML());
-        });   
-                    return xmlLoop;
+        StringBuilder xmlLoop = new StringBuilder(32);
+        for (Presupuestos presupuestos : lista) {
+             xmlLoop.append(presupuestos.toXML());
+        }   
+         return xmlLoop;
     }
 }

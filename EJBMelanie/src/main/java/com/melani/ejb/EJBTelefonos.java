@@ -12,12 +12,10 @@ import javax.persistence.Query;
 @Stateless(name="ejb/EJBTelefonos")
 public class EJBTelefonos implements EJBTelefonosRemote {    
     @PersistenceContext
-    private EntityManager em;
-    
+    private EntityManager em;    
     @Override
     public long addTelefonos(DatosTelefonos datosTel) {
-        long retorno;
-        
+        long retorno;        
                     TelefonosPK telepk = new TelefonosPK(Long.valueOf(datosTel.getNumero().trim()),Long.valueOf(datosTel.getPrefijo().trim()));                          
                             Query consulta = em.createNamedQuery("Telefonos.addByCodeAndNumber");
                                     consulta.setParameter("idPrefijo", Long.valueOf(datosTel.getPrefijo().trim()));

@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 @Entity
 @Table(name="BARRIOS")
@@ -90,7 +89,7 @@ public class Barrios implements Serializable {
     public String toXML() throws UnsupportedEncodingException{
         StringBuilder item = new StringBuilder("<item>\n");
                 item.append("<id>").append(this.getId()).append("</id>\n");
-                item.append("<nombre>").append(StringEscapeUtils.escapeXml10(new String(this.getDescripcion().getBytes("ISO-8859-1"),"ISO-8859-1"))).append("</nombre>\n");
+                item.append("<nombre>").append(this.getDescripcion()).append("</nombre>\n");
                 item.append("</item>\n");
         return item.toString();
     }

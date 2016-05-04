@@ -12,16 +12,12 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.log4j.Logger;
-
 @Stateless(name="ejb/EJBClienteDomicilio")
-public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {
-    private static final Logger LOGGER  = Logger.getLogger(EJBClienteDomicilio.class);
+public class EJBClienteDomicilio implements EJBClienteDomicilioRemote {    
     @PersistenceContext
     private EntityManager em;
     @EJB
     EJBHistoricoPersonaDomicilioRemote ejbhistperdom;
-
     @Override
     public String addRelacionClienteDomicilio(long idCliente, long idDomicilio,int idUsuario) {
         String retorno = "NADA";
